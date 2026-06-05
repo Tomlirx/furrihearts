@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Care Packages — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Notification */
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:6px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:0;right:0;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;color:inherit}
+.notif-item:last-child{border-bottom:none}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}.notif-icon.blue{background:#EFF6FF}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+
+/* Profile */
+.profile-wrap{position:relative}
+.profile-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;background:none;border:1px solid var(--border);background:var(--cream)}
+.profile-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+.profile-name{font-size:13px;font-weight:600;color:var(--dark)}
+.profile-caret{font-size:10px;color:var(--light);margin-left:2px}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+.profile-dd-name{font-weight:700;font-size:14px}
+.profile-dd-role{font-size:11px;color:var(--light);margin-top:1px}
+.profile-dd-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:500;border-bottom:1px solid var(--border);transition:background .2s}
+.profile-dd-link:last-child{border-bottom:none}
+.profile-dd-link:hover{background:var(--cream)}
+.profile-dd-link.danger{color:#DC2626}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* Drawer */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-section{font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:12px 8px 6px}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark)}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.mob-danger{display:block;text-align:center;color:#DC2626;font-size:14px;padding:13px;text-decoration:none}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#FDF5EF,#FEF8F3,#F5EDE6);padding:56px 40px;text-align:center;border-bottom:1px solid var(--border)}
+.hero-tag{font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.hero-title{font-family:'Fraunces',serif;font-size:40px;font-weight:700;margin-bottom:12px}
+.hero-title em{color:var(--orange);font-style:normal}
+.hero-sub{color:var(--mid);font-size:15px;line-height:1.7;max-width:500px;margin:0 auto}
+
+/* FILTER BAR */
+.filter-select{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--dark);background:#fff;font-family:inherit;cursor:pointer;outline:none;transition:border-color .2s}
+.filter-select:hover,.filter-select:focus{border-color:var(--orange)}
+.sort-select{border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--mid);background:#fff;font-family:inherit;cursor:pointer;margin-left:auto}
+
+/* PAGE */
+.page-wrap{max-width:1100px;margin:0 auto;padding:32px 40px 80px}
+
+/* Trust bar */
+.trust-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:24px;background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:36px}
+.trust-item{display:flex;align-items:flex-start;gap:10px}
+.trust-icon{width:40px;height:40px;border-radius:10px;background:var(--orange-pale);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.trust-title{font-weight:700;font-size:13px;margin-bottom:2px}
+.trust-desc{font-size:12px;color:var(--light);line-height:1.4}
+
+/* Section header */
+.section-header{margin-bottom:20px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;font-weight:700}
+.section-header p{font-size:13px;color:var(--mid);margin-top:4px}
+
+/* Packages grid */
+.packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px}
+.pkg-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .25s}
+.pkg-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.pkg-card.featured{border-color:var(--orange)}
+.pkg-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative}
+.img-starter{background:linear-gradient(135deg,#FBE8D8,#F5D0B8)}
+.img-premium{background:linear-gradient(135deg,#E8D5F5,#C9A8E8)}
+.img-kitten{background:linear-gradient(135deg,#D5E8D5,#A8C9A8)}
+.img-senior{background:linear-gradient(135deg,#D5E0F5,#A8B8E8)}
+.img-health{background:linear-gradient(135deg,#F5F5D5,#E8E8A8)}
+.img-comfort{background:linear-gradient(135deg,#F5D5D5,#E8A8A8)}
+.pkg-badge{position:absolute;top:10px;left:10px;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:#fff}
+.badge-popular{background:var(--orange)}
+.badge-new{background:var(--green)}
+.badge-recommended{background:#7C3AED}
+.pkg-discount{position:absolute;top:10px;right:10px;background:#fff;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--orange);border:1px solid #F5C9B0}
+.pkg-body{padding:18px;flex:1;display:flex;flex-direction:column}
+.pkg-name{font-weight:700;font-size:16px;margin-bottom:4px}
+.pkg-tagline{font-size:12px;color:var(--light);margin-bottom:12px}
+.pkg-items{list-style:none;margin-bottom:14px;flex:1}
+.pkg-items li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mid);padding:5px 0;border-bottom:1px solid var(--border)}
+.pkg-items li:last-child{border-bottom:none}
+.pkg-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+.pkg-price-now{font-family:'Fraunces',serif;font-size:24px;font-weight:700}
+.pkg-price-old{font-size:13px;color:var(--light);text-decoration:line-through}
+.pkg-save{font-size:11px;font-weight:700;color:var(--green);background:var(--green-pale);border-radius:4px;padding:2px 7px}
+.btn-add{background:var(--orange);color:#fff;border:none;border-radius:10px;padding:12px;width:100%;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-add:hover{background:var(--orange-light)}
+.btn-add-out{background:#fff;color:var(--orange);border:1.5px solid var(--orange);border-radius:10px;padding:12px;width:100%;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* FOOTER */
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links,.btn-ghost,.btn-primary-nav{display:none}
+ .profile-name,.profile-caret{display:none}
+ .hamburger{display:flex;margin-left:8px}
+ .hero{padding:32px 16px}
+ .hero-title{font-size:26px}
+ .hero-sub{font-size:13px}
+ .filter-btn{font-size:12px;padding:6px 12px}
+ .filter-select{font-size:12px;padding:6px 10px}
+ .filter-dropdowns{flex-wrap:wrap;gap:8px}
+
+ .page-wrap{padding:16px 16px 48px}
+ .trust-bar{grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+ .packages-grid{grid-template-columns:1fr;gap:16px}
+ .pkg-img{height:140px;font-size:40px}
+ footer{padding:32px 16px 24px}
+ .footer-grid{grid-template-columns:1fr 1fr;gap:20px}
+ .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+}
+@media(max-width:480px){
+ .trust-bar{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500">🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a></div>
+
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links">
+ <a href="browse.html">Adopt a Pet</a>
+ <a href="furrimatch.html">FurriMatch</a>
+ <a href="guide.html">Adoption Guide</a>
+ <a href="rescuer-landing.html">For Rescuers</a>
+ </div>
+ <div class="nav-right">
+ <div class="notif-wrap" id="notif-wrap">
+ <button class="notif-btn" onclick="toggleNotif()">🔔<span class="notif-badge" id="notif-badge">2</span></button>
+ <div class="notif-dropdown" id="notif-dropdown">
+ <div class="notif-header"><span class="notif-header-title">Notifications</span><button class="notif-mark-read" onclick="markAllRead()">Mark all read</button></div>
+ <a href="post-approval.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon green">🎉</div><div><div class="notif-title">Your application for Milo has been approved!</div><div class="notif-time">5 min ago</div></div></a>
+ <a href="my-applications.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon blue">🏠</div><div><div class="notif-title">Simba has found a home. Listing closed.</div><div class="notif-time">Yesterday</div></div></a>
+ </div>
+ </div>
+ <div class="profile-wrap" id="profile-wrap">
+ <button class="profile-chip" onclick="toggleProfile()">
+ <div class="profile-avatar">👩</div>
+ <span class="profile-name">Amanda</span>
+ <span class="profile-caret">▾</span>
+ </button>
+ <div class="profile-dropdown" id="profile-dropdown">
+ <div class="profile-dd-header"><div class="profile-dd-name">Amanda Lim</div><div class="profile-dd-role">Adopter</div></div>
+ <a href="my-applications.html" class="profile-dd-link">My Applications</a>
+ <a href="furrimatch.html" class="profile-dd-link">FurriMatch ✨</a>
+ <a href="care-packages.html" class="profile-dd-link">Care Packages</a>
+ <a href="adopter-profile.html" class="profile-dd-link">My Profile</a>
+ <a href="index.html" class="profile-dd-link danger">Log out</a>
+ </div>
+ </div>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <div class="mob-section">Browse</div>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a>
+ <a href="furrimatch.html" class="mob-link">FurriMatch</a>
+ <a href="guide.html" class="mob-link">Adoption Guide</a>
+ <a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-section">My Account</div>
+ <a href="my-applications.html" class="mob-link">My Applications</a>
+ <a href="care-packages.html" class="mob-link active">Care Packages</a>
+ <a href="adopter-profile.html" class="mob-link">My Profile</a>
+ <div class="mob-cta">
+ <a href="index.html" class="mob-danger">Log out</a>
+ </div>
+ </div>
+</div>
+
+<div class="hero">
+ <div class="hero-tag">Care Packages</div>
+ <h1 class="hero-title">Everything your pet needs, <em>delivered</em> 🛍️</h1>
+ <p class="hero-sub">Handpicked starter packs curated by pet experts — specially discounted for FurriHearts adopters.</p>
+</div>
+
+<div class="page-wrap">
+ <div class="trust-bar">
+ <div class="trust-item"><div class="trust-icon">🐾</div><div><div class="trust-title">Expert Curated</div><div class="trust-desc">Vetted by experienced cat owners & rescuers</div></div></div>
+ <div class="trust-item"><div class="trust-icon">💰</div><div><div class="trust-title">Adopter Savings</div><div class="trust-desc">Up to 25% off for FurriHearts adopters</div></div></div>
+ <div class="trust-item"><div class="trust-icon">🚚</div><div><div class="trust-title">Fast Delivery</div><div class="trust-desc">Delivered within 3–5 business days</div></div></div>
+ <div class="trust-item"><div class="trust-icon">↩️</div><div><div class="trust-title">Easy Returns</div><div class="trust-desc">30-day hassle-free returns</div></div></div>
+ </div>
+
+ <div class="section-header">
+ <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+ <div>
+ <h2>Featured Packages</h2>
+ <p>Our most popular picks for new adopters</p>
+ </div>
+ <div style="display:flex;gap:8px;flex-wrap:wrap">
+ <select class="filter-select" onchange="applyFilters()" id="filter-type">
+ <option value="all">All Pets</option>
+ <option value="cat">Cat</option>
+ <option value="dog">Dog</option>
+ </select>
+ <select class="filter-select" onchange="applyFilters()" id="filter-cat">
+ <option value="all">All Categories</option>
+ <option value="starter">Starter Kit</option>
+ <option value="health">Health & Wellness</option>
+ <option value="toys">Toys & Enrichment</option>
+ <option value="senior">Senior Care</option>
+ </select>
+ <select class="filter-select" onchange="applyFilters()">
+ <option>Most Popular</option>
+ <option>Price: Low–High</option>
+ <option>Price: High–Low</option>
+ <option>Biggest Savings</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <div class="packages-grid" id="packages-grid">
+ <div class="pkg-card" data-type="cat" data-cat="starter">
+ <div class="pkg-img img-starter">🛁🥣🐾<span class="pkg-badge badge-popular">Most Popular</span><span class="pkg-discount">Save 15%</span></div>
+ <div class="pkg-body">
+ <div class="pkg-name">Cat Starter Kit</div>
+ <div class="pkg-price-row"><span class="pkg-price-now">RM159</span><span class="pkg-price-old">RM188</span><span class="pkg-save">Save RM29</span></div>
+ <button class="btn-add">Shop Now →</button>
+ </div>
+ </div>
+
+ <div class="pkg-card featured" data-type="cat" data-cat="starter">
+ <div class="pkg-img img-premium">🌿🥣✨<span class="pkg-badge badge-recommended">Recommended</span><span class="pkg-discount">Save 20%</span></div>
+ <div class="pkg-body">
+ <div class="pkg-name">Cat Premium Starter</div>
+ <div class="pkg-price-row"><span class="pkg-price-now">RM259</span><span class="pkg-price-old">RM318</span><span class="pkg-save">Save RM59</span></div>
+ <button class="btn-add">Shop Now →</button>
+ </div>
+ </div>
+
+ <div class="pkg-card" data-type="dog" data-cat="starter">
+ <div class="pkg-img img-kitten">🐶🦮🎀<span class="pkg-badge badge-new">For Dogs</span><span class="pkg-discount">Save 18%</span></div>
+ <div class="pkg-body">
+ <div class="pkg-name">Dog Starter Kit</div>
+ <div class="pkg-price-row"><span class="pkg-price-now">RM199</span><span class="pkg-price-old">RM238</span><span class="pkg-save">Save RM39</span></div>
+ <button class="btn-add">Shop Now →</button>
+ </div>
+ </div>
+
+ <div class="pkg-card" data-type="cat" data-cat="senior">
+ <div class="pkg-img img-senior">👴🩺💊<span class="pkg-badge badge-new">Senior Care</span><span class="pkg-discount">Save 15%</span></div>
+ <div class="pkg-body">
+ <div class="pkg-name">Senior Cat Care</div>
+ <div class="pkg-price-row"><span class="pkg-price-now">RM219</span><span class="pkg-price-old">RM258</span><span class="pkg-save">Save RM39</span></div>
+ <button class="btn-add-out">Shop Now →</button>
+ </div>
+ </div>
+
+ <div class="pkg-card" data-type="all" data-cat="health">
+ <div class="pkg-img img-health">🩺💉🌿<span class="pkg-badge" style="background:#D97706">Health</span><span class="pkg-discount">Save 20%</span></div>
+ <div class="pkg-body">
+ <div class="pkg-name">Health & Wellness Pack</div>
+ <div class="pkg-price-row"><span class="pkg-price-now">RM179</span><span class="pkg-price-old">RM218</span><span class="pkg-save">Save RM39</span></div>
+ <button class="btn-add-out">Shop Now →</button>
+ </div>
+ </div>
+
+ <div class="pkg-card" data-type="all" data-cat="toys">
+ <div class="pkg-img img-comfort">🎾🧶🏠<span class="pkg-badge" style="background:#6366F1">Toys</span><span class="pkg-discount">Save 15%</span></div>
+ <div class="pkg-body">
+ <div class="pkg-name">Toys & Enrichment Pack</div>
+ <div class="pkg-price-row"><span class="pkg-price-now">RM189</span><span class="pkg-price-old">RM228</span><span class="pkg-save">Save RM39</span></div>
+ <button class="btn-add-out">Shop Now →</button>
+ </div>
+ </div>
+ </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleNotif(){document.getElementById('notif-dropdown').classList.toggle('open');}
+function readNotif(el){el.classList.remove('unread');updateBadge();}
+function markAllRead(){document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));updateBadge();}
+function updateBadge(){const c=document.querySelectorAll('.notif-item.unread').length;const b=document.getElementById('notif-badge');if(b){b.style.display=c===0?'none':'flex';b.textContent=c;}}
+function toggleProfile(){document.getElementById('profile-dropdown').classList.toggle('open');}
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('click',function(e){
+ const nw=document.getElementById('notif-wrap');
+ if(nw&&!nw.contains(e.target))document.getElementById('notif-dropdown').classList.remove('open');
+ const pw=document.getElementById('profile-wrap');
+ if(pw&&!pw.contains(e.target)){const pd=document.getElementById('profile-dropdown');if(pd)pd.classList.remove('open');}
+});
+function setFilter(btn,cat){
+ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ document.querySelectorAll('.pkg-card').forEach(c=>{
+ c.style.display=(cat==='all'||c.dataset.cat.includes(cat))?'flex':'none';
+ });
+}
+</script>
+</body>
+</html>

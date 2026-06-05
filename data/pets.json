@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Luna", "breed": "Golden Retriever", "image": "https://placehold.co/400x300" },
+  { "id": 2, "name": "Oliver", "breed": "Tabby Cat", "image": "https://placehold.co/400x300" },
+  { "id": 3, "name": "Bella", "breed": "Mixed Breed", "image": "https://placehold.co/400x300" }
+]

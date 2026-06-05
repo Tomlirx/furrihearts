@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#FDF5EF,#FEF8F3);padding:52px 40px;border-bottom:1px solid var(--border);text-align:center}
+.hero-tag{font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.hero-title{font-family:'Fraunces',serif;font-size:36px;font-weight:700;margin-bottom:10px}
+.hero-sub{font-size:15px;color:var(--mid);max-width:480px;margin:0 auto;line-height:1.7}
+
+/* PAGE */
+.page-wrap{max-width:900px;margin:0 auto;padding:48px 40px 80px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+
+/* Contact channels */
+.channel-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;gap:16px;align-items:flex-start}
+.channel-icon{width:48px;height:48px;border-radius:12px;background:var(--orange-pale);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.channel-icon.green{background:var(--green-pale)}
+.channel-title{font-weight:700;font-size:15px;margin-bottom:4px}
+.channel-desc{font-size:13px;color:var(--mid);margin-bottom:8px;line-height:1.6}
+.channel-link{font-size:13px;font-weight:600;color:var(--orange);text-decoration:none}
+.channel-link:hover{text-decoration:underline}
+.channel-note{font-size:11px;color:var(--light);margin-top:4px}
+
+/* Contact form */
+.form-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px}
+.form-card h2{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:6px}
+.form-card p{font-size:13px;color:var(--mid);margin-bottom:24px;line-height:1.6}
+.f-group{margin-bottom:16px}
+.f-label{display:block;font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.f-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:inherit;background:#fff;outline:none;transition:border-color .2s}
+.f-input:focus{border-color:var(--orange)}
+.f-select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:inherit;background:#fff;outline:none;cursor:pointer}
+.f-select:focus{border-color:var(--orange)}
+.f-textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:inherit;background:#fff;outline:none;min-height:130px;resize:vertical}
+.f-textarea:focus{border-color:var(--orange)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-submit{background:var(--orange);color:#fff;border:none;border-radius:10px;padding:14px;width:100%;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-submit:hover{background:var(--orange-light)}
+.success-msg{display:none;background:var(--green-pale);border:1px solid #A7F3D0;border-radius:10px;padding:16px;text-align:center;color:var(--green);font-weight:600;font-size:14px;margin-top:12px}
+
+/* FAQ */
+.faq-section{margin-top:40px}
+.faq-section h2{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:20px}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;font-weight:600;font-size:14px;transition:background .2s}
+.faq-q:hover{background:var(--cream)}
+.faq-q.open{color:var(--orange)}
+.faq-arrow{font-size:12px;color:var(--light);transition:transform .2s;flex-shrink:0;margin-left:12px}
+.faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--orange)}
+.faq-a{display:none;padding:0 20px 16px;font-size:14px;color:var(--mid);line-height:1.7}
+.faq-a.open{display:block}
+
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links,.btn-primary-nav{display:none}
+ .hamburger{display:flex;margin-left:auto}
+ .hero{padding:32px 16px}
+ .hero-title{font-size:26px}
+ .page-wrap{padding:24px 16px 60px}
+ .two-col{grid-template-columns:1fr}
+ .f-row{grid-template-columns:1fr}
+ footer{padding:32px 16px 24px}
+ .footer-grid{grid-template-columns:1fr 1fr;gap:20px}
+ .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500">🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a></div>
+
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links">
+ <a href="browse.html">Adopt a Pet</a>
+ <a href="furrimatch.html">FurriMatch</a>
+ <a href="guide.html">Adoption Guide</a>
+ <a href="rescuer-landing.html">For Rescuers</a>
+ </div>
+ <div class="nav-right">
+ <a href="rescuer-listing.html" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap">List Now</a>
+ <a href="login.html" class="btn-primary-nav">Log in</a>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a>
+ <a href="furrimatch.html" class="mob-link">FurriMatch</a>
+ <a href="guide.html" class="mob-link">Adoption Guide</a>
+ <a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-cta">
+ <a href="login.html" class="mob-primary">Log in</a>
+ </div>
+ </div>
+</div>
+
+<div class="hero">
+ <div class="hero-tag">Get in touch</div>
+ <h1 class="hero-title">How can we help? 🐾</h1>
+ <p class="hero-sub">We're a small but passionate team. We read every message and aim to respond within 2 working days.</p>
+</div>
+
+<div class="page-wrap">
+
+ <!-- Single contact card -->
+ <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start;margin-bottom:32px">
+ <div style="width:56px;height:56px;border-radius:14px;background:var(--orange-pale);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">📧</div>
+ <div>
+ <div style="font-weight:700;font-size:18px;margin-bottom:6px">Email us</div>
+ <p style="font-size:14px;color:var(--mid);margin-bottom:10px;line-height:1.7">Whether you're an adopter, rescuer, vet, partner, or just have a question — send everything to one place and we'll route it to the right person.</p>
+ <a href="mailto:hello@furrihearts.my" style="font-size:16px;font-weight:700;color:var(--orange);text-decoration:none">hello@furrihearts.my</a>
+ <div style="font-size:12px;color:var(--light);margin-top:6px">⏱️ We aim to respond within 2 working days</div>
+ </div>
+ </div>
+
+ <!-- Contact form -->
+ <div class="form-card">
+ <h2>Send us a message</h2>
+ <p>Fill in the form below and we'll get back to you as soon as we can.</p>
+ <div class="f-row">
+ <div class="f-group"><label class="f-label">First Name</label><input class="f-input" type="text" placeholder="Amanda"></div>
+ <div class="f-group"><label class="f-label">Last Name</label><input class="f-input" type="text" placeholder="Lim"></div>
+ </div>
+ <div class="f-group"><label class="f-label">Email</label><input class="f-input" id="contact-email" type="email" placeholder="you@email.com"></div>
+ <div class="f-group">
+ <label class="f-label">I am a...</label>
+ <select class="f-select" id="contact-role">
+ <option value="">Select one</option>
+ <option>Adopter — looking to adopt a pet</option>
+ <option>Rescuer — rehoming animals</option>
+ <option>Vet / Clinic</option>
+ <option>Pet brand or sponsor</option>
+ <option>Media or press</option>
+ <option>Other</option>
+ </select>
+ </div>
+ <div class="f-group">
+ <label class="f-label">Subject</label>
+ <select class="f-select">
+ <option value="">What's this about?</option>
+ <option>General question</option>
+ <option>Account or login issue</option>
+ <option>Problem with a listing</option>
+ <option>Report a user</option>
+ <option>Privacy or data request</option>
+ <option>Partnership enquiry</option>
+ <option>Press or media</option>
+ <option>Other</option>
+ </select>
+ </div>
+ <div class="f-group"><label class="f-label">Message</label><textarea class="f-textarea" placeholder="Tell us how we can help..."></textarea></div>
+ <button class="btn-submit" onclick="submitForm()">Send Message →</button>
+ <div class="success-msg" id="success-msg">✅ Message sent! We'll get back to you within 2 working days.</div>
+ </div>
+
+ <!-- FAQ -->
+ <div class="faq-section">
+ <h2>Frequently asked questions</h2>
+
+ <div class="faq-item">
+ <div class="faq-q" onclick="toggleFaq(this)">How do I apply to adopt a pet? <span class="faq-arrow">▾</span></div>
+ <div class="faq-a">Browse available pets, click on one you like, and hit "Apply to Adopt". You'll fill in a short questionnaire which the rescuer will review. Most rescuers respond within 3–5 days.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-q" onclick="toggleFaq(this)">Is FurriHearts free to use? <span class="faq-arrow">▾</span></div>
+ <div class="faq-a">Yes — FurriHearts is completely free for both adopters and rescuers. Rescuers may charge an adoption fee to cover vet and care costs, which is paid directly to them. FurriHearts does not take a cut.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-q" onclick="toggleFaq(this)">How do I become a verified rescuer? <span class="faq-arrow">▾</span></div>
+ <div class="faq-a">After creating a rescuer account, you can apply for verification by submitting your identity documents through your profile settings. Our team reviews applications within 5–7 working days. Verified rescuers get a badge that builds trust with adopters.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-q" onclick="toggleFaq(this)">What happens if I suspect a listing is fake? <span class="faq-arrow">▾</span></div>
+ <div class="faq-a">You can report any listing directly from the pet's profile page using the "Report" button. You can also email report@furrihearts.my. We review all reports and act swiftly on confirmed violations.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-q" onclick="toggleFaq(this)">Can I list dogs on FurriHearts? <span class="faq-arrow">▾</span></div>
+ <div class="faq-a">Yes! FurriHearts supports listings for cats, dogs, and other rescued animals. Our FurriMatch quiz and filters also support both cats and dogs.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-q" onclick="toggleFaq(this)">How do I delete my account? <span class="faq-arrow">▾</span></div>
+ <div class="faq-a">You can delete your account from your Profile → Account Settings → Delete Account. Your personal data will be removed within 90 days in line with our Privacy Policy. If you need help, email hello@furrihearts.my.</div>
+ </div>
+ </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+function toggleFaq(el){
+ el.classList.toggle('open');
+ const ans = el.nextElementSibling;
+ ans.classList.toggle('open');
+}
+function submitForm(){
+ const email = document.getElementById('contact-email').value;
+ if(!email || !email.includes('@')){
+ alert('Please enter a valid email address.');
+ return;
+ }
+ document.getElementById('success-msg').style.display = 'block';
+ document.querySelector('.btn-submit').disabled = true;
+ document.querySelector('.btn-submit').textContent = 'Sent ✓';
+ document.querySelector('.btn-submit').style.background = 'var(--green)';
+}
+</script>
+</body>
+</html>

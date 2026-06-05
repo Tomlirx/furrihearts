@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5;min-height:100vh;background:var(--cream)}
+
+/* Left panel */
+.left-panel{background:linear-gradient(135deg,#FBE8D8,#F5C9A0,#E8A87C);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;min-height:calc(100vh - 64px)}
+.left-logo{display:flex;align-items:center;gap:10px;margin-bottom:40px}
+.left-logo-icon{width:44px;height:44px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.left-logo-text{font-family:'Fraunces',serif;font-size:24px;color:var(--dark)}
+.left-logo-text span{color:var(--orange)}
+.left-title{font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--dark);text-align:center;margin-bottom:12px;line-height:1.2}
+.left-sub{font-size:14px;color:var(--mid);text-align:center;line-height:1.7;margin-bottom:36px;max-width:320px}
+.left-features{display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px}
+.left-feature{background:rgba(255,255,255,0.6);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--dark);display:flex;align-items:center;gap:10px}
+
+/* Right panel */
+.right-panel{background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;min-height:calc(100vh - 64px);max-width:480px;margin:40px auto;border-radius:16px;border:1px solid var(--border)}
+.right-inner{width:100%;max-width:400px}
+.right-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px}
+.right-sub{font-size:14px;color:var(--mid);margin-bottom:28px}
+.right-sub a{color:var(--orange);font-weight:600;text-decoration:none}
+
+.form-field{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:inherit;background:#fff;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--orange)}
+.forgot-link{display:block;text-align:right;font-size:12px;color:var(--orange);font-weight:600;text-decoration:none;margin-top:4px}
+.btn-login{width:100%;background:var(--orange);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:background .2s}
+.btn-login:hover{background:var(--orange-light)}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--light);font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.btn-social{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;background:#fff;color:var(--dark);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;transition:all .2s}
+.btn-social:hover{border-color:var(--orange);color:var(--orange)}
+.signup-link{text-align:center;margin-top:24px;font-size:14px;color:var(--mid)}
+.field-error{font-size:12px;color:#DC2626;margin-top:4px;min-height:16px}
+.form-input.error{border-color:#DC2626}
+.signup-link a{color:var(--orange);font-weight:700;text-decoration:none}
+
+/* ── NAV ── */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-links a.active{font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Notification bell */
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:6px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:0;right:0;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}.notif-icon.orange{background:var(--orange-pale)}.notif-icon.red{background:#FEE2E2}.notif-icon.blue{background:#EFF6FF}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+
+/* Profile dropdown */
+.profile-wrap{position:relative}
+.profile-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;text-decoration:none;transition:all .2s}
+.profile-chip:hover{border-color:var(--orange)}
+.profile-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+.profile-name{font-size:13px;font-weight:600;color:var(--dark)}
+.profile-caret{font-size:10px;color:var(--light);margin-left:2px}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+.profile-dd-name{font-weight:700;font-size:14px;color:var(--dark)}
+.profile-dd-role{font-size:11px;color:var(--light);margin-top:1px}
+.profile-dd-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:500;border-bottom:1px solid var(--border);transition:background .2s}
+.profile-dd-link:last-child{border-bottom:none}
+.profile-dd-link:hover{background:var(--cream)}
+.profile-dd-link.danger{color:#DC2626}
+.dd-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:700}
+.dd-badge.green{background:var(--green)}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* Mobile drawer */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:8px;color:var(--mid)}
+.mob-section{font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:12px 8px 6px}
+.mob-link{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:13px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700}
+.mob-badge.green{background:var(--green)}
+.mob-cta{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-danger{display:block;text-align:center;color:#DC2626;font-size:14px;font-weight:500;text-decoration:none;padding:13px}
+
+/* Responsive */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links{display:none}
+ .btn-ghost,.btn-primary-nav{display:none}
+ .profile-name,.profile-caret{display:none}
+ .hamburger{display:flex;margin-left:8px}
+}
+
+
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+@media(max-width:768px){
+ footer{padding:32px 16px 24px!important}
+ .footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important}
+ .footer-bottom{flex-direction:column!important;gap:6px!important;text-align:center!important}
+}
+@media(max-width:480px){
+ .footer-grid{grid-template-columns:1fr!important}
+}
+</style>
+</head>
+<body>
+<nav style="background:#fff;border-bottom:1px solid var(--border);padding:0;position:sticky;top:0;z-index:100;grid-column:1/-1">
+ <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;padding:0 40px;gap:32px">
+ <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0">
+ <div style="width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px">🐾</div>
+ <span style="font-family:'Fraunces',serif;font-size:20px;color:var(--dark)">Furri<span style="color:var(--orange)">Hearts</span></span>
+ </a>
+ <div style="display:flex;align-items:center;gap:24px;flex:1">
+ <a href="browse.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">Adopt a Pet</a>
+ <a href="furrimatch.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">FurriMatch</a>
+ <a href="guide.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">Adoption Guide</a>
+ <a href="rescuer-landing.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">For Rescuers</a>
+ <a href="about.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">About Us</a>
+ </div>
+ </div>
+</nav>
+
+<div class="right-panel">
+ <div class="right-inner">
+ <h2 class="right-title">Log in</h2>
+ <p class="right-sub">Don't have an account? <a href="signup.html">Sign up →</a></p>
+
+ <div class="form-field">
+ <label class="form-label">Email Address</label>
+ <input class="form-input" id="login-email" type="email" placeholder="you@email.com" oninput="clearLoginErr('email')"><div class="field-error" id="err-login-email"></div>
+ </div>
+ <div class="form-field">
+ <label class="form-label">Password</label>
+ <input class="form-input" id="login-pwd" type="password" placeholder="Enter your password" oninput="clearLoginErr('pwd')"><div class="field-error" id="err-login-pwd"></div>
+ <a href="#" class="forgot-link">Forgot password?</a>
+ </div>
+
+ <!-- CAPTCHA -->
+ <div style="border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--cream);display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer" id="login-captcha-wrap" onclick="toggleLoginCaptcha()">
+ <div id="login-captcha-cb" style="width:24px;height:24px;border:2px solid #BDC1C6;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:white;transition:all .2s"></div>
+ <span style="font-size:14px;color:var(--dark);font-weight:500;flex:1" id="login-captcha-label">I'm not a robot</span>
+ <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0">
+ <span style="font-size:18px">🛡️</span>
+ <span style="font-size:9px;color:var(--light);font-weight:500">reCAPTCHA</span>
+ <span style="font-size:8px;color:var(--light)">Privacy · Terms</span>
+ </div>
+ </div>
+ <div class="field-error" id="err-captcha" style="margin-bottom:8px"></div>
+ <button class="btn-login" onclick="validateLogin()">Log In</button>
+
+ <div class="divider">or continue with</div>
+
+ <button class="btn-social">🌐 Continue with Google</button>
+ <button class="btn-social">🍎 Continue with Apple</button>
+
+ <div class="signup-link">Don't have an account? <a href="signup.html">Sign up for free</a></div>
+ </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+<script>
+function clearLoginErr(id){
+ document.getElementById('err-login-'+id).textContent='';
+ document.getElementById('login-'+id).classList.remove('error');
+}
+function validateLogin(){
+ if(!loginCaptchaVerified){ document.getElementById("err-captcha").textContent="Please complete the CAPTCHA to continue."; document.getElementById("login-captcha-wrap").style.borderColor="#DC2626"; return; }
+ document.getElementById("err-captcha").textContent="";
+
+ let valid = true;
+ const email = document.getElementById('login-email').value.trim();
+ const pwd = document.getElementById('login-pwd').value;
+ if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+ document.getElementById('err-login-email').textContent='Please enter a valid email address';
+ document.getElementById('login-email').classList.add('error');
+ valid=false;
+ }
+ if(!pwd || pwd.length < 8){
+ document.getElementById('err-login-pwd').textContent='Incorrect password';
+ document.getElementById('login-pwd').classList.add('error');
+ valid=false;
+ }
+ if(valid) window.location.href='my-applications.html';
+}
+
+var loginCaptchaVerified = false;
+function toggleLoginCaptcha(){
+ if(loginCaptchaVerified) return;
+ const cb = document.getElementById('login-captcha-cb');
+ const wrap = document.getElementById('login-captcha-wrap');
+ const label = document.getElementById('login-captcha-label');
+ cb.innerHTML = '<span style="font-size:14px">⏳</span>';
+ wrap.style.pointerEvents = 'none';
+ setTimeout(function(){
+ cb.style.background = '#4285F4';
+ cb.style.borderColor = '#4285F4';
+ cb.innerHTML = '<span style="color:white;font-size:14px;font-weight:bold">✓</span>';
+ label.textContent = "You're not a robot ✅";
+ label.style.color = '#2D7A3A';
+ loginCaptchaVerified = true;
+ wrap.style.borderColor = '#2D7A3A';
+ wrap.style.background = '#EAF5EC';
+ }, 1200);
+}
+</script>
+<script>
+
+function toggleNotif(){document.getElementById('notif-dropdown').classList.toggle('open');}
+function readNotif(el){el.classList.remove('unread');updateBadge();}
+function markAllRead(){document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));updateBadge();}
+function updateBadge(){
+ const c=document.querySelectorAll('.notif-item.unread').length;
+ const b=document.getElementById('notif-badge');
+ if(b){b.style.display=c===0?'none':'flex';b.textContent=c;}
+}
+document.addEventListener('click',function(e){
+ const nw=document.getElementById('notif-wrap');
+ if(nw&&!nw.contains(e.target))document.getElementById('notif-dropdown').classList.remove('open');
+ const pw=document.getElementById('profile-wrap');
+ if(pw&&!pw.contains(e.target)){const pd=document.getElementById('profile-dropdown');if(pd)pd.classList.remove('open');}
+});
+function toggleProfile(){document.getElementById('profile-dropdown').classList.toggle('open');}
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+
+</script>
+</body>
+</html>

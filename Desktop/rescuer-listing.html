@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Listing — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+
+/* Nav */
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0}
+.nav-inner{display:flex;align-items:center;height:64px;padding:0 24px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-right{margin-left:auto}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:6px 14px 6px 6px;cursor:pointer;text-decoration:none}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+
+/* Layout */
+.layout{display:block}
+
+/* Sidebar */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Main */
+.main{display:flex;align-items:center;justify-content:center;padding:48px 24px;min-height:calc(100vh - 104px)}
+
+/* Screen 1 */
+.screen{width:100%;max-width:540px}
+.screen-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:8px;text-align:center}
+.screen-sub{font-size:14px;color:var(--mid);text-align:center;margin-bottom:32px;line-height:1.6}
+
+/* Upload area */
+.upload-area{border:2px dashed var(--border);border-radius:20px;padding:48px 32px;text-align:center;cursor:pointer;transition:all .3s;background:#fff;position:relative;margin-bottom:20px}
+.upload-area:hover,.upload-area.dragover{border-color:var(--orange);background:var(--orange-pale)}
+.upload-icon{font-size:56px;margin-bottom:16px}
+.upload-label{font-weight:700;font-size:18px;margin-bottom:8px;color:var(--dark)}
+.upload-sub{font-size:13px;color:var(--light);margin-bottom:20px}
+.btn-browse{background:var(--orange);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-browse:hover{background:var(--orange-light)}
+.upload-hint{font-size:12px;color:var(--light);margin-top:12px}
+input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* Photo previews */
+.photo-previews{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;min-height:0}
+.photo-thumb{width:100px;height:100px;border-radius:12px;object-fit:cover;border:2px solid var(--border);position:relative;display:inline-block}
+.photo-thumb-wrap{position:relative;display:inline-block}
+.photo-remove{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#DC2626;border-radius:50%;color:#fff;font-size:11px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* Counter */
+.photo-counter{text-align:center;font-size:13px;color:var(--light);margin-bottom:20px}
+.photo-counter span{color:var(--orange);font-weight:700}
+
+/* Continue button */
+.btn-continue{width:100%;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;display:none}
+.btn-continue:hover{background:var(--orange-light)}
+.btn-continue.visible{display:block}
+
+/* Encouragement text */
+.encourage{text-align:center;font-size:13px;color:var(--light);margin-top:16px;line-height:1.6}
+
+/* ── HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* ── MOBILE DRAWER ── */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+
+/* ── BASE RESPONSIVE ── */
+@media(max-width:768px){
+ nav{padding:0 16px!important;top:0!important}
+ .nav-inner{height:52px!important;gap:0!important}
+ .nav-links{display:none!important}
+ .nav-right .btn-ghost,.nav-right .btn-primary,.nav-right .btn-primary-nav,.nav-right a.btn-ghost{display:none!important}
+ .hamburger{display:flex!important;margin-left:auto}
+ footer{padding:28px 16px 24px!important}
+ .footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important}
+ .footer-bottom{flex-direction:column!important;gap:6px!important;text-align:center!important}
+ div[style*="background:var(--orange)"][style*="sticky"]{font-size:11px!important;padding:8px 12px!important}
+}
+@media(max-width:480px){
+ .footer-grid{grid-template-columns:1fr!important}
+}
+
+@media(max-width:768px){
+ .listing-layout{grid-template-columns:1fr!important;padding:16px!important}
+ .listing-sidebar{display:none!important}
+ .upload-grid{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* ── NAV ── */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-links a.active{font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Notification bell */
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:6px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:0;right:0;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}.notif-icon.orange{background:var(--orange-pale)}.notif-icon.red{background:#FEE2E2}.notif-icon.blue{background:#EFF6FF}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+
+/* Profile dropdown */
+.profile-wrap{position:relative}
+.profile-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;text-decoration:none;transition:all .2s}
+.profile-chip:hover{border-color:var(--orange)}
+.profile-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+.profile-name{font-size:13px;font-weight:600;color:var(--dark)}
+.profile-caret{font-size:10px;color:var(--light);margin-left:2px}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+.profile-dd-name{font-weight:700;font-size:14px;color:var(--dark)}
+.profile-dd-role{font-size:11px;color:var(--light);margin-top:1px}
+.profile-dd-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:500;border-bottom:1px solid var(--border);transition:background .2s}
+.profile-dd-link:last-child{border-bottom:none}
+.profile-dd-link:hover{background:var(--cream)}
+.profile-dd-link.danger{color:#DC2626}
+.dd-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:700}
+.dd-badge.green{background:var(--green)}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* Mobile drawer */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:8px;color:var(--mid)}
+.mob-section{font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:12px 8px 6px}
+.mob-link{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:13px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700}
+.mob-badge.green{background:var(--green)}
+.mob-cta{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-danger{display:block;text-align:center;color:#DC2626;font-size:14px;font-weight:500;text-decoration:none;padding:13px}
+
+/* Responsive */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links{display:none}
+ .btn-ghost,.btn-primary-nav{display:none}
+ .profile-name,.profile-caret{display:none}
+ .hamburger{display:flex;margin-left:8px}
+}
+
+
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+</style>
+
+<style id="notif-style">
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:4px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:-2px;right:-2px;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s;text-decoration:none}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}
+.notif-icon.orange{background:var(--orange-pale)}
+.notif-icon.red{background:#FEE2E2}
+.notif-icon.blue{background:#EFF6FF}
+.notif-text{flex:1}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+.notif-empty{padding:32px 16px;text-align:center;font-size:13px;color:var(--light)}
+</style>
+</head>
+<body>
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links"><a href="browse.html">Adopt a Pet</a><a href="furrimatch.html">FurriMatch</a><a href="guide.html">Adoption Guide</a><a href="rescuer-landing.html">For Rescuers</a></div>
+ <div class="nav-right">
+ <div class="notif-wrap" id="notif-wrap">
+ <button class="notif-btn" onclick="toggleNotif()">🔔<span class="notif-badge" id="notif-badge">3</span></button>
+ <div class="notif-dropdown" id="notif-dropdown">
+ <div class="notif-header"><span class="notif-header-title">Notifications</span><button class="notif-mark-read" onclick="markAllRead()">Mark all read</button></div>
+ <a href="manage-applications.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon orange">📋</div><div><div class="notif-title">New application received for Milo.</div><div class="notif-time">10 min ago</div></div></a>
+ <a href="manage-applications.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon red">↩️</div><div><div class="notif-title">Amanda Lim withdrew application for Milo.</div><div class="notif-time">1 hour ago</div></div></a>
+ <a href="rescuer-dashboard.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon green">✅</div><div><div class="notif-title">Your listing for Nori is now live!</div><div class="notif-time">3 hours ago</div></div></a>
+ </div>
+ </div>
+ <div class="profile-wrap" id="profile-wrap">
+ <button class="profile-chip" onclick="toggleProfile()">
+ <div class="profile-avatar">👩</div>
+ <span class="profile-name">Sheryl</span>
+ <span class="profile-caret">▾</span>
+ </button>
+ <div class="profile-dropdown" id="profile-dropdown">
+ <div class="profile-dd-header"><div class="profile-dd-name">Sheryl Ng</div><div class="profile-dd-role">Verified Rescuer 🏅</div></div>
+ <a href="rescuer-dashboard.html" class="profile-dd-link">My Listings <span class="dd-badge green">14</span></a>
+ <a href="manage-applications.html" class="profile-dd-link">Applications <span class="dd-badge">12</span></a>
+ <a href="rescuer-listing.html" class="profile-dd-link">＋ New Listing</a>
+ <a href="rescuer-guide.html" class="profile-dd-link">Rescuer Guide</a>
+ <a href="rescuer-profile.html" class="profile-dd-link">My Profile</a>
+ <a href="index.html" class="profile-dd-link danger">Log out</a>
+ </div>
+ </div>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <div class="mob-section">Browse</div>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a><a href="furrimatch.html" class="mob-link">FurriMatch</a><a href="guide.html" class="mob-link">Adoption Guide</a><a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-section">Rescuer</div>
+ <a href="rescuer-dashboard.html" class="mob-link">My Listings <span class="mob-badge green">14</span></a>
+ <a href="manage-applications.html" class="mob-link">Applications <span class="mob-badge">12</span></a>
+ <a href="rescuer-listing.html" class="mob-link">＋ New Listing</a>
+ <a href="rescuer-guide.html" class="mob-link">Rescuer Guide</a>
+ <a href="rescuer-profile.html" class="mob-link">My Profile</a>
+ <div class="mob-cta">
+ <a href="index.html" class="mob-danger">Log out</a>
+ </div>
+ </div>
+</div>
+<main class="main">
+ <div class="screen">
+ <div class="screen-title">Upload your pet's photos 📸</div>
+ <p class="screen-sub">Start by uploading up to <strong>5 clear photos</strong>.<br>We'll take care of the rest.</p>
+
+ <!-- Upload area -->
+ <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
+ <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
+ <div class="upload-icon">📷</div>
+ <div class="upload-label">Drag photos here</div>
+ <p class="upload-sub">or click to browse your device</p>
+ <button class="btn-browse" onclick="event.stopPropagation()">Select Photos</button>
+ <div class="upload-hint">JPG or PNG · Max 5 photos · Max 10MB each</div>
+ </div>
+
+ <!-- Photo previews -->
+ <div class="photo-previews" id="photo-previews"></div>
+ <div class="photo-counter" id="photo-counter" style="display:none"><span id="photo-count">0</span> of 5 photos selected</div>
+
+ <!-- Continue -->
+ <button class="btn-continue" id="btn-continue" onclick="goToScreen2()">Continue →</button>
+ <p class="encourage" id="encourage" style="display:none">Don't worry — we'll help fill in all the details! 🐾</p>
+ </div>
+ </main>
+</div>
+
+<script>
+let photos = [];
+
+function handleFiles(files){
+ const remaining = 5 - photos.length;
+ const toAdd = Array.from(files).slice(0, remaining);
+ toAdd.forEach(f => {
+ if(photos.length < 5) photos.push(f);
+ });
+ renderPreviews();
+}
+
+function renderPreviews(){
+ const container = document.getElementById('photo-previews');
+ const counter = document.getElementById('photo-counter');
+ const countEl = document.getElementById('photo-count');
+ const btn = document.getElementById('btn-continue');
+ const enc = document.getElementById('encourage');
+
+ container.innerHTML = '';
+ photos.forEach((f, i) => {
+ const url = URL.createObjectURL(f);
+ const wrap = document.createElement('div');
+ wrap.className = 'photo-thumb-wrap';
+ wrap.innerHTML = `<img src="${url}" class="photo-thumb"><button class="photo-remove" onclick="removePhoto(${i})">✕</button>`;
+ container.appendChild(wrap);
+ });
+
+ if(photos.length > 0){
+ counter.style.display = 'block';
+ countEl.textContent = photos.length;
+ btn.classList.add('visible');
+ enc.style.display = 'block';
+ // Hide upload area icon when photos present
+ document.getElementById('upload-area').style.padding = photos.length >= 5 ? '16px' : '48px 32px';
+ } else {
+ counter.style.display = 'none';
+ btn.classList.remove('visible');
+ enc.style.display = 'none';
+ }
+}
+
+function removePhoto(i){
+ photos.splice(i, 1);
+ renderPreviews();
+}
+
+function dragOver(e){
+ e.preventDefault();
+ document.getElementById('upload-area').classList.add('dragover');
+}
+function dragLeave(e){
+ document.getElementById('upload-area').classList.remove('dragover');
+}
+function dropFiles(e){
+ e.preventDefault();
+ document.getElementById('upload-area').classList.remove('dragover');
+ handleFiles(e.dataTransfer.files);
+}
+
+function goToScreen2(){
+ window.location.href = 'rescuer-listing-s2.html';
+}
+</script>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script id="notif-script">
+function toggleNotif(){
+ const d = document.getElementById('notif-dropdown');
+ d.classList.toggle('open');
+}
+function readNotif(el){
+ el.classList.remove('unread');
+ updateBadge();
+ // allow default link navigation
+}
+function markAllRead(){
+ document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));
+ updateBadge();
+}
+function updateBadge(){
+ const count = document.querySelectorAll('.notif-item.unread').length;
+ const badge = document.getElementById('notif-badge');
+ if(count===0){ badge.style.display='none'; }
+ else { badge.style.display='flex'; badge.textContent=count; }
+}
+document.addEventListener('click', function(e){
+ const wrap = document.getElementById('notif-wrap');
+ if(wrap && !wrap.contains(e.target)){
+ document.getElementById('notif-dropdown').classList.remove('open');
+ }
+});
+</script>
+
+<script>
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+</script>
+<script>
+
+function toggleNotif(){document.getElementById('notif-dropdown').classList.toggle('open');}
+function readNotif(el){el.classList.remove('unread');updateBadge();}
+function markAllRead(){document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));updateBadge();}
+function updateBadge(){
+ const c=document.querySelectorAll('.notif-item.unread').length;
+ const b=document.getElementById('notif-badge');
+ if(b){b.style.display=c===0?'none':'flex';b.textContent=c;}
+}
+document.addEventListener('click',function(e){
+ const nw=document.getElementById('notif-wrap');
+ if(nw&&!nw.contains(e.target))document.getElementById('notif-dropdown').classList.remove('open');
+ const pw=document.getElementById('profile-wrap');
+ if(pw&&!pw.contains(e.target)){const pd=document.getElementById('profile-dropdown');if(pd)pd.classList.remove('open');}
+});
+function toggleProfile(){document.getElementById('profile-dropdown').classList.toggle('open');}
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+
+</script>
+</body>
+</html>

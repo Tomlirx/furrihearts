@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rescuer Guide — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#FDF5EF,#FEF8F3,#F5EDE6);padding:56px 40px;border-bottom:1px solid var(--border)}
+.hero-inner{max-width:700px;margin:0 auto;text-align:center}
+.hero-tag{font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.hero-title{font-family:'Fraunces',serif;font-size:40px;font-weight:700;margin-bottom:12px}
+.hero-title em{color:var(--orange);font-style:normal}
+.hero-sub{color:var(--mid);font-size:15px;line-height:1.7;margin-bottom:24px}
+.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-pill{background:#fff;border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--mid);text-decoration:none;cursor:pointer;transition:all .2s}
+.hero-pill:hover{border-color:var(--orange);color:var(--orange)}
+
+/* Layout */
+.guide-layout{max-width:800px;margin:0 auto}
+
+/* Sidebar */
+.guide-sidebar{padding:28px 20px;border-right:1px solid var(--border);background:#fff;position:sticky;top:64px;height:fit-content}
+.sidebar-section{font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;margin-top:20px}
+.sidebar-section:first-child{margin-top:0}
+.sidebar-link{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;color:var(--mid);text-decoration:none;transition:all .2s;margin-bottom:2px}
+.sidebar-link:hover{background:var(--cream);color:var(--dark)}
+.sidebar-link.active{background:var(--orange-pale);color:var(--orange);font-weight:600}
+.sidebar-cta{background:linear-gradient(135deg,var(--orange-pale),#FDE8D8);border-radius:10px;padding:14px;margin-top:20px;text-align:center}
+.sidebar-cta h4{font-weight:700;font-size:13px;margin-bottom:4px}
+.sidebar-cta p{font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.5}
+.btn-start{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px;width:100%;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:block;text-align:center}
+.btn-start:hover{background:var(--orange-light)}
+
+/* Main content */
+.guide-main{padding:36px 40px 80px}
+.guide-section{margin-bottom:52px;scroll-margin-top:80px}
+.gs-tag{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.gs-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:12px}
+.gs-intro{color:var(--mid);font-size:15px;line-height:1.7;margin-bottom:24px;max-width:620px}
+
+/* Info cards */
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.info-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;gap:14px;align-items:flex-start}
+.info-card-icon{font-size:26px;flex-shrink:0}
+.info-card h4{font-weight:700;font-size:14px;margin-bottom:6px}
+.info-card p{font-size:13px;color:var(--mid);line-height:1.6}
+
+/* Steps */
+.step-list{display:flex;flex-direction:column;gap:0}
+.step-item{display:flex;gap:16px;align-items:flex-start;position:relative;padding-bottom:24px}
+.step-item:not(:last-child)::before{content:'';position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--border)}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--orange);color:#fff;font-family:'Fraunces',serif;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.step-content h4{font-weight:700;font-size:15px;margin-bottom:6px;padding-top:8px}
+.step-content p{font-size:13px;color:var(--mid);line-height:1.7}
+.step-content ul{list-style:none;margin-top:8px}
+.step-content ul li{font-size:13px;color:var(--mid);padding:3px 0;display:flex;align-items:flex-start;gap:6px}
+.step-content ul li::before{content:'·';color:var(--orange);font-weight:700;flex-shrink:0}
+
+/* Fee table */
+.fee-table{width:100%;border-collapse:collapse;margin:16px 0;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.fee-table th{text-align:left;padding:12px 16px;font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;background:var(--cream);border-bottom:1px solid var(--border)}
+.fee-table td{padding:12px 16px;font-size:13px;border-bottom:1px solid var(--border)}
+.fee-table tr:last-child td{border-bottom:none}
+.fee-range{color:var(--orange);font-weight:700}
+.fee-note{background:var(--orange-pale);border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:var(--mid);margin-top:12px;line-height:1.6}
+
+/* Checklist */
+.checklist{display:flex;flex-direction:column;gap:10px}
+.check-item{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.check-item:hover{border-color:var(--orange)}
+.check-item.checked{border-color:var(--green);background:var(--green-pale)}
+.check-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;transition:all .2s}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green);color:#fff}
+.check-text h4{font-weight:700;font-size:14px;margin-bottom:2px}
+.check-item.checked .check-text h4{color:var(--green)}
+.check-text p{font-size:12px;color:var(--light)}
+
+/* Tip boxes */
+.tip-box{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-radius:12px;padding:16px 20px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
+.tip-box-icon{font-size:20px;flex-shrink:0}
+.tip-box h4{font-weight:700;font-size:13px;color:#1D4ED8;margin-bottom:4px}
+.tip-box p{font-size:13px;color:#374151;line-height:1.6}
+
+.warning-box{background:#FEF3C7;border-radius:12px;padding:16px 20px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;border-left:3px solid #D97706}
+.warning-box h4{font-weight:700;font-size:13px;color:#D97706;margin-bottom:4px}
+.warning-box p{font-size:13px;color:#92400E;line-height:1.6}
+
+/* Red flags */
+.red-flags{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.red-flag{background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:12px 14px;font-size:13px;color:#DC2626;display:flex;gap:8px;align-items:flex-start}
+
+/* Home visit */
+.hv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hv-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+.hv-icon{font-size:24px;margin-bottom:10px}
+.hv-title{font-weight:700;font-size:14px;margin-bottom:6px}
+.hv-list{list-style:none}
+.hv-list li{font-size:12px;color:var(--mid);padding:3px 0;display:flex;gap:6px}
+.hv-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
+/* CTA bottom */
+.cta-bar{background:linear-gradient(135deg,var(--orange),var(--orange-light));border-radius:14px;padding:28px;text-align:center;color:#fff;margin-top:40px}
+.cta-bar h3{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:8px}
+.cta-bar p{font-size:14px;opacity:.9;margin-bottom:20px}
+.btn-cta-white{background:#fff;color:var(--orange);border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block}
+
+/* Footer */
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+/* ── HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* ── MOBILE DRAWER ── */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+
+/* ── BASE RESPONSIVE ── */
+@media(max-width:768px){.guide-main{padding:20px 16px 60px!important}.info-grid{grid-template-columns:1fr!important}.red-flags{grid-template-columns:1fr!important}.hv-grid{grid-template-columns:1fr 1fr!important}}@media(max-width:480px){.hv-grid{grid-template-columns:1fr!important}}
+ .info-grid{grid-template-columns:1fr!important}
+ .red-flags{grid-template-columns:1fr!important}
+ .hv-grid{grid-template-columns:1fr 1fr!important}
+ .checklist-item{flex-direction:column;gap:8px}
+}
+@media(max-width:480px){
+ .hv-grid{grid-template-columns:1fr!important}
+}
+ .rg-sidebar{display:none!important}
+}
+
+/* ── NAV ── */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-links a.active{font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Notification bell */
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:6px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:0;right:0;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}.notif-icon.orange{background:var(--orange-pale)}.notif-icon.red{background:#FEE2E2}.notif-icon.blue{background:#EFF6FF}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+
+/* Profile dropdown */
+.profile-wrap{position:relative}
+.profile-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;text-decoration:none;transition:all .2s}
+.profile-chip:hover{border-color:var(--orange)}
+.profile-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+.profile-name{font-size:13px;font-weight:600;color:var(--dark)}
+.profile-caret{font-size:10px;color:var(--light);margin-left:2px}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+.profile-dd-name{font-weight:700;font-size:14px;color:var(--dark)}
+.profile-dd-role{font-size:11px;color:var(--light);margin-top:1px}
+.profile-dd-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:500;border-bottom:1px solid var(--border);transition:background .2s}
+.profile-dd-link:last-child{border-bottom:none}
+.profile-dd-link:hover{background:var(--cream)}
+.profile-dd-link.danger{color:#DC2626}
+.dd-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:700}
+.dd-badge.green{background:var(--green)}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* Mobile drawer */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:8px;color:var(--mid)}
+.mob-section{font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:12px 8px 6px}
+.mob-link{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:13px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700}
+.mob-badge.green{background:var(--green)}
+.mob-cta{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-danger{display:block;text-align:center;color:#DC2626;font-size:14px;font-weight:500;text-decoration:none;padding:13px}
+
+/* Responsive */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links{display:none}
+ .btn-ghost,.btn-primary-nav{display:none}
+ .profile-name,.profile-caret{display:none}
+ .hamburger{display:flex;margin-left:8px}
+}
+
+</style>
+</head>
+<body>
+
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500">🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a></div>
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links"><a href="browse.html">Adopt a Pet</a><a href="furrimatch.html">FurriMatch</a><a href="guide.html">Adoption Guide</a><a href="rescuer-landing.html">For Rescuers</a></div>
+ <div class="nav-right">
+ <div class="notif-wrap" id="notif-wrap">
+ <button class="notif-btn" onclick="toggleNotif()">🔔<span class="notif-badge" id="notif-badge">3</span></button>
+ <div class="notif-dropdown" id="notif-dropdown">
+ <div class="notif-header"><span class="notif-header-title">Notifications</span><button class="notif-mark-read" onclick="markAllRead()">Mark all read</button></div>
+ <a href="manage-applications.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon orange">📋</div><div><div class="notif-title">New application received for Milo.</div><div class="notif-time">10 min ago</div></div></a>
+ <a href="manage-applications.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon red">↩️</div><div><div class="notif-title">Amanda Lim withdrew application for Milo.</div><div class="notif-time">1 hour ago</div></div></a>
+ <a href="rescuer-dashboard.html" class="notif-item unread" onclick="readNotif(this);return true;"><div class="notif-icon green">✅</div><div><div class="notif-title">Your listing for Nori is now live!</div><div class="notif-time">3 hours ago</div></div></a>
+ </div>
+ </div>
+ <div class="profile-wrap" id="profile-wrap">
+ <button class="profile-chip" onclick="toggleProfile()">
+ <div class="profile-avatar">👩</div>
+ <span class="profile-name">Sheryl</span>
+ <span class="profile-caret">▾</span>
+ </button>
+ <div class="profile-dropdown" id="profile-dropdown">
+ <div class="profile-dd-header"><div class="profile-dd-name">Sheryl Ng</div><div class="profile-dd-role">Verified Rescuer 🏅</div></div>
+ <a href="rescuer-dashboard.html" class="profile-dd-link">My Listings <span class="dd-badge green">14</span></a>
+ <a href="manage-applications.html" class="profile-dd-link">Applications <span class="dd-badge">12</span></a>
+ <a href="rescuer-listing.html" class="profile-dd-link">＋ New Listing</a>
+ <a href="rescuer-guide.html" class="profile-dd-link">Rescuer Guide</a>
+ <a href="rescuer-profile.html" class="profile-dd-link">My Profile</a>
+ <a href="index.html" class="profile-dd-link danger">Log out</a>
+ </div>
+ </div>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <div class="mob-section">Browse</div>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a><a href="furrimatch.html" class="mob-link">FurriMatch</a><a href="guide.html" class="mob-link">Adoption Guide</a><a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-section">Rescuer</div>
+ <a href="rescuer-dashboard.html" class="mob-link">My Listings <span class="mob-badge green">14</span></a>
+ <a href="manage-applications.html" class="mob-link">Applications <span class="mob-badge">12</span></a>
+ <a href="rescuer-listing.html" class="mob-link">＋ New Listing</a>
+ <a href="rescuer-guide.html" class="mob-link">Rescuer Guide</a>
+ <a href="rescuer-profile.html" class="mob-link">My Profile</a>
+ <div class="mob-cta">
+ <a href="index.html" class="mob-danger">Log out</a>
+ </div>
+ </div>
+</div>
+<div class="hero">
+ <div class="hero-inner">
+ <div class="hero-tag">Rescuer Guide</div>
+ <h1 class="hero-title">Everything you need to <em>rehome responsibly</em> 🏅</h1>
+ <p class="hero-sub">From health requirements to home visits — a complete guide to help you find the best forever homes for your rescues.</p>
+ </div>
+</div>
+
+<div class="guide-layout">
+ 
+
+   <main class="guide-main">
+
+    <!-- Health Requirements -->
+    <div class="guide-section" id="health">
+      <div class="gs-tag">BEFORE YOU LIST</div>
+      <h2 class="gs-title">Health Requirements</h2>
+      <p class="gs-intro">Every animal listed on FurriHearts should meet minimum health standards before being rehomed. This protects the adopter, their existing pets, and the animal itself.</p>
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><h4>Vaccinated</h4><p>Core vaccines: FVRCP for cats, DHPP for dogs. Keep records for handover.</p></div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><h4>Dewormed</h4><p>Treat for internal parasites before listing. Repeat every 3 months for fosters.</p></div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><h4>Flea & Tick Treated</h4><p>Apply appropriate prevention before the animal meets potential adopters.</p></div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><h4>Spayed / Neutered</h4><p>Strongly recommended before adoption. If too young, note in the listing and agree to neuter post-adoption.</p></div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><h4>Vet Health Check</h4><p>A basic examination to confirm the animal is healthy and fit for rehoming.</p></div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text"><h4>FIV/FeLV Tested (Cats)</h4><p>Especially important if the adopter has other cats. Disclose results honestly in your listing.</p></div></div>
+      </div>
+      <div class="tip-box" style="margin-top:16px">
+        <div class="tip-box-icon">💡</div>
+        <div><h4>Keep all vet records</h4><p>Provide a copy of vaccination records and medical history to the adopter at handover. This builds trust and gives the new vet a baseline.</p></div>
+      </div>
+    </div>
+
+    <!-- Creating a Good Listing -->
+    <div class="guide-section" id="listing">
+      <div class="gs-tag">YOUR LISTING</div>
+      <h2 class="gs-title">Creating a Good Listing</h2>
+      <p class="gs-intro">A great listing gets more applications from the right adopters. Here's what makes the difference.</p>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-card-icon">📸</div><div><h4>Use Clear, Well-Lit Photos</h4><p>Listings with 5+ photos get far more applications. Show the animal's face, body, and personality. Natural light works best.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">✍️</div><div><h4>Let AI Help Your Write-Up</h4><p>Use FurriHearts' AI writing tool to generate a compelling profile. Review and personalise it — you know your rescue best.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">🏷️</div><div><h4>Be Honest About Health & Behaviour</h4><p>Disclose any medical conditions, quirks, or special needs. Honest listings result in better matches and fewer returns.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">🏠</div><div><h4>Specify Your Home Requirements</h4><p>Be clear about what kind of home you're looking for — indoor only, secured balconies, no young children, etc.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Questionnaire -->
+    <div class="guide-section" id="questionnaire">
+      <div class="gs-tag">THE PROCESS</div>
+      <h2 class="gs-title">Using the Questionnaire</h2>
+      <p class="gs-intro">FurriHearts provides a standardised questionnaire for all applicants. Here's how to use it effectively.</p>
+      <div class="step-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-content"><h4>Review every answer carefully</h4><p>Don't skim — the questionnaire reveals the adopter's lifestyle, home situation, experience, and intentions. Pay close attention to home type, window security, and time commitment.</p></div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-content"><h4>Follow up on unclear answers</h4><p>If an answer is vague, reach out before approving. It's better to ask than regret a placement. Is the balcony truly secured? Do all family members agree?</p></div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-content"><h4>Approve, decline, or request more info</h4><p>You have full control. Approve good matches, politely decline unsuitable ones, and always notify the applicant either way.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Vetting Adopters -->
+    <div class="guide-section" id="vetting">
+      <div class="gs-tag">DUE DILIGENCE</div>
+      <h2 class="gs-title">Vetting Adopters</h2>
+      <p class="gs-intro">Beyond the questionnaire, here's how to make sure you're placing your rescue with the right family.</p>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-card-icon">📱</div><div><h4>Have a Call or Video Chat</h4><p>A 10-minute call tells you a lot. Are they excited? Do they ask good questions? Have they thought about vet care and emergencies?</p></div></div>
+        <div class="info-card"><div class="info-card-icon">🏠</div><div><h4>Do a Home Visit</h4><p>Check windows and balconies are secured, space is appropriate, and all household members are present and enthusiastic. A video call tour is an acceptable alternative.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">📋</div><div><h4>Use an Adoption Contract</h4><p>A signed contract sets expectations — return policy, indoor requirements, neuter agreement, and follow-up check-ins.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">❤️</div><div><h4>Trust Your Instincts</h4><p>If something feels off, it probably is. You are the last line of defence for your rescue. It's okay to say no — even to a seemingly good applicant.</p></div></div>
+      </div>
+      <div style="margin-top:16px;padding:16px 20px;background:#FEF2F2;border-radius:12px;border-left:4px solid #DC2626">
+        <div style="font-weight:700;font-size:14px;color:#DC2626;margin-bottom:8px">🚩 Red flags to watch for</div>
+        <p style="font-size:13px;color:var(--mid);line-height:1.8">Wants animal as a gift for someone else · Unwilling to do a home visit · Plans to keep animal outdoors · Household members haven't agreed · Refuses to sign adoption contract · Unsecured high-floor balcony · Dismissive of vet costs · History of returned adoptions without explanation</p>
+      </div>
+    </div>
+
+    <!-- Post-Adoption -->
+    <div class="guide-section" id="postadoption">
+      <div class="gs-tag">AFTER ADOPTION</div>
+      <h2 class="gs-title">Post-Adoption Follow Up</h2>
+      <p class="gs-intro">A good rescuer doesn't disappear after handover. A simple follow-up shows you care and helps ensure the adoption sticks.</p>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-card-icon">📅</div><div><h4>Week 1 Check-In</h4><p>Send a quick message — is the animal eating? Settling in? Any concerns? This reassures the adopter and catches issues early.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">🗓️</div><div><h4>Month 1 Follow-Up</h4><p>Ask for a photo update! Confirm the animal has had or scheduled its first vet visit.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">📋</div><div><h4>Remind of Return Policy</h4><p>Better a safe return than an abandoned animal. Remind adopters they can always come back to you if things don't work out.</p></div></div>
+        <div class="info-card"><div class="info-card-icon">⭐</div><div><h4>Ask for a Review</h4><p>Happy adopters are your best advocates. A kind review on your FurriHearts profile helps future adopters trust you.</p></div></div>
+      </div>
+    </div>
+
+    <div class="cta-bar">
+      <h3>Ready to help more animals find homes? 🐾</h3>
+      <p>Create your first listing in minutes — our AI will help you every step of the way.</p>
+      <a href="rescuer-listing.html" class="btn-cta-white">＋ Create a New Listing</a>
+    </div>
+
+  </main>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+<script>
+function toggleCheck(el){
+ el.classList.toggle('checked');
+ el.querySelector('.check-box').textContent = el.classList.contains('checked') ? '✓' : '';
+}
+// Highlight active sidebar link on scroll
+const sections = document.querySelectorAll('.guide-section');
+const links = document.querySelectorAll('.sidebar-link');
+window.addEventListener('scroll', ()=>{
+ let current = '';
+ sections.forEach(s=>{ if(window.scrollY >= s.offsetTop - 100) current = s.id; });
+ links.forEach(l=>{ l.classList.toggle('active', l.getAttribute('href')==='#'+current); });
+});
+</script>
+
+<script>
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+</script>
+<script>
+
+function toggleNotif(){document.getElementById('notif-dropdown').classList.toggle('open');}
+function readNotif(el){el.classList.remove('unread');updateBadge();}
+function markAllRead(){document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));updateBadge();}
+function updateBadge(){
+ const c=document.querySelectorAll('.notif-item.unread').length;
+ const b=document.getElementById('notif-badge');
+ if(b){b.style.display=c===0?'none':'flex';b.textContent=c;}
+}
+document.addEventListener('click',function(e){
+ const nw=document.getElementById('notif-wrap');
+ if(nw&&!nw.contains(e.target))document.getElementById('notif-dropdown').classList.remove('open');
+ const pw=document.getElementById('profile-wrap');
+ if(pw&&!pw.contains(e.target)){const pd=document.getElementById('profile-dropdown');if(pd)pd.classList.remove('open');}
+});
+function toggleProfile(){document.getElementById('profile-dropdown').classList.toggle('open');}
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+
+</script>
+</body>
+</html>

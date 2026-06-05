@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5;min-height:100vh;background:var(--cream)}
+
+/* Left panel */
+.left-panel{background:linear-gradient(135deg,#FBE8D8,#F5C9A0,#E8A87C);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;min-height:calc(100vh - 64px)}
+.left-logo{display:flex;align-items:center;gap:10px;margin-bottom:40px}
+.left-logo-icon{width:44px;height:44px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.left-logo-text{font-family:'Fraunces',serif;font-size:24px;color:var(--dark)}
+.left-logo-text span{color:var(--orange)}
+.left-title{font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--dark);text-align:center;margin-bottom:12px;line-height:1.2}
+.left-sub{font-size:14px;color:var(--mid);text-align:center;line-height:1.7;margin-bottom:36px;max-width:320px}
+.left-features{display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px}
+.left-feature{background:rgba(255,255,255,0.6);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--dark);display:flex;align-items:center;gap:10px}
+
+/* Right panel */
+.right-panel{background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;min-height:calc(100vh - 64px);max-width:480px;margin:40px auto;border-radius:16px;border:1px solid var(--border)}
+.right-inner{width:100%;max-width:400px}
+.right-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px}
+.right-sub{font-size:14px;color:var(--mid);margin-bottom:28px}
+.right-sub a{color:var(--orange);font-weight:600;text-decoration:none}
+
+.form-field{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:inherit;background:#fff;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--orange)}
+.forgot-link{display:block;text-align:right;font-size:12px;color:var(--orange);font-weight:600;text-decoration:none;margin-top:4px}
+.btn-login{width:100%;background:var(--orange);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:background .2s}
+.btn-login:hover{background:var(--orange-light)}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--light);font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.btn-social{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;background:#fff;color:var(--dark);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;transition:all .2s}
+.btn-social:hover{border-color:var(--orange);color:var(--orange)}
+.signup-link{text-align:center;margin-top:24px;font-size:14px;color:var(--mid)}
+.field-error{font-size:12px;color:#DC2626;margin-top:4px;min-height:16px}
+.form-input.error{border-color:#DC2626}
+.signup-link a{color:var(--orange);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<nav style="background:#fff;border-bottom:1px solid var(--border);padding:0;position:sticky;top:0;z-index:100;grid-column:1/-1">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;padding:0 40px;gap:32px">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0">
+      <div style="width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px">🐾</div>
+      <span style="font-family:'Fraunces',serif;font-size:20px;color:var(--dark)">Furri<span style="color:var(--orange)">Hearts</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:24px;flex:1">
+      <a href="browse.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">Browse Pets</a>
+      <a href="furrimatch.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">FurriMatch</a>
+      <a href="guide.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">Adoption Guide</a>
+      <a href="rescuer-landing.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">For Rescuers</a>
+      <a href="about.html" style="text-decoration:none;color:var(--mid);font-size:14px;font-weight:500">About Us</a>
+    </div>
+  </div>
+</nav>
+
+<div class="right-panel">
+  <div class="right-inner">
+    <h2 class="right-title">Log in</h2>
+    <p class="right-sub">Don't have an account? <a href="signup.html">Sign up →</a></p>
+
+    <div class="form-field">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="login-email" type="email" placeholder="you@email.com" oninput="clearLoginErr('email')"><div class="field-error" id="err-login-email"></div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="login-pwd" type="password" placeholder="Enter your password" oninput="clearLoginErr('pwd')"><div class="field-error" id="err-login-pwd"></div>
+      <a href="#" class="forgot-link">Forgot password?</a>
+    </div>
+
+    <button class="btn-login" onclick="validateLogin()">Log In</button>
+
+    <div class="divider">or continue with</div>
+
+    <button class="btn-social">🌐 Continue with Google</button>
+    <button class="btn-social">🍎 Continue with Apple</button>
+
+    <div class="signup-link">Don't have an account? <a href="signup.html">Sign up for free</a></div>
+  </div>
+</div>
+
+<footer style="background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px">
+      <div><div style="font-family:'Fraunces',serif;font-size:20px;color:#fff">Furri<span style="color:var(--orange)">Hearts</span></div><p style="color:#A09080;font-size:13px;margin-top:10px;line-height:1.6">Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p></div>
+      <div><h4 style="font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0">For Adopters</h4><a href="browse.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Browse Pets</a><a href="furrimatch.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">FurriMatch</a><a href="guide.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Adoption Guide</a><a href="my-applications.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">My Applications</a></div>
+      <div><h4 style="font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0">For Rescuers</h4><a href="rescuer-landing.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Get Started</a><a href="rescuer-listing.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Create Listing</a><a href="rescuer-dashboard.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">My Listings</a><a href="rescuer-guide.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Rescuer Guide</a></div>
+      <div><h4 style="font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0">Company</h4><a href="about.html" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">About Us</a><a href="#" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Contact</a><a href="#" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Privacy Policy</a><a href="#" style="display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px">Terms of Service</a></div>
+    </div>
+    <div style="border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px"><span>© 2024 FurriHearts. All rights reserved.</span><span>Made with ❤️ for animals in Malaysia</span></div>
+  </div>
+</footer>
+<script>
+function clearLoginErr(id){
+  document.getElementById('err-login-'+id).textContent='';
+  document.getElementById('login-'+id).classList.remove('error');
+}
+function validateLogin(){
+  let valid = true;
+  const email = document.getElementById('login-email').value.trim();
+  const pwd = document.getElementById('login-pwd').value;
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    document.getElementById('err-login-email').textContent='Please enter a valid email address';
+    document.getElementById('login-email').classList.add('error');
+    valid=false;
+  }
+  if(!pwd || pwd.length < 8){
+    document.getElementById('err-login-pwd').textContent='Incorrect password';
+    document.getElementById('login-pwd').classList.add('error');
+    valid=false;
+  }
+  if(valid) window.location.href='my-applications.html';
+}
+</script>
+</body>
+</html>

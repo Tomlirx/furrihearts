@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FurriMatch — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+#quiz-view{display:block}
+#results-view{display:none}
+.quiz-header{text-align:center;padding:40px 40px 28px;background:#fff;border-bottom:1px solid var(--border)}
+.quiz-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
+.logo-t{font-family:'Fraunces',serif;font-size:22px;color:var(--dark)}
+.logo-t span{color:var(--orange)}
+.quiz-title{font-family:'Fraunces',serif;font-size:40px;font-weight:700;margin-bottom:8px}
+.quiz-title em{color:var(--orange);font-style:normal}
+.quiz-sub{color:var(--mid);font-size:15px}
+.steps-bar{display:flex;gap:12px;max-width:960px;margin:28px auto 0;padding:0 20px;overflow-x:auto;justify-content:center}
+.q-section{margin-bottom:36px}
+.q-section-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--orange-pale)}
+.q-block{margin-bottom:28px}
+.q-label{font-weight:700;font-size:15px;margin-bottom:12px;color:var(--dark);line-height:1.5}
+.q-hint{font-size:12px;color:var(--light);margin-bottom:10px}
+.q-options{display:flex;flex-wrap:wrap;gap:8px}
+.q-radio{border:1.5px solid var(--border);border-radius:20px;padding:8px 18px;cursor:pointer;font-size:13px;color:var(--mid);transition:all .2s;background:#fff;font-family:inherit}
+.q-radio:hover{border-color:var(--orange);color:var(--orange)}
+.q-radio.selected{border-color:var(--orange);background:var(--orange);color:#fff;font-weight:600}
+.q-radio-dot{display:none}
+.q-check{border:1.5px solid var(--border);border-radius:20px;padding:8px 18px;cursor:pointer;font-size:13px;color:var(--mid);transition:all .2s;background:#fff;font-family:inherit}
+.q-check:hover{border-color:var(--orange);color:var(--orange)}
+.q-check.selected{border-color:var(--orange);background:var(--orange);color:#fff;font-weight:600}
+.q-check-box{display:none}
+.q-chips{display:flex;flex-wrap:wrap;gap:8px}
+.q-chip{border:1.5px solid var(--border);border-radius:20px;padding:8px 16px;font-size:13px;cursor:pointer;background:#fff;color:var(--mid);font-family:inherit;transition:all .2s}
+.q-chip:hover{border-color:var(--orange);color:var(--orange)}
+.q-chip.on{background:var(--mid);border-color:var(--mid);color:#fff;font-weight:600}flex:1;min-width:130px;max-width:160px;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s}
+.step-card.active{border-color:var(--orange);box-shadow:0 0 0 3px rgba(200,73,10,0.1)}
+.step-card.done{border-color:var(--green);background:var(--green-pale)}
+.step-tag{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.step-card.done .step-tag{color:var(--green)}
+.step-emoji{font-size:26px;margin-bottom:6px}
+.step-name{font-weight:700;font-size:12px;margin-bottom:3px}
+.step-desc{font-size:10px;color:var(--light)}
+.quiz-body{max-width:760px;margin:0 auto;padding:28px 20px}
+.question-panel{background:#fff;border:1px solid var(--border);border-radius:16px;padding:32px;min-height:240px}
+.q-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;margin-bottom:4px}
+.q-sub{font-size:12px;color:var(--light);margin-bottom:20px}
+.options-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.option-btn{border:1.5px solid var(--border);border-radius:12px;padding:14px 14px;text-align:left;cursor:pointer;background:#fff;font-family:inherit;font-size:13px;color:var(--mid);transition:all .2s;display:flex;align-items:center;gap:8px;position:relative}
+.option-btn:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-pale)}
+.option-btn.selected{border-color:var(--orange);background:var(--orange-pale);color:var(--orange);font-weight:600}
+.option-btn.selected::after{content:'✓';position:absolute;top:8px;right:8px;width:16px;height:16px;background:var(--orange);color:#fff;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;max-width:760px;margin:0 auto;padding:16px 20px;border-top:1px solid var(--border)}
+.btn-back{background:none;border:1.5px solid var(--border);border-radius:8px;padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--mid)}
+.btn-back:hover{border-color:var(--orange);color:var(--orange)}
+.progress-wrap{flex:1;margin:0 20px}
+.progress-label{font-size:12px;color:var(--mid);text-align:center;margin-bottom:6px}
+.progress-track{height:6px;background:var(--border);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:var(--orange);border-radius:10px;transition:width .4s}
+.btn-next{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-next:hover{background:var(--orange-light)}
+
+/* RESULTS */
+#results-view{min-height:100vh}
+.results-layout{display:grid;grid-template-columns:220px 1fr 280px;min-height:100vh}
+.sidebar{background:#fff;border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column}
+.sidebar-logo{display:flex;align-items:center;gap:8px;padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:8px;font-family:'Fraunces',serif;font-size:18px;text-decoration:none;color:var(--dark)}
+.sidebar-logo span{color:var(--orange)}
+.s-logo-icon{width:30px;height:30px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;color:var(--mid);font-size:14px;font-weight:500;transition:all .2s;text-decoration:none;border-right:3px solid transparent}
+.nav-item:hover{background:var(--cream);color:var(--dark)}
+.nav-item.active{background:var(--orange-pale);color:var(--orange);font-weight:700;border-right-color:var(--orange)}
+.nav-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;font-weight:700;margin-left:auto}
+.sidebar-bottom{margin-top:auto;padding:16px}
+.sb-card{border-radius:12px;background:linear-gradient(135deg,#FBE8D8,#F5D0B8);padding:16px;text-align:center;font-size:12px;color:var(--mid)}
+.sb-card strong{display:block;font-weight:700;font-size:13px;color:var(--dark);margin:8px 0 4px}
+.results-main{padding:28px}
+.res-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.res-title{font-family:'Fraunces',serif;font-size:26px;font-weight:700}
+.res-title em{color:var(--orange);font-style:normal}
+.res-sub{color:var(--mid);font-size:13px;margin-bottom:20px}
+.res-actions{display:flex;gap:8px}
+.btn-sm-out{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:var(--mid);font-family:inherit;display:flex;align-items:center;gap:4px}
+.btn-sm-out:hover{border-color:var(--orange);color:var(--orange)}
+.match-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;display:grid;grid-template-columns:170px 1fr auto;gap:18px;align-items:start}
+.mc-img{height:150px;border-radius:10px;background:linear-gradient(135deg,#E8D5C4,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.mc-badge{position:absolute;top:8px;left:8px;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;color:#fff}
+.best{background:#2D7A3A}.great{background:#D97706}.good{background:#6366F1}
+.mc-heart{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:none;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+.mc-cnt{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.5);color:#fff;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:600}
+.mc-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:2px}
+.mc-loc{color:var(--light);font-size:12px;margin-bottom:8px}
+.mc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.mc-tag{border-radius:10px;padding:3px 9px;font-size:11px;font-weight:500;background:var(--orange-pale);color:var(--orange)}
+.mc-tag.n{background:#F0EDEA;color:var(--mid)}
+.pct-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pct-ring{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--orange);flex-shrink:0;background:conic-gradient(var(--orange) 0% var(--p),var(--border) var(--p) 100%)}
+.pct-inner{width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:var(--orange)}
+.why-title{font-weight:700;font-size:12px;margin-bottom:2px}
+.why-text{font-size:12px;color:var(--mid);line-height:1.6}
+.mc-foot{display:flex;gap:10px;font-size:11px;color:var(--light)}
+.mc-actions{display:flex;flex-direction:column;gap:8px;align-items:stretch;min-width:120px}
+.btn-vp{border:1.5px solid var(--border);border-radius:8px;padding:9px 14px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:var(--mid);font-family:inherit;text-decoration:none;display:block;text-align:center}
+.btn-vp:hover{border-color:var(--orange);color:var(--orange)}
+.btn-int{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:block;text-align:center}
+.btn-int:hover{background:var(--orange-light)}
+.show-more-btn{border:1.5px solid var(--border);border-radius:10px;padding:12px;width:100%;background:#fff;font-family:inherit;font-size:13px;font-weight:500;color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.show-more-btn:hover{border-color:var(--orange);color:var(--orange)}
+.res-right{background:#fff;border-left:1px solid var(--border);padding:20px;overflow-y:auto}
+.pref-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.pref-hdr h3{font-weight:700;font-size:14px}
+.pref-edit{color:var(--orange);font-size:12px;cursor:pointer;font-weight:600}
+.pref-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:13px;padding-bottom:13px;border-bottom:1px solid var(--border)}
+.pref-item:last-child{border-bottom:none}
+.pref-icon{width:30px;height:30px;background:var(--cream);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.pref-label{font-size:10px;color:var(--light);margin-bottom:1px}
+.pref-value{font-size:12px;font-weight:600}
+.dyk{background:linear-gradient(135deg,#FDF5EF,#FBE8D8);border-radius:10px;padding:14px;margin-top:16px}
+.dyk-title{font-weight:700;font-size:12px;color:var(--orange);margin-bottom:4px}
+.dyk-text{font-size:11px;color:var(--mid);line-height:1.6}
+.help-card{border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px}
+.help-card h4{font-weight:700;font-size:12px;margin-bottom:3px}
+.help-card p{font-size:11px;color:var(--mid);margin-bottom:10px}
+.btn-chat{border:1.5px solid var(--border);border-radius:8px;padding:8px;font-size:12px;cursor:pointer;background:#fff;font-family:inherit;color:var(--mid);width:100%}
+.btn-chat:hover{border-color:var(--orange);color:var(--orange)}
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;font-family:inherit}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s;font-family:inherit}
+.btn-primary-nav:hover{background:var(--orange-light)}
+/* FOOTER */
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+/* ── HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* ── MOBILE DRAWER ── */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+
+/* ── BASE RESPONSIVE ── */
+@media(max-width:768px){
+ nav{padding:0 16px!important;top:0!important}
+ .nav-inner{height:52px!important;gap:0!important}
+ .nav-links{display:none!important}
+ .nav-right .btn-ghost,.nav-right .btn-primary,.nav-right .btn-primary-nav,.nav-right a.btn-ghost{display:none!important}
+ .hamburger{display:flex!important;margin-left:auto}
+ footer{padding:28px 16px 24px!important}
+ .footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important}
+ .footer-bottom{flex-direction:column!important;gap:6px!important;text-align:center!important}
+ div[style*="background:var(--orange)"][style*="sticky"]{font-size:11px!important;padding:8px 12px!important}
+}
+@media(max-width:480px){
+ .footer-grid{grid-template-columns:1fr!important}
+}
+
+@media(max-width:768px){
+ .fm-layout{grid-template-columns:1fr!important;padding:16px!important}
+ .fm-sidebar{display:none!important}
+ .fm-hero{padding:28px 16px!important}
+ .fm-heading{font-size:28px!important}
+ .match-grid{grid-template-columns:1fr!important;gap:14px!important}
+ .option-grid{grid-template-columns:1fr!important;gap:8px!important}
+}
+
+/* ── NAV ── */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-links a.active{font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Notification bell */
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:6px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:0;right:0;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}.notif-icon.orange{background:var(--orange-pale)}.notif-icon.red{background:#FEE2E2}.notif-icon.blue{background:#EFF6FF}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+
+/* Profile dropdown */
+.profile-wrap{position:relative}
+.profile-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;text-decoration:none;transition:all .2s}
+.profile-chip:hover{border-color:var(--orange)}
+.profile-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+.profile-name{font-size:13px;font-weight:600;color:var(--dark)}
+.profile-caret{font-size:10px;color:var(--light);margin-left:2px}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+.profile-dd-name{font-weight:700;font-size:14px;color:var(--dark)}
+.profile-dd-role{font-size:11px;color:var(--light);margin-top:1px}
+.profile-dd-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:500;border-bottom:1px solid var(--border);transition:background .2s}
+.profile-dd-link:last-child{border-bottom:none}
+.profile-dd-link:hover{background:var(--cream)}
+.profile-dd-link.danger{color:#DC2626}
+.dd-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:700}
+.dd-badge.green{background:var(--green)}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* Mobile drawer */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:8px;color:var(--mid)}
+.mob-section{font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:12px 8px 6px}
+.mob-link{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:13px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700}
+.mob-badge.green{background:var(--green)}
+.mob-cta{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-danger{display:block;text-align:center;color:#DC2626;font-size:14px;font-weight:500;text-decoration:none;padding:13px}
+
+/* Responsive */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links{display:none}
+ .btn-ghost,.btn-primary-nav{display:none}
+ .profile-name,.profile-caret{display:none}
+ .hamburger{display:flex;margin-left:8px}
+}
+
+</style>
+</head>
+<body>
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500">🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a></div>
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links"><a href="browse.html">Adopt a Pet</a><a href="furrimatch.html" class="active">FurriMatch</a><a href="guide.html">Adoption Guide</a><a href="rescuer-landing.html">For Rescuers</a></div>
+ <div class="nav-right">
+ <a href="rescuer-listing.html" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">List Now</a>
+ <a href="login.html" class="btn-primary-nav">Log in</a>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a><a href="furrimatch.html" class="mob-link active">FurriMatch</a><a href="guide.html" class="mob-link">Adoption Guide</a><a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-cta">
+ <a href="rescuer-listing.html" style="display:block;text-align:center;background:var(--green);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff">List Now</a>
+ <a href="login.html" class="mob-primary">Log in</a>
+ </div>
+ </div>
+</div>
+<div id="quiz-view">
+ <div class="quiz-header">
+ <h1 class="quiz-title">Find your <em>purrfect</em> match 🤍</h1>
+ <p class="quiz-sub">Answer a few quick questions and we'll find pets that fit your lifestyle and home.</p>
+ </div>
+ <div class="quiz-body" style="max-width:620px;margin:0 auto;padding:40px 24px 48px">
+
+ <div class="q-section">
+
+  <div class="q-block">
+    <div class="q-label">1. What type of pet are you looking for?</div>
+    <div class="q-options">
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Cat 🐱</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Dog 🐶</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Either</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">2. What type of home do you live in?</div>
+    <div class="q-options">
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Apartment / Condo</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Landed House</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Other</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">3. Do you currently have any pets?</div>
+    <div class="q-options">
+      <label class="q-check" onclick="toggleCheck(this)"><div class="q-check-box"></div>None</label>
+      <label class="q-check" onclick="toggleCheck(this)"><div class="q-check-box"></div>Cat(s)</label>
+      <label class="q-check" onclick="toggleCheck(this)"><div class="q-check-box"></div>Dog(s)</label>
+    </div>
+  </div>
+
+</div>
+
+<div class="q-section">
+
+  <div class="q-block">
+    <div class="q-label">4. How much time will your pet spend alone each day?</div>
+    <div class="q-options">
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Rarely — mostly home</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>A few hours daily</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Often — long hours away</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">5. Have you owned a pet before?</div>
+    <div class="q-options">
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>First-time owner</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Yes, some experience</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Quite experienced</label>
+    </div>
+  </div>
+
+</div>
+
+<div class="q-section">
+
+  <div class="q-block">
+    <div class="q-label">6. How would you describe your lifestyle at home?</div>
+    <div class="q-options">
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Calm & quiet</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Balanced</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Active & outdoorsy</label>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-label">7. What kind of bond are you looking for?</div>
+    <div class="q-options">
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Follows me everywhere</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Affectionate & independent</label>
+      <label class="q-radio" onclick="selectRadio(this)"><div class="q-radio-dot"></div>Low-maintenance</label>
+    </div>
+  </div>
+
+</div>
+
+<button onclick="showResults()" style="width:100%;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:background .2s">See My Matches →</button>
+
+ </div>
+</div>
+</div>
+
+<div id="results-view">
+ <div style="max-width:900px;margin:0 auto;padding:40px 24px 80px">
+
+ <!-- Header -->
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+ <div>
+ <h2 style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px">Your matches 🐾</h2>
+ <p style="font-size:14px;color:var(--light)">Based on your lifestyle and preferences, here are your best matches.</p>
+ </div>
+ <button onclick="showQuiz()" style="border:1.5px solid var(--border);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--mid);font-family:inherit">↺ Retake Quiz</button>
+ </div>
+
+ <!-- Pet cards grid -->
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;margin-top:28px">
+
+ <!-- Milo -->
+ <a href="pet-profile.html" style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:all .2s" onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+ <div style="height:180px;background:linear-gradient(135deg,#E8D5C4,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative">
+ 🐱
+ <span style="position:absolute;top:10px;left:10px;background:var(--orange);color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700">⭐ Best Match</span>
+ </div>
+ <div style="padding:14px">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+ <span style="font-weight:700;font-size:15px">Milo</span>
+ <span style="color:var(--orange);font-size:14px;font-weight:700">→</span>
+ </div>
+ <div style="font-size:12px;color:var(--light);margin-bottom:10px">Male · Kuala Lumpur</div>
+ <div style="display:flex;flex-wrap:wrap;gap:6px">
+ <span style="background:var(--orange-pale);color:var(--orange);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Playful</span>
+ <span style="background:var(--orange-pale);color:var(--orange);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Affectionate</span>
+ <span style="background:#F0EDEA;color:var(--mid);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Vaccinated</span>
+ </div>
+ </div>
+ </a>
+
+ <!-- Luna -->
+ <a href="pet-profile.html" style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:all .2s" onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+ <div style="height:180px;background:linear-gradient(135deg,#C4D5E8,#8AAAC9);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative">
+ 🐱
+ <span style="position:absolute;top:10px;left:10px;background:var(--mid);color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700">Great Match</span>
+ </div>
+ <div style="padding:14px">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+ <span style="font-weight:700;font-size:15px">Luna</span>
+ <span style="color:var(--orange);font-size:14px;font-weight:700">→</span>
+ </div>
+ <div style="font-size:12px;color:var(--light);margin-bottom:10px">Female · Petaling Jaya</div>
+ <div style="display:flex;flex-wrap:wrap;gap:6px">
+ <span style="background:var(--orange-pale);color:var(--orange);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Gentle</span>
+ <span style="background:var(--orange-pale);color:var(--orange);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Quiet</span>
+ <span style="background:#F0EDEA;color:var(--mid);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Vaccinated</span>
+ </div>
+ </div>
+ </a>
+
+ <!-- Nori -->
+ <a href="pet-profile.html" style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:all .2s" onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+ <div style="height:180px;background:linear-gradient(135deg,#2A2A2A,#555);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative">
+ 🐱
+ <span style="position:absolute;top:10px;left:10px;background:var(--mid);color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700">Good Match</span>
+ </div>
+ <div style="padding:14px">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+ <span style="font-weight:700;font-size:15px">Nori</span>
+ <span style="color:var(--orange);font-size:14px;font-weight:700">→</span>
+ </div>
+ <div style="font-size:12px;color:var(--light);margin-bottom:10px">Female · Kuala Lumpur</div>
+ <div style="display:flex;flex-wrap:wrap;gap:6px">
+ <span style="background:var(--orange-pale);color:var(--orange);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Independent</span>
+ <span style="background:var(--orange-pale);color:var(--orange);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Curious</span>
+ <span style="background:#F0EDEA;color:var(--mid);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:500">Neutered</span>
+ </div>
+ </div>
+ </a>
+
+ </div>
+
+ <!-- Browse all -->
+ <div style="text-align:center">
+ <a href="browse.html" style="color:var(--orange);font-size:14px;font-weight:600;text-decoration:none">Browse all available pets →</a>
+ </div>
+
+ </div>
+</div>
+
+
+<script>
+function showResults(){
+ document.getElementById('quiz-view').style.display='none';
+ document.getElementById('results-view').style.display='block';
+ window.scrollTo(0,0);
+}
+function showQuiz(){
+ document.getElementById('results-view').style.display='none';
+ document.getElementById('quiz-view').style.display='block';
+ window.scrollTo(0,0);
+}
+function selectRadio(el){
+ const group = el.closest('.q-options');
+ group.querySelectorAll('.q-radio').forEach(r=>r.classList.remove('selected'));
+ el.classList.add('selected');
+}
+function toggleCheck(el){
+ el.classList.toggle('selected');
+}
+function toggleChip(el, group){
+ const max = group === 'trait' ? 3 : 99;
+ const container = el.closest('.q-chips');
+ const selected = container.querySelectorAll('.q-chip.on').length;
+ if(!el.classList.contains('on') && selected >= max) return;
+ el.classList.toggle('on');
+}
+</script>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+</script>
+<script>
+
+function toggleNotif(){document.getElementById('notif-dropdown').classList.toggle('open');}
+function readNotif(el){el.classList.remove('unread');updateBadge();}
+function markAllRead(){document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));updateBadge();}
+function updateBadge(){
+ const c=document.querySelectorAll('.notif-item.unread').length;
+ const b=document.getElementById('notif-badge');
+ if(b){b.style.display=c===0?'none':'flex';b.textContent=c;}
+}
+document.addEventListener('click',function(e){
+ const nw=document.getElementById('notif-wrap');
+ if(nw&&!nw.contains(e.target))document.getElementById('notif-dropdown').classList.remove('open');
+ const pw=document.getElementById('profile-wrap');
+ if(pw&&!pw.contains(e.target)){const pd=document.getElementById('profile-dropdown');if(pd)pd.classList.remove('open');}
+});
+function toggleProfile(){document.getElementById('profile-dropdown').classList.toggle('open');}
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.hero{background:linear-gradient(135deg,#FDF5EF,#FEF8F3);padding:48px 40px;border-bottom:1px solid var(--border)}
+.hero-inner{max-width:740px;margin:0 auto}
+.hero-tag{font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.hero-title{font-family:'Fraunces',serif;font-size:36px;font-weight:700;margin-bottom:8px}
+.hero-sub{font-size:14px;color:var(--mid)}
+.doc-wrap{max-width:740px;margin:0 auto;padding:40px 40px 80px}
+.toc{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:36px}
+.toc h3{font-size:13px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.toc a{display:block;text-decoration:none;color:var(--orange);font-size:14px;font-weight:500;padding:4px 0;border-bottom:1px solid var(--border)}
+.toc a:last-child{border-bottom:none}
+.toc a:hover{color:var(--orange-light)}
+.doc-section{margin-bottom:40px}
+.doc-section h2{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--border);color:var(--dark)}
+.doc-section p{font-size:14px;color:var(--mid);line-height:1.8;margin-bottom:12px}
+.doc-section ul{margin:0 0 12px 20px;display:flex;flex-direction:column;gap:6px}
+.doc-section ul li{font-size:14px;color:var(--mid);line-height:1.7}
+.doc-section h3{font-size:16px;font-weight:700;margin:20px 0 8px;color:var(--dark)}
+.highlight-box{background:var(--orange-pale);border-left:4px solid var(--orange);border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:16px;font-size:14px;color:var(--mid);line-height:1.7}
+.contact-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:12px}
+.contact-box h3{font-weight:700;font-size:15px;margin-bottom:10px}
+.contact-box p{font-size:14px;color:var(--mid);margin-bottom:6px}
+.contact-box a{color:var(--orange);font-weight:600;text-decoration:none}
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links,.btn-primary-nav{display:none}
+ .hamburger{display:flex;margin-left:auto}
+ .hero{padding:32px 16px}
+ .hero-title{font-size:26px}
+ .doc-wrap{padding:24px 16px 60px}
+ footer{padding:32px 16px 24px}
+ .footer-grid{grid-template-columns:1fr 1fr;gap:20px}
+ .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500">🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a></div>
+
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links">
+ <a href="browse.html">Adopt a Pet</a>
+ <a href="furrimatch.html">FurriMatch</a>
+ <a href="guide.html">Adoption Guide</a>
+ <a href="rescuer-landing.html">For Rescuers</a>
+ </div>
+ <div class="nav-right">
+ <a href="rescuer-listing.html" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap">List Now</a>
+ <a href="login.html" class="btn-primary-nav">Log in</a>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a>
+ <a href="furrimatch.html" class="mob-link">FurriMatch</a>
+ <a href="guide.html" class="mob-link">Adoption Guide</a>
+ <a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-cta">
+ <a href="login.html" class="mob-primary">Log in</a>
+ </div>
+ </div>
+</div>
+
+<div class="hero">
+ <div class="hero-inner">
+ <div class="hero-tag">Legal</div>
+ <h1 class="hero-title">Terms of Service</h1>
+ <p class="hero-sub">Last updated: 1 January 2025 · Effective date: 1 January 2025</p>
+ </div>
+</div>
+
+<div class="doc-wrap">
+
+ <div class="highlight-box">
+ By creating an account or using FurriHearts, you agree to these Terms of Service. Please read them carefully. If you do not agree, you may not use our platform.
+ </div>
+
+ <div class="toc">
+ <h3>Contents</h3>
+ <a href="#t1">1. About FurriHearts</a>
+ <a href="#t2">2. Eligibility</a>
+ <a href="#t3">3. User Accounts</a>
+ <a href="#t4">4. Adopter Responsibilities</a>
+ <a href="#t5">5. Rescuer Responsibilities</a>
+ <a href="#t6">6. Listings & Content</a>
+ <a href="#t7">7. Adoption Process</a>
+ <a href="#t8">8. Fees & Payments</a>
+ <a href="#t9">9. Prohibited Conduct</a>
+ <a href="#t10">10. Intellectual Property</a>
+ <a href="#t11">11. Disclaimers & Liability</a>
+ <a href="#t12">12. Termination</a>
+ <a href="#t13">13. Governing Law</a>
+ </div>
+
+ <div class="doc-section" id="t1">
+ <h2>1. About FurriHearts</h2>
+ <p>FurriHearts is an online platform that connects animal rescuers with prospective adopters in Malaysia. We provide tools for listing rescued animals, submitting adoption applications, and facilitating responsible pet rehoming.</p>
+ <p>FurriHearts is a marketplace platform. We do not own, rescue, foster, or take responsibility for any animal listed on our platform. The relationship for each adoption is directly between the rescuer and the adopter.</p>
+ </div>
+
+ <div class="doc-section" id="t2">
+ <h2>2. Eligibility</h2>
+ <p>To use FurriHearts, you must:</p>
+ <ul>
+ <li>Be at least 18 years of age</li>
+ <li>Be a resident of Malaysia or have a valid Malaysian address</li>
+ <li>Provide accurate and truthful information when registering</li>
+ <li>Not have been previously suspended or banned from FurriHearts</li>
+ </ul>
+ <p>By using our platform, you represent and warrant that you meet these requirements.</p>
+ </div>
+
+ <div class="doc-section" id="t3">
+ <h2>3. User Accounts</h2>
+ <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately if you suspect unauthorised access to your account.</p>
+ <p>FurriHearts reserves the right to suspend or terminate accounts that violate these Terms, provide false information, or engage in harmful behaviour on our platform.</p>
+ </div>
+
+ <div class="doc-section" id="t4">
+ <h2>4. Adopter Responsibilities</h2>
+ <p>As an adopter on FurriHearts, you agree to:</p>
+ <ul>
+ <li>Provide honest and accurate information in your adoption applications and questionnaires</li>
+ <li>Adopt only if you are genuinely committed to providing a permanent, loving home</li>
+ <li>Comply with any requirements set by the rescuer, including home visits or post-adoption check-ins</li>
+ <li>Not re-home, sell, or transfer an adopted pet without first notifying the original rescuer</li>
+ <li>Ensure your home is safe and suitable before the pet arrives</li>
+ <li>Provide appropriate veterinary care for your adopted pet</li>
+ </ul>
+ </div>
+
+ <div class="doc-section" id="t5">
+ <h2>5. Rescuer Responsibilities</h2>
+ <p>As a rescuer on FurriHearts, you agree to:</p>
+ <ul>
+ <li>Provide accurate, truthful information about every animal you list, including health status, age, temperament, and known issues</li>
+ <li>Ensure all animals are dewormed and flea-treated before listing</li>
+ <li>Disclose any known health conditions, behavioural issues, or special needs</li>
+ <li>Respond to applicants in a timely and respectful manner</li>
+ <li>Not list animals that are not in your care or that you do not have authority to rehome</li>
+ <li>Not charge adoption fees that are excessive or intended for profit rather than cost recovery</li>
+ <li>Conduct appropriate screening of prospective adopters</li>
+ <li>Remove listings promptly once an animal has been adopted</li>
+ </ul>
+ </div>
+
+ <div class="doc-section" id="t6">
+ <h2>6. Listings & Content</h2>
+ <p>Rescuers are solely responsible for the content of their listings, including photos, descriptions, and pricing. FurriHearts does not verify the accuracy of listing content but reserves the right to remove listings that violate these Terms or our community standards.</p>
+ <p>By posting content on FurriHearts, you grant us a non-exclusive, royalty-free licence to display, share, and promote that content on our platform and in our marketing materials.</p>
+ <p>You must not post content that is:</p>
+ <ul>
+ <li>False, misleading, or fraudulent</li>
+ <li>Offensive, discriminatory, or harmful</li>
+ <li>In violation of any third-party intellectual property rights</li>
+ <li>Related to the sale of wildlife or animals not permitted under Malaysian law</li>
+ </ul>
+ </div>
+
+ <div class="doc-section" id="t7">
+ <h2>7. Adoption Process</h2>
+ <p>FurriHearts facilitates the connection between adopters and rescuers but is not a party to any adoption agreement. The adoption decision rests solely with the rescuer.</p>
+ <p>Once a rescuer approves an adoption, both parties are expected to coordinate the handover in good faith. FurriHearts is not responsible for disputes arising from the adoption process, animal health, or post-adoption behaviour.</p>
+ <p>We encourage all parties to use an adoption contract to document the terms of each rehoming.</p>
+ </div>
+
+ <div class="doc-section" id="t8">
+ <h2>8. Fees & Payments</h2>
+ <p>FurriHearts is currently free to use for both adopters and rescuers. We reserve the right to introduce fees in the future with at least 30 days' notice to existing users.</p>
+ <p>Adoption fees are set by individual rescuers and are paid directly between adopter and rescuer. FurriHearts does not process or guarantee these payments. Any disputes regarding adoption fees are between the adopter and the rescuer.</p>
+ <p>Care packages and any other products purchased through FurriHearts are subject to the terms of our partner suppliers.</p>
+ </div>
+
+ <div class="doc-section" id="t9">
+ <h2>9. Prohibited Conduct</h2>
+ <p>You must not use FurriHearts to:</p>
+ <ul>
+ <li>Sell, auction, or commercially trade animals</li>
+ <li>List animals for purposes other than genuine adoption (e.g. for research, breeding, or use in shows)</li>
+ <li>Impersonate another person or organisation</li>
+ <li>Harass, threaten, or abuse other users</li>
+ <li>Post spam, unsolicited messages, or phishing content</li>
+ <li>Attempt to circumvent our platform by taking transactions off-platform in bad faith</li>
+ <li>Scrape, copy, or distribute our platform's data without permission</li>
+ <li>Engage in any activity that violates Malaysian law, including the Animals Act 1953 or Wildlife Conservation Act 2010</li>
+ </ul>
+ </div>
+
+ <div class="doc-section" id="t10">
+ <h2>10. Intellectual Property</h2>
+ <p>All content on FurriHearts — including our name, logo, design, software, and original written content — is owned by or licensed to FurriHearts and protected by applicable intellectual property laws.</p>
+ <p>You may not copy, reproduce, or distribute our content without written permission. You retain ownership of content you post, subject to the licence granted in Section 6.</p>
+ </div>
+
+ <div class="doc-section" id="t11">
+ <h2>11. Disclaimers & Liability</h2>
+ <p>FurriHearts provides our platform on an "as is" basis. We make no warranties about the accuracy of listings, the suitability of pets, or the conduct of users.</p>
+ <p>To the fullest extent permitted by Malaysian law, FurriHearts shall not be liable for:</p>
+ <ul>
+ <li>Any harm, illness, or death of an animal adopted through our platform</li>
+ <li>Any personal injury or property damage arising from an adoption</li>
+ <li>Any disputes between adopters and rescuers</li>
+ <li>Any loss arising from reliance on user-generated content</li>
+ <li>Indirect, incidental, or consequential losses of any kind</li>
+ </ul>
+ </div>
+
+ <div class="doc-section" id="t12">
+ <h2>12. Termination</h2>
+ <p>You may delete your account at any time through your account settings. FurriHearts may suspend or terminate your account if you breach these Terms, engage in harmful conduct, or if required by law.</p>
+ <p>Upon termination, your right to use FurriHearts ceases immediately. Sections that by their nature should survive termination will continue to apply.</p>
+ </div>
+
+ <div class="doc-section" id="t13">
+ <h2>13. Governing Law</h2>
+ <p>These Terms are governed by and construed in accordance with the laws of Malaysia. Any disputes arising from these Terms or your use of FurriHearts shall be subject to the exclusive jurisdiction of the courts of Malaysia.</p>
+ <p>We encourage users to <a href="contact.html" style="color:var(--orange);font-weight:600">contact us</a> first to resolve any disputes informally before pursuing legal action.</p>
+ </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+</script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FurriHearts — Malaysia's #1 Pet Adoption Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#FDF5EF 0%,#FEF8F3 50%,#F5EDE6 100%);padding:72px 40px 96px;border-bottom:none}
+.hero-inner{max-width:740px;margin:0 auto;text-align:center}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--orange-pale);color:var(--orange);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;margin-bottom:14px}
+.hero-heading{font-family:'Fraunces',serif;font-size:42px;font-weight:700;line-height:1.1;margin-bottom:14px}
+.hero-heading span{color:var(--orange)}
+.hero-sub{color:var(--mid);font-size:16px;line-height:1.7;margin-bottom:24px;max-width:540px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;justify-content:center}
+.btn-hero-primary{background:var(--orange);color:#fff;border:none;border-radius:10px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
+.btn-hero-primary:hover{background:var(--orange-light)}
+.btn-hero-outline{background:#fff;color:var(--dark);border:1.5px solid var(--border);border-radius:10px;padding:14px 28px;font-size:15px;font-weight:500;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-hero-outline:hover{border-color:var(--orange);color:var(--orange)}
+.hero-trust{display:flex;align-items:center;gap:12px;justify-content:center}
+.trust-avatars{display:flex}
+.trust-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.trust-avatar:first-child{margin-left:0}
+.trust-text{font-size:13px;color:var(--mid)}
+.trust-text .stars{color:#F59E0B;font-size:13px;margin-bottom:2px}
+
+/* Hero right — ad space */
+.hero-right{position:relative}
+.hero-main-img{border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#E8D5C4,#C9A88A);height:300px;display:flex;align-items:center;justify-content:center;font-size:96px;position:relative}
+.hero-sponsored-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.5);color:#fff;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.hero-ad-label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.hero-ad-brand{font-weight:700;font-size:14px}
+.hero-ad-sub{font-size:12px;opacity:.8;margin-top:2px}
+.btn-ad-cta{background:var(--orange);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.hero-floating-card{position:absolute;bottom:-20px;left:-20px;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 8px 24px rgba(0,0,0,0.12);display:flex;align-items:center;gap:10px;min-width:200px}
+.float-icon{font-size:24px}
+.float-title{font-weight:700;font-size:13px}
+.float-sub{font-size:11px;color:var(--light)}
+
+/* SEARCH BAR */
+.search-wrap{padding:0 40px;margin-top:-40px;position:relative;z-index:10}
+.search-section{max-width:860px;margin:0 auto;background:#fff;border-radius:20px;box-shadow:0 16px 56px rgba(0,0,0,0.15);padding:22px 28px;border:1px solid var(--border)}
+.search-grid{display:flex;align-items:center;gap:0}
+.search-field{flex:1;padding:0 16px}
+.search-field label{display:block;font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.search-select{width:100%;border:none;font-size:14px;color:var(--dark);background:transparent;cursor:pointer;font-family:inherit;outline:none;appearance:none}
+.search-divider{width:1px;height:40px;background:var(--border);flex-shrink:0}
+.btn-search{background:var(--orange);color:#fff;border:none;border-radius:10px;padding:14px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:8px;margin-left:16px;text-decoration:none;transition:background .2s}
+.btn-search:hover{background:var(--orange-light)}
+.popular-tags{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;font-size:13px;color:var(--light)}
+.tag{background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:500;text-decoration:none;color:var(--mid);transition:all .2s}
+.tag:hover{border-color:var(--orange);color:var(--orange)}
+
+/* BRAND BANNER AD */
+.brand-banner{max-width:1200px;margin:48px auto;padding:0 40px}
+.brand-banner-inner{border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#1A1008,#2D1E10);padding:28px 40px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;position:relative}
+.brand-banner-inner::before{content:'';position:absolute;top:0;right:0;bottom:0;width:40%;background:linear-gradient(135deg,rgba(200,73,10,0.3),rgba(200,73,10,0.05))}
+.bb-tag{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.bb-title{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:6px}
+.bb-sub{font-size:13px;color:#A09080;line-height:1.6;max-width:480px}
+.bb-actions{display:flex;gap:12px;align-items:center;flex-shrink:0;position:relative;z-index:1}
+.btn-bb{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;text-decoration:none;display:inline-block}
+.btn-bb-out{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.3);border-radius:8px;padding:12px 24px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;text-decoration:none;display:inline-block}
+.bb-ad-label{position:absolute;top:10px;right:12px;font-size:10px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:.5px}
+
+/* FEATURED PETS */
+.featured-section{padding:48px 40px}
+.featured-inner{max-width:1200px;margin:0 auto}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px}
+.section-tag{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.section-title{font-family:'Fraunces',serif;font-size:32px;font-weight:700}
+.section-title em{color:var(--orange);font-style:normal}
+.view-all-link{color:var(--orange);font-size:14px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px}
+.pets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.pet-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:all .25s}
+.pet-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.pet-card.sponsored{border-color:#F5C9B0}
+.pet-card-img{height:190px;background:linear-gradient(135deg,#E8D5C4,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
+.pet-sponsored-tag{position:absolute;top:10px;left:10px;background:var(--orange);color:#fff;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.pet-match-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.6);color:#fff;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700}
+.pet-save{position:absolute;top:10px;right:10px;width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+.pet-card-info{padding:16px}
+.pet-card-name{font-weight:700;font-size:16px;margin-bottom:2px}
+.pet-card-meta{font-size:12px;color:var(--light);margin-bottom:8px}
+.pet-card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.pet-tag{border-radius:10px;padding:3px 9px;font-size:11px;font-weight:500;background:var(--orange-pale);color:var(--orange)}
+.pet-tag.blue{background:#EFF6FF;color:#1D4ED8}
+.pet-tag.green{background:var(--green-pale);color:var(--green)}
+.pet-card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:10px}
+.pet-card-loc{font-size:11px;color:var(--light)}
+.pet-card-fee{font-size:12px;font-weight:700}
+
+/* MID BANNER AD */
+.mid-banner{padding:0 40px;margin-bottom:48px}
+.mid-banner-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mid-ad-card{border-radius:14px;padding:28px;position:relative;overflow:hidden;min-height:160px;display:flex;flex-direction:column;justify-content:space-between}
+.mid-ad-card.orange{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.mid-ad-card.dark{background:linear-gradient(135deg,#2D1E10,#1A1008)}
+.mid-ad-label{position:absolute;top:10px;right:12px;font-size:10px;color:rgba(255,255,255,0.4);font-weight:600;letter-spacing:.5px}
+.mid-ad-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.7;color:#fff;margin-bottom:6px}
+.mid-ad-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.2}
+.mid-ad-sub{font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:16px;line-height:1.5}
+.btn-mid-ad{background:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;align-self:flex-start}
+.btn-mid-ad.orange{color:var(--orange)}
+.btn-mid-ad.dark{color:var(--dark)}
+
+/* FEATURES */
+.features{padding:48px 40px;background:#fff}
+.features-inner{max-width:1200px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:32px}
+.feature-card{border:1px solid var(--border);border-radius:14px;padding:24px;background:var(--cream);transition:all .2s}
+.feature-card:hover{background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.feature-icon{width:52px;height:52px;border-radius:14px;background:var(--orange-pale);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px}
+.feature-title{font-weight:700;font-size:15px;margin-bottom:8px}
+.feature-desc{font-size:13px;color:var(--mid);line-height:1.7}
+
+/* HOW IT WORKS */
+.how-section{padding:72px 40px;background:var(--cream)}
+.how-inner{max-width:900px;margin:0 auto;text-align:center}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:48px}
+.how-steps::before{content:'';position:absolute;top:32px;left:12.5%;right:12.5%;height:2px;background:var(--border)}
+.how-step{text-align:center;padding:0 16px;position:relative;z-index:1}
+.how-step-num{width:64px;height:64px;border-radius:50%;background:var(--orange);color:#fff;font-family:'Fraunces',serif;font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 14px rgba(200,73,10,0.3)}
+.how-step h3{font-weight:700;font-size:15px;margin-bottom:8px}
+.how-step p{font-size:13px;color:var(--mid);line-height:1.6}
+
+/* SPONSOR STRIP */
+.sponsor-strip{padding:32px 40px;background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sponsor-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:48px;justify-content:center}
+.sponsor-label{font-size:12px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;flex-shrink:0}
+.sponsor-logos{display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center}
+.sponsor-logo{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;color:var(--light);cursor:pointer;transition:all .2s}
+.sponsor-logo:hover{border-color:var(--orange);color:var(--orange)}
+
+/* TESTIMONIALS */
+.testimonials{padding:72px 40px;background:var(--cream)}
+.testimonials-inner{max-width:1200px;margin:0 auto}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.testi-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px}
+.testi-stars{color:#F59E0B;font-size:14px;margin-bottom:12px}
+.testi-text{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:16px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:16px}
+.testi-name{font-weight:700;font-size:13px}
+.testi-meta{font-size:11px;color:var(--light)}
+
+/* JOIN CTA */
+.join-section{padding:72px 40px;background:var(--dark)}
+.join-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.join-card{border-radius:16px;padding:32px;position:relative;overflow:hidden}
+.join-card.adopter{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.join-card.rescuer{background:linear-gradient(135deg,var(--green),#1e5e2a)}
+.join-icon{font-size:36px;margin-bottom:16px}
+.join-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.join-desc{font-size:14px;color:rgba(255,255,255,0.85);margin-bottom:20px;line-height:1.6}
+.btn-join{background:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn-join.orange{color:var(--orange)}
+.btn-join.green{color:var(--green)}
+
+/* FOOTER */
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+/* ── HAMBURGER (hidden on desktop) ── */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* ── MOBILE DRAWER ── */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-link:hover{color:var(--orange)}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark)}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+
+/* ── RESPONSIVE BREAKPOINTS ── */
+@media(max-width:768px){
+ /* Ribbon */
+ div[style*="background:var(--orange)"][style*="sticky"]{font-size:11px;padding:8px 12px}
+
+ /* Nav */
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:52px;gap:0}
+ .nav-links,.nav-right .btn-ghost,.nav-right .btn-primary-nav{display:none}
+ .hamburger{display:flex;margin-left:auto}
+
+ /* Hero */
+ .hero{padding:28px 16px 32px}
+ .hero-inner{grid-template-columns:1fr;gap:24px}
+ .hero-heading{font-size:32px}
+ .hero-sub{font-size:14px;max-width:100%}
+ .hero-btns{flex-direction:column}
+ .btn-hero-primary,.btn-hero-outline{justify-content:center;width:100%}
+ .hero-right{display:none}
+
+ /* Search */
+ .search-wrap{padding:0 16px;margin-top:16px}
+ .search-section{padding:14px 16px;border-radius:12px}
+ .search-grid,.search-section>div[style*="display:flex"]{flex-direction:column;gap:10px}
+ .search-divider{display:none}
+ .search-field{padding:0}
+ .btn-search{width:100%;justify-content:center;border-radius:10px;margin-left:0}
+
+ /* Brand banner */
+ .brand-banner{padding:0 16px;margin:24px auto}
+ .brand-banner-inner{grid-template-columns:1fr;gap:16px;padding:20px}
+ .bb-actions{flex-direction:column;gap:8px}
+ .btn-bb,.btn-bb-out{text-align:center;width:100%}
+
+ /* Featured pets */
+ .featured-section{padding:28px 16px}
+ .section-header{flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:16px}
+ .section-title{font-size:24px}
+ .pets-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+
+ /* Mid banner */
+ .mid-banner{padding:0 16px;margin-bottom:28px}
+ .mid-banner-inner{grid-template-columns:1fr;gap:12px}
+
+ /* Features */
+ .features{padding:28px 16px}
+ .features-grid{grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+
+ /* How it works */
+ .how-section{padding:40px 16px}
+ .how-steps{grid-template-columns:repeat(2,1fr);gap:32px}
+ .how-steps::before{display:none}
+
+ /* Sponsor strip */
+ .sponsor-strip{padding:20px 16px}
+ .sponsor-inner{flex-direction:column;gap:16px}
+ .sponsor-logos{gap:10px}
+
+ /* Testimonials */
+ .testimonials{padding:40px 16px}
+ .testimonials-grid{grid-template-columns:1fr;gap:14px;margin-top:24px}
+
+ /* Join */
+ .join-section{padding:40px 16px}
+ .join-inner{grid-template-columns:1fr;gap:16px}
+
+ /* Footer */
+ footer{padding:32px 16px 24px}
+ .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+ .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+}
+
+@media(max-width:480px){
+ .pets-grid{grid-template-columns:1fr}
+ .features-grid{grid-template-columns:1fr}
+ .how-steps{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr}
+ .hero-heading{font-size:28px}
+}
+
+/* ── NAV ── */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-links a.active{font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+
+/* Notification bell */
+.notif-wrap{position:relative}
+.notif-btn{background:none;border:none;cursor:pointer;position:relative;padding:6px;font-size:20px;line-height:1}
+.notif-badge{position:absolute;top:0;right:0;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.notif-header-title{font-weight:700;font-size:14px}
+.notif-mark-read{font-size:12px;color:var(--orange);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--orange-pale)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.green{background:var(--green-pale)}.notif-icon.orange{background:var(--orange-pale)}.notif-icon.red{background:#FEE2E2}.notif-icon.blue{background:#EFF6FF}
+.notif-title{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;line-height:1.4}
+.notif-time{font-size:11px;color:var(--light)}
+
+/* Profile dropdown */
+.profile-wrap{position:relative}
+.profile-chip{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;text-decoration:none;transition:all .2s}
+.profile-chip:hover{border-color:var(--orange)}
+.profile-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:14px}
+.profile-name{font-size:13px;font-weight:600;color:var(--dark)}
+.profile-caret{font-size:10px;color:var(--light);margin-left:2px}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:500;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-dd-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--cream)}
+.profile-dd-name{font-weight:700;font-size:14px;color:var(--dark)}
+.profile-dd-role{font-size:11px;color:var(--light);margin-top:1px}
+.profile-dd-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;text-decoration:none;color:var(--dark);font-size:13px;font-weight:500;border-bottom:1px solid var(--border);transition:background .2s}
+.profile-dd-link:last-child{border-bottom:none}
+.profile-dd-link:hover{background:var(--cream)}
+.profile-dd-link.danger{color:#DC2626}
+.dd-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:700}
+.dd-badge.green{background:var(--green)}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* Mobile drawer */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:8px;color:var(--mid)}
+.mob-section{font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:12px 8px 6px}
+.mob-link{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:13px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-badge{background:var(--orange);color:#fff;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700}
+.mob-badge.green{background:var(--green)}
+.mob-cta{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-danger{display:block;text-align:center;color:#DC2626;font-size:14px;font-weight:500;text-decoration:none;padding:13px}
+
+/* Responsive */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links{display:none}
+ .btn-ghost,.btn-primary-nav{display:none}
+ .profile-name,.profile-caret{display:none}
+ .hamburger{display:flex;margin-left:8px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- Ribbon -->
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500;position:sticky;top:0;z-index:200">
+ 🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a>
+</div>
+
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links"><a href="browse.html">Adopt a Pet</a><a href="furrimatch.html">FurriMatch</a><a href="guide.html">Adoption Guide</a><a href="rescuer-landing.html">For Rescuers</a></div>
+ <div class="nav-right">
+ <a href="rescuer-listing.html" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">List Now</a>
+ <a href="login.html" class="btn-primary-nav">Log in</a>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a><a href="furrimatch.html" class="mob-link">FurriMatch</a><a href="guide.html" class="mob-link">Adoption Guide</a><a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-cta">
+ <a href="rescuer-listing.html" style="display:block;text-align:center;background:var(--green);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff">List Now</a>
+ <a href="login.html" class="mob-primary">Log in</a>
+ </div>
+ </div>
+</div>
+<!-- Mobile drawer -->
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a>
+ <a href="furrimatch.html" class="mob-link">FurriMatch</a>
+ <a href="guide.html" class="mob-link">Adoption Guide</a>
+ <a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-cta">
+ <a href="rescuer-listing.html" style="display:block;text-align:center;background:var(--green);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff">List Now</a>
+ <a href="login.html" class="mob-primary">Log in</a>
+ </div>
+ </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+ <div class="hero-inner">
+   <div class="hero-tag">🐾 Malaysia's Pet Adoption Platform</div>
+   <h1 class="hero-heading">Where every paw<br>finds <span>a home</span> 🤍</h1>
+   <p class="hero-sub">FurriHearts connects loving adopters with rescued pets across Malaysia. Because every heart deserves a forever home.</p>
+   <div class="hero-btns">
+     <a href="browse.html" class="btn-hero-primary">🐾 Adopt a Pet</a>
+     <a href="furrimatch.html" class="btn-hero-outline">✨ Take FurriMatch Quiz</a>
+   </div>
+ </div>
+</section>
+
+<!-- SEARCH BAR -->
+<div class="search-wrap">
+ <div class="search-section">
+ <div style="display:flex;align-items:center;gap:0">
+
+ <!-- Cat / Dog toggle — friendly pill style -->
+ <div style="padding:0 20px;flex-shrink:0">
+ <div style="display:flex;background:var(--cream);border-radius:30px;padding:4px;gap:4px;border:1px solid var(--border)">
+ <button id="pet-cat" onclick="setPet('cat')" style="background:var(--orange);color:#fff;border:none;border-radius:24px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:6px">🐱 Cat</button>
+ <button id="pet-dog" onclick="setPet('dog')" style="background:transparent;color:var(--mid);border:none;border-radius:24px;padding:9px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:6px">🐶 Dog</button>
+ </div>
+ </div>
+
+ <div class="search-divider"></div>
+
+ <!-- Location -->
+ <div class="search-field">
+ <label>📍 Where in Malaysia?</label>
+ <select class="search-select">
+ <option>Anywhere in Malaysia</option>
+ <option>Kuala Lumpur</option>
+ <option>Selangor</option>
+ <option>Penang</option>
+ <option>Johor</option>
+ <option>Perak</option>
+ <option>Melaka</option>
+ <option>Negeri Sembilan</option>
+ <option>Pahang</option>
+ <option>Terengganu</option>
+ <option>Kelantan</option>
+ <option>Kedah</option>
+ <option>Perlis</option>
+ <option>Sabah</option>
+ <option>Sarawak</option>
+ <option>Putrajaya</option>
+ <option>Labuan</option>
+ </select>
+ </div>
+
+ <a href="browse.html" class="btn-search">Find a Pet 🐾</a>
+ </div>
+ </div>
+</div>
+
+<!-- FEATURED PETS -->
+<section class="featured-section">
+ <div class="featured-inner">
+ <div class="section-header">
+ <div>
+ <div class="section-tag">Featured Pets</div>
+ <h2 class="section-title">Find your <em>purrfect</em> match 🐾</h2>
+ </div>
+ <a href="browse.html" class="view-all-link">View all pets →</a>
+ </div>
+ <div class="pets-grid">
+ <!-- Sponsored listing -->
+ <a href="pet-profile.html" class="pet-card sponsored">
+ <div class="pet-card-img" style="padding:0;overflow:hidden"><img src="img-milo.png" style="width:100%;height:100%;object-fit:cover;border-radius:0"><span class="pet-sponsored-tag" style="position:absolute;top:10px;left:10px">⭐ FEATURED</span></div>
+ <div class="pet-card-info">
+ <div class="pet-card-name" style="display:flex;align-items:center;justify-content:space-between">Milo<span style="color:var(--orange);font-size:14px;font-weight:700">→</span></div>
+ <div class="pet-card-meta">2–3 months · Tabby · KL</div>
+ <div class="pet-card-tags"><span class="pet-tag">Playful</span><span class="pet-tag">Affectionate</span><span class="pet-tag blue">Male</span></div>
+ 
+ </div>
+ </a>
+ <a href="pet-profile.html" class="pet-card">
+ <div class="pet-card-img" style="padding:0;overflow:hidden"><img src="img-luna.png" style="width:100%;height:100%;object-fit:cover;border-radius:0"></div>
+ <div class="pet-card-info">
+ <div class="pet-card-name" style="display:flex;align-items:center;justify-content:space-between">Luna<span style="color:var(--orange);font-size:14px;font-weight:700">→</span></div>
+ <div class="pet-card-meta">2–4 months · Shorthair · PJ</div>
+ <div class="pet-card-tags"><span class="pet-tag">Gentle</span><span class="pet-tag">Quiet</span><span class="pet-tag green">Good with Kids</span></div>
+ 
+ </div>
+ </a>
+ <a href="pet-profile.html" class="pet-card">
+ <div class="pet-card-img" style="background:#D5C8B0;padding:0;overflow:hidden"><img src="img-brownie.png" style="width:100%;height:100%;object-fit:cover;border-radius:0"></div>
+ <div class="pet-card-info">
+ <div class="pet-card-name" style="display:flex;align-items:center;justify-content:space-between">Brownie<span style="color:var(--orange);font-size:14px;font-weight:700">→</span></div>
+ <div class="pet-card-meta">6 months · Mixed Breed · Selangor</div>
+ <div class="pet-card-tags"><span class="pet-tag">Energetic</span><span class="pet-tag">Loyal</span><span class="pet-tag blue">Male</span></div>
+ 
+ </div>
+ </a>
+ <!-- Sponsored listing -->
+ <a href="pet-profile.html" class="pet-card sponsored">
+ <div class="pet-card-img" style="padding:0;overflow:hidden"><img src="img-nori.png" style="width:100%;height:100%;object-fit:cover;border-radius:0"><span class="pet-sponsored-tag">⭐ FEATURED</span></div>
+ <div class="pet-card-info">
+ <div class="pet-card-name" style="display:flex;align-items:center;justify-content:space-between">Nori<span style="color:var(--orange);font-size:14px;font-weight:700">→</span></div>
+ <div class="pet-card-meta">3 months · Persian Mix · KL</div>
+ <div class="pet-card-tags"><span class="pet-tag">Lap Cat</span><span class="pet-tag">Curious</span><span class="pet-tag green">Vaccinated</span></div>
+ 
+ </div>
+ </a>
+ </div>
+ </div>
+</section>
+
+
+<!-- FEATURES -->
+<section class="features">
+ <div class="features-inner">
+ <div style="text-align:center">
+ <div class="section-tag">Why FurriHearts</div>
+ <h2 class="section-title" style="font-family:'Fraunces',serif;font-size:32px;font-weight:700">Built for <em>meaningful</em> adoptions</h2>
+ </div>
+ <div class="features-grid">
+ <div class="feature-card"><div class="feature-icon">✨</div><div class="feature-title">Smart Matching</div><p class="feature-desc">Our FurriMatch algorithm finds the right companion based on your lifestyle and home.</p></div>
+ <div class="feature-card"><div class="feature-icon">🏅</div><div class="feature-title">Verified Rescuers</div><p class="feature-desc">Every rescuer is reviewed to ensure a safe and responsible adoption experience.</p></div>
+ <div class="feature-card"><div class="feature-icon">❤️</div><div class="feature-title">Adoption Support</div><p class="feature-desc">From application to adoption day, we're here to guide you every step of the way.</p></div>
+ <div class="feature-card"><div class="feature-icon">🌱</div><div class="feature-title">Make an Impact</div><p class="feature-desc">Every adoption gives a rescued pet a second chance at a happy, loving life.</p></div>
+ </div>
+ </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+ <div class="how-inner">
+ <div class="section-tag">Adoption Guide</div>
+ <h2 class="section-title" style="font-family:'Fraunces',serif;font-size:32px;font-weight:700">Simple steps to a <em>successful adoption</em></h2>
+ <div class="how-steps">
+ <div class="how-step"><div class="how-step-num">1</div><h3>Find Your Match</h3><p>Browse pets or take FurriMatch to find a companion that fits your lifestyle.</p></div>
+ <div class="how-step"><div class="how-step-num">2</div><h3>Apply</h3><p>Submit a short questionnaire. Your profile is automatically included.</p></div>
+ <div class="how-step"><div class="how-step-num">3</div><h3>Pending Approval</h3><p>The rescuer reviews your application and gets back to you.</p></div>
+ <div class="how-step"><div class="how-step-num">4</div><h3>Connected</h3><p>Coordinate collection with your rescuer and welcome your new family member home!</p></div>
+ </div>
+ </div>
+</section>
+
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+ <div class="testimonials-inner">
+ <div style="text-align:center;margin-bottom:8px">
+ <div class="section-tag">What Adopters Say</div>
+ <h2 class="section-title" style="font-family:'Fraunces',serif;font-size:32px;font-weight:700">Be the first to share your story 🐾</h2>
+ </div>
+ <div style="text-align:center;padding:48px 24px;background:#fff;border-radius:16px;border:1px solid var(--border)">
+ <div style="font-size:56px;margin-bottom:16px">💬</div>
+ <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:8px">No reviews yet</div>
+ <p style="font-size:14px;color:var(--light);max-width:400px;margin:0 auto 20px;line-height:1.6">We're just getting started. Once adoptions happen, happy adopters and rescuers will share their stories here.</p>
+ <a href="browse.html" style="display:inline-block;background:var(--orange);color:#fff;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;text-decoration:none">Start Your Journey 🐾</a>
+ </div>
+ </section>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+function goTo(n){
+  slides[current].classList.remove('active');
+  current=(n+slides.length)%slides.length;
+  slides[current].classList.add('active');
+}
+setInterval(()=>goTo(current+1),4000);
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+</script>
+</body>
+</html>

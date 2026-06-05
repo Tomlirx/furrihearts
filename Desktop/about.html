@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — FurriHearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#C8490A;--orange-light:#E05C1A;--orange-pale:#FDF0EA;--cream:#FDFAF7;--dark:#1A1008;--mid:#5C4A3A;--light:#8A7A6A;--border:#EDE4DA;--green:#2D7A3A;--green-pale:#EAF5EC}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:15px;line-height:1.5}
+
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 40px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;color:var(--dark)}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:24px;flex:1}
+.nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer;color:var(--dark);text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-primary-nav{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap}
+.btn-primary-nav:hover{background:var(--orange-light)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* DRAWER */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:1000}
+.mob-drawer.open{display:block}
+.mob-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:#fff;padding:20px;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.mob-close{background:none;border:none;font-size:24px;cursor:pointer;align-self:flex-end;margin-bottom:16px;color:var(--mid)}
+.mob-link{display:block;text-decoration:none;color:var(--dark);font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid var(--border)}
+.mob-link.active{color:var(--orange);font-weight:700}
+.mob-cta{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.mob-ghost{display:block;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:14px;text-decoration:none;color:var(--dark);font-weight:500}
+.mob-primary{display:block;text-align:center;background:var(--orange);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#FDF5EF,#FEF8F3,#F5EDE6);padding:72px 40px;text-align:center}
+.hero-tag{font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.hero-title{font-family:'Fraunces',serif;font-size:44px;font-weight:700;line-height:1.15;margin-bottom:16px}
+.hero-title em{color:var(--orange);font-style:normal}
+.hero-sub{color:var(--mid);font-size:16px;line-height:1.7;max-width:520px;margin:0 auto}
+
+/* STATS */
+.stats-band{background:var(--orange);color:#fff;padding:36px 40px}
+.stats-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.stat-item{padding:0 20px;border-right:1px solid rgba(255,255,255,0.2)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Fraunces',serif;font-size:36px;font-weight:700;margin-bottom:4px}
+.stat-label{font-size:13px;opacity:.85}
+
+/* MISSION */
+.mission{padding:64px 40px;background:#fff}
+.mission-inner{max-width:640px;margin:0 auto;text-align:center}
+.mission-inner h2{font-family:'Fraunces',serif;font-size:32px;font-weight:700;margin-bottom:16px}
+.mission-inner h2 em{color:var(--orange);font-style:normal}
+.mission-inner p{color:var(--mid);font-size:15px;line-height:1.8;margin-bottom:14px}
+.mission-inner p:last-child{margin-bottom:0}
+
+/* VALUES */
+.values{padding:64px 40px;background:var(--cream)}
+.values-inner{max-width:900px;margin:0 auto}
+.section-tag{text-align:center;font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.section-title{text-align:center;font-family:'Fraunces',serif;font-size:32px;font-weight:700;margin-bottom:40px}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.value-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px}
+.value-icon{font-size:32px;margin-bottom:14px}
+.value-title{font-weight:700;font-size:16px;margin-bottom:8px}
+.value-desc{font-size:14px;color:var(--mid);line-height:1.7}
+
+/* TEAM */
+.team{padding:64px 40px;background:#fff}
+.team-inner{max-width:900px;margin:0 auto}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:36px}
+.team-card{background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center}
+.team-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#F0D5B8,#C9A88A);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px}
+.team-name{font-weight:700;font-size:14px;margin-bottom:2px}
+.team-role{font-size:12px;color:var(--orange);font-weight:600;margin-bottom:8px}
+.team-bio{font-size:12px;color:var(--mid);line-height:1.6}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--orange),var(--orange-light));padding:64px 40px;text-align:center;color:#fff}
+.cta h2{font-family:'Fraunces',serif;font-size:36px;font-weight:700;margin-bottom:12px}
+.cta p{font-size:15px;opacity:.9;margin-bottom:28px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-white{background:#fff;color:var(--orange);border:none;border-radius:10px;padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:inherit}
+.btn-white:hover{background:var(--cream)}
+.btn-white-out{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.6);border-radius:10px;padding:13px 26px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-family:inherit}
+.btn-white-out:hover{border-color:#fff}
+
+/* FOOTER */
+footer{background:var(--dark);color:#fff;padding:48px 40px 24px;width:100%;box-sizing:border-box}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:#A09080;font-size:13px;margin-top:10px;line-height:1.6}
+.footer-logo-text{font-family:'Fraunces',serif;font-size:20px;color:#fff}
+.footer-logo-text span{color:var(--orange)}
+.footer-col h4{font-weight:600;font-size:14px;margin-bottom:14px;color:#D0C0B0}
+.footer-col a{display:block;color:#A09080;font-size:13px;text-decoration:none;margin-bottom:8px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #2A1E14;padding-top:20px;display:flex;justify-content:space-between;align-items:center;color:#6A5A4A;font-size:12px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+ nav{padding:0 16px;top:0}
+ .nav-inner{height:56px;gap:0}
+ .nav-links,.btn-ghost,.btn-primary-nav{display:none}
+ .hamburger{display:flex;margin-left:auto}
+ .hero{padding:40px 20px}
+ .hero-title{font-size:30px}
+ .hero-sub{font-size:14px}
+ .stats-band{padding:28px 20px}
+ .stats-inner{grid-template-columns:repeat(2,1fr);gap:20px}
+ .stat-item{border-right:none;padding:8px 0}
+ .stat-num{font-size:28px}
+ .mission{padding:40px 20px}
+ .mission-inner h2{font-size:26px}
+ .values{padding:40px 20px}
+ .section-title{font-size:26px;margin-bottom:24px}
+ .values-grid{grid-template-columns:1fr;gap:12px}
+ .team{padding:40px 20px}
+ .team-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+ .team-avatar{width:52px;height:52px;font-size:22px}
+ .cta{padding:40px 20px}
+ .cta h2{font-size:26px}
+ .cta-btns{flex-direction:column;align-items:center}
+ .btn-white,.btn-white-out{width:100%;justify-content:center}
+ footer{padding:32px 16px 24px}
+ .footer-grid{grid-template-columns:1fr 1fr;gap:20px}
+ .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+}
+@media(max-width:480px){
+ .team-grid{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr}
+ .stats-inner{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div style="background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:500">🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; <a href="furrimatch.html" style="color:#fff;font-weight:700;text-decoration:underline">Take the FurriMatch Quiz →</a></div>
+
+<nav>
+ <div class="nav-inner">
+ <a class="logo" href="index.html"><div class="logo-icon">🐾</div><span class="logo-text">Furri<span>Hearts</span></span></a>
+ <div class="nav-links">
+ <a href="browse.html">Adopt a Pet</a>
+ <a href="furrimatch.html">FurriMatch</a>
+ <a href="guide.html">Adoption Guide</a>
+ <a href="rescuer-landing.html">For Rescuers</a>
+ </div>
+ <div class="nav-right">
+ <a href="rescuer-listing.html" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">List Now</a>
+ <a href="login.html" class="btn-primary-nav">Log in</a>
+ <button class="hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+ </div>
+ </div>
+</nav>
+
+<div class="mob-drawer" id="mob-drawer">
+ <div class="mob-overlay" onclick="closeDrawer()"></div>
+ <div class="mob-panel">
+ <button class="mob-close" onclick="closeDrawer()">✕</button>
+ <a href="browse.html" class="mob-link">Adopt a Pet</a>
+ <a href="furrimatch.html" class="mob-link">FurriMatch</a>
+ <a href="guide.html" class="mob-link">Adoption Guide</a>
+ <a href="rescuer-landing.html" class="mob-link">For Rescuers</a>
+ <div class="mob-cta">
+ <a href="rescuer-listing.html" style="display:block;text-align:center;background:var(--green);border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;color:#fff">List Now</a>
+ <a href="login.html" class="mob-primary">Log in</a>
+ </div>
+ </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+ <div class="hero-tag">About FurriHearts</div>
+ <h1 class="hero-title">We believe <em>every pet</em><br>deserves a loving home 🐾</h1>
+ <p class="hero-sub">FurriHearts connects rescued animals with caring adopters across Malaysia — making adoption simpler, safer, and more meaningful for everyone.</p>
+</section>
+
+<!-- Stats -->
+<div class="stats-band">
+ <div class="stats-inner">
+ <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Successful Adoptions</div></div>
+ <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Active Rescuers</div></div>
+ <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Registered Adopters</div></div>
+ <div class="stat-item"><div class="stat-num">Just launched</div><div class="stat-label">Changing Lives</div></div>
+ </div>
+</div>
+
+<!-- Mission -->
+<section class="mission">
+ <div class="mission-inner">
+ <h2>Our <em>Mission</em></h2>
+ <p>FurriHearts was born out of a simple belief — that the adoption process should be as joyful as the moment you bring a pet home. Too often, rescuers are overwhelmed and adopters are lost.</p>
+ <p>By combining smart technology with genuine compassion, we've built a platform that makes adoption easier, safer, and more meaningful. Every feature we build starts with one question: <strong>does this help a pet find a home?</strong></p>
+ </div>
+</section>
+
+<!-- Values -->
+<section class="values">
+ <div class="values-inner">
+ <div class="section-tag">Our Values</div>
+ <h2 class="section-title">What we stand for</h2>
+ <div class="values-grid">
+ <div class="value-card">
+ <div class="value-icon">❤️</div>
+ <div class="value-title">Compassion First</div>
+ <p class="value-desc">Every decision we make is guided by the wellbeing of the animals we serve. We put pets and their future families at the centre of everything.</p>
+ </div>
+ <div class="value-card">
+ <div class="value-icon">🛡️</div>
+ <div class="value-title">Safety & Trust</div>
+ <p class="value-desc">We verify every rescuer and review every listing — creating a safe environment where adopters can connect with confidence and peace of mind.</p>
+ </div>
+ <div class="value-card">
+ <div class="value-icon">✨</div>
+ <div class="value-title">Smart & Simple</div>
+ <p class="value-desc">Adoption shouldn't be complicated. We use smart technology — like AI matching — to make the process effortless for both adopters and rescuers.</p>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- Team -->
+<section class="team">
+ <div class="team-inner">
+ <div class="section-tag">The Team</div>
+ <h2 class="section-title">The humans behind FurriHearts</h2>
+ <div class="team-grid">
+ <div class="team-card">
+ <div class="team-avatar">👩</div>
+ <div class="team-name">Aisha Rahman</div>
+ <div class="team-role">Co-Founder & CEO</div>
+ <p class="team-bio">Former product manager turned rescue advocate. Saved her first cat, Boba, in 2020.</p>
+ </div>
+ <div class="team-card">
+ <div class="team-avatar">👨</div>
+ <div class="team-name">Daniel Lim</div>
+ <div class="team-role">Co-Founder & CTO</div>
+ <p class="team-bio">Full-stack engineer with a soft spot for strays. Built FurriMatch from scratch.</p>
+ </div>
+ <div class="team-card">
+ <div class="team-avatar">👩</div>
+ <div class="team-name">Mei Ling Tan</div>
+ <div class="team-role">Head of Rescuer Success</div>
+ <p class="team-bio">10 years in rescue. Personally onboarded our first 50 rescuer partners.</p>
+ </div>
+ <div class="team-card">
+ <div class="team-avatar">👨</div>
+ <div class="team-name">Raj Krishnan</div>
+ <div class="team-role">Head of Design</div>
+ <p class="team-bio">Believes good design saves lives — especially when it helps pets get adopted faster.</p>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+ <h2>Join our mission 🐾</h2>
+ <p>Whether you're looking to adopt or help rehome — there's a place for you in the FurriHearts community.</p>
+ <div class="cta-btns">
+ <a href="browse.html" class="btn-white">🐾 Browse Pets</a>
+ <a href="rescuer-landing.html" class="btn-white-out">🏅 I'm a Rescuer</a>
+ </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">Furri<span>Hearts</span></div>
+        <p>Matching hearts. Creating forever homes.<br>Malaysia's trusted pet adoption platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Adopters</h4>
+        <a href="browse.html">Adopt a Pet</a>
+        <a href="furrimatch.html">FurriMatch</a>
+        <a href="guide.html">Adoption Guide</a>
+        <a href="care-packages.html">Care Packages</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Rescuers</h4>
+        <a href="rescuer-listing.html">List a Pet</a>
+        <a href="rescuer-guide.html">Rescuer Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FurriHearts. All rights reserved.</span>
+      <span>Made with ❤️ for animals in Malaysia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function openDrawer(){document.getElementById('mob-drawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('mob-drawer').classList.remove('open');document.body.style.overflow='';}
+</script>
+</body>
+</html>
