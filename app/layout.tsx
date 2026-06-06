@@ -1,14 +1,21 @@
-import './globals.css';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+// app/layout.tsx
+import type { Metadata } from "next";
+import "./globals.css";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: "FurriHearts",
+  description: "Meaningful adoptions.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-slate-50">
-        <Navbar />
+      <body>
         {children}
-        <Footer />
       </body>
     </html>
   );

@@ -1,11 +1,12 @@
 import Link from 'next/link';
-export default function Navbar() {
+
+export function Navbar() {
   return (
-    <nav className="flex justify-between items-center p-6 border-b bg-white">
-      <div className="text-2xl font-bold">Furri<span className="text-blue-600">Hearts</span></div>
-      <div className="space-x-6">
-        <Link href="/">Adopt</Link>
-        <Link href="/quiz">FurriMatch</Link>
+    <nav className="flex justify-between items-center py-6 border-b border-slate-100">
+      <Link href="/" className="text-2xl font-bold tracking-tighter">FurriHearts</Link>
+      <div className="space-x-8 font-medium text-slate-600">
+        <Link href="/" className="hover:text-black">Adopt</Link>
+        <Link href="/match" className="hover:text-black">FurriMatch</Link>
       </div>
     </nav>
   );

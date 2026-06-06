@@ -1,10 +1,21 @@
-export default function PetCard({ name, breed, image }: { name: string; breed: string; image: string }) {
+import Link from 'next/link';
+
+export function PetCard({ pet }: { pet: any }) {
   return (
-    <div className="border rounded-2xl p-4 hover:shadow-lg transition-all bg-white">
-      <img src={image} alt={name} className="w-full h-48 object-cover rounded-xl" />
-      <h3 className="font-bold text-xl mt-4">{name}</h3>
-      <p className="text-slate-500">{breed}</p>
-      <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-xl">View Profile</button>
+    <div className="group rounded-3xl bg-white border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
+      <div className="aspect-[4/3] overflow-hidden">
+        <img src={pet.image} alt={pet.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      </div>
+      <div className="p-6">
+        <h3 className="text-xl font-bold">{pet.name}</h3>
+        <p className="text-slate-500 mb-6">{pet.breed}</p>
+        <Link 
+          href={`/pet/${pet.id}`} 
+          className="block w-full text-center py-3 bg-slate-900 text-white rounded-xl hover:bg-black transition-colors"
+        >
+          View Profile
+        </Link>
+      </div>
     </div>
   );
 }
