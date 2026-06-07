@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signInUser } from '../actions/auth';
-import '../signup/styles.css'; // Reusing your shared styles
+import { supabase } from '@/lib/supabase'; // Import your Supabase client
+import '../signup/styles.css';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -19,7 +20,6 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    // 1. Client-side Validation
     const newErrors: Record<string, string> = {};
     if (!formData.email.includes('@')) newErrors.email = 'Please enter a valid email';
     if (formData.password.length < 8) newErrors.pwd = 'Incorrect password';
@@ -30,12 +30,11 @@ export default function Login() {
       return;
     }
 
-    // 2. Auth Action
     setLoading(true);
     const result = await signInUser(formData);
     
     if (result.error) {
-      setErrors({ email: result.error }); // Show Auth errors (e.g. invalid credentials)
+      setErrors({ email: result.error });
     } else {
       router.push('/browse');
       router.refresh();
@@ -43,15 +42,27 @@ export default function Login() {
     setLoading(false);
   };
 
+  // NEW: Google Auth Handler
+  const handleGoogleSignIn = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      setErrors({ email: 'Google login failed: ' + error.message });
+    }
+  };
+
   return (
     <div className="signup-layout">
-      {/* Left Panel: Matches your login.html branding */}
       <div className="left-panel" style={{background: 'linear-gradient(135deg,#FBE8D8,#F5C9A0,#E8A87C)'}}>
         <h1 className="right-title" style={{color: 'var(--dark)'}}>Welcome back to FurriHearts</h1>
         <p style={{ color: 'var(--mid)', marginTop: '16px', maxWidth: '300px', textAlign: 'center' }}>Continue your journey to finding a forever friend.</p>
       </div>
 
-      {/* Right Panel: The Login Form */}
       <div className="right-panel">
         <div className="right-inner">
           <h2 className="right-title">Log in</h2>
@@ -70,7 +81,6 @@ export default function Login() {
             <a href="#" className="forgot-link">Forgot password?</a>
           </div>
 
-          {/* Captcha Simulation */}
           <div className={`captcha-box ${errors.captcha ? 'error' : ''}`} onClick={() => setCaptchaVerified(!captchaVerified)} style={{cursor: 'pointer', border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>
             {captchaVerified ? '✅ You\'re not a robot' : 'I\'m not a robot'}
           </div>
@@ -81,7 +91,11 @@ export default function Login() {
           </button>
 
           <div className="divider">or continue with</div>
-          <button className="btn-social">🌐 Continue with Google</button>
+          
+          {/* UPDATED: Added the onClick handler to your social button */}
+          <button className="btn-social" onClick={handleGoogleSignIn}>
+            🌐 Continue with Google
+          </button>
         </div>
       </div>
     </div>

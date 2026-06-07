@@ -1,15 +1,10 @@
-// app/page.tsx
-export const dynamic = 'force-dynamic';
 import './styles.css';
 import { fetchPets } from '@/lib/pet-service';
-import { createClient } from '@/utils/supabase/server'; // 1. Import server client
 import Link from 'next/link';
 import { HomeSearch } from '@/components/HomeSearch';
 
 export default async function Home() {
-  const supabase = await createClient(); // 2. Create the instance
-  const allPets = await fetchPets(supabase); // 3. Pass it to the service
-  
+  const allPets = await fetchPets();
   const featuredPets = allPets ? allPets.slice(0, 4) : [];
 
   return (
