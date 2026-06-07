@@ -27,9 +27,9 @@ export async function GET(request: Request) {
               });
             });
           },
-        }, // <--- Correctly closes 'cookies'
-      } // <--- THIS WAS MISSING: Closes the options object
-    ); // <--- Now correctly closes 'createServerClient'
+        }, // This closes the 'cookies' object
+      } // This closes the configuration object passed to createServerClient
+    ); // This closes the createServerClient function
     
     await supabase.auth.exchangeCodeForSession(code);
   }
