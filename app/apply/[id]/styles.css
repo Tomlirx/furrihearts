@@ -1,0 +1,36 @@
+/* =========================================
+   APPLICATION QUESTIONNAIRE STYLES
+========================================= */
+
+.q-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 32px; gap: 24px; }
+.q-title-big { font-family: var(--font-fraunces), serif; font-size: 32px; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+.q-sub-big { color: var(--mid); font-size: 15px; }
+.pet-thumb { width: 120px; height: 120px; border-radius: 16px; overflow: hidden; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+.info-banner { background: var(--orange-pale); border: 1px solid #F5C9B0; border-radius: 12px; padding: 20px; display: flex; gap: 16px; margin-bottom: 40px; color: var(--orange); font-size: 14px; line-height: 1.6; align-items: flex-start; }
+.info-banner-icon { font-size: 20px; }
+
+.question-block { margin-bottom: 40px; }
+.q-num { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--dark); }
+
+.q-opt-grid { display: grid; gap: 12px; margin-top: 12px; }
+.q-opt-4 { grid-template-columns: repeat(2, 1fr); }
+.q-opt { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; background: #fff; cursor: pointer; text-align: left; font-size: 14px; color: var(--mid); transition: all .2s; }
+.q-opt:hover { border-color: var(--orange); }
+.q-opt.selected { background: var(--orange); color: #fff; border-color: var(--orange); font-weight: 600; }
+
+.radio-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.radio-list-item { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; cursor: pointer; transition: all .2s; }
+.radio-list-item:hover { border-color: var(--orange); }
+.radio-list-item.selected { border-color: var(--orange); background: var(--orange-pale); font-weight: 600; color: var(--orange); }
+.big-radio { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 50%; }
+.radio-list-item.selected .big-radio { border: 5px solid var(--orange); }
+
+.textarea-field { width: 100%; min-height: 120px; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; font-family: inherit; font-size: 14px; margin-top: 12px; resize: vertical; outline: none; transition: border .2s; }
+.textarea-field:focus { border-color: var(--orange); }
+.char-count { font-size: 11px; color: var(--light); text-align: right; margin-top: 4px; }
+
+@media(max-width: 600px) {
+  .q-opt-4 { grid-template-columns: 1fr; }
+  .q-header { flex-direction: column; }
+}

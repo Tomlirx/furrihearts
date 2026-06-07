@@ -1,9 +1,9 @@
-import './styles.css';
 import { fetchPets } from '@/lib/pet-service';
 import Link from 'next/link';
 import { HomeSearch } from '@/components/HomeSearch';
 
 export default async function Home() {
+  // Fetch pets from Supabase and grab the first 4 for the Featured section
   const allPets = await fetchPets();
   const featuredPets = allPets ? allPets.slice(0, 4) : [];
 
@@ -22,10 +22,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* SEARCH BAR (Uses your component) */}
+      {/* INTERACTIVE SEARCH WIDGET */}
       <HomeSearch />
 
-      {/* FEATURED PETS */}
+      {/* FEATURED PETS (Dynamic from Supabase) */}
       <section className="featured-section">
         <div className="featured-inner">
           <div className="section-header">
@@ -42,15 +42,15 @@ export default async function Home() {
                 <div className="pet-card-img" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
                   <img src={pet.image_url} alt={pet.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 0 }} />
                   {index === 0 && (
-                    <span className="pet-sponsored-tag">⭐ FEATURED</span>
+                    <span className="pet-sponsored-tag" style={{ position: 'absolute', top: '10px', left: '10px' }}>⭐ FEATURED</span>
                   )}
                 </div>
                 <div className="pet-card-info">
-                  <div className="pet-card-name">
+                  <div className="pet-card-name" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     {pet.name}
                     <span style={{ color: 'var(--orange)', fontSize: '14px', fontWeight: 700 }}>→</span>
                   </div>
-                  <div className="pet-card-meta">{pet.age} · {pet.breed}</div>
+                  <div className="pet-card-meta">{pet.age} years old · {pet.breed}</div>
                   <div className="pet-card-tags">
                     <span className="pet-tag">Available</span>
                     <span className="pet-tag green">Vaccinated</span>
@@ -67,7 +67,7 @@ export default async function Home() {
         <div className="features-inner">
           <div style={{ textAlign: 'center' }}>
             <div className="section-tag">Why FurriHearts</div>
-            <h2 className="section-title">Built for <em>meaningful</em> adoptions</h2>
+            <h2 className="section-title" style={{ fontFamily: "'Fraunces', serif", fontSize: '32px', fontWeight: 700 }}>Built for <em>meaningful</em> adoptions</h2>
           </div>
           <div className="features-grid">
             <div className="feature-card"><div className="feature-icon">✨</div><div className="feature-title">Smart Matching</div><p className="feature-desc">Our FurriMatch algorithm finds the right companion based on your lifestyle and home.</p></div>
@@ -79,10 +79,10 @@ export default async function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="how-section">
+      <section className="how-section" id="how">
         <div className="how-inner">
           <div className="section-tag">Adoption Guide</div>
-          <h2 className="section-title">Simple steps to a <em>successful adoption</em></h2>
+          <h2 className="section-title" style={{ fontFamily: "'Fraunces', serif", fontSize: '32px', fontWeight: 700 }}>Simple steps to a <em>successful adoption</em></h2>
           <div className="how-steps">
             <div className="how-step"><div className="how-step-num">1</div><h3>Find Your Match</h3><p>Browse pets or take FurriMatch to find a companion that fits your lifestyle.</p></div>
             <div className="how-step"><div className="how-step-num">2</div><h3>Apply</h3><p>Submit a short questionnaire. Your profile is automatically included.</p></div>
@@ -97,7 +97,7 @@ export default async function Home() {
         <div className="testimonials-inner">
           <div style={{ textAlign: 'center', marginBottom: '8px' }}>
             <div className="section-tag">What Adopters Say</div>
-            <h2 className="section-title">Be the first to share your story 🐾</h2>
+            <h2 className="section-title" style={{ fontFamily: "'Fraunces', serif", fontSize: '32px', fontWeight: 700 }}>Be the first to share your story 🐾</h2>
           </div>
           <div style={{ textAlign: 'center', padding: '48px 24px', background: '#fff', borderRadius: '16px', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '56px', marginBottom: '16px' }}>💬</div>

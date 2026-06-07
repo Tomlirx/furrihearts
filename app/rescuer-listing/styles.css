@@ -1,0 +1,51 @@
+/* =========================================
+   RESCUER LISTING FLOW STYLES
+   Location: app/rescuer-listing/styles.css
+========================================= */
+
+/* --- Step 1: Upload --- */
+.upload-area { border: 2px dashed var(--border); border-radius: 20px; padding: 48px 32px; text-align: center; cursor: pointer; transition: all .3s; background: #fff; position: relative; margin-bottom: 20px; }
+.upload-area:hover { border-color: var(--orange); background: var(--orange-pale); }
+.upload-icon { font-size: 56px; margin-bottom: 16px; }
+.upload-label { font-weight: 700; font-size: 18px; margin-bottom: 8px; color: var(--dark); }
+.photo-previews { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+.photo-thumb-wrap { position: relative; display: inline-block; }
+.photo-thumb { width: 100px; height: 100px; border-radius: 12px; object-fit: cover; border: 2px solid var(--border); }
+.photo-remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: #DC2626; border-radius: 50%; color: #fff; font-size: 11px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+/* --- Step 2: Scanner --- */
+.photo-strip { display: flex; gap: 10px; justify-content: center; margin-bottom: 32px; }
+.photo-mock { width: 90px; height: 90px; border-radius: 12px; background: linear-gradient(135deg, #E8D5C4, #C9A88A); display: flex; align-items: center; justify-content: center; font-size: 32px; position: relative; overflow: hidden; }
+.scan-line { position: absolute; left: 0; right: 0; height: 4px; background: var(--orange); box-shadow: 0 0 10px var(--orange); transition: top 0.2s linear; }
+.progress-wrap { background: var(--border); border-radius: 10px; height: 6px; margin-bottom: 8px; overflow: hidden; width: 100%; }
+.progress-bar { height: 100%; background: var(--orange); border-radius: 10px; transition: width .4s ease; }
+
+/* --- Step 3: Form Fields --- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 20px; }
+.section { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 16px; }
+.section-label { font-size: 11px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; }
+.form-field { margin-bottom: 16px; }
+.field-label { font-size: 12px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.ai-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--orange-pale); color: var(--orange); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700; margin-bottom: 24px; }
+.ai-filled { font-size: 10px; background: var(--orange-pale); color: var(--orange); border-radius: 4px; padding: 2px 6px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+
+.form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; color: var(--dark); font-family: inherit; background: #fff; outline: none; }
+.form-input:focus { border-color: var(--orange); }
+.form-select { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; color: var(--dark); font-family: inherit; background: #fff; outline: none; cursor: pointer; }
+
+/* --- Chips & Buttons --- */
+.gender-options { display: flex; gap: 10px; }
+.gender-opt { flex: 1; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 500; background: #fff; color: var(--mid); transition: all .2s; }
+.gender-opt.selected { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); font-weight: 700; }
+
+.health-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.health-chip { border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 14px; font-size: 13px; cursor: pointer; background: #fff; color: var(--mid); transition: all .2s; }
+.health-chip.on { background: var(--green-pale); border-color: var(--green); color: var(--green); font-weight: 600; }
+
+.fee-input-wrap { position: relative; }
+.fee-prefix { position: absolute; left: 14px; top: 11px; color: var(--mid); font-size: 14px; font-weight: 600; }
+
+/* Responsive adjustments */
+@media(max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+}

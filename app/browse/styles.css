@@ -1,0 +1,78 @@
+/* =========================================
+   BROWSE PAGE SPECIFIC STYLES
+   Location: app/browse/styles.css
+========================================= */
+
+.page-layout { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 32px 40px; 
+  display: grid; 
+  grid-template-columns: 260px 1fr; 
+  gap: 32px; 
+  align-items: start; 
+}
+
+/* Sidebar & Filters */
+.sidebar { 
+  background: #fff; 
+  border: 1px solid var(--border); 
+  border-radius: 14px; 
+  padding: 24px; 
+  position: sticky; 
+  top: 120px; 
+}
+
+.sidebar h3 { font-weight: 700; font-size: 15px; margin-bottom: 16px; }
+.filter-group { margin-bottom: 24px; }
+.filter-label { font-size: 12px; font-weight: 600; color: var(--light); text-transform: uppercase; margin-bottom: 10px; display: block; }
+.filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-btn { border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer; background: #fff; color: var(--mid); transition: all .2s; }
+.filter-btn.active { background: var(--orange-pale); border-color: var(--orange); color: var(--orange); font-weight: 600; }
+
+.location-select { 
+  width: 100%; border: 1.5px solid var(--border); border-radius: 10px; 
+  padding: 9px 12px; font-size: 13px; color: var(--dark); background: #fff; 
+  font-family: inherit; cursor: pointer; outline: none; 
+}
+
+/* FurriMatch Banner */
+.furrimatch-banner { 
+  background: linear-gradient(135deg, var(--orange-pale), #FDE8D8); 
+  border: 1px solid #F5C9B0; border-radius: 12px; padding: 16px; 
+  margin-top: 16px; text-align: center; 
+}
+.furrimatch-banner h4 { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: var(--orange); }
+.furrimatch-banner p { font-size: 12px; color: var(--mid); margin-bottom: 12px; line-height: 1.5; }
+.btn-furi { 
+  background: var(--orange); color: #fff; border: none; border-radius: 8px; 
+  padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; 
+  width: 100%; text-decoration: none; display: block; text-align: center; 
+}
+
+/* Main Content & Grid */
+.browse-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.pets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 8px; }
+
+/* Pet Card */
+.pet-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: block; text-decoration: none; color: inherit; transition: all .2s; }
+.pet-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.pet-img { height: 190px; position: relative; overflow: hidden; background: #E8D5C4; }
+.pet-img img { width: 100%; height: 100%; object-fit: cover; }
+.save-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: #fff; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.pet-info { padding: 12px 14px 14px; }
+.pet-name-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+.pet-name { font-weight: 700; font-size: 15px; color: var(--dark); }
+.pet-arrow { color: var(--orange); font-size: 15px; font-weight: 700; }
+.pet-meta { font-size: 12px; color: var(--light); margin-bottom: 9px; }
+.pet-tag { background: var(--orange-pale); color: var(--orange); border-radius: 12px; padding: 3px 9px; font-size: 11px; font-weight: 500; }
+
+@media(max-width: 768px) {
+  .page-layout { grid-template-columns: 1fr; padding: 16px; }
+  .sidebar { display: none; } /* On mobile, your original design hides the sidebar */
+  .pets-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 480px) {
+  .pets-grid { grid-template-columns: 1fr; }
+}
