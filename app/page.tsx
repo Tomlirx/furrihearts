@@ -1,14 +1,22 @@
 // app/page.tsx
+interface Pet {
+  id: string;
+  name: string;
+  image_url: string;
+  age: string;
+  breed: string;
+}
+
 export const dynamic = 'force-dynamic';
 import './styles.css';
 import { fetchPets } from '@/lib/pet-service';
-import { createClient } from '@/utils/supabase/server'; // 1. Import server client
+import { createClient } from '@/utils/supabase/server'; 
 import Link from 'next/link';
 import { HomeSearch } from '@/components/HomeSearch';
 
 export default async function Home() {
-  const supabase = await createClient(); // 2. Create the instance
-  const allPets = await fetchPets(supabase); // 3. Pass it to the service
+  const supabase = await createClient(); 
+  const allPets: Pet[] = await fetchPets(supabase); 
   
   const featuredPets = allPets ? allPets.slice(0, 4) : [];
 
@@ -27,7 +35,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* SEARCH BAR (Uses your component) */}
+      {/* SEARCH BAR */}
       <HomeSearch />
 
       {/* FEATURED PETS */}
@@ -42,7 +50,7 @@ export default async function Home() {
           </div>
           
           <div className="pets-grid">
-            {featuredPets.map((pet, index) => (
+            {featuredPets.map((pet: Pet, index: number) => (
               <Link href={`/pet/${pet.id}`} key={pet.id} className={`pet-card ${index === 0 ? 'sponsored' : ''}`}>
                 <div className="pet-card-img" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
                   <img src={pet.image_url} alt={pet.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 0 }} />
