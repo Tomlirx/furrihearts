@@ -7,15 +7,13 @@ import { supabase } from '@/lib/supabase';
 export default function Navbar({ user, roles = [] }: { user: any, roles?: string[] }) {
   const isRescuer = (roles ?? []).includes('rescuer');
   
-  // State to manage the profile dropdown visibility
+  // States for menus
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
- // Replace your existing handleLogout with this clean version
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      // No more manual localStorage/cookie clearing needed.
-      // A simple reload is sufficient to update the UI.
       window.location.href = '/';
     } catch (error) {
       console.error("Error logging out:", error);
@@ -48,7 +46,6 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
 
             {user ? (
               <div style={{ position: 'relative' }}>
-                {/* Clickable Profile Chip */}
                 <div 
                   className="profile-chip" 
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -59,34 +56,20 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
                   {isRescuer && <span className="dd-badge">Rescuer</span>}
                 </div>
 
-                {/* Dropdown Menu */}
                 {isDropdownOpen && (
                   <div style={{
-                    position: 'absolute',
-                    top: 'calc(100% + 8px)',
-                    right: 0,
-                    background: '#fff',
-                    border: '1px solid var(--border)',
-                    borderRadius: '12px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    zIndex: 500,
-                    padding: '8px',
-                    minWidth: '160px'
+                    position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                    background: '#fff', border: '1px solid var(--border)',
+                    borderRadius: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    zIndex: 500, padding: '8px', minWidth: '160px'
                   }}>
                     <button
                       onClick={handleLogout}
                       style={{
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '10px 16px',
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#DC2626',
-                        fontSize: '13px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        borderRadius: '8px',
-                        transition: 'background 0.2s'
+                        width: '100%', textAlign: 'left', padding: '10px 16px',
+                        background: 'transparent', border: 'none', color: '#DC2626',
+                        fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                        borderRadius: '8px', transition: 'background 0.2s'
                       }}
                       onMouseOver={(e) => e.currentTarget.style.background = 'var(--cream)'}
                       onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
@@ -100,12 +83,45 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
               <Link href="/login" className="btn-ghost">Log in</Link>
             )}
 
-            <button className="hamburger">
+            {/* Hamburger Trigger */}
+            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)}>
               <span></span><span></span><span></span>
             </button>
           </div>
         </div>
       </nav>
+
+      {/* ── MOBILE DRAWER ── */}
+      <div className={`mob-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mob-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
+        <div className="mob-panel">
+          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
+          
+          <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adopt a Pet</Link>
+          <Link href="/furrimatch" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>FurriMatch</Link>
+          <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adoption Guide</Link>
+          <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>For Rescuers</Link>
+          
+          <div className="mob-cta">
+            <Link href="/rescuer-listing" className="mob-primary" style={{ background: 'var(--green)' }} onClick={() => setIsMobileMenuOpen(false)}>
+              List Now
+            </Link>
+            
+            {user ? (
+              <button 
+                onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} 
+                className="mob-danger"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/login" className="mob-primary" onClick={() => setIsMobileMenuOpen(false)}>
+                Log in
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

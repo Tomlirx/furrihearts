@@ -1,38 +1,109 @@
-/* app/signup/styles.css */
-/* --- SHARED AUTH LAYOUT --- */
-.signup-layout { display: grid; grid-template-columns: 1fr 480px; min-height: 100vh; }
-.left-panel { background: linear-gradient(135deg,#FBE8D8,#F5C9A0,#E8A87C); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px; }
-.right-panel { background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px; }
-.right-inner { width: 100%; max-width: 400px; }
-.right-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
-.right-sub { font-size: 14px; color: var(--mid); margin-bottom: 28px; }
+/* ==========================================================================
+   AUTH LAYOUT (Shared between Login & Signup)
+   Location: app/signup/styles.css
+========================================================================== */
+
+/* 1. Desktop Default: Side-by-Side */
+.signup-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.left-panel {
+  flex: 1;
+  /* RESTORED: The background gradient so the white text is visible */
+  background: linear-gradient(135deg, #FBE8D8, #F5C9A0, #E8A87C);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: #fff;
+}
+
+.right-inner {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* 2. Typography & Form Elements */
+.right-title { font-family: var(--font-fraunces, 'Fraunces', serif); font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+.right-sub { font-size: 14px; color: var(--mid); margin-bottom: 32px; }
 .right-sub a { color: var(--orange); font-weight: 600; text-decoration: none; }
 
-/* --- FORM ELEMENTS --- */
-.form-field { margin-bottom: 16px; }
-.form-label { display: block; font-size: 12px; font-weight: 700; color: var(--light); text-transform: uppercase; margin-bottom: 6px; }
-.form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 14px; background: #fff; outline: none; transition: border-color .2s; }
+.form-field { margin-bottom: 20px; }
+.form-label { display: block; font-size: 12px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-family: inherit; transition: border-color .2s; outline: none; }
 .form-input:focus { border-color: var(--orange); }
-.field-error { font-size: 12px; color: #DC2626; margin-top: 4px; min-height: 16px; }
+.form-input.error { border-color: #DC2626; }
+.field-error { font-size: 12px; color: #DC2626; margin-top: 6px; min-height: 18px; }
+.forgot-link { display: block; text-align: right; font-size: 12px; color: var(--orange); font-weight: 600; text-decoration: none; margin-top: -10px; margin-bottom: 12px; }
 
-/* --- BUTTONS & UTILS --- */
-.btn-continue, .btn-login { width: 100%; background: var(--orange); color: #fff; border: none; border-radius: 10px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background .2s; }
-.btn-continue:hover, .btn-login:hover { background: var(--orange-light); }
-.forgot-link { display: block; text-align: right; font-size: 12px; color: var(--orange); font-weight: 600; text-decoration: none; margin-top: 4px; }
-.divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--light); font-size: 13px; }
-.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.btn-social { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 500; cursor: pointer; background: #fff; color: var(--dark); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; transition: all .2s; }
-.btn-social:hover { border-color: var(--orange); color: var(--orange); }
+.captcha-box { background: var(--cream); border-radius: 10px; padding: 16px; text-align: center; font-size: 14px; font-weight: 600; color: var(--mid); margin-bottom: 4px; transition: border-color .2s; user-select: none; cursor: pointer; }
+.captcha-box.error { border-color: #DC2626 !important; }
 
-/* --- SIGNUP STEP SPECIFIC --- */
+/* Shared Buttons */
+.btn-login, .btn-continue { width: 100%; background: var(--orange); color: #fff; border: none; border-radius: 10px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 16px; transition: background .2s; text-decoration: none; display: block; text-align: center; }
+.btn-login:hover, .btn-continue:hover { background: var(--orange-light); }
+.btn-login:disabled, .btn-continue:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.divider { text-align: center; font-size: 12px; color: var(--light); margin: 24px 0; position: relative; }
+.divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: calc(50% - 70px); height: 1px; background: var(--border); }
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.btn-social { width: 100%; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; font-size: 14px; font-weight: 600; color: var(--dark); cursor: pointer; font-family: inherit; transition: border-color .2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn-social:hover { border-color: var(--orange); }
+
+/* ==========================================================================
+   3. SIGNUP SPECIFIC STYLES (Restored)
+========================================================================== */
 .step-bar { display: flex; align-items: center; margin-bottom: 28px; }
 .step { display: flex; flex-direction: column; align-items: center; flex: 1; }
-.step-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--light); background: #fff; margin-bottom: 4px; }
+.step-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--light); background: #fff; margin-bottom: 4px; transition: all .2s; }
 .step.active .step-dot { background: var(--orange); border-color: var(--orange); color: #fff; }
 .step.done .step-dot { background: var(--green); border-color: var(--green); color: #fff; }
 .step-label { font-size: 11px; color: var(--light); }
-.step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 14px; }
+.step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 14px; transition: background .2s; }
 .step-line.done { background: var(--green); }
-.purpose-option { border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; }
-.purpose-option.selected { border-color: var(--orange); background: var(--orange-pale); }
-.captcha-box { border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; background: var(--cream); text-align: center; margin-bottom: 16px; }
+
+.purpose-option { border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; font-size: 15px; font-weight: 600; color: var(--mid); cursor: pointer; transition: all .2s; }
+.purpose-option:hover { border-color: var(--orange); }
+.purpose-option.selected { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); }
+
+.btn-back { font-weight: 600; color: var(--light); }
+.btn-back:hover { color: var(--orange); }
+
+/* ==========================================================================
+   4. MOBILE RESPONSIVE FIX (Maintained)
+========================================================================== */
+@media (max-width: 768px) {
+  /* Stack the layout vertically */
+  .signup-layout { 
+    flex-direction: column; 
+  }
+  
+  /* Shrink the welcome banner to act as a header */
+  .left-panel { 
+    flex: none; 
+    padding: 32px 20px; 
+    min-height: auto; 
+  }
+  
+  /* Make the form section fill the rest of the screen */
+  .right-panel { 
+    padding: 32px 20px; 
+    align-items: flex-start; /* Push form to top */
+  }
+  
+  .right-title { font-size: 28px; }
+}

@@ -57,78 +57,79 @@ useEffect(() => {
     ? `${pet.profiles.first_name} ${pet.profiles.last_name || ''}` 
     : 'Verified Rescuer';
 
+  // Keep your existing state and data fetching logic at the top of page.tsx
+// Replace everything from `return (` downwards:
+
   return (
     <>
-      <div className="top-bar" style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="top-bar">
         <Link href="/browse" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--mid)', fontSize: '14px', textDecoration: 'none' }}>← Back to Browse</Link>
       </div>
 
-      <div className="profile-layout" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px 60px', display: 'grid', gridTemplateColumns: '1fr 420px', gap: '40px', alignItems: 'start' }}>
+      <div className="profile-layout">
         
         {/* ================= LEFT COLUMN ================= */}
         <div>
-          <div className="main-img" style={{ width: '100%', height: '420px', borderRadius: '16px', background: 'linear-gradient(135deg,#E8D5C4,#C9A88A)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', marginBottom: '12px', overflow: 'hidden' }}>
-            <img src={mainImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={pet.name} />
+          <div className="main-img">
+            <img src={mainImage} alt={pet.name} />
             
             {photos.length > 1 && (
               <>
                 <button 
                   onClick={() => setMainImage(photos[(currentIndex - 1 + photos.length) % photos.length])}
-                  style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', width: '36px', height: '36px', background: 'rgba(255,255,255,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '18px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+                  className="img-nav-btn"
+                  style={{ left: '12px' }}
                 >‹</button>
                 <button 
                   onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])}
-                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', width: '36px', height: '36px', background: 'rgba(255,255,255,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '18px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+                  className="img-nav-btn"
+                  style={{ right: '12px' }}
                 >›</button>
               </>
             )}
 
-            <span style={{ position: 'absolute', top: '12px', left: '12px', background: 'rgba(0,0,0,0.5)', color: '#fff', borderRadius: '6px', padding: '4px 10px', fontSize: '12px', textTransform: 'capitalize', fontWeight: 600 }}>{pet.species}</span>
+            <span className="age-label">{pet.species}</span>
             {photos.length > 1 && (
-              <span style={{ position: 'absolute', bottom: '12px', right: '12px', background: 'rgba(0,0,0,0.5)', color: '#fff', borderRadius: '6px', padding: '4px 10px', fontSize: '12px', fontWeight: 600 }}>{currentIndex + 1} / {photos.length}</span>
+              <span className="img-counter">{currentIndex + 1} / {photos.length}</span>
             )}
           </div>
 
           {photos.length > 1 && (
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
+            <div className="thumbnails">
               {photos.map((url: string, index: number) => (
                 <div 
                   key={index} 
                   onClick={() => setMainImage(url)}
-                  style={{ width: '80px', height: '72px', borderRadius: '10px', cursor: 'pointer', border: mainImage === url ? '2px solid var(--orange)' : '2px solid transparent', overflow: 'hidden' }}
+                  className={`thumb ${mainImage === url ? 'active' : ''}`}
                 >
-                  <img src={url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={url} alt="thumbnail" />
                 </div>
               ))}
             </div>
           )}
 
-          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: '14px', padding: '28px', marginBottom: '20px' }}>
-            <h2 style={{ fontWeight: 700, fontSize: '18px', marginBottom: '16px', paddingBottom: '10px', borderBottom: '2px solid var(--orange)', display: 'inline-block' }}>About {pet.name}</h2>
+          <div className="section-card">
+            <h2>About {pet.name}</h2>
             <div style={{ fontSize: '13px', color: 'var(--light)', marginBottom: '10px', textTransform: 'capitalize' }}>{pet.gender} · {pet.age} · {pet.location}</div>
             
             <p style={{ color: 'var(--mid)', fontSize: '14px', lineHeight: 1.7, marginBottom: '20px' }}>{pet.description}</p>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div className="about-grid">
               <div>
                 <h4 style={{ fontWeight: 700, fontSize: '15px', marginBottom: '14px' }}>Health & Medical</h4>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '14px', color: 'var(--mid)' }}>
-                    <div style={{ width: '20px', height: '20px', background: 'var(--green-pale)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: 'var(--green)' }}>✓</div> Vaccinated
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '14px', color: 'var(--mid)' }}>
-                    <div style={{ width: '20px', height: '20px', background: 'var(--green-pale)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: 'var(--green)' }}>✓</div> Dewormed
-                  </li>
+                <ul className="health-list">
+                  <li><div className="check-icon">✓</div> Vaccinated</li>
+                  <li><div className="check-icon">✓</div> Dewormed</li>
                 </ul>
               </div>
               <div>
                 <h4 style={{ fontWeight: 700, fontSize: '15px', marginBottom: '14px' }}>Adoption Information</h4>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  <li style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '14px', color: 'var(--mid)' }}>
+                <ul className="health-list">
+                  <li style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--light)' }}>Adoption Fee</span>
                     <span style={{ fontWeight: 600, color: 'var(--dark)' }}>RM {pet.fee || '0'}</span>
                   </li>
-                  <li style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '14px', color: 'var(--mid)' }}>
+                  <li style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--light)' }}>Location</span>
                     <span style={{ fontWeight: 600, color: 'var(--dark)' }}>{pet.location}</span>
                   </li>
@@ -139,8 +140,8 @@ useEffect(() => {
         </div>
 
         {/* ================= RIGHT SIDEBAR ================= */}
-        <div style={{ position: 'sticky', top: '80px' }}>
-          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: '14px', padding: '24px' }}>
+        <div className="right-sidebar">
+          <div className="right-card">
             <h4 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '16px' }}>Interested in {pet.name}?</h4>
 
             {/* Dynamic Rescuer Card */}
@@ -166,34 +167,33 @@ useEffect(() => {
             </div>
 
            {/* CTA Button Logic */}
-{!userApplication ? (
-  // Case: No application exists
-  pet.status === 'available' ? (
-    <>
-      <Link href={`/apply/${pet.id}`} style={{ display: 'block', background: 'var(--orange)', color: '#fff', borderRadius: '10px', padding: '14px', textAlign: 'center', fontSize: '15px', fontWeight: 700, textDecoration: 'none', marginBottom: '10px' }}>
-        I'm Interested 🐾
-      </Link>
-      <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center' }}>⏱️ Usually replies within 1 day</div>
-    </>
-  ) : (
-    <div style={{ background: '#d1fae5', color: '#065f46', padding: '14px', borderRadius: '10px', textAlign: 'center', fontWeight: 700 }}>
-      🎉 Happily Adopted!
-    </div>
-  )
-) : (
-  // Case: Application exists (Handle status display)
-  <div style={{ 
-    background: userApplication.status === 'pending' ? 'var(--cream)' : '#f3f4f6', 
-    color: userApplication.status === 'pending' ? 'var(--dark)' : 'var(--mid)', 
-    padding: '14px', borderRadius: '10px', textAlign: 'center', fontWeight: 600, border: '1px solid var(--border)' 
-  }}>
-    {userApplication.status === 'pending' && "⏱️ Application Under Review"}
-    {userApplication.status === 'approved' && "✅ Application Approved!"}
-    {userApplication.status === 'rejected' && "❌ Application Declined"}
-    {userApplication.status === 'cancelled' && "📁 Application Archived"}
-  </div>
-)}
-            <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center', margin: '0 0 16px 0' }}>⏱️ Usually replies within 1 day</div>
+            {!userApplication ? (
+              pet.status === 'available' ? (
+                <>
+                  <Link href={`/apply/${pet.id}`} style={{ display: 'block', background: 'var(--orange)', color: '#fff', borderRadius: '10px', padding: '14px', textAlign: 'center', fontSize: '15px', fontWeight: 700, textDecoration: 'none', marginBottom: '10px' }}>
+                    I'm Interested 🐾
+                  </Link>
+                  <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center' }}>⏱️ Usually replies within 1 day</div>
+                </>
+              ) : (
+                <div style={{ background: '#d1fae5', color: '#065f46', padding: '14px', borderRadius: '10px', textAlign: 'center', fontWeight: 700 }}>
+                  🎉 Happily Adopted!
+                </div>
+              )
+            ) : (
+              <div style={{ 
+                background: userApplication.status === 'pending' ? 'var(--cream)' : '#f3f4f6', 
+                color: userApplication.status === 'pending' ? 'var(--dark)' : 'var(--mid)', 
+                padding: '14px', borderRadius: '10px', textAlign: 'center', fontWeight: 600, border: '1px solid var(--border)' 
+              }}>
+                {userApplication.status === 'pending' && "⏱️ Application Under Review"}
+                {userApplication.status === 'approved' && "✅ Application Approved!"}
+                {userApplication.status === 'rejected' && "❌ Application Declined"}
+                {userApplication.status === 'cancelled' && "📁 Application Archived"}
+              </div>
+            )}
+            
+            <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center', margin: '16px 0' }}>⏱️ Usually replies within 1 day</div>
 
             {/* Trust Signals */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '14px', borderTop: '1px solid var(--border)' }}>
