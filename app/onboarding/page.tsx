@@ -33,7 +33,7 @@ export default async function Onboarding() {
           <h2 className="right-title">Complete your profile</h2>
           <p className="right-sub">We just need a few details to get you started.</p>
 
-          /* Instead of action={completeOnboarding}
+          /* Instead of action=
  Use an anonymous function wrapper: */
 <form action={async (formData) => {
   const result = await completeOnboarding(formData);
