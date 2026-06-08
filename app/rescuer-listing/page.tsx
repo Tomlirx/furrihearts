@@ -132,9 +132,20 @@ export default function RescuerListingFlow() {
 
   const handlePublish = async () => {
     setIsSubmitting(true);
+
+    // 1. Authenticate the User
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      alert("Authentication error. Please ensure you are logged in as a Rescuer.");
+      setIsSubmitting(false);
+      return;
+    }
+
     let primaryImageUrl = 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800';
     const allUploadedUrls: string[] = [];
 
+    // 2. Upload Images to Storage
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
         const file = photos[i];
@@ -164,6 +175,7 @@ export default function RescuerListingFlow() {
 
     const finalBreed = breed === 'Other' ? customBreed : breed;
     
+    // 3. Insert Data into Supabase with Rescuer ID
     const { error } = await supabase.from('pets').insert([{
       name: name || 'Unknown',
       species: petType,
@@ -175,11 +187,13 @@ export default function RescuerListingFlow() {
       status: 'available',
       image_url: primaryImageUrl,
       gallery: allUploadedUrls,
-      fee: Number(fee) || 0
+      fee: Number(fee) || 0,
+      rescuer_id: user.id // The critical connection
     }]);
 
     if (!error) {
-      router.push('/'); 
+      // 4. Redirect to the live feed
+      router.push('/browse'); 
     } else {
       console.error("Database Error:", error);
       alert("Error publishing listing details.");
