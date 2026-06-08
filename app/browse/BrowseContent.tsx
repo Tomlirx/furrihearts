@@ -1,15 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function BrowseContent() {
+export default function BrowseContent({ userRole }: { userRole: string }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [pets, setPets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Synchronized state variables: Use 'location' everywhere
   const [type, setType] = useState(searchParams.get('type') || 'all');
   const [gender, setGender] = useState('Any');
   const [location, setLocation] = useState('All Malaysia');
@@ -17,7 +17,7 @@ export default function BrowseContent() {
   useEffect(() => {
     async function fetchFilteredPets() {
       setLoading(true);
-      let query = supabase.from('pets').select('*');
+      let query = supabase.from('pets').select('*').eq('status', 'available'); // Only show available pets
 
       if (type !== 'all') query = query.ilike('species', `%${type}%`);
       if (location !== 'All Malaysia') query = query.ilike('location', `%${location}%`);
@@ -30,7 +30,19 @@ export default function BrowseContent() {
       setLoading(false);
     }
     fetchFilteredPets();
-  }, [type, location, gender]); // Dependency array now correctly uses 'location'
+  }, [type, location, gender]);
+
+  // If a Guest tries to save a pet, prompt them to sign in
+  const handleSavePet = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    if (userRole === 'guest') {
+      alert("Please sign in to save your favorite pets!");
+      router.push('/login');
+    } else {
+      // Future logic: Save to 'saved_pets' table
+      console.log("Saving pet for user...");
+    }
+  };
 
   return (
     <div className="page-layout">
@@ -75,17 +87,26 @@ export default function BrowseContent() {
       <main className="main-content">
         <div className="browse-header">
           <h1>Find Your New Best Friend</h1>
-          <p>{loading ? "Searching..." : `${pets.length} pets available`}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <p>{loading ? "Searching..." : `${pets.length} pets available`}</p>
+            
+            {/* Contextual UI: Only show 'List a Pet' to Rescuers */}
+            {(userRole === 'rescuer' || userRole === 'both') && (
+              <Link href="/dashboard/add-pet" className="btn-furi" style={{ padding: '6px 12px', width: 'auto' }}>
+                + Add Pet
+              </Link>
+            )}
+          </div>
         </div>
 
-        {/* This div now persists in the DOM, preventing the empty main-content issue */}
         <div className="pets-grid">
           {pets.length > 0 ? (
             pets.map((pet) => (
               <Link href={`/pet/${pet.id}`} key={pet.id} className="pet-card">
                 <div className="pet-img">
-                  <img src={pet.image_url} alt={pet.name} />
-                  <button className="save-btn" onClick={(e) => e.preventDefault()}>🤍</button>
+                  {/* Fallback image in case the database URL is empty */}
+                  <img src={pet.image_url || 'https://via.placeholder.com/300x250?text=No+Image'} alt={pet.name} />
+                  <button className="save-btn" onClick={handleSavePet}>🤍</button>
                 </div>
                 <div className="pet-info">
                   <div className="pet-name-row">

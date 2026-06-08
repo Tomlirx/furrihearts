@@ -1,3 +1,4 @@
+// app/auth/callback/route.ts
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -27,12 +28,41 @@ export async function GET(request: Request) {
               });
             });
           },
-        }, // This closes the 'cookies' object
-      } // This closes the configuration object passed to createServerClient
-    ); // This closes the createServerClient function
+        }, 
+      } 
+    ); 
     
+    // 1. Establish the secure session
     await supabase.auth.exchangeCodeForSession(code);
+
+    // --- NEW: ONBOARDING INTERCEPT LOGIC ---
+    
+    // 2. Fetch the newly logged-in user
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      // 3. Check for an existing profile
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      // 4. First Time Login: Create empty profile & route to onboarding
+      if (!profile) {
+        await supabase.from('profiles').insert([
+          { id: user.id, email: user.email }
+        ]);
+        return NextResponse.redirect(new URL('/onboarding', origin));
+      }
+
+      // 5. Incomplete Profile: Route to onboarding (if they skipped it before)
+      if (!profile.role) {
+        return NextResponse.redirect(new URL('/onboarding', origin));
+      }
+    }
   }
 
-  return NextResponse.redirect(new URL('/', origin));
+  // 6. Returning User (with a role): Send directly to the app
+  return NextResponse.redirect(new URL('/browse', origin));
 }
