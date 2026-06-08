@@ -17,13 +17,20 @@ export function PetGrid() {
     loadPets();
   }, []);
 
+  // Define the save handler to pass to PetCard
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log("Save action triggered");
+  };
+
   if (loading) return <div className="py-20 text-center">Loading companions...</div>;
   if (pets.length === 0) return <div className="py-20 text-center">No pets available yet.</div>;
 
   return (
     <div className="grid md:grid-cols-3 gap-8 py-12">
       {pets.map((pet) => (
-        <PetCard key={pet.id} pet={pet} />
+        // Added onSave prop to fulfill the required contract
+        <PetCard key={pet.id} pet={pet} onSave={handleSave} />
       ))}
     </div>
   );
