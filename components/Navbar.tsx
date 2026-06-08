@@ -7,7 +7,6 @@ import { supabase } from '@/lib/supabase';
 export default function Navbar({ user, roles = [] }: { user: any, roles?: string[] }) {
   const isRescuer = (roles ?? []).includes('rescuer');
   
-  // States for menus
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -46,6 +45,7 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
 
             {user ? (
               <div style={{ position: 'relative' }}>
+                {/* Clickable Profile Chip */}
                 <div 
                   className="profile-chip" 
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -56,13 +56,33 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
                   {isRescuer && <span className="dd-badge">Rescuer</span>}
                 </div>
 
+                {/* Dropdown Menu - NOW INCLUDES DASHBOARD */}
                 {isDropdownOpen && (
                   <div style={{
                     position: 'absolute', top: 'calc(100% + 8px)', right: 0,
                     background: '#fff', border: '1px solid var(--border)',
                     borderRadius: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    zIndex: 500, padding: '8px', minWidth: '160px'
+                    zIndex: 500, padding: '8px', minWidth: '160px',
+                    display: 'flex', flexDirection: 'column', gap: '4px'
                   }}>
+                    {/* NEW: Dashboard Entry Point */}
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setIsDropdownOpen(false)}
+                      style={{
+                        width: '100%', display: 'block', padding: '10px 16px',
+                        color: 'var(--dark)', fontSize: '13px', fontWeight: 600,
+                        textDecoration: 'none', borderRadius: '8px', transition: 'background 0.2s'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.background = 'var(--cream)'}
+                      onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                      My Dashboard
+                    </Link>
+
+                    <div style={{ height: '1px', background: 'var(--border)', margin: '4px 0' }}></div>
+
+                    {/* Existing Sign Out */}
                     <button
                       onClick={handleLogout}
                       style={{
@@ -102,6 +122,13 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
           <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adoption Guide</Link>
           <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>For Rescuers</Link>
           
+          {/* NEW: Mobile Dashboard Entry Point */}
+          {user && (
+            <Link href="/dashboard" className="mob-link" style={{ color: 'var(--orange)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
+              My Dashboard
+            </Link>
+          )}
+
           <div className="mob-cta">
             <Link href="/rescuer-listing" className="mob-primary" style={{ background: 'var(--green)' }} onClick={() => setIsMobileMenuOpen(false)}>
               List Now
