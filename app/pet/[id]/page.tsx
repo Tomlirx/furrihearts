@@ -3,7 +3,7 @@ import './styles.css';
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useParams, notFound } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 export default function PetProfile() {
@@ -12,7 +12,12 @@ export default function PetProfile() {
   const [loading, setLoading] = useState(true);
   const [mainImage, setMainImage] = useState('');
   const [userApplication, setUserApplication] = useState<any>(null);
-useEffect(() => {
+  
+  // NEW: State for random rescuer stats
+  const [adoptionsCount, setAdoptionsCount] = useState<number | string>('--');
+  const [experienceYears, setExperienceYears] = useState<number | string>('--');
+
+  useEffect(() => {
     async function fetchPetAndApp() {
       if (!id) return;
 
@@ -37,7 +42,7 @@ useEffect(() => {
             .select('status')
             .eq('pet_id', id)
             .eq('applicant_id', user.id)
-            .maybeSingle(); // Gets one row or null
+            .maybeSingle(); 
           
           if (appData) setUserApplication(appData);
         }
@@ -45,6 +50,10 @@ useEffect(() => {
       setLoading(false);
     }
     fetchPetAndApp();
+
+    // NEW: Generate random stats purely on the client-side
+    setAdoptionsCount(Math.floor(Math.random() * 100) + 1);
+    setExperienceYears(Math.floor(Math.random() * 10) + 1);
   }, [id]);
 
   if (loading) return <div style={{ padding: '60px', textAlign: 'center' }}>Loading...</div>;
@@ -57,9 +66,6 @@ useEffect(() => {
     ? `${pet.profiles.first_name} ${pet.profiles.last_name || ''}` 
     : 'Verified Rescuer';
 
-  // Keep your existing state and data fetching logic at the top of page.tsx
-// Replace everything from `return (` downwards:
-
   return (
     <>
       <div className="top-bar">
@@ -68,40 +74,27 @@ useEffect(() => {
 
       <div className="profile-layout">
         
-        {/* ================= LEFT COLUMN ================= */}
+          {/* ================= LEFT COLUMN ================= */}
         <div>
           <div className="main-img">
             <img src={mainImage} alt={pet.name} />
             
+            {/* FIX 1: Show Age instead of Species */}
+            <span className="age-label">{pet.age}</span> 
+            
             {photos.length > 1 && (
               <>
-                <button 
-                  onClick={() => setMainImage(photos[(currentIndex - 1 + photos.length) % photos.length])}
-                  className="img-nav-btn"
-                  style={{ left: '12px' }}
-                >‹</button>
-                <button 
-                  onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])}
-                  className="img-nav-btn"
-                  style={{ right: '12px' }}
-                >›</button>
+                <button onClick={() => setMainImage(photos[(currentIndex - 1 + photos.length) % photos.length])} className="img-nav-btn" style={{ left: '12px' }}>‹</button>
+                <button onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])} className="img-nav-btn" style={{ right: '12px' }}>›</button>
+                <span className="img-counter">{currentIndex + 1} / {photos.length}</span>
               </>
-            )}
-
-            <span className="age-label">{pet.species}</span>
-            {photos.length > 1 && (
-              <span className="img-counter">{currentIndex + 1} / {photos.length}</span>
             )}
           </div>
 
           {photos.length > 1 && (
             <div className="thumbnails">
               {photos.map((url: string, index: number) => (
-                <div 
-                  key={index} 
-                  onClick={() => setMainImage(url)}
-                  className={`thumb ${mainImage === url ? 'active' : ''}`}
-                >
+                <div key={index} onClick={() => setMainImage(url)} className={`thumb ${mainImage === url ? 'active' : ''}`}>
                   <img src={url} alt="thumbnail" />
                 </div>
               ))}
@@ -110,16 +103,44 @@ useEffect(() => {
 
           <div className="section-card">
             <h2>About {pet.name}</h2>
-            <div style={{ fontSize: '13px', color: 'var(--light)', marginBottom: '10px', textTransform: 'capitalize' }}>{pet.gender} · {pet.age} · {pet.location}</div>
+            <div style={{ fontSize: '13px', color: 'var(--light)', marginBottom: '10px', textTransform: 'capitalize' }}>
+              {pet.gender} · {pet.age} · {pet.location}
+            </div>
+            
+            {/* FIX 2: Dynamic Trait Pills */}
+            {pet.traits && pet.traits.length > 0 && (
+              <div className="trait-pills" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                {pet.traits.map((trait: string, idx: number) => (
+                  <span key={idx} style={{ border: '1.5px solid var(--orange)', borderRadius: '20px', padding: '5px 14px', fontSize: '12px', fontWeight: 500, color: 'var(--orange)', background: 'var(--orange-pale)' }}>
+                    {trait}
+                  </span>
+                ))}
+              </div>
+            )}
             
             <p style={{ color: 'var(--mid)', fontSize: '14px', lineHeight: 1.7, marginBottom: '20px' }}>{pet.description}</p>
             
             <div className="about-grid">
               <div>
                 <h4 style={{ fontWeight: 700, fontSize: '15px', marginBottom: '14px' }}>Health & Medical</h4>
+                {/* FIX 3: Dynamic Health Checklist */}
                 <ul className="health-list">
-                  <li><div className="check-icon">✓</div> Vaccinated</li>
-                  <li><div className="check-icon">✓</div> Dewormed</li>
+                  <li>
+                    <div className={`check-icon ${!pet.is_vaccinated ? 'unchecked' : ''}`} style={!pet.is_vaccinated ? { background: '#F3F4F6', color: '#D1D5DB' } : {}}>
+                      {pet.is_vaccinated ? '✓' : '✕'}
+                    </div> Vaccinated
+                  </li>
+                  <li>
+                    <div className={`check-icon ${!pet.is_dewormed ? 'unchecked' : ''}`} style={!pet.is_dewormed ? { background: '#F3F4F6', color: '#D1D5DB' } : {}}>
+                      {pet.is_dewormed ? '✓' : '✕'}
+                    </div> Dewormed
+                  </li>
+                  <li>
+                    <div className={`check-icon ${!pet.is_neutered ? 'unchecked' : ''}`} style={!pet.is_neutered ? { background: '#F3F4F6', color: '#D1D5DB' } : {}}>
+                      {pet.is_neutered ? '✓' : '✕'}
+                    </div> Neutered
+                  </li>
+                  {/* You can add Flea Treated, Potty Trained, FIV, etc. following this exact pattern */}
                 </ul>
               </div>
               <div>
@@ -154,14 +175,14 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Stats Box */}
+            {/* Stats Box - NOW USING RANDOMIZED STATE */}
             <div style={{ display: 'flex', gap: '16px', padding: '12px', background: 'var(--cream)', borderRadius: '8px', marginBottom: '16px' }}>
               <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: '13px' }}>--</div>
+                <div style={{ fontWeight: 700, fontSize: '13px' }}>{adoptionsCount}</div>
                 <div style={{ fontSize: '11px', color: 'var(--light)' }}>Adoptions</div>
               </div>
               <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: '13px' }}>--</div>
+                <div style={{ fontWeight: 700, fontSize: '13px' }}>{experienceYears} yrs</div>
                 <div style={{ fontSize: '11px', color: 'var(--light)' }}>Experience</div>
               </div>
             </div>
@@ -193,7 +214,6 @@ useEffect(() => {
               </div>
             )}
             
-            <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center', margin: '16px 0' }}>⏱️ Usually replies within 1 day</div>
 
             {/* Trust Signals */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '14px', borderTop: '1px solid var(--border)' }}>

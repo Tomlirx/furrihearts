@@ -175,7 +175,7 @@ export default function RescuerListingFlow() {
 
     const finalBreed = breed === 'Other' ? customBreed : breed;
     
-    // 3. Insert Data into Supabase with Rescuer ID
+    // 3. Insert Data into Supabase
     const { error } = await supabase.from('pets').insert([{
       name: name || 'Unknown',
       species: petType,
@@ -188,7 +188,14 @@ export default function RescuerListingFlow() {
       image_url: primaryImageUrl,
       gallery: allUploadedUrls,
       fee: Number(fee) || 0,
-      rescuer_id: user.id // The critical connection
+      rescuer_id: user.id,
+      // --- ADD THESE NEW FIELDS ---
+      traits: traits,
+      is_vaccinated: health.includes('Vaccinated'),
+      is_dewormed: health.includes('Dewormed'),
+      is_neutered: health.includes('Neutered'),
+      is_flea_treated: health.includes('Flea Treated'),
+      is_potty_trained: health.includes('Potty Trained')
     }]);
 
     if (!error) {
@@ -426,6 +433,10 @@ export default function RescuerListingFlow() {
                 <span style={{ background: 'var(--orange-pale)', color: 'var(--orange)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{breed === 'Other' ? customBreed : breed}</span>
                 <span style={{ background: 'var(--green-pale)', color: 'var(--green)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{location}</span>
                 <span style={{ background: '#EFF6FF', color: '#1D4ED8', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{gender}</span>
+                {/* NEW: Display selected traits in Review */}
+  {traits.map(t => (
+    <span key={t} style={{ background: '#F9FAFB', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', color: 'var(--mid)' }}>{t}</span>
+  ))}
               </div>
               <p style={{ color: 'var(--mid)', lineHeight: 1.6 }}>{description || "No description provided."}</p>
             </div>
