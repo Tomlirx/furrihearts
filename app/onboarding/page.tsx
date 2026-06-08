@@ -33,7 +33,15 @@ export default async function Onboarding() {
           <h2 className="right-title">Complete your profile</h2>
           <p className="right-sub">We just need a few details to get you started.</p>
 
-          <form action={completeOnboarding}>
+          /* Instead of action={completeOnboarding}
+ Use an anonymous function wrapper: */
+<form action={async (formData) => {
+  const result = await completeOnboarding(formData);
+  if (result?.error) {
+    // Handle the error (e.g., set a local state variable to show it on screen)
+    console.error(result.error);
+  }
+}}>
             
             {/* First and Last Name */}
             <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
