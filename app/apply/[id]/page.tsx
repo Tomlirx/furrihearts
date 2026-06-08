@@ -14,7 +14,7 @@ export default function QuestionnairePage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // Form State
+  // Form State matching database columns
   const [q1, setQ1] = useState<string[]>([]);
   const [q2, setQ2] = useState('');
   const [q3, setQ3] = useState('');
@@ -39,9 +39,38 @@ export default function QuestionnairePage() {
   const handleSubmit = async () => {
     if (!pet) return;
     setSubmitting(true);
-    const { error } = await supabase.from('applications').insert([{ pet_id: pet.id, q1, q2, q3, q4, q5, q6, q7, status: 'pending' }]);
-    if (!error) { alert("Application submitted!"); router.push('/browse'); }
-    else { console.error(error); setSubmitting(false); }
+
+    // 1. Get the currently authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      alert("Authentication error. Please ensure you are logged in.");
+      setSubmitting(false);
+      return;
+    }
+
+    // 2. Insert into the database, attaching the applicant_id
+    const { error } = await supabase.from('applications').insert([{ 
+      pet_id: pet.id, 
+      applicant_id: user.id, // Securely linking the application to the logged-in user
+      q1: q1, 
+      q2: q2, 
+      q3: q3, 
+      q4: q4, 
+      q5: q5, 
+      q6: q6, 
+      q7: q7, 
+      status: 'pending' 
+    }]);
+
+    if (!error) { 
+      alert("Application submitted!"); 
+      router.push('/browse'); 
+    } else { 
+      console.error(error); 
+      alert("There was an error submitting your application.");
+      setSubmitting(false); 
+    }
   };
 
   if (loading) return <div style={{ padding: '60px', textAlign: 'center' }}>Loading...</div>;

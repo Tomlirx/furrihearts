@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-
+import { PetCard } from '@/components/PetCard';
 export default function BrowseContent({ userRole }: { userRole: string }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -17,7 +17,12 @@ export default function BrowseContent({ userRole }: { userRole: string }) {
   useEffect(() => {
     async function fetchFilteredPets() {
       setLoading(true);
-      let query = supabase.from('pets').select('*').eq('status', 'available'); // Only show available pets
+      // Corrected query without the missing 'tags' column
+// Updated query including 'breed'
+let query = supabase
+  .from('pets')
+  .select('id, name, breed, gender, location, status, species, image_url') 
+  .in('status', ['available', 'adopted']); // Only show available pets
 
       if (type !== 'all') query = query.ilike('species', `%${type}%`);
       if (location !== 'All Malaysia') query = query.ilike('location', `%${location}%`);
@@ -99,28 +104,16 @@ export default function BrowseContent({ userRole }: { userRole: string }) {
           </div>
         </div>
 
-        <div className="pets-grid">
-          {pets.length > 0 ? (
-            pets.map((pet) => (
-              <Link href={`/pet/${pet.id}`} key={pet.id} className="pet-card">
-                <div className="pet-img">
-                  {/* Fallback image in case the database URL is empty */}
-                  <img src={pet.image_url || 'https://via.placeholder.com/300x250?text=No+Image'} alt={pet.name} />
-                  <button className="save-btn" onClick={handleSavePet}>🤍</button>
-                </div>
-                <div className="pet-info">
-                  <div className="pet-name-row">
-                    <span className="pet-name">{pet.name}</span>
-                    <span className="pet-arrow">→</span>
-                  </div>
-                  <div className="pet-meta">{pet.gender} · {pet.location}</div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            !loading && <p>No pets found matching your filters.</p>
-          )}
-        </div>
+       <div className="pets-grid">
+  {pets.length > 0 ? (
+    pets.map((pet) => (
+      // We pass the pet and the save function to the component
+      <PetCard key={pet.id} pet={pet} onSave={handleSavePet} />
+    ))
+  ) : (
+    !loading && <p>No pets found matching your filters.</p>
+  )}
+</div>
       </main>
     </div>
   );
