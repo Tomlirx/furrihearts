@@ -67,7 +67,7 @@ export default function MessageComposer({
           <div className="modal-content" style={{ maxWidth: '460px' }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>{sent ? 'Message Sent' : 'Send a Message'}</h2>
-              <button className="btn-close" onClick={close}>×</button>
+              <button className="btn-close" onClick={close} aria-label="Close">×</button>
             </div>
             <div className="modal-body">
               {sent ? (
@@ -95,7 +95,7 @@ export default function MessageComposer({
                 <button className="btn-approve" onClick={close}>Done</button>
               ) : (
                 <button className="btn-approve" onClick={handleSend} disabled={sending || !content.trim() || overLimit}>
-                  {sending ? 'Sending...' : 'Send Message'}
+                  {sending ? 'Sending...' : 'Send'}
                 </button>
               )}
             </div>

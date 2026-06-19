@@ -22,11 +22,13 @@ export default function Login() {
   const handleLogin = async () => {
     const newErrors: Record<string, string> = {};
     if (!formData.email.includes('@')) newErrors.email = 'Please enter a valid email';
-    if (formData.password.length < 8) newErrors.pwd = 'Incorrect password';
+    if (formData.password.length < 8) newErrors.pwd = 'Password must be at least 8 characters';
     if (!captchaVerified) newErrors.captcha = 'Please complete the CAPTCHA';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      const firstField = newErrors.email ? 'email' : newErrors.pwd ? 'password' : 'captcha';
+      document.getElementById(firstField)?.focus();
       return;
     }
 
@@ -69,19 +71,19 @@ export default function Login() {
           <p className="right-sub">Don't have an account? <Link href="/signup">Sign up →</Link></p>
 
           <div className="form-field">
-            <label className="form-label">Email Address</label>
-            <input className={`form-input ${errors.email ? 'error' : ''}`} type="email" placeholder="you@email.com" onChange={e => handleInputChange('email', e.target.value)} />
+            <label className="form-label" htmlFor="email">Email Address</label>
+            <input id="email" className={`form-input ${errors.email ? 'error' : ''}`} type="email" placeholder="you@email.com" onChange={e => handleInputChange('email', e.target.value)} />
             <div className="field-error">{errors.email}</div>
           </div>
 
           <div className="form-field">
-            <label className="form-label">Password</label>
-            <input className={`form-input ${errors.pwd ? 'error' : ''}`} type="password" placeholder="Enter your password" onChange={e => handleInputChange('password', e.target.value)} />
+            <label className="form-label" htmlFor="password">Password</label>
+            <input id="password" className={`form-input ${errors.pwd ? 'error' : ''}`} type="password" placeholder="Enter your password" onChange={e => handleInputChange('password', e.target.value)} />
             <div className="field-error">{errors.pwd}</div>
             <a href="#" className="forgot-link">Forgot password?</a>
           </div>
 
-          <div className={`captcha-box ${errors.captcha ? 'error' : ''}`} onClick={() => setCaptchaVerified(!captchaVerified)} style={{cursor: 'pointer', border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>
+          <div id="captcha" tabIndex={0} role="checkbox" aria-checked={captchaVerified} className={`captcha-box ${errors.captcha ? 'error' : ''}`} onClick={() => setCaptchaVerified(!captchaVerified)} style={{cursor: 'pointer', border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>
             {captchaVerified ? '✅ You\'re not a robot' : 'I\'m not a robot'}
           </div>
           <div className="field-error">{errors.captcha}</div>

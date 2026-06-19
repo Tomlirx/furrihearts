@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase';
 import { fetchPetById, findLocalPetById, type Pet } from '@/lib/pet-service';
 import { getLocalApplications } from '@/lib/local-store';
 import MessageComposer from '@/components/MessageComposer';
+import { Skeleton, SkeletonText } from '@/components/Skeleton';
 
 export default function PetProfile() {
   const { id } = useParams<{ id: string }>();
@@ -15,8 +16,6 @@ export default function PetProfile() {
   const [loading, setLoading] = useState(true);
   const [mainImage, setMainImage] = useState('');
   const [userApplication, setUserApplication] = useState<any>(null);
-  const [adoptionsCount, setAdoptionsCount] = useState<number | string>('--');
-  const [experienceYears, setExperienceYears] = useState<number | string>('--');
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -56,11 +55,28 @@ export default function PetProfile() {
     }
 
     fetchPetAndApp();
-    setAdoptionsCount(Math.floor(Math.random() * 80) + 12);
-    setExperienceYears(Math.floor(Math.random() * 8) + 2);
   }, [id]);
 
-  if (loading) return <div style={{ padding: '60px', textAlign: 'center' }}>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="profile-layout">
+        <div>
+          <Skeleton height={420} className="main-img" />
+          <div className="section-card" style={{ marginTop: '20px' }}>
+            <Skeleton height={24} width="40%" style={{ marginBottom: '16px' }} />
+            <SkeletonText lines={3} width={['90%', '95%', '60%']} />
+          </div>
+        </div>
+        <div className="right-sidebar">
+          <div className="right-card">
+            <Skeleton height={20} width="70%" style={{ marginBottom: '16px' }} />
+            <Skeleton circle width={48} height={48} style={{ marginBottom: '16px' }} />
+            <Skeleton height={48} style={{ marginBottom: '10px' }} />
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!pet) return <div style={{ padding: '60px', textAlign: 'center' }}>Pet not found.</div>;
 
   const photos = pet.gallery?.length ? pet.gallery : [pet.image_url];
@@ -83,8 +99,8 @@ export default function PetProfile() {
 
             {photos.length > 1 && (
               <>
-                <button onClick={() => setMainImage(photos[(currentIndex - 1 + photos.length) % photos.length])} className="img-nav-btn" style={{ left: '12px' }}>‹</button>
-                <button onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])} className="img-nav-btn" style={{ right: '12px' }}>›</button>
+                <button onClick={() => setMainImage(photos[(currentIndex - 1 + photos.length) % photos.length])} className="img-nav-btn" style={{ left: '12px' }} aria-label="Previous photo">‹</button>
+                <button onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])} className="img-nav-btn" style={{ right: '12px' }} aria-label="Next photo">›</button>
                 <span className="img-counter">{currentIndex + 1} / {photos.length}</span>
               </>
             )}
@@ -194,17 +210,6 @@ export default function PetProfile() {
                 />
               </div>
             )}
-
-            <div style={{ display: 'flex', gap: '16px', padding: '12px', background: 'var(--cream)', borderRadius: '8px', marginBottom: '16px' }}>
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: '13px' }}>{adoptionsCount}</div>
-                <div style={{ fontSize: '11px', color: 'var(--light)' }}>Adoptions</div>
-              </div>
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: '13px' }}>{experienceYears} yrs</div>
-                <div style={{ fontSize: '11px', color: 'var(--light)' }}>Experience</div>
-              </div>
-            </div>
 
             {!userApplication ? (
               pet.status === 'available' ? (

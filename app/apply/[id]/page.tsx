@@ -1,7 +1,7 @@
 'use client';
 
 import './styles.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -24,6 +24,17 @@ export default function QuestionnairePage() {
   const [q5, setQ5] = useState('');
   const [q6, setQ6] = useState('');
   const [q7, setQ7] = useState('');
+  const [invalidQs, setInvalidQs] = useState<Set<number>>(new Set());
+  const [formError, setFormError] = useState('');
+
+  const questionRefs = {
+    1: useRef<HTMLDivElement>(null),
+    2: useRef<HTMLDivElement>(null),
+    3: useRef<HTMLDivElement>(null),
+    4: useRef<HTMLDivElement>(null),
+    5: useRef<HTMLDivElement>(null),
+    6: useRef<HTMLDivElement>(null),
+  };
 
   useEffect(() => {
     async function fetchPet() {
@@ -42,8 +53,31 @@ export default function QuestionnairePage() {
     setQ1(prev => prev.includes(opt) ? prev.filter(i => i !== opt) : [...prev, opt]);
   };
 
+  const validate = () => {
+    const missing = new Set<number>();
+    if (q1.length === 0) missing.add(1);
+    if (!q2) missing.add(2);
+    if (!q3) missing.add(3);
+    if (!q4) missing.add(4);
+    if (!q5) missing.add(5);
+    if (!q6) missing.add(6);
+    return missing;
+  };
+
   const handleSubmit = async () => {
     if (!pet) return;
+
+    const missing = validate();
+    if (missing.size > 0) {
+      setInvalidQs(missing);
+      setFormError('Please answer all required questions before submitting.');
+      const firstMissing = Math.min(...Array.from(missing)) as 1 | 2 | 3 | 4 | 5 | 6;
+      questionRefs[firstMissing].current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    setInvalidQs(new Set());
+    setFormError('');
     setSubmitting(true);
 
     // 1. Get the currently authenticated user
@@ -98,9 +132,9 @@ export default function QuestionnairePage() {
     if (!error) {
       router.push(`/apply/${pet.id}/thank-you`);
     } else {
-      console.error(error); 
-      alert("There was an error submitting your application.");
-      setSubmitting(false); 
+      console.error(error);
+      setFormError('There was an error submitting your application. Please try again.');
+      setSubmitting(false);
     }
   };
 
@@ -148,43 +182,47 @@ export default function QuestionnairePage() {
             <span>This helps the rescuer make the best decision for {pet.name}'s future.<br/><strong>There are no right or wrong answers.</strong></span>
           </div>
 
-          <div className="question-block">
+          <div className={`question-block ${invalidQs.has(1) ? 'invalid' : ''}`} ref={questionRefs[1]}>
             <div className="q-num">1. Why are you interested in adopting this pet?</div>
             <div className="q-opt-grid q-opt-4">
               {["I'm looking for a companion", "My current pet needs a friend", "I want to help a rescue animal", "Other"].map(opt => (
                 <button key={opt} className={`q-opt ${q1.includes(opt) ? 'selected' : ''}`} onClick={() => toggleQ1(opt)}>{opt}</button>
               ))}
             </div>
+            {invalidQs.has(1) && <div className="field-error">Please select at least one option.</div>}
           </div>
 
-          <div className="question-block">
+          <div className={`question-block ${invalidQs.has(2) ? 'invalid' : ''}`} ref={questionRefs[2]}>
             <div className="q-num">2. What type of home do you live in?</div>
             <div className="q-opt-grid q-opt-4">
               {["Apartment / Condo", "Landed house", "House with large compound", "Other"].map(opt => (
                 <button key={opt} className={`q-opt ${q2 === opt ? 'selected' : ''}`} onClick={() => setQ2(opt)}>{opt}</button>
               ))}
             </div>
+            {invalidQs.has(2) && <div className="field-error">Please choose an option.</div>}
           </div>
 
-          <div className="question-block">
+          <div className={`question-block ${invalidQs.has(3) ? 'invalid' : ''}`} ref={questionRefs[3]}>
             <div className="q-num">3. Are your windows and balconies secured?</div>
             <div className="q-opt-grid q-opt-4">
               {["Yes, fully secured", "Partially — I plan to", "Not yet", "Not applicable"].map(opt => (
                 <button key={opt} className={`q-opt ${q3 === opt ? 'selected' : ''}`} onClick={() => setQ3(opt)}>{opt}</button>
               ))}
             </div>
+            {invalidQs.has(3) && <div className="field-error">Please choose an option.</div>}
           </div>
 
-          <div className="question-block">
+          <div className={`question-block ${invalidQs.has(4) ? 'invalid' : ''}`} ref={questionRefs[4]}>
             <div className="q-num">4. Do you have other pets at home?</div>
             <div className="q-opt-grid q-opt-4">
               {["Yes, a cat", "Yes, a dog", "Yes, multiple pets", "No other pets"].map(opt => (
                 <button key={opt} className={`q-opt ${q4 === opt ? 'selected' : ''}`} onClick={() => setQ4(opt)}>{opt}</button>
               ))}
             </div>
+            {invalidQs.has(4) && <div className="field-error">Please choose an option.</div>}
           </div>
 
-          <div className="question-block">
+          <div className={`question-block ${invalidQs.has(5) ? 'invalid' : ''}`} ref={questionRefs[5]}>
             <div className="q-num">5. How many hours a day will the pet be alone?</div>
             <div className="radio-list">
               {["Less than 4 hours", "4–8 hours", "More than 8 hours", "Rarely — someone is usually home"].map(opt => (
@@ -193,15 +231,17 @@ export default function QuestionnairePage() {
                 </div>
               ))}
             </div>
+            {invalidQs.has(5) && <div className="field-error">Please choose an option.</div>}
           </div>
 
-          <div className="question-block">
+          <div className={`question-block ${invalidQs.has(6) ? 'invalid' : ''}`} ref={questionRefs[6]}>
             <div className="q-num">6. Do all household members agree to adopt?</div>
             <div className="q-opt-grid q-opt-4">
               {["Yes, everyone is on board", "Most of them", "I live alone", "Not yet discussed"].map(opt => (
                 <button key={opt} className={`q-opt ${q6 === opt ? 'selected' : ''}`} onClick={() => setQ6(opt)}>{opt}</button>
               ))}
             </div>
+            {invalidQs.has(6) && <div className="field-error">Please choose an option.</div>}
           </div>
 
           <div className="question-block">
@@ -213,6 +253,7 @@ export default function QuestionnairePage() {
       </div>
 
       <div style={{ padding: '32px 40px', textAlign: 'center', borderTop: '1px solid var(--border)', background: '#fff' }}>
+        {formError && <div className="form-error-banner" style={{ maxWidth: '460px', margin: '0 auto 20px' }}>{formError}</div>}
         <button onClick={handleSubmit} disabled={submitting} style={{ background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '10px', padding: '16px 48px', fontSize: '16px', fontWeight: 700, cursor: submitting ? 'not-allowed' : 'pointer' }}>
           {submitting ? 'Submitting...' : 'Submit Application →'}
         </button>

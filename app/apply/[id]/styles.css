@@ -5,13 +5,16 @@
 .q-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 32px; gap: 24px; }
 .q-title-big { font-family: var(--font-fraunces), serif; font-size: 32px; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
 .q-sub-big { color: var(--mid); font-size: 15px; }
-.pet-thumb { width: 120px; height: 120px; border-radius: 16px; overflow: hidden; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.pet-thumb { width: 120px; height: 120px; border-radius: 16px; overflow: hidden; flex-shrink: 0; box-shadow: var(--shadow-sm); }
 
 .info-banner { background: var(--orange-pale); border: 1px solid #F5C9B0; border-radius: 12px; padding: 20px; display: flex; gap: 16px; margin-bottom: 40px; color: var(--orange); font-size: 14px; line-height: 1.6; align-items: flex-start; }
 .info-banner-icon { font-size: 20px; }
 
 .question-block { margin-bottom: 40px; }
 .q-num { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--dark); }
+.question-block.invalid .q-num { color: #DC2626; }
+.field-error { font-size: 12px; color: #DC2626; margin-top: 8px; }
+.form-error-banner { background: #FEE2E2; border: 1px solid #DC2626; color: #DC2626; border-radius: 10px; padding: 14px 18px; font-size: 14px; margin: 0 0 20px; text-align: left; }
 
 .q-opt-grid { display: grid; gap: 12px; margin-top: 12px; }
 .q-opt-4 { grid-template-columns: repeat(2, 1fr); }

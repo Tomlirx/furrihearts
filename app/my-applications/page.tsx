@@ -7,6 +7,8 @@ import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-
 import { getMyApplications } from '@/lib/profile-data';
 import MessageComposer from '@/components/MessageComposer';
 import MessagesPanel from '@/components/MessagesPanel';
+import ConfirmDialog from '@/components/ConfirmDialog';
+import { useToast } from '@/lib/useToast';
 
 const TABS = [
   { key: 'all', label: 'All' },
@@ -23,6 +25,7 @@ export default function MyApplicationsPage() {
   const [withdrawTarget, setWithdrawTarget] = useState<any>(null);
   const [view, setView] = useState<'applications' | 'messages'>('applications');
   const [userId, setUserId] = useState<string | null>(null);
+  const { toast, showToast } = useToast();
 
   useEffect(() => {
     async function load() {
@@ -44,6 +47,7 @@ export default function MyApplicationsPage() {
     if (!supabase.__isMock) {
       await supabase.from('applications').update({ status: 'cancelled' }).eq('id', withdrawTarget.id);
     }
+    showToast('Application withdrawn', 'decline');
     setWithdrawTarget(null);
   };
 
@@ -63,7 +67,7 @@ export default function MyApplicationsPage() {
       </div>
 
       {view === 'messages' ? (
-        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--light)', fontSize: '13px' }}>Log in to view your messages.</p>
+        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--mid)', fontSize: '13px' }}>Log in to view your messages.</p>
       ) : (
       <>
       <div className="filter-tabs">
@@ -128,19 +132,19 @@ export default function MyApplicationsPage() {
       </>
       )}
 
-      {withdrawTarget && (
-        <div className="modal-overlay" onClick={() => setWithdrawTarget(null)}>
-          <div className="modal-content" style={{ maxWidth: '380px', textAlign: 'center', padding: '32px' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ fontSize: '40px', marginBottom: '12px' }}>🐾</div>
-            <h2 style={{ marginBottom: '8px' }}>Withdraw application for {withdrawTarget.pets?.name}?</h2>
-            <p style={{ color: 'var(--mid)', fontSize: '13px', marginBottom: '20px' }}>You can always apply again if you change your mind.</p>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button className="btn-view-full" style={{ flex: 1 }} onClick={() => setWithdrawTarget(null)}>Keep</button>
-              <button className="btn-reject" style={{ flex: 1 }} onClick={confirmWithdraw}>Withdraw</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDialog
+        open={!!withdrawTarget}
+        icon="🐾"
+        title={`Withdraw application for ${withdrawTarget?.pets?.name}?`}
+        body="You can always apply again if you change your mind."
+        confirmLabel="Withdraw"
+        cancelLabel="Keep"
+        danger
+        onConfirm={confirmWithdraw}
+        onCancel={() => setWithdrawTarget(null)}
+      />
+
+      {toast && <div className={`toast ${toast.type}`}>{toast.msg}</div>}
     </div>
   );
 }

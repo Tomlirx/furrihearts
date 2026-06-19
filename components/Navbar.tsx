@@ -1,12 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?: boolean }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsDropdownOpen(false);
+    };
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const handleLogout = async () => {
     try {
@@ -42,26 +63,31 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
             <Link href="/rescuer-listing" className="btn-primary-nav">List Now</Link>
 
             {user ? (
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: 'relative' }} ref={dropdownRef}>
                 {/* Clickable Profile Chip */}
-                <div 
-                  className="profile-chip" 
+                <button
+                  type="button"
+                  className="profile-chip"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  style={{ cursor: 'pointer' }}
+                  aria-haspopup="true"
+                  aria-expanded={isDropdownOpen}
+                  style={{ cursor: 'pointer', font: 'inherit' }}
                 >
                   <div className="profile-avatar">{user.email[0]?.toUpperCase()}</div>
                   <span className="profile-name">{user.email.split('@')[0]}</span>
-                </div>
+                </button>
 
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                  <div style={{
-                    position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                    background: '#fff', border: '1px solid var(--border)',
-                    borderRadius: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    zIndex: 500, padding: '8px', minWidth: '180px',
-                    display: 'flex', flexDirection: 'column', gap: '4px'
-                  }}>
+                  <div
+                    role="menu"
+                    style={{
+                      position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                      background: '#fff', border: '1px solid var(--border)',
+                      borderRadius: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                      zIndex: 500, padding: '8px', minWidth: '180px',
+                      display: 'flex', flexDirection: 'column', gap: '4px'
+                    }}>
                     {[
                       { href: '/dashboard', label: 'My Dashboard' },
                       { href: '/profile', label: 'My Profile' },
@@ -73,14 +99,9 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                       <Link
                         key={item.href}
                         href={item.href}
+                        role="menuitem"
                         onClick={() => setIsDropdownOpen(false)}
-                        style={{
-                          width: '100%', display: 'block', padding: '10px 16px',
-                          color: 'var(--dark)', fontSize: '13px', fontWeight: 600,
-                          textDecoration: 'none', borderRadius: '8px', transition: 'background 0.2s'
-                        }}
-                        onMouseOver={(e) => e.currentTarget.style.background = 'var(--cream)'}
-                        onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                        className="dropdown-item"
                       >
                         {item.label}
                       </Link>
@@ -90,15 +111,9 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
 
                     {/* Existing Sign Out */}
                     <button
+                      role="menuitem"
                       onClick={handleLogout}
-                      style={{
-                        width: '100%', textAlign: 'left', padding: '10px 16px',
-                        background: 'transparent', border: 'none', color: '#DC2626',
-                        fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-                        borderRadius: '8px', transition: 'background 0.2s'
-                      }}
-                      onMouseOver={(e) => e.currentTarget.style.background = 'var(--cream)'}
-                      onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                      className="dropdown-item dropdown-item-danger"
                     >
                       Sign Out
                     </button>
@@ -110,7 +125,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
             )}
 
             {/* Hamburger Trigger */}
-            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)}>
+            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)} aria-label="Open menu" aria-expanded={isMobileMenuOpen}>
               <span></span><span></span><span></span>
             </button>
           </div>
@@ -121,7 +136,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
       <div className={`mob-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mob-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
         <div className="mob-panel">
-          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
+          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu">✕</button>
           
           <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adopt a Pet</Link>
           <Link href="/furrimatch" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>FurriMatch</Link>

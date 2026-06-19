@@ -11,6 +11,7 @@ export default function Signup() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [registerError, setRegisterError] = useState('');
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
@@ -32,15 +33,19 @@ export default function Signup() {
       nextStep(); // Only proceed if validation passes
     } else {
       setErrors(newErrors);
+      const order = ['first', 'last', 'email', 'password'];
+      const firstField = order.find((f) => newErrors[f]);
+      if (firstField) document.getElementById(firstField)?.focus();
     }
   };
 
   const handleRegister = async () => {
     setLoading(true);
+    setRegisterError('');
     const result = await signUpUser(formData);
 
     if (result.error) {
-      alert("Registration failed: " + result.error);
+      setRegisterError(result.error);
     } else {
       nextStep();
     }
@@ -74,20 +79,20 @@ export default function Signup() {
             <div>
               <div className="form-grid" style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px'}}>
                 <div className="form-field">
-                  <input className="form-input" placeholder="First Name" onChange={e => handleInputChange('first', e.target.value)} />
-                  {errors.first && <div style={{color:'red', fontSize:'12px', marginTop:'4px'}}>{errors.first}</div>}
+                  <input id="first" aria-label="First Name" className="form-input" placeholder="First Name" onChange={e => handleInputChange('first', e.target.value)} />
+                  {errors.first && <div className="field-error">{errors.first}</div>}
                 </div>
                 <div className="form-field">
-                  <input className="form-input" placeholder="Last Name" onChange={e => handleInputChange('last', e.target.value)} />
-                  {errors.last && <div style={{color:'red', fontSize:'12px', marginTop:'4px'}}>{errors.last}</div>}
+                  <input id="last" aria-label="Last Name" className="form-input" placeholder="Last Name" onChange={e => handleInputChange('last', e.target.value)} />
+                  {errors.last && <div className="field-error">{errors.last}</div>}
                 </div>
               </div>
-              <input className="form-input" placeholder="Email" onChange={e => handleInputChange('email', e.target.value)} style={{marginBottom: '12px'}} />
-              {errors.email && <div style={{color:'red', fontSize:'12px', marginTop:'-8px', marginBottom:'12px'}}>{errors.email}</div>}
-              
-              <input className="form-input" type="password" placeholder="Password" onChange={e => handleInputChange('password', e.target.value)} />
-              {errors.password && <div style={{color:'red', fontSize:'12px', marginTop:'4px', marginBottom:'12px'}}>{errors.password}</div>}
-              
+              <input id="email" aria-label="Email" className="form-input" placeholder="Email" onChange={e => handleInputChange('email', e.target.value)} style={{marginBottom: '12px'}} />
+              {errors.email && <div className="field-error" style={{marginTop:'-8px', marginBottom:'12px'}}>{errors.email}</div>}
+
+              <input id="password" aria-label="Password" className="form-input" type="password" placeholder="Password" onChange={e => handleInputChange('password', e.target.value)} />
+              {errors.password && <div className="field-error" style={{marginBottom:'12px'}}>{errors.password}</div>}
+
               <button className="btn-continue" onClick={validateStep2}>Continue</button>
               <button className="btn-back" onClick={prevStep} style={{background:'transparent', border:'none', marginTop:'10px', width:'100%', cursor:'pointer'}}>← Back</button>
             </div>
@@ -95,9 +100,10 @@ export default function Signup() {
 
           {step === 2 && (
             <div>
-              <div className="captcha-box" onClick={() => setCaptchaVerified(true)} style={{border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>
+              <div tabIndex={0} role="checkbox" aria-checked={captchaVerified} className="captcha-box" onClick={() => setCaptchaVerified(true)} style={{border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>
                 {captchaVerified ? '✅ Verified' : 'Click to verify you are human'}
               </div>
+              {registerError && <div className="field-error" style={{marginTop: '8px'}}>{registerError}</div>}
               <button className="btn-continue" onClick={handleRegister} disabled={!captchaVerified || loading}>
                 {loading ? 'Creating...' : 'Create Account'}
               </button>

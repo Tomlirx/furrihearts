@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
 import MessagesPanel from '@/components/MessagesPanel';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 const TABS = [
   { key: 'all', label: 'All' },
@@ -27,6 +28,7 @@ function ManageApplicationsContent() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [view, setView] = useState<'applications' | 'messages'>('applications');
   const [userId, setUserId] = useState<string | null>(null);
+  const [declineTarget, setDeclineTarget] = useState<any>(null);
 
   useEffect(() => {
     async function load() {
@@ -61,6 +63,12 @@ function ManageApplicationsContent() {
     setIsUpdating(false);
   };
 
+  const confirmDecline = () => {
+    if (!declineTarget) return;
+    handleUpdateStatus(declineTarget, 'rejected');
+    setDeclineTarget(null);
+  };
+
   if (loading) return <div className="loading-state">Loading applications...</div>;
 
   const petScoped = petFilter ? apps.filter((a) => a.pet_id === petFilter) : apps;
@@ -82,7 +90,7 @@ function ManageApplicationsContent() {
       </div>
 
       {view === 'messages' ? (
-        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--light)', fontSize: '13px' }}>Log in to view your messages.</p>
+        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--mid)', fontSize: '13px' }}>Log in to view your messages.</p>
       ) : (
       <>
       <div className="filter-tabs">
@@ -127,7 +135,7 @@ function ManageApplicationsContent() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Application for {selectedApp.pets?.name}</h2>
-              <button className="btn-close" onClick={() => setSelectedApp(null)}>×</button>
+              <button className="btn-close" onClick={() => setSelectedApp(null)} aria-label="Close">×</button>
             </div>
             <div className="modal-body">
               <div className="applicant-info"><strong>Applicant:</strong> {selectedApp.profiles?.first_name || 'Demo'} {selectedApp.profiles?.last_name || 'Adopter'}</div>
@@ -142,7 +150,7 @@ function ManageApplicationsContent() {
             <div className="modal-actions">
               {selectedApp.status === 'pending' ? (
                 <>
-                  <button className="btn-reject" onClick={() => handleUpdateStatus(selectedApp, 'rejected')} disabled={isUpdating}>Decline</button>
+                  <button className="btn-reject" onClick={() => setDeclineTarget(selectedApp)} disabled={isUpdating}>Decline</button>
                   <button className="btn-approve" onClick={() => handleUpdateStatus(selectedApp, 'approved')} disabled={isUpdating}>Approve</button>
                 </>
               ) : (
@@ -152,6 +160,18 @@ function ManageApplicationsContent() {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        open={!!declineTarget}
+        icon="🚫"
+        title={`Decline this application?`}
+        body={`${declineTarget?.profiles?.first_name || 'The applicant'} will be notified that their application for ${declineTarget?.pets?.name || 'this pet'} was declined.`}
+        confirmLabel="Decline"
+        cancelLabel="Keep reviewing"
+        danger
+        onConfirm={confirmDecline}
+        onCancel={() => setDeclineTarget(null)}
+      />
 
       {toast && <div className={`toast ${toast.type}`}>{toast.msg}</div>}
     </div>

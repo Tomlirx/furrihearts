@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, type Pet } from '@/lib/pet-service';
 import { getMyPets, getMyApplications, getIncomingApplications } from '@/lib/profile-data';
+import EmptyState from '@/components/EmptyState';
 
 export default function DashboardOverview() {
   const [loading, setLoading] = useState(true);
@@ -94,7 +95,7 @@ export default function DashboardOverview() {
               <Link href="/manage-applications">View all →</Link>
             </div>
             {incomingApps.length === 0 ? (
-              <p style={{ color: 'var(--light)', fontSize: '13px' }}>No applications yet for your listings.</p>
+              <EmptyState icon="📋" title="No applications yet" description="When adopters apply for your pets, they'll show up here." />
             ) : incomingApps.slice(0, 4).map((app) => (
               <div className="app-row" key={app.id}>
                 <div className="row-avatar">{(app.profiles?.first_name || 'A')[0]}</div>
@@ -112,7 +113,7 @@ export default function DashboardOverview() {
           <Link href="/my-applications">View all →</Link>
         </div>
         {myApplications.length === 0 ? (
-          <p style={{ color: 'var(--light)', fontSize: '13px' }}>You haven't applied for any pets yet.</p>
+          <EmptyState icon="💌" title="No applications yet" description="You haven't applied for any pets yet." ctaLabel="Browse Pets" ctaHref="/browse" />
         ) : myApplications.slice(0, 3).map((app) => (
           <div className="app-row" key={app.id}>
             <img src={app.pets?.image_url} className="row-thumb" style={{ borderRadius: '50%' }} alt={app.pets?.name} />
