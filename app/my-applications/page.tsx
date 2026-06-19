@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyApplications } from '@/lib/profile-data';
+import MessageComposer from '@/components/MessageComposer';
+import MessagesPanel from '@/components/MessagesPanel';
 
 const TABS = [
   { key: 'all', label: 'All' },
@@ -19,12 +21,15 @@ export default function MyApplicationsPage() {
   const [apps, setApps] = useState<any[]>([]);
   const [filter, setFilter] = useState('all');
   const [withdrawTarget, setWithdrawTarget] = useState<any>(null);
+  const [view, setView] = useState<'applications' | 'messages'>('applications');
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setLoading(false); return; }
+      setUserId(user.id);
       const data = await getMyApplications(supabase, user.id);
       if (data.length) setApps(data);
       setLoading(false);
@@ -52,6 +57,15 @@ export default function MyApplicationsPage() {
         <div><h1>My Applications</h1><p>Track all your adoption applications and their current status.</p></div>
       </div>
 
+      <div className="filter-tabs">
+        <button className={`filter-tab ${view === 'applications' ? 'active' : ''}`} onClick={() => setView('applications')}>Applications</button>
+        <button className={`filter-tab ${view === 'messages' ? 'active' : ''}`} onClick={() => setView('messages')}>Messages</button>
+      </div>
+
+      {view === 'messages' ? (
+        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--light)', fontSize: '13px' }}>Log in to view your messages.</p>
+      ) : (
+      <>
       <div className="filter-tabs">
         {TABS.map((tab) => (
           <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => setFilter(tab.key)}>
@@ -91,6 +105,15 @@ export default function MyApplicationsPage() {
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <Link href={`/pet/${app.pet_id || app.pets?.id}`} className="btn-view-full" style={{ flex: 'none', padding: '8px 16px' }}>View Pet</Link>
+                  {app.pets?.rescuer_id && (
+                    <MessageComposer
+                      recipientId={app.pets.rescuer_id}
+                      petId={app.pet_id || app.pets?.id}
+                      applicationId={app.id}
+                      triggerLabel="Message Rescuer"
+                      triggerClassName="btn-view-full"
+                    />
+                  )}
                   {app.status === 'pending' && (
                     <button className="btn-view-full" style={{ flex: 'none', padding: '8px 16px', color: '#DC2626', borderColor: '#DC2626' }} onClick={() => setWithdrawTarget(app)}>
                       Withdraw
@@ -101,6 +124,8 @@ export default function MyApplicationsPage() {
             </div>
           ))}
         </div>
+      )}
+      </>
       )}
 
       {withdrawTarget && (

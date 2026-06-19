@@ -100,7 +100,7 @@ export default function AllListingsPage() {
                   <p style={{ marginBottom: '12px' }}>{counts.total} application{counts.total === 1 ? '' : 's'} · {counts.approved} approved</p>
                   <div className="listing-actions">
                     <Link href={`/pet/${pet.id}`}>View</Link>
-                    <Link href="/manage-applications">Applications</Link>
+                    <Link href={`/manage-applications?pet=${pet.id}`}>Applications</Link>
                   </div>
                 </div>
               </div>

@@ -5,6 +5,7 @@
 
 -- profiles: rescuer/adopter profile content (all nullable/defaulted, no backfill needed)
 alter table public.profiles
+  add column if not exists location text,
   add column if not exists bio text,
   add column if not exists specialities text[] default '{}',
   add column if not exists serving_areas text[] default '{}',
@@ -68,5 +69,16 @@ create table if not exists public.contact_messages (
   email text not null,
   category text,
   message text not null,
+  created_at timestamptz default now()
+);
+
+-- adopter <-> rescuer direct messages (200-word limit enforced in app code)
+create table if not exists public.messages (
+  id uuid primary key default gen_random_uuid(),
+  sender_id uuid not null references public.profiles(id) on delete cascade,
+  recipient_id uuid not null references public.profiles(id) on delete cascade,
+  pet_id uuid references public.pets(id) on delete cascade,
+  application_id uuid references public.applications(id) on delete cascade,
+  content text not null,
   created_at timestamptz default now()
 );

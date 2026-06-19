@@ -1,9 +1,11 @@
 'use client';
 import '../dashboard/styles.css';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
+import MessagesPanel from '@/components/MessagesPanel';
 
 const TABS = [
   { key: 'all', label: 'All' },
@@ -13,19 +15,25 @@ const TABS = [
   { key: 'cancelled', label: 'Withdrawn' },
 ];
 
-export default function ManageApplicationsPage() {
+function ManageApplicationsContent() {
+  const searchParams = useSearchParams();
+  const petFilter = searchParams.get('pet');
+
   const [loading, setLoading] = useState(true);
   const [apps, setApps] = useState<any[]>([]);
   const [filter, setFilter] = useState('all');
   const [selectedApp, setSelectedApp] = useState<any>(null);
   const [toast, setToast] = useState<{ msg: string; type: string } | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [view, setView] = useState<'applications' | 'messages'>('applications');
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setLoading(false); return; }
+      setUserId(user.id);
       const pets = await getMyPets(supabase, user.id);
       if (pets.length) {
         const incoming = await getIncomingApplications(supabase, pets.map((p: any) => p.id));
@@ -55,18 +63,32 @@ export default function ManageApplicationsPage() {
 
   if (loading) return <div className="loading-state">Loading applications...</div>;
 
-  const filtered = filter === 'all' ? apps : apps.filter((a) => a.status === filter);
+  const petScoped = petFilter ? apps.filter((a) => a.pet_id === petFilter) : apps;
+  const filtered = filter === 'all' ? petScoped : petScoped.filter((a) => a.status === filter);
+  const petName = petFilter ? petScoped[0]?.pets?.name : null;
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <div><h1>Applications ({apps.length})</h1><p>All applications across your listings.</p></div>
+        <div>
+          <h1>{petFilter ? `Applications for ${petName || 'this pet'}` : `Applications (${apps.length})`}</h1>
+          <p>{petFilter ? <a href="/manage-applications" style={{ color: 'var(--orange)' }}>← View all applications</a> : 'All applications across your listings.'}</p>
+        </div>
       </div>
 
       <div className="filter-tabs">
+        <button className={`filter-tab ${view === 'applications' ? 'active' : ''}`} onClick={() => setView('applications')}>Applications</button>
+        <button className={`filter-tab ${view === 'messages' ? 'active' : ''}`} onClick={() => setView('messages')}>Messages</button>
+      </div>
+
+      {view === 'messages' ? (
+        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--light)', fontSize: '13px' }}>Log in to view your messages.</p>
+      ) : (
+      <>
+      <div className="filter-tabs">
         {TABS.map((tab) => (
           <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => setFilter(tab.key)}>
-            {tab.label} ({tab.key === 'all' ? apps.length : apps.filter((a) => a.status === tab.key).length})
+            {tab.label} ({tab.key === 'all' ? petScoped.length : petScoped.filter((a) => a.status === tab.key).length})
           </button>
         ))}
       </div>
@@ -75,7 +97,7 @@ export default function ManageApplicationsPage() {
         <div className="empty-state">
           <div className="empty-icon">🐾</div>
           <h3>No applications yet</h3>
-          <p>When adopters apply for your pets, they will appear here.</p>
+          <p>{petFilter ? 'No one has applied for this pet yet.' : "When adopters apply for your pets, they will appear here."}</p>
         </div>
       ) : (
         <div className="applications-feed">
@@ -96,6 +118,8 @@ export default function ManageApplicationsPage() {
             </div>
           ))}
         </div>
+      )}
+      </>
       )}
 
       {selectedApp && (
@@ -131,5 +155,13 @@ export default function ManageApplicationsPage() {
 
       {toast && <div className={`toast ${toast.type}`}>{toast.msg}</div>}
     </div>
+  );
+}
+
+export default function ManageApplicationsPage() {
+  return (
+    <Suspense fallback={<div className="loading-state">Loading applications...</div>}>
+      <ManageApplicationsContent />
+    </Suspense>
   );
 }

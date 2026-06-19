@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { fetchPetById, findLocalPetById, type Pet } from '@/lib/pet-service';
 import { getLocalApplications } from '@/lib/local-store';
+import MessageComposer from '@/components/MessageComposer';
 
 export default function PetProfile() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ export default function PetProfile() {
   const [userApplication, setUserApplication] = useState<any>(null);
   const [adoptionsCount, setAdoptionsCount] = useState<number | string>('--');
   const [experienceYears, setExperienceYears] = useState<number | string>('--');
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPetAndApp() {
@@ -28,6 +30,7 @@ export default function PetProfile() {
       }
 
       const { data: { user } } = await supabase.auth.getUser();
+      if (user) setCurrentUserId(user.id);
       const petData = await fetchPetById(supabase, id);
 
       if (petData) {
@@ -168,6 +171,17 @@ export default function PetProfile() {
                 <Link href="/rescuer-landing" style={{ color: 'var(--orange)', fontSize: '12px', fontWeight: 600, textDecoration: 'none' }}>View Rescuer Info →</Link>
               </div>
             </div>
+
+            {currentUserId && pet.rescuer_id && currentUserId !== pet.rescuer_id && (
+              <div style={{ marginBottom: '12px' }}>
+                <MessageComposer
+                  recipientId={pet.rescuer_id}
+                  petId={pet.id}
+                  triggerLabel={`Message ${rescuerName.split(' ')[0]}`}
+                  triggerClassName="btn-message"
+                />
+              </div>
+            )}
 
             <div style={{ display: 'flex', gap: '16px', padding: '12px', background: 'var(--cream)', borderRadius: '8px', marginBottom: '16px' }}>
               <div style={{ textAlign: 'center', flex: 1 }}>
