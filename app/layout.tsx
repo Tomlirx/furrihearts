@@ -19,7 +19,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       .from('user_roles')
       .select('role_id')
       .eq('user_id', user.id);
-    roles = roleData?.map(r => r.role_id) || [];
+    roles = roleData?.map((r: { role_id: string }) => r.role_id) || [];
   }
 
   return (

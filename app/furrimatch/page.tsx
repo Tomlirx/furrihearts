@@ -1,7 +1,8 @@
 'use client';
 import './styles.css';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { localPets, type Pet } from '@/lib/pet-service';
 
 export default function FurriMatch() {
   const [view, setView] = useState<'quiz' | 'results'>('quiz');
@@ -21,6 +22,14 @@ export default function FurriMatch() {
       return { ...prev, [qId]: [...current, value] };
     });
   };
+
+  const matches = useMemo(() => {
+    return localPets
+      .filter((pet) => pet.status === 'available')
+      .map((pet) => ({ pet, score: scorePet(pet, answers) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4);
+  }, [answers]);
 
   return (
     <div className="furrimatch-container">
@@ -111,9 +120,74 @@ export default function FurriMatch() {
       {/* RESULTS VIEW */}
       {view === 'results' && (
         <div id="results-view">
-           {/* ... your existing results render logic ... */}
+          <div className="results-header">
+            <div>
+              <h1 className="quiz-title" style={{ marginBottom: '6px' }}>Your FurriMatch results</h1>
+              <p className="quiz-sub" style={{ marginBottom: 0 }}>These pets best match your home, lifestyle, and experience.</p>
+            </div>
+            <button className="q-radio" onClick={() => setView('quiz')}>Retake quiz</button>
+          </div>
+
+          <div className="match-grid">
+            {matches.map(({ pet, score }, index) => (
+              <Link href={`/pet/${pet.id}`} className="match-card" key={pet.id}>
+                <div className="match-img">
+                  <img src={pet.image_url} alt={pet.name} />
+                  <span>{index === 0 ? 'Best Match' : `${score}% Match`}</span>
+                </div>
+                <div className="match-info">
+                  <div className="match-title-row">
+                    <h3>{pet.name}</h3>
+                    <strong>{score}%</strong>
+                  </div>
+                  <p>{pet.gender} · {pet.age} · {pet.location}</p>
+                  <div className="match-tags">
+                    <span>{pet.breed}</span>
+                    {pet.traits?.slice(0, 2).map((trait) => <span key={trait}>{trait}</span>)}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', padding: '8px 24px 56px' }}>
+            <Link href="/browse" className="btn-submit" style={{ display: 'inline-block', width: 'auto', textDecoration: 'none', paddingLeft: '32px', paddingRight: '32px' }}>
+              Browse All Pets
+            </Link>
+          </div>
         </div>
       )}
     </div>
   );
+}
+
+function scorePet(pet: Pet, answers: Record<number, string | string[]>) {
+  let score = 62;
+
+  if (answers[1] === 'Cat 🐱' && pet.species === 'cat') score += 18;
+  if (answers[1] === 'Dog 🐶' && pet.species === 'dog') score += 18;
+  if (answers[1] === 'Either') score += 8;
+
+  if (answers[2] === 'Apartment / Condo' && pet.species === 'cat') score += 8;
+  if (answers[2] === 'Landed House' && pet.species === 'dog') score += 8;
+
+  const currentPets = (answers[3] as string[]) || [];
+  if (currentPets.includes('Cat(s)') && pet.traits?.includes('Pet Friendly')) score += 7;
+  if (currentPets.includes('Dog(s)') && pet.traits?.includes('Pet Friendly')) score += 7;
+  if (currentPets.includes('None') && (pet.traits?.includes('Gentle') || pet.traits?.includes('Calm'))) score += 6;
+
+  if (answers[4] === 'Often — long hours away' && (pet.traits?.includes('Independent') || pet.traits?.includes('Low-Maintenance'))) score += 10;
+  if (answers[4] === 'Rarely — mostly home' && pet.traits?.includes('People-Oriented')) score += 8;
+
+  if (answers[5] === 'First-time owner' && (pet.traits?.includes('Gentle') || pet.traits?.includes('Calm'))) score += 8;
+  if (answers[5] === 'Quite experienced' && (pet.traits?.includes('Active') || pet.traits?.includes('Shy'))) score += 6;
+
+  if (answers[6] === 'Calm & quiet' && (pet.traits?.includes('Gentle') || pet.traits?.includes('Shy'))) score += 8;
+  if (answers[6] === 'Active & outdoorsy' && (pet.traits?.includes('Active') || pet.traits?.includes('Loves Outdoors'))) score += 8;
+
+  if (answers[7] === 'Follows me everywhere' && pet.traits?.includes('People-Oriented')) score += 8;
+  if (answers[7] === 'Affectionate & independent' && pet.traits?.includes('Independent')) score += 8;
+  if (answers[7] === 'Low-maintenance' && (pet.traits?.includes('Calm') || pet.traits?.includes('Low-Maintenance'))) score += 8;
+
+  return Math.min(score, 98);
 }

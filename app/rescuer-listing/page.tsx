@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { saveLocalListing } from '@/lib/local-store';
 
 // Arrays for dynamic filtering
 const CAT_BREEDS = ['Domestic Shorthair', 'Domestic Longhair', 'Persian', 'Siamese', 'Maine Coon', 'Ragdoll', 'Scottish Fold', 'Bengal', 'British Shorthair', 'Other'];
@@ -137,7 +138,34 @@ export default function RescuerListingFlow() {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      alert("Authentication error. Please ensure you are logged in as a Rescuer.");
+      const finalBreed = breed === 'Other' ? customBreed : breed;
+      const fallbackImage = petType === 'cat' ? '/img-milo.png' : '/img-buddy.png';
+
+      saveLocalListing({
+        id: `local-${Date.now()}`,
+        name: name || 'New Rescue Pet',
+        species: petType,
+        breed: finalBreed || 'Mixed Breed',
+        age,
+        gender,
+        location,
+        description: description || 'This pet was added locally from the rescuer listing flow.',
+        status: 'available',
+        image_url: fallbackImage,
+        gallery: [fallbackImage],
+        fee: Number(fee) || 0,
+        rescuer_id: 'demo-rescuer',
+        rescuer_name: 'Demo Rescuer',
+        traits,
+        is_vaccinated: health.includes('Vaccinated'),
+        is_dewormed: health.includes('Dewormed'),
+        is_neutered: health.includes('Neutered'),
+        is_flea_treated: health.includes('Flea Treated'),
+        is_potty_trained: health.includes('Potty Trained'),
+      });
+
+      alert("Listing published and saved locally.");
+      router.push('/dashboard');
       setIsSubmitting(false);
       return;
     }

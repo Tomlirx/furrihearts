@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { fetchPetById, findLocalPetById } from '@/lib/pet-service';
+import { saveLocalApplication } from '@/lib/local-store';
 
 export default function QuestionnairePage() {
   const { id } = useParams();
@@ -25,7 +27,11 @@ export default function QuestionnairePage() {
 
   useEffect(() => {
     async function fetchPet() {
-      const { data } = await supabase.from('pets').select('*').eq('id', id).single();
+      if (!id) return;
+      const localPet = findLocalPetById(String(id));
+      if (localPet) setPet(localPet);
+
+      const data = await fetchPetById(supabase, String(id));
       if (data) setPet(data);
       setLoading(false);
     }
@@ -44,7 +50,34 @@ export default function QuestionnairePage() {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      alert("Authentication error. Please ensure you are logged in.");
+      saveLocalApplication({
+        id: `local-app-${pet.id}-${Date.now()}`,
+        pet_id: pet.id,
+        applicant_id: 'demo-adopter',
+        status: 'pending',
+        created_at: new Date().toISOString(),
+        q1,
+        q2,
+        q3,
+        q4,
+        q5,
+        q6,
+        q7,
+        pets: {
+          id: pet.id,
+          name: pet.name,
+          image_url: pet.image_url,
+          species: pet.species,
+          gender: pet.gender,
+          location: pet.location,
+        },
+        profiles: {
+          first_name: 'Demo',
+          last_name: 'Adopter',
+        },
+      });
+      alert("Application submitted and saved locally.");
+      router.push('/dashboard');
       setSubmitting(false);
       return;
     }
@@ -65,7 +98,7 @@ export default function QuestionnairePage() {
 
     if (!error) { 
       alert("Application submitted!"); 
-      router.push('/browse'); 
+      router.push('/dashboard'); 
     } else { 
       console.error(error); 
       alert("There was an error submitting your application.");
