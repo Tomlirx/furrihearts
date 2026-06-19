@@ -153,6 +153,34 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
   ].slice(0, limit);
 }
 
+export interface PlatformStats {
+  animalsListed: number;
+  successfulAdoptions: number;
+  activeRescuers: number;
+}
+
+export async function getPlatformStats(supabase?: any): Promise<PlatformStats> {
+  if (supabase?.from && !supabase.__isMock) {
+    try {
+      const [animalsRes, adoptedRes, rescuersRes] = await Promise.all([
+        supabase.from('pets').select('id', { count: 'exact', head: true }),
+        supabase.from('pets').select('id', { count: 'exact', head: true }).eq('status', 'adopted'),
+        supabase.from('pets').select('rescuer_id'),
+      ]);
+
+      const animalsListed = animalsRes.count ?? 0;
+      const successfulAdoptions = adoptedRes.count ?? 0;
+      const activeRescuers = new Set((rescuersRes.data || []).map((p: any) => p.rescuer_id).filter(Boolean)).size;
+
+      return { animalsListed, successfulAdoptions, activeRescuers };
+    } catch {
+      // Fall through to honest zeros below.
+    }
+  }
+
+  return { animalsListed: 0, successfulAdoptions: 0, activeRescuers: 0 };
+}
+
 export async function fetchPetById(supabase: any, id: string) {
   if (supabase?.from && !supabase.__isMock) {
     try {

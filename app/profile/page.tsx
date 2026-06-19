@@ -27,7 +27,9 @@ export default async function ProfilePage() {
           <h1>{profile?.first_name} {profile?.last_name}</h1>
           <p className="profile-meta">{profile?.location || 'Malaysia'} · Member since {memberSince}</p>
           <div className="profile-badges">
-            <span className="badge-verified">✅ Email Verified</span>
+            <span className={user!.email_confirmed_at ? 'badge-verified' : 'badge-pending'}>
+              {user!.email_confirmed_at ? '✅ Email Verified' : '⏳ Email Pending'}
+            </span>
             <span className={profile?.is_id_verified ? 'badge-verified' : 'badge-pending'}>
               {profile?.is_id_verified ? '✅ ID Verified' : '⏳ ID Pending'}
             </span>

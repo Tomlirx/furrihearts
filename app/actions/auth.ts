@@ -49,3 +49,15 @@ export async function signInUser(formData: any) {
   // Success
   return { success: true };
 }
+
+export async function requestPasswordReset(email: string, origin: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/auth/callback?next=/reset-password`,
+  });
+
+  // Don't leak whether the email exists — always return success-shaped response.
+  if (error) console.error('Password reset error:', error);
+  return { success: true };
+}

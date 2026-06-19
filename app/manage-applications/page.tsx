@@ -7,6 +7,9 @@ import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
 import MessagesPanel from '@/components/MessagesPanel';
 import ConfirmDialog from '@/components/ConfirmDialog';
+import Pagination from '@/components/Pagination';
+
+const PAGE_SIZE = 20;
 
 const TABS = [
   { key: 'all', label: 'All' },
@@ -29,6 +32,7 @@ function ManageApplicationsContent() {
   const [view, setView] = useState<'applications' | 'messages'>('applications');
   const [userId, setUserId] = useState<string | null>(null);
   const [declineTarget, setDeclineTarget] = useState<any>(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function load() {
@@ -74,6 +78,13 @@ function ManageApplicationsContent() {
   const petScoped = petFilter ? apps.filter((a) => a.pet_id === petFilter) : apps;
   const filtered = filter === 'all' ? petScoped : petScoped.filter((a) => a.status === filter);
   const petName = petFilter ? petScoped[0]?.pets?.name : null;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleFilterChange = (key: string) => {
+    setFilter(key);
+    setPage(1);
+  };
 
   return (
     <div className="dashboard-container">
@@ -95,7 +106,7 @@ function ManageApplicationsContent() {
       <>
       <div className="filter-tabs">
         {TABS.map((tab) => (
-          <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => setFilter(tab.key)}>
+          <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => handleFilterChange(tab.key)}>
             {tab.label} ({tab.key === 'all' ? petScoped.length : petScoped.filter((a) => a.status === tab.key).length})
           </button>
         ))}
@@ -108,8 +119,9 @@ function ManageApplicationsContent() {
           <p>{petFilter ? 'No one has applied for this pet yet.' : "When adopters apply for your pets, they will appear here."}</p>
         </div>
       ) : (
+        <>
         <div className="applications-feed">
-          {filtered.map((app) => (
+          {paginated.map((app) => (
             <div className="application-card" key={app.id}>
               <div className="app-header">
                 <img src={app.pets?.image_url} alt={app.pets?.name} className="app-pet-img" />
@@ -126,6 +138,8 @@ function ManageApplicationsContent() {
             </div>
           ))}
         </div>
+        <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        </>
       )}
       </>
       )}

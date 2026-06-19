@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getMyPets, getFollowedRescuerIds } from '@/lib/profile-data';
 import FollowButton from './FollowButton';
+import EmptyState from '@/components/EmptyState';
 import '../styles.css';
 import './styles.css';
 
@@ -14,8 +15,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
   if (!profile) notFound();
 
-  const activePets = (await getMyPets(supabase, id)).filter((p: any) => p.status === 'available');
-  const isRescuer = activePets.length > 0;
+  const allPets = await getMyPets(supabase, id);
+  const activePets = allPets.filter((p: any) => p.status === 'available');
+  const isRescuer = allPets.length > 0;
   const memberSince = profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-MY', { month: 'long', year: 'numeric' }) : '—';
 
   const isFollowing = user ? (await getFollowedRescuerIds(supabase, user.id)).includes(id) : false;
@@ -60,18 +62,26 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
           <div className="profile-section">
             <h2>Active Listings</h2>
-            <div className="public-listings-grid">
-              {activePets.map((pet: any) => (
-                <Link key={pet.id} href={`/pet/${pet.id}`} className="public-listing-card">
-                  <img src={pet.image_url} alt={pet.name} />
-                  <div className="public-listing-info">
-                    <h4>{pet.name} · {pet.gender}</h4>
-                    <p>{pet.age} · {pet.location}</p>
-                    <p className="public-listing-fee">RM{pet.fee || 0}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {activePets.length > 0 ? (
+              <div className="public-listings-grid">
+                {activePets.map((pet: any) => (
+                  <Link key={pet.id} href={`/pet/${pet.id}`} className="public-listing-card">
+                    <img src={pet.image_url} alt={pet.name} />
+                    <div className="public-listing-info">
+                      <h4>{pet.name} · {pet.gender}</h4>
+                      <p>{pet.age} · {pet.location}</p>
+                      <p className="public-listing-fee">RM{pet.fee || 0}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                icon="🐾"
+                title="No active listings right now"
+                description={`${profile?.first_name || 'This rescuer'} doesn't have any pets available for adoption at the moment.`}
+              />
+            )}
           </div>
 
           <div className="profile-section">

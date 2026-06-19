@@ -80,7 +80,7 @@ export default function Login() {
             <label className="form-label" htmlFor="password">Password</label>
             <input id="password" className={`form-input ${errors.pwd ? 'error' : ''}`} type="password" placeholder="Enter your password" onChange={e => handleInputChange('password', e.target.value)} />
             <div className="field-error">{errors.pwd}</div>
-            <a href="#" className="forgot-link">Forgot password?</a>
+            <Link href="/forgot-password" className="forgot-link">Forgot password?</Link>
           </div>
 
           <div id="captcha" tabIndex={0} role="checkbox" aria-checked={captchaVerified} className={`captcha-box ${errors.captcha ? 'error' : ''}`} onClick={() => setCaptchaVerified(!captchaVerified)} style={{cursor: 'pointer', border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>

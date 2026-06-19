@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
+  const next = requestUrl.searchParams.get('next');
   const origin = requestUrl.origin;
 
   if (code) {
@@ -63,6 +64,6 @@ export async function GET(request: Request) {
     }
   }
 
-  // 5. Send the user straight to the app
-  return NextResponse.redirect(new URL('/browse', origin));
+  // 5. Send the user to the requested destination (e.g. password reset), or the app by default
+  return NextResponse.redirect(new URL(next || '/browse', origin));
 }

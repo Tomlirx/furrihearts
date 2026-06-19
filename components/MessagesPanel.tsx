@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { getInbox, getSentMessages, getThread, groupThreads } from '@/lib/messages-data';
+import { getInbox, getSentMessages, getThread, groupThreads, markThreadRead } from '@/lib/messages-data';
 import MessageComposer from './MessageComposer';
+import Pagination from './Pagination';
+
+const PAGE_SIZE = 20;
 
 export default function MessagesPanel({ currentUserId }: { currentUserId: string }) {
   const [loading, setLoading] = useState(true);
   const [threads, setThreads] = useState<any[]>([]);
   const [activeThread, setActiveThread] = useState<any>(null);
   const [threadMessages, setThreadMessages] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
 
   const loadThreads = async () => {
     const [inbox, sent] = await Promise.all([
@@ -26,6 +30,8 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
     setActiveThread(thread);
     const msgs = await getThread(supabase, currentUserId, thread.otherId, thread.petId);
     setThreadMessages(msgs);
+    await markThreadRead(supabase, currentUserId, thread.otherId, thread.petId);
+    window.dispatchEvent(new Event('furrihearts:messages-read'));
   };
 
   if (loading) return <div className="loading-state">Loading messages...</div>;
@@ -70,19 +76,31 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
     );
   }
 
+  const totalPages = Math.max(1, Math.ceil(threads.length / PAGE_SIZE));
+  const paginated = threads.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   return (
-    <div className="applications-feed">
-      {threads.map((thread) => (
-        <div key={`${thread.otherId}-${thread.petId}`} className="application-card" style={{ cursor: 'pointer' }} onClick={() => openThread(thread)}>
-          <div className="app-header">
-            <img src={thread.petImage} alt={thread.petName} className="app-pet-img" />
-            <div className="app-meta">
-              <h3>{thread.otherName} <span style={{ fontSize: '12px', color: 'var(--light)', fontWeight: 400 }}>· {thread.petName}</span></h3>
-              <p style={{ marginBottom: 0 }}>{thread.latest.content.slice(0, 80)}{thread.latest.content.length > 80 ? '…' : ''}</p>
+    <>
+      <div className="applications-feed">
+        {paginated.map((thread) => {
+          const isUnread = thread.latest.read_at === null && thread.latest.recipient_id === currentUserId;
+          return (
+            <div key={`${thread.otherId}-${thread.petId}`} className="application-card" style={{ cursor: 'pointer' }} onClick={() => openThread(thread)}>
+              <div className="app-header">
+                <img src={thread.petImage} alt={thread.petName} className="app-pet-img" />
+                <div className="app-meta">
+                  <h3>
+                    {isUnread && <span style={{ width: 8, height: 8, marginRight: 8, display: 'inline-block', borderRadius: '50%', background: 'var(--orange)' }} aria-hidden="true" />}
+                    {thread.otherName} <span style={{ fontSize: '12px', color: 'var(--light)', fontWeight: 400 }}>· {thread.petName}</span>
+                  </h3>
+                  <p style={{ marginBottom: 0, fontWeight: isUnread ? 600 : 400 }}>{thread.latest.content.slice(0, 80)}{thread.latest.content.length > 80 ? '…' : ''}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
+          );
+        })}
+      </div>
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+    </>
   );
 }

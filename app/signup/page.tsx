@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { signUpUser } from '../actions/auth';
 import './styles.css';
+import '../rescuer-listing/created/styles.css';
 
 export default function Signup() {
   const [step, setStep] = useState(1);
@@ -115,7 +116,23 @@ export default function Signup() {
             <div style={{textAlign: 'center'}}>
               <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎉</div>
               <h2>Welcome!</h2>
-              <p>Your account is ready.</p>
+              <p style={{ marginBottom: '24px' }}>Your account is ready. What would you like to do first?</p>
+              <div className="whats-next" style={{ marginBottom: '20px' }}>
+                <Link href="/browse" className="next-item" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <span>🐱</span>
+                  <div>
+                    <strong>I want to adopt</strong>
+                    <p>Browse pets looking for a forever home near you.</p>
+                  </div>
+                </Link>
+                <Link href="/rescuer-listing" className="next-item" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <span>🏅</span>
+                  <div>
+                    <strong>I want to list a pet</strong>
+                    <p>Create a free listing to find your rescue a home.</p>
+                  </div>
+                </Link>
+              </div>
               <Link href="/browse" className="btn-continue">Explore Pets</Link>
             </div>
           )}

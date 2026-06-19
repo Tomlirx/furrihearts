@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import './styles.css';
 
 const PACKAGES = [
@@ -38,7 +39,7 @@ export default function CarePackagesPage() {
                 <span className="price-now">RM{pkg.price}</span>
                 <span className="price-old">RM{pkg.oldPrice}</span>
               </div>
-              <button className="btn-add-cart">Add to Cart</button>
+              <Link href="/contact" className="btn-add-cart">Inquire to Order</Link>
             </div>
           </div>
         ))}

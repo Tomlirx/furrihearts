@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, type Pet } from '@/lib/pet-service';
-import { getMyPets, getMyApplications, getIncomingApplications } from '@/lib/profile-data';
+import { getMyPets, getMyApplications, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import EmptyState from '@/components/EmptyState';
+import BoostModal from '@/components/BoostModal';
 
 export default function DashboardOverview() {
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,7 @@ export default function DashboardOverview() {
   const [myApplications, setMyApplications] = useState<any[]>([]);
   const [myPets, setMyPets] = useState<Pet[]>([]);
   const [incomingApps, setIncomingApps] = useState<any[]>([]);
+  const [boostsByPet, setBoostsByPet] = useState<Record<string, any>>({});
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -36,6 +38,13 @@ export default function DashboardOverview() {
         setMyPets(petsData);
         const incoming = await getIncomingApplications(supabase, petsData.map((p: Pet) => p.id));
         setIncomingApps(incoming);
+
+        const boosts = await getMyBoosts(supabase, petsData.map((p: Pet) => p.id));
+        const latestByPet: Record<string, any> = {};
+        boosts.forEach((b: any) => {
+          if (!latestByPet[b.pet_id]) latestByPet[b.pet_id] = b; // already ordered newest-first
+        });
+        setBoostsByPet(latestByPet);
       }
 
       setLoading(false);
@@ -80,13 +89,29 @@ export default function DashboardOverview() {
               <h3>Active Listings</h3>
               <Link href="/all-listings">View all →</Link>
             </div>
-            {myPets.slice(0, 4).map((pet) => (
-              <div className="listing-row" key={pet.id}>
-                <img src={pet.image_url} className="row-thumb" alt={pet.name} />
-                <div className="row-info"><h4>{pet.name} · {pet.gender}</h4><p>{pet.age} · {pet.location}</p></div>
-                <div className="row-actions"><Link href={`/pet/${pet.id}`}>View</Link></div>
-              </div>
-            ))}
+            {myPets.slice(0, 4).map((pet) => {
+              const isActiveBoost = pet.featured_until && new Date(pet.featured_until) > new Date();
+              const isPendingBoost = boostsByPet[pet.id]?.status === 'pending_verification';
+              return (
+                <div className="listing-row" key={pet.id}>
+                  <img src={pet.image_url} className="row-thumb" alt={pet.name} />
+                  <div className="row-info">
+                    <h4>
+                      {pet.name} · {pet.gender}
+                      {isActiveBoost && <span className="boost-status active">⭐ Featured</span>}
+                      {!isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending</span>}
+                    </h4>
+                    <p>{pet.age} · {pet.location}</p>
+                  </div>
+                  <div className="row-actions">
+                    {!isActiveBoost && !isPendingBoost && (
+                      <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
+                    )}
+                    <Link href={`/pet/${pet.id}`}>View</Link>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           <div className="section-card">

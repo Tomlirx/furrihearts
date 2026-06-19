@@ -7,6 +7,7 @@ import { fetchPets, filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-se
 import { getLocalListings, getSavedPetIds, toggleSavedPet } from '@/lib/local-store';
 import { supabase } from '@/lib/supabase';
 import PetCard from '@/components/PetCard';
+import EmptyState from '@/components/EmptyState';
 
 export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   const searchParams = useSearchParams();
@@ -168,10 +169,13 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
           )}
 
           {pets.length === 0 && (
-            <div className="load-more-row">
-              <p>No pets found matching your criteria.</p>
-              <button className="btn-outline" onClick={resetFilters}>Clear search</button>
-            </div>
+            <EmptyState
+              icon="🔍"
+              title="No pets found"
+              description="Try adjusting your filters or search to see more pets."
+              ctaLabel="Clear filters"
+              onCta={resetFilters}
+            />
           )}
         </main>
       </div>

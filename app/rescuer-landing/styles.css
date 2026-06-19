@@ -53,8 +53,6 @@
 .cta-bottom { background: linear-gradient(135deg, var(--orange), var(--orange-light)); padding: 72px 40px; text-align: center; color: #fff; }
 .cta-bottom h2 { font-family: var(--font-fraunces), serif; font-size: 40px; font-weight: 700; margin-bottom: 12px; }
 .cta-bottom p { font-size: 16px; opacity: .9; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
-.btn-cta-white { background: #fff; color: var(--orange); border: none; border-radius: 10px; padding: 16px 32px; font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
-.btn-cta-white:hover { background: var(--cream); }
 
 /* Mobile Formatting */
 @media(max-width: 768px) {

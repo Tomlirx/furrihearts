@@ -8,7 +8,10 @@ import { getMyApplications } from '@/lib/profile-data';
 import MessageComposer from '@/components/MessageComposer';
 import MessagesPanel from '@/components/MessagesPanel';
 import ConfirmDialog from '@/components/ConfirmDialog';
+import Pagination from '@/components/Pagination';
 import { useToast } from '@/lib/useToast';
+
+const PAGE_SIZE = 20;
 
 const TABS = [
   { key: 'all', label: 'All' },
@@ -25,6 +28,7 @@ export default function MyApplicationsPage() {
   const [withdrawTarget, setWithdrawTarget] = useState<any>(null);
   const [view, setView] = useState<'applications' | 'messages'>('applications');
   const [userId, setUserId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
   const { toast, showToast } = useToast();
 
   useEffect(() => {
@@ -54,6 +58,13 @@ export default function MyApplicationsPage() {
   if (loading) return <div className="loading-state">Loading your applications...</div>;
 
   const filtered = filter === 'all' ? apps : apps.filter((a) => a.status === filter);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleFilterChange = (key: string) => {
+    setFilter(key);
+    setPage(1);
+  };
 
   return (
     <div className="dashboard-container">
@@ -72,7 +83,7 @@ export default function MyApplicationsPage() {
       <>
       <div className="filter-tabs">
         {TABS.map((tab) => (
-          <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => setFilter(tab.key)}>
+          <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => handleFilterChange(tab.key)}>
             {tab.label} ({tab.key === 'all' ? apps.length : apps.filter((a) => a.status === tab.key).length})
           </button>
         ))}
@@ -86,8 +97,9 @@ export default function MyApplicationsPage() {
           <Link href="/browse" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>🐾 Browse Pets</Link>
         </div>
       ) : (
+        <>
         <div className="applications-feed">
-          {filtered.map((app) => (
+          {paginated.map((app) => (
             <div className="application-card" key={app.id}>
               <div className="app-header">
                 <img src={app.pets?.image_url} alt={app.pets?.name} className="app-pet-img" />
@@ -128,6 +140,8 @@ export default function MyApplicationsPage() {
             </div>
           ))}
         </div>
+        <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        </>
       )}
       </>
       )}

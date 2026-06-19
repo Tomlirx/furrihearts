@@ -3,21 +3,45 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
 
 export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?: boolean }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadThreads, setUnreadThreads] = useState<any[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  const loadUnread = async () => {
+    if (!user) return;
+    const unread = await getUnreadMessages(supabase, user.id);
+    setUnreadCount(unread.length);
+    setUnreadThreads(groupThreads(unread, user.id).slice(0, 5));
+  };
 
   useEffect(() => {
-    if (!isDropdownOpen) return;
+    loadUnread();
+    window.addEventListener('furrihearts:messages-read', loadUnread);
+    return () => window.removeEventListener('furrihearts:messages-read', loadUnread);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!isDropdownOpen && !isNotifOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsDropdownOpen(false);
+      if (e.key === 'Escape') {
+        setIsDropdownOpen(false);
+        setIsNotifOpen(false);
+      }
     };
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (isDropdownOpen && dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setIsDropdownOpen(false);
+      }
+      if (isNotifOpen && notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setIsNotifOpen(false);
       }
     };
 
@@ -27,7 +51,13 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, isNotifOpen]);
+
+  const handleMarkAllRead = async () => {
+    if (!user) return;
+    await markAllMessagesRead(supabase, user.id);
+    loadUnread();
+  };
 
   const handleLogout = async () => {
     try {
@@ -62,6 +92,51 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
           <div className="nav-right">
             <Link href="/rescuer-listing" className="btn-primary-nav">List Now</Link>
 
+            {user && (
+              <div className="notif-wrap" ref={notifRef}>
+                <button
+                  type="button"
+                  className="notif-btn"
+                  onClick={() => setIsNotifOpen(!isNotifOpen)}
+                  aria-haspopup="true"
+                  aria-expanded={isNotifOpen}
+                  aria-label={unreadCount > 0 ? `${unreadCount} unread messages` : 'Notifications'}
+                >
+                  🔔
+                  {unreadCount > 0 && <span className="notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
+                </button>
+
+                {isNotifOpen && (
+                  <div className="notif-dropdown open" role="menu">
+                    <div className="notif-header">
+                      <span className="notif-header-title">Messages</span>
+                      {unreadCount > 0 && (
+                        <button className="notif-mark-read" onClick={handleMarkAllRead}>Mark all read</button>
+                      )}
+                    </div>
+                    {unreadThreads.length === 0 ? (
+                      <div className="notif-item" style={{ color: 'var(--light)', fontSize: '13px' }}>No new messages.</div>
+                    ) : (
+                      unreadThreads.map((thread) => (
+                        <Link
+                          key={`${thread.otherId}-${thread.petId}`}
+                          href="/manage-applications?view=messages"
+                          className="notif-item unread"
+                          onClick={() => setIsNotifOpen(false)}
+                        >
+                          <div className="notif-icon orange">💬</div>
+                          <div>
+                            <div className="notif-title">{thread.otherName} · {thread.petName}: {thread.latest.content.slice(0, 60)}{thread.latest.content.length > 60 ? '…' : ''}</div>
+                            <div className="notif-time">{new Date(thread.latest.created_at).toLocaleString()}</div>
+                          </div>
+                        </Link>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {user ? (
               <div style={{ position: 'relative' }} ref={dropdownRef}>
                 {/* Clickable Profile Chip */}
@@ -93,7 +168,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                       { href: '/profile', label: 'My Profile' },
                       { href: '/my-applications', label: 'My Applications' },
                       { href: '/all-listings', label: 'My Listings' },
-                      { href: '/manage-applications', label: 'Inbox (Applications & Messages)' },
+                      { href: '/manage-applications', label: 'Inbox (Applications & Messages)', badge: unreadCount },
                       ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
                     ].map((item) => (
                       <Link
@@ -103,7 +178,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                         onClick={() => setIsDropdownOpen(false)}
                         className="dropdown-item"
                       >
-                        {item.label}
+                        {item.label} {!!item.badge && <span className="dd-badge">{item.badge > 9 ? '9+' : item.badge}</span>}
                       </Link>
                     ))}
 
@@ -152,7 +227,9 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
               <Link href="/profile" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Profile</Link>
               <Link href="/my-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Applications</Link>
               <Link href="/all-listings" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Listings</Link>
-              <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Inbox (Applications & Messages)</Link>
+              <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>
+                Inbox (Applications & Messages) {unreadCount > 0 && <span className="dd-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
+              </Link>
               {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
             </>
           )}

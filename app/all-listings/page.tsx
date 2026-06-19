@@ -6,6 +6,9 @@ import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import BoostModal from '@/components/BoostModal';
+import Pagination from '@/components/Pagination';
+
+const PAGE_SIZE = 20;
 
 export default function AllListingsPage() {
   const [loading, setLoading] = useState(true);
@@ -14,6 +17,7 @@ export default function AllListingsPage() {
   const [boostsByPet, setBoostsByPet] = useState<Record<string, any>>({});
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function load() {
@@ -62,6 +66,18 @@ export default function AllListingsPage() {
     if (search && !pet.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleFilterChange = (key: string) => {
+    setFilter(key);
+    setPage(1);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
 
   if (loading) return <div className="loading-state">Loading your listings...</div>;
 
@@ -81,11 +97,11 @@ export default function AllListingsPage() {
 
       <div className="listings-toolbar">
         <div className="filter-tabs" style={{ marginBottom: 0 }}>
-          <button className={`filter-tab ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All ({pets.length})</button>
-          <button className={`filter-tab ${filter === 'live' ? 'active' : ''}`} onClick={() => setFilter('live')}>Live ({pets.filter((p) => p.status === 'available').length})</button>
-          <button className={`filter-tab ${filter === 'closed' ? 'active' : ''}`} onClick={() => setFilter('closed')}>Closed ({pets.filter((p) => p.status === 'adopted').length})</button>
+          <button className={`filter-tab ${filter === 'all' ? 'active' : ''}`} onClick={() => handleFilterChange('all')}>All ({pets.length})</button>
+          <button className={`filter-tab ${filter === 'live' ? 'active' : ''}`} onClick={() => handleFilterChange('live')}>Live ({pets.filter((p) => p.status === 'available').length})</button>
+          <button className={`filter-tab ${filter === 'closed' ? 'active' : ''}`} onClick={() => handleFilterChange('closed')}>Closed ({pets.filter((p) => p.status === 'adopted').length})</button>
         </div>
-        <input className="search-input" placeholder="Search listings..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <input className="search-input" placeholder="Search listings..." value={search} onChange={(e) => handleSearchChange(e.target.value)} />
       </div>
 
       {pets.length === 0 ? (
@@ -96,8 +112,9 @@ export default function AllListingsPage() {
           <Link href="/rescuer-listing" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>+ Create Your First Listing</Link>
         </div>
       ) : (
+        <>
         <div className="listings-grid">
-          {filtered.map((pet) => {
+          {paginated.map((pet) => {
             const counts = appCounts[pet.id] || { total: 0, approved: 0, declined: 0 };
             const isActiveBoost = pet.featured_until && new Date(pet.featured_until) > new Date();
             const latestBoost = boostsByPet[pet.id];
@@ -105,7 +122,9 @@ export default function AllListingsPage() {
             return (
               <div className="listing-card" key={pet.id} style={{ position: 'relative' }}>
                 <span className={`lc-status ${pet.status === 'available' ? 's-live' : 's-closed'}`}>{pet.status === 'available' ? 'Live' : 'Closed'}</span>
-                <img src={pet.image_url} alt={pet.name} />
+                <Link href={`/pet/${pet.id}`}>
+                  <img src={pet.image_url} alt={pet.name} />
+                </Link>
                 <div className="listing-info">
                   <div className="listing-title-row">
                     <h4>{pet.name}</h4>
@@ -115,24 +134,25 @@ export default function AllListingsPage() {
                   <p>{pet.species} · {pet.gender} · {pet.location}</p>
                   <p style={{ marginBottom: '12px' }}>{counts.total} application{counts.total === 1 ? '' : 's'} · {counts.approved} approved</p>
                   <div className="listing-actions">
-                    <Link href={`/pet/${pet.id}`}>View</Link>
+                    {!isActiveBoost && !isPendingBoost ? (
+                      <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
+                    ) : <span />}
                     <Link href={`/manage-applications?pet=${pet.id}`}>Applications</Link>
                   </div>
-                  {!isActiveBoost && !isPendingBoost && (
-                    <div style={{ marginTop: '10px' }}>
-                      <BoostModal petId={pet.id} petName={pet.name} />
-                    </div>
-                  )}
                 </div>
               </div>
             );
           })}
-          <Link href="/rescuer-listing" className="new-listing-card">
-            <div className="plus">+</div>
-            <div style={{ fontWeight: 700, fontSize: '14px' }}>List a Pet</div>
-            <div style={{ fontSize: '12px' }}>Add another pet to your listings</div>
-          </Link>
+          {page === totalPages && (
+            <Link href="/rescuer-listing" className="new-listing-card">
+              <div className="plus">+</div>
+              <div style={{ fontWeight: 700, fontSize: '14px' }}>List a Pet</div>
+              <div style={{ fontSize: '12px' }}>Add another pet to your listings</div>
+            </Link>
+          )}
         </div>
+        <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        </>
       )}
     </div>
   );

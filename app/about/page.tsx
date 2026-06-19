@@ -1,6 +1,12 @@
 import './styles.css';
+import { createClient } from '@/utils/supabase/server';
+import { getPlatformStats } from '@/lib/pet-service';
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const supabase = await createClient();
+  const stats = await getPlatformStats(supabase);
+  const hasStats = stats.animalsListed > 0;
+
   return (
     <>
       <div className="page-hero">
@@ -13,10 +19,15 @@ export default function AboutPage() {
 
       <div className="stats-band">
         <div className="stats-band-inner">
-          <div className="stat-block"><div className="stat-num">1,254</div><div className="stat-label">Animals Rescued</div></div>
-          <div className="stat-block"><div className="stat-num">825</div><div className="stat-label">Successful Adoptions</div></div>
-          <div className="stat-block"><div className="stat-num">320</div><div className="stat-label">Active Rescuers</div></div>
-          <div className="stat-block" style={{ borderRight: 'none' }}><div className="stat-num">4.9</div><div className="stat-label">Community Rating</div></div>
+          {hasStats ? (
+            <>
+              <div className="stat-block"><div className="stat-num">{stats.animalsListed}</div><div className="stat-label">Animals Listed</div></div>
+              <div className="stat-block"><div className="stat-num">{stats.successfulAdoptions}</div><div className="stat-label">Successful Adoptions</div></div>
+              <div className="stat-block" style={{ borderRight: 'none' }}><div className="stat-num">{stats.activeRescuers}</div><div className="stat-label">Active Rescuers</div></div>
+            </>
+          ) : (
+            <div className="stat-block" style={{ borderRight: 'none' }}><div className="stat-num">🌱</div><div className="stat-label">Just getting started — be one of our first rescuers</div></div>
+          )}
         </div>
       </div>
 

@@ -17,7 +17,17 @@ const TIERS: Tier[] = [
   { id: 'premium', label: 'Premium', days: 30, price: 55, blurb: '30 days featured on the homepage' },
 ];
 
-export default function BoostModal({ petId, petName }: { petId: string; petName: string }) {
+export default function BoostModal({
+  petId,
+  petName,
+  triggerLabel = '⭐ Boost this listing',
+  triggerClassName = 'btn-view-full',
+}: {
+  petId: string;
+  petName: string;
+  triggerLabel?: string;
+  triggerClassName?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -50,7 +60,7 @@ export default function BoostModal({ petId, petName }: { petId: string; petName:
 
   return (
     <>
-      <button type="button" className="btn-view-full" onClick={() => setOpen(true)}>⭐ Boost this listing</button>
+      <button type="button" className={triggerClassName} onClick={() => setOpen(true)}>{triggerLabel}</button>
 
       {open && (
         <div className="modal-overlay" onClick={close}>

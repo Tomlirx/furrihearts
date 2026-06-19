@@ -48,6 +48,42 @@ export async function getThread(supabase: any, userId: string, otherId: string, 
   }
 }
 
+export async function getUnreadMessages(supabase: any, userId: string) {
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*, sender:sender_id (first_name, last_name), pets (id, name, image_url)')
+      .eq('recipient_id', userId)
+      .is('read_at', null)
+      .order('created_at', { ascending: false });
+    return error ? [] : (data || []);
+  } catch {
+    return [];
+  }
+}
+
+export async function markThreadRead(supabase: any, userId: string, otherId: string, petId: string) {
+  try {
+    await supabase
+      .from('messages')
+      .update({ read_at: new Date().toISOString() })
+      .eq('recipient_id', userId)
+      .eq('sender_id', otherId)
+      .eq('pet_id', petId)
+      .is('read_at', null);
+  } catch {
+    // Best-effort — if this fails the badge just won't decrement until the next full refetch.
+  }
+}
+
+export async function markAllMessagesRead(supabase: any, userId: string) {
+  try {
+    await supabase.from('messages').update({ read_at: new Date().toISOString() }).eq('recipient_id', userId).is('read_at', null);
+  } catch {
+    // Best-effort, same as markThreadRead.
+  }
+}
+
 // Groups a flat list of inbox/sent messages into one row per (other person, pet) thread.
 export function groupThreads(messages: any[], currentUserId: string) {
   const threads = new Map<string, { otherId: string; otherName: string; petId: string; petName: string; petImage: string; latest: any; count: number }>();
@@ -73,5 +109,11 @@ export function groupThreads(messages: any[], currentUserId: string) {
     }
   }
 
-  return Array.from(threads.values()).sort((a, b) => new Date(b.latest.created_at).getTime() - new Date(a.latest.created_at).getTime());
+  const isUnread = (t: { latest: any }) => t.latest.read_at === null && t.latest.recipient_id === currentUserId;
+
+  return Array.from(threads.values()).sort((a, b) => {
+    const unreadDiff = Number(isUnread(b)) - Number(isUnread(a));
+    if (unreadDiff !== 0) return unreadDiff;
+    return new Date(b.latest.created_at).getTime() - new Date(a.latest.created_at).getTime();
+  });
 }

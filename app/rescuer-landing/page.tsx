@@ -1,11 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import './styles.css'; 
+import { supabase } from '@/lib/supabase';
+import { getPlatformStats, type PlatformStats } from '@/lib/pet-service';
+import './styles.css';
 
 export default function RescuerLanding() {
   const [activeTab, setActiveTab] = useState<'rescuer' | 'adopter'>('rescuer');
+  const [stats, setStats] = useState<PlatformStats | null>(null);
+
+  useEffect(() => {
+    getPlatformStats(supabase).then(setStats);
+  }, []);
 
   return (
     <>
@@ -21,8 +28,17 @@ export default function RescuerLanding() {
             <Link href="/rescuer-listing" className="btn-hero">✨ Start Your First Listing</Link>
           </div>
           <div className="hero-stats">
-            <div><div className="hero-stat-num">0</div><div className="hero-stat-label">Active Rescuers</div></div>
-            <div><div className="hero-stat-num">0</div><div className="hero-stat-label">Successful Adoptions</div></div>
+            {stats && stats.activeRescuers > 0 ? (
+              <>
+                <div><div className="hero-stat-num">{stats.activeRescuers}</div><div className="hero-stat-label">Active Rescuers</div></div>
+                <div><div className="hero-stat-num">{stats.successfulAdoptions}</div><div className="hero-stat-label">Successful Adoptions</div></div>
+              </>
+            ) : (
+              <>
+                <div><div className="hero-stat-num">RM0</div><div className="hero-stat-label">Hidden Fees</div></div>
+                <div><div className="hero-stat-num">🇲🇾</div><div className="hero-stat-label">Made for Malaysia</div></div>
+              </>
+            )}
             <div><div className="hero-stat-num">Free</div><div className="hero-stat-label">Always Free to List</div></div>
           </div>
         </div>
