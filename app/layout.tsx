@@ -13,11 +13,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  let isAdmin = false;
+  if (user) {
+    const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', user.id).single();
+    isAdmin = !!profile?.is_admin;
+  }
+
   return (
     <html lang="en">
       {/* Apply the font variables to the body */}
       <body className={`${dmSans.variable} ${fraunces.variable}`}>
-        <Navbar user={user} />
+        <Navbar user={user} isAdmin={isAdmin} />
         <main>{children}</main>
         <Footer />
       </body>

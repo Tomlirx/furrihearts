@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?: boolean }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -68,6 +68,7 @@ export default function Navbar({ user }: { user: any }) {
                       { href: '/my-applications', label: 'My Applications' },
                       { href: '/all-listings', label: 'My Listings' },
                       { href: '/manage-applications', label: 'Inbox (Applications & Messages)' },
+                      ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
                     ].map((item) => (
                       <Link
                         key={item.href}
@@ -137,6 +138,7 @@ export default function Navbar({ user }: { user: any }) {
               <Link href="/my-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Applications</Link>
               <Link href="/all-listings" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Listings</Link>
               <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Inbox (Applications & Messages)</Link>
+              {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
             </>
           )}
 

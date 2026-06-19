@@ -50,7 +50,7 @@ export async function proxy(request: NextRequest) {
 
   // 3. ROUTE PROTECTION (The Bouncer)
   // Define all routes that require a logged-in user
-  const protectedRoutes = ['/dashboard', '/settings', '/applications', '/rescuer-listing'];
+  const protectedRoutes = ['/dashboard', '/settings', '/applications', '/rescuer-listing', '/admin'];
   const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route));
 
   // If they are a stranger/guest trying to access a protected route, kick them to login
