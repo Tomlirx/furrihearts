@@ -172,6 +172,18 @@ export default function PetProfile() {
               </div>
             </div>
 
+            {currentUserId && pet.rescuer_id === 'demo-rescuer' && (
+              <div style={{ marginBottom: '12px', fontSize: '12px', color: 'var(--light)', textAlign: 'center', background: 'var(--cream)', borderRadius: '8px', padding: '10px' }}>
+                This is sample demo data — there's no real rescuer to message. List a pet yourself to test messaging with a real account.
+              </div>
+            )}
+
+            {currentUserId && pet.rescuer_id === currentUserId && (
+              <div style={{ marginBottom: '12px', fontSize: '12px', color: 'var(--light)', textAlign: 'center', background: 'var(--cream)', borderRadius: '8px', padding: '10px' }}>
+                This is your own listing — log in as a different account to test messaging it.
+              </div>
+            )}
+
             {currentUserId && pet.rescuer_id && pet.rescuer_id !== 'demo-rescuer' && currentUserId !== pet.rescuer_id && (
               <div style={{ marginBottom: '12px' }}>
                 <MessageComposer
