@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-service';
 import { getLocalListings, getSavedPetIds, toggleSavedPet } from '@/lib/local-store';
 
-export default function BrowseContent({ userRole }: { userRole: string }) {
+export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   const searchParams = useSearchParams();
   const [allPets, setAllPets] = useState<Pet[]>([]);
   const [savedPetIds, setSavedPetIds] = useState<string[]>([]);
@@ -167,7 +167,7 @@ export default function BrowseContent({ userRole }: { userRole: string }) {
               <h1>Find Your New Best Friend</h1>
               <p>{pets.length} pets available across Malaysia · {savedPetIds.length} saved</p>
             </div>
-            {userRole === 'rescuer' && <Link href="/rescuer-listing" className="btn-outline">Add listing</Link>}
+            {isLoggedIn && <Link href="/rescuer-listing" className="btn-outline">Add listing</Link>}
           </div>
 
           <button className="filter-toggle" onClick={() => setIsFilterOpen(true)}>

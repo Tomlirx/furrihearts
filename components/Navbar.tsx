@@ -4,9 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
-export default function Navbar({ user, roles = [] }: { user: any, roles?: string[] }) {
-  const isRescuer = (roles ?? []).includes('rescuer');
-  
+export default function Navbar({ user }: { user: any }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -53,7 +51,6 @@ export default function Navbar({ user, roles = [] }: { user: any, roles?: string
                 >
                   <div className="profile-avatar">{user.email[0]?.toUpperCase()}</div>
                   <span className="profile-name">{user.email.split('@')[0]}</span>
-                  {isRescuer && <span className="dd-badge">Rescuer</span>}
                 </div>
 
                 {/* Dropdown Menu - NOW INCLUDES DASHBOARD */}

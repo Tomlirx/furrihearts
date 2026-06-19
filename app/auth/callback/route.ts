@@ -35,8 +35,6 @@ export async function GET(request: Request) {
     // 1. Establish the secure session
     await supabase.auth.exchangeCodeForSession(code);
 
-    // --- NEW: ONBOARDING INTERCEPT LOGIC ---
-    
     // 2. Fetch the newly logged-in user
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -44,25 +42,27 @@ export async function GET(request: Request) {
       // 3. Check for an existing profile
       const { data: profile } = await supabase
         .from('profiles')
-        .select('role')
+        .select('id')
         .eq('id', user.id)
         .single();
 
-      // 4. First Time Login: Create empty profile & route to onboarding
+      // 4. First Time Login: Build the full profile from Google metadata
       if (!profile) {
-        await supabase.from('profiles').insert([
-          { id: user.id, email: user.email }
-        ]);
-        return NextResponse.redirect(new URL('/onboarding', origin));
-      }
+        const meta = user.user_metadata || {};
+        const firstName = meta.given_name || meta.full_name?.split(' ')[0] || '';
+        const lastName = meta.family_name || meta.full_name?.split(' ').slice(1).join(' ') || '';
 
-      // 5. Incomplete Profile: Route to onboarding (if they skipped it before)
-      if (!profile.role) {
-        return NextResponse.redirect(new URL('/onboarding', origin));
+        await supabase.from('profiles').insert([{
+          id: user.id,
+          email: user.email,
+          first_name: firstName,
+          last_name: lastName,
+          name: `${firstName} ${lastName}`.trim() || user.email,
+        }]);
       }
     }
   }
 
-  // 6. Returning User (with a role): Send directly to the app
+  // 5. Send the user straight to the app
   return NextResponse.redirect(new URL('/browse', origin));
 }

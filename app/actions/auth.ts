@@ -17,16 +17,16 @@ export async function signUpUser(formData: any) {
 
   if (error) return { error: error.message };
 
-  // 2. Assign Roles in user_roles table
+  // 2. Create the profile row
   if (data.user) {
-    const roles = [];
-    if (formData.purpose === 'adopter' || formData.purpose === 'both') roles.push('adopter');
-    if (formData.purpose === 'rescuer' || formData.purpose === 'both') roles.push('rescuer');
-
-    const roleEntries = roles.map(role => ({ user_id: data.user!.id, role_id: role }));
-    
-    const { error: roleError } = await supabase.from('user_roles').insert(roleEntries);
-    if (roleError) console.error("Role assignment error:", roleError);
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: data.user.id,
+      email: formData.email,
+      first_name: formData.first,
+      last_name: formData.last,
+      name: `${formData.first} ${formData.last}`.trim(),
+    });
+    if (profileError) console.error("Profile creation error:", profileError);
   }
 
   return { success: true };

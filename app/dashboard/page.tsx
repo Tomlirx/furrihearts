@@ -12,7 +12,6 @@ type DashboardTab = 'my-applications' | 'inbox' | 'listings';
 export default function UnifiedDashboard() {
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('Demo User');
-  const [userRole, setUserRole] = useState('both');
   const [activeTab, setActiveTab] = useState<DashboardTab>('my-applications');
   const [myApplications, setMyApplications] = useState<any[]>([]);
   const [myPets, setMyPets] = useState<Pet[]>([]);
@@ -37,45 +36,39 @@ export default function UnifiedDashboard() {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('first_name, role')
+        .select('first_name')
         .eq('id', user.id)
         .single();
 
-      const role = profile?.role || 'adopter';
       setUserName(profile?.first_name || user.email?.split('@')[0] || 'User');
-      setUserRole(role);
-      setActiveTab(role === 'rescuer' ? 'inbox' : 'my-applications');
 
-      if (role === 'adopter' || role === 'both') {
-        const { data: adopterApps } = await supabase
+      const { data: adopterApps } = await supabase
+        .from('applications')
+        .select('*, pets (id, name, image_url, species, gender, location)')
+        .eq('applicant_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (adopterApps?.length) setMyApplications(adopterApps);
+
+      const { data: petsData } = await supabase
+        .from('pets')
+        .select('*')
+        .eq('rescuer_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (petsData?.length) {
+        setMyPets(petsData);
+        const myPetIds = petsData.map((pet: Pet) => pet.id);
+        const { data: appsData } = await supabase
           .from('applications')
-          .select('*, pets (id, name, image_url, species, gender, location)')
-          .eq('applicant_id', user.id)
+          .select('*, pets (id, name, image_url, rescuer_id), profiles:applicant_id (first_name, last_name)')
+          .in('pet_id', myPetIds)
           .order('created_at', { ascending: false });
 
-        if (adopterApps?.length) setMyApplications(adopterApps);
+        if (appsData?.length) setIncomingApps(appsData);
       }
 
-      if (role === 'rescuer' || role === 'both') {
-        const { data: petsData } = await supabase
-          .from('pets')
-          .select('*')
-          .eq('rescuer_id', user.id)
-          .order('created_at', { ascending: false });
-
-        if (petsData?.length) {
-          setMyPets(petsData);
-          const myPetIds = petsData.map((pet: Pet) => pet.id);
-          const { data: appsData } = await supabase
-            .from('applications')
-            .select('*, pets (id, name, image_url, rescuer_id), profiles:applicant_id (first_name, last_name)')
-            .in('pet_id', myPetIds)
-            .order('created_at', { ascending: false });
-
-          if (appsData?.length) setIncomingApps(appsData);
-        }
-      }
-
+      setActiveTab(petsData?.length ? 'inbox' : 'my-applications');
       setLoading(false);
     }
 
@@ -120,12 +113,10 @@ export default function UnifiedDashboard() {
       </header>
 
       <div className="tabs-nav">
-        {(userRole === 'adopter' || userRole === 'both') && (
-          <button className={`tab-btn ${activeTab === 'my-applications' ? 'active' : ''}`} onClick={() => setActiveTab('my-applications')}>
-            My Applications ({myApplications.length})
-          </button>
-        )}
-        {(userRole === 'rescuer' || userRole === 'both') && (
+        <button className={`tab-btn ${activeTab === 'my-applications' ? 'active' : ''}`} onClick={() => setActiveTab('my-applications')}>
+          My Applications ({myApplications.length})
+        </button>
+        {myPets.length > 0 && (
           <>
             <button className={`tab-btn ${activeTab === 'inbox' ? 'active' : ''}`} onClick={() => setActiveTab('inbox')}>
               Inbox ({incomingApps.length})

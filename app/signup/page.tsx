@@ -7,13 +7,12 @@ import './styles.css';
 
 export default function Signup() {
   const [step, setStep] = useState(1);
-  const [purpose, setPurpose] = useState('');
   const [formData, setFormData] = useState({ first: '', last: '', email: '', password: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
+  const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
   const handleInputChange = (field: string, value: string) => {
@@ -38,8 +37,8 @@ export default function Signup() {
 
   const handleRegister = async () => {
     setLoading(true);
-    const result = await signUpUser({ ...formData, purpose });
-    
+    const result = await signUpUser(formData);
+
     if (result.error) {
       alert("Registration failed: " + result.error);
     } else {
@@ -60,34 +59,18 @@ export default function Signup() {
           <p className="right-sub">Already have an account? <Link href="/login">Log in</Link></p>
 
           <div className="step-bar">
-            {[1, 2, 3, 4].map(s => (
+            {[1, 2, 3].map(s => (
               <div key={s} style={{ display: 'contents' }}>
                 <div className={`step ${step === s ? 'active' : step > s ? 'done' : ''}`}>
                   <div className="step-dot">{step > s ? '✓' : s}</div>
-                  <div className="step-label">{['Purpose', 'Account', 'Security', 'Done'][s - 1]}</div>
+                  <div className="step-label">{['Account', 'Security', 'Done'][s - 1]}</div>
                 </div>
-                {s < 4 && <div className={`step-line ${step > s ? 'done' : ''}`} />}
+                {s < 3 && <div className={`step-line ${step > s ? 'done' : ''}`} />}
               </div>
             ))}
           </div>
 
           {step === 1 && (
-            <div>
-              <p style={{marginBottom: '16px'}}>What brings you here?</p>
-              {[
-                {id: 'adopter', label: 'I want to adopt a pet'},
-                {id: 'rescuer', label: 'I\'m a rescuer'},
-                {id: 'both', label: 'Both'}
-              ].map(p => (
-                <div key={p.id} className={`purpose-option ${purpose === p.id ? 'selected' : ''}`} onClick={() => setPurpose(p.id)}>
-                  {p.label}
-                </div>
-              ))}
-              <button className="btn-continue" onClick={nextStep} disabled={!purpose}>Continue</button>
-            </div>
-          )}
-
-          {step === 2 && (
             <div>
               <div className="form-grid" style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px'}}>
                 <div className="form-field">
@@ -110,7 +93,7 @@ export default function Signup() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 2 && (
             <div>
               <div className="captcha-box" onClick={() => setCaptchaVerified(true)} style={{border: captchaVerified ? '1.5px solid var(--green)' : '1.5px solid var(--border)'}}>
                 {captchaVerified ? '✅ Verified' : 'Click to verify you are human'}
@@ -122,7 +105,7 @@ export default function Signup() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 3 && (
             <div style={{textAlign: 'center'}}>
               <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎉</div>
               <h2>Welcome!</h2>
