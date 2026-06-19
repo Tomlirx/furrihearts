@@ -3,8 +3,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-service';
+import { fetchPets, filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-service';
 import { getLocalListings, getSavedPetIds, toggleSavedPet } from '@/lib/local-store';
+import { supabase } from '@/lib/supabase';
 
 export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   const searchParams = useSearchParams();
@@ -17,7 +18,11 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
-    setAllPets(getLocalPets(getLocalListings()));
+    async function loadPets() {
+      const dbPets = await fetchPets(supabase);
+      setAllPets(getLocalPets([...getLocalListings(), ...dbPets]));
+    }
+    loadPets();
     setSavedPetIds(getSavedPetIds());
   }, []);
 
