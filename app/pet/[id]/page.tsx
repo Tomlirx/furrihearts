@@ -172,7 +172,7 @@ export default function PetProfile() {
               </div>
             </div>
 
-            {currentUserId && pet.rescuer_id && currentUserId !== pet.rescuer_id && (
+            {currentUserId && pet.rescuer_id && pet.rescuer_id !== 'demo-rescuer' && currentUserId !== pet.rescuer_id && (
               <div style={{ marginBottom: '12px' }}>
                 <MessageComposer
                   recipientId={pet.rescuer_id}

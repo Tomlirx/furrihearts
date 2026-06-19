@@ -67,6 +67,7 @@ export default function Navbar({ user }: { user: any }) {
                       { href: '/profile', label: 'My Profile' },
                       { href: '/my-applications', label: 'My Applications' },
                       { href: '/all-listings', label: 'My Listings' },
+                      { href: '/manage-applications', label: 'Inbox (Applications & Messages)' },
                     ].map((item) => (
                       <Link
                         key={item.href}
@@ -135,6 +136,7 @@ export default function Navbar({ user }: { user: any }) {
               <Link href="/profile" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Profile</Link>
               <Link href="/my-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Applications</Link>
               <Link href="/all-listings" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Listings</Link>
+              <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Inbox (Applications & Messages)</Link>
             </>
           )}
 
