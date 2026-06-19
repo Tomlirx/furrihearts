@@ -4,12 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
-import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
+import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
+import BoostModal from '@/components/BoostModal';
 
 export default function AllListingsPage() {
   const [loading, setLoading] = useState(true);
   const [pets, setPets] = useState<any[]>([]);
   const [appCounts, setAppCounts] = useState<Record<string, { total: number; approved: number; declined: number }>>({});
+  const [boostsByPet, setBoostsByPet] = useState<Record<string, any>>({});
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
 
@@ -31,6 +33,13 @@ export default function AllListingsPage() {
           if (app.status === 'rejected') counts[id].declined++;
         });
         setAppCounts(counts);
+
+        const boosts = await getMyBoosts(supabase, myPets.map((p: any) => p.id));
+        const latestByPet: Record<string, any> = {};
+        boosts.forEach((b: any) => {
+          if (!latestByPet[b.pet_id]) latestByPet[b.pet_id] = b; // already ordered newest-first
+        });
+        setBoostsByPet(latestByPet);
       }
       setLoading(false);
     }
@@ -90,18 +99,30 @@ export default function AllListingsPage() {
         <div className="listings-grid">
           {filtered.map((pet) => {
             const counts = appCounts[pet.id] || { total: 0, approved: 0, declined: 0 };
+            const isActiveBoost = pet.featured_until && new Date(pet.featured_until) > new Date();
+            const latestBoost = boostsByPet[pet.id];
+            const isPendingBoost = latestBoost?.status === 'pending_verification';
             return (
               <div className="listing-card" key={pet.id} style={{ position: 'relative' }}>
                 <span className={`lc-status ${pet.status === 'available' ? 's-live' : 's-closed'}`}>{pet.status === 'available' ? 'Live' : 'Closed'}</span>
                 <img src={pet.image_url} alt={pet.name} />
                 <div className="listing-info">
-                  <div className="listing-title-row"><h4>{pet.name}</h4></div>
+                  <div className="listing-title-row">
+                    <h4>{pet.name}</h4>
+                    {isActiveBoost && <span className="boost-status active">⭐ Featured</span>}
+                    {!isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending review</span>}
+                  </div>
                   <p>{pet.species} · {pet.gender} · {pet.location}</p>
                   <p style={{ marginBottom: '12px' }}>{counts.total} application{counts.total === 1 ? '' : 's'} · {counts.approved} approved</p>
                   <div className="listing-actions">
                     <Link href={`/pet/${pet.id}`}>View</Link>
                     <Link href={`/manage-applications?pet=${pet.id}`}>Applications</Link>
                   </div>
+                  {!isActiveBoost && !isPendingBoost && (
+                    <div style={{ marginTop: '10px' }}>
+                      <BoostModal petId={pet.id} petName={pet.name} />
+                    </div>
+                  )}
                 </div>
               </div>
             );

@@ -127,6 +127,7 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
           .from('pets')
           .select('*')
           .eq('status', 'available')
+          .order('created_at', { ascending: false })
           .limit(limit + featured.length);
         if (recentData) pool = recentData as Pet[];
       }

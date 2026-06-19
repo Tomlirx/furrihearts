@@ -51,3 +51,17 @@ export async function getFollowedRescuerIds(supabase: any, userId: string): Prom
     return [];
   }
 }
+
+export async function getMyBoosts(supabase: any, petIds: string[]) {
+  if (!petIds.length) return [];
+  try {
+    const { data, error } = await supabase
+      .from('listing_boosts')
+      .select('*')
+      .in('pet_id', petIds)
+      .order('created_at', { ascending: false });
+    return error ? [] : (data || []);
+  } catch {
+    return [];
+  }
+}

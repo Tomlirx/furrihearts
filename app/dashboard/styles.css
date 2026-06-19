@@ -301,6 +301,23 @@
 .new-listing-card:hover { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); }
 .new-listing-card .plus { font-size: 32px; margin-bottom: 8px; }
 
+/* Boost status badge + tier picker */
+.boost-status { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; margin-left: 8px; }
+.boost-status.pending { background: #FEF3C7; color: #D97706; }
+.boost-status.active { background: var(--orange-pale); color: var(--orange); }
+
+.tier-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tier-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 10px; background: #fff; cursor: pointer; text-align: center; font-family: inherit; transition: all .2s; }
+.tier-card:hover { border-color: var(--orange); }
+.tier-card.selected { border-color: var(--orange); background: var(--orange-pale); }
+.tier-card-label { font-weight: 700; font-size: 14px; color: var(--dark); margin-bottom: 4px; }
+.tier-card-price { font-weight: 700; font-size: 16px; color: var(--orange); margin-bottom: 6px; }
+.tier-card-blurb { font-size: 11px; color: var(--light); line-height: 1.4; }
+
+@media (max-width: 600px) {
+  .tier-picker { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .listing-row, .app-row { flex-wrap: wrap; }
