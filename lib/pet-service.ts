@@ -27,6 +27,7 @@ export interface Pet {
   is_neutered?: boolean;
   is_flea_treated?: boolean;
   is_potty_trained?: boolean;
+  featured_until?: string | null;
 }
 
 export interface PetFilters {
@@ -99,6 +100,56 @@ export async function fetchPets(supabase?: any, filters: PetFilters | string = {
   }
 
   return filterLocalPets(localPets, normalizedFilters);
+}
+
+export interface FeaturedPetEntry {
+  pet: Pet;
+  isFeatured: boolean;
+}
+
+export async function getFeaturedPets(supabase?: any, limit = 4): Promise<FeaturedPetEntry[]> {
+  const nowIso = new Date().toISOString();
+  let featured: Pet[] = [];
+  let pool: Pet[] = [];
+
+  if (supabase?.from && !supabase.__isMock) {
+    try {
+      const { data: featuredData } = await supabase
+        .from('pets')
+        .select('*')
+        .gt('featured_until', nowIso)
+        .order('featured_until', { ascending: false })
+        .limit(limit);
+      if (featuredData) featured = featuredData as Pet[];
+
+      if (featured.length < limit) {
+        const { data: recentData } = await supabase
+          .from('pets')
+          .select('*')
+          .eq('status', 'available')
+          .limit(limit + featured.length);
+        if (recentData) pool = recentData as Pet[];
+      }
+    } catch {
+      // Local seed data keeps the prototype usable before the live backend is ready.
+    }
+  }
+
+  if (featured.length === 0 && pool.length === 0) {
+    const all = getLocalPets();
+    featured = all
+      .filter((p) => p.featured_until && new Date(p.featured_until) > new Date())
+      .sort((a, b) => new Date(b.featured_until!).getTime() - new Date(a.featured_until!).getTime());
+    pool = all.filter((p) => p.status === 'available');
+  }
+
+  const seen = new Set(featured.map((p) => p.id));
+  const fallback = pool.filter((p) => !seen.has(p.id));
+
+  return [
+    ...featured.slice(0, limit).map((pet) => ({ pet, isFeatured: true })),
+    ...fallback.slice(0, Math.max(0, limit - featured.length)).map((pet) => ({ pet, isFeatured: false })),
+  ].slice(0, limit);
 }
 
 export async function fetchPetById(supabase: any, id: string) {

@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { fetchPets, filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-service';
 import { getLocalListings, getSavedPetIds, toggleSavedPet } from '@/lib/local-store';
 import { supabase } from '@/lib/supabase';
+import PetCard from '@/components/PetCard';
 
 export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   const searchParams = useSearchParams();
@@ -100,43 +101,6 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
     </>
   );
 
-  const PetCard = ({ pet, featured = false }: { pet: Pet; featured?: boolean }) => {
-    const isSaved = savedPetIds.includes(pet.id);
-
-    return (
-      <Link href={`/pet/${pet.id}`} className={`pet-card ${featured ? 'featured' : ''}`}>
-        <div className="pet-img">
-          <img src={pet.image_url} alt={pet.name} />
-          {pet.status === 'adopted' ? (
-            <span className="adopted-badge">Adopted</span>
-          ) : featured ? (
-            <span className="featured-tag">Featured</span>
-          ) : null}
-          <button
-            className="save-btn"
-            aria-label={isSaved ? `Unsave ${pet.name}` : `Save ${pet.name}`}
-            onClick={(event) => handleSavePet(event, pet.id)}
-          >
-            {isSaved ? '♥' : '♡'}
-          </button>
-        </div>
-        <div className="pet-info">
-          <div className="pet-name-row">
-            <span className="pet-name">{pet.name}</span>
-            <span className="pet-arrow">→</span>
-          </div>
-          <div className="pet-meta">{pet.gender} · {pet.location}</div>
-          <div className="pet-tags">
-            <span className={`pet-tag ${featured ? '' : 'neutral'}`}>{pet.breed}</span>
-            {pet.traits?.slice(0, 1).map((trait) => (
-              <span key={trait} className="pet-tag neutral">{trait}</span>
-            ))}
-          </div>
-        </div>
-      </Link>
-    );
-  };
-
   return (
     <>
       <div className={`filter-drawer ${isFilterOpen ? 'open' : ''}`}>
@@ -183,7 +147,9 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
             <>
               <div className="section-label">Spotlight Pets</div>
               <div className="spotlight-grid">
-                {spotlightPets.map((pet) => <PetCard key={pet.id} pet={pet} featured />)}
+                {spotlightPets.map((pet) => (
+                  <PetCard key={pet.id} pet={pet} featured isSaved={savedPetIds.includes(pet.id)} onToggleSave={handleSavePet} />
+                ))}
               </div>
             </>
           )}
@@ -194,7 +160,9 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
                 <div className="section-label" style={{ color: 'var(--mid)' }}>All Pets</div>
               </div>
               <div className="pets-grid">
-                {remainingPets.map((pet) => <PetCard key={pet.id} pet={pet} />)}
+                {remainingPets.map((pet) => (
+                  <PetCard key={pet.id} pet={pet} isSaved={savedPetIds.includes(pet.id)} onToggleSave={handleSavePet} />
+                ))}
               </div>
             </>
           )}
