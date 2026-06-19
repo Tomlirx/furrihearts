@@ -269,6 +269,77 @@
   .dashboard-header { flex-direction: column; align-items: flex-start; gap: 16px; }
   .app-header { flex-direction: column; align-items: flex-start; }
 }
+
+/* =========================================
+   OVERVIEW STATS GRID (rebuilt /dashboard)
+========================================= */
+.welcome-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+.welcome-bar h1 { font-family: var(--font-fraunces), serif; font-size: 26px; margin-bottom: 4px; }
+.welcome-bar p { color: var(--mid); font-size: 13px; }
+.welcome-bar p strong { color: var(--orange); }
+
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.stat-tile { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; }
+.stat-tile::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.stat-tile.orange::before { background: var(--orange); }
+.stat-tile.green::before { background: var(--green); }
+.stat-tile.blue::before { background: #2563EB; }
+.stat-tile.purple::before { background: #7C3AED; }
+.stat-tile-icon { font-size: 20px; margin-bottom: 8px; }
+.stat-tile-num { font-family: var(--font-fraunces), serif; font-size: 26px; font-weight: 700; }
+.stat-tile-label { font-size: 12px; color: var(--light); margin-top: 2px; }
+
+.section-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+.section-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-card-header h3 { font-size: 16px; }
+.section-card-header a { font-size: 13px; color: var(--orange); font-weight: 600; text-decoration: none; }
+
+.listing-row, .app-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.listing-row:last-child, .app-row:last-child { border-bottom: none; }
+.row-thumb { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--orange-pale); }
+.row-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--orange-pale); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--orange); font-size: 13px; }
+.row-info { flex: 1; min-width: 0; }
+.row-info h4 { font-size: 14px; margin-bottom: 2px; }
+.row-info p { font-size: 12px; color: var(--light); }
+.row-count { font-weight: 700; color: var(--orange); font-size: 14px; text-align: center; flex-shrink: 0; }
+.row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.row-actions a, .row-actions button { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 6px; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--mid); }
+.row-actions .primary { background: var(--orange); color: #fff; border: none; }
+.row-actions .success { background: var(--green); color: #fff; border: none; }
+
+/* =========================================
+   FILTER TABS (my-applications, manage-applications, all-listings)
+========================================= */
+.filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; overflow-x: auto; }
+.filter-tab { background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--mid); white-space: nowrap; font-family: inherit; }
+.filter-tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+.status-badge.cancelled, .status-badge.withdrawn { background: #F3F4F6; color: var(--light); }
+
+/* =========================================
+   TOAST
+========================================= */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 12px 22px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 2000; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+.toast.success { background: var(--green); }
+.toast.decline { background: #DC2626; }
+
+/* =========================================
+   ALL-LISTINGS GRID & SEARCH
+========================================= */
+.listings-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.search-input { border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 13px; width: 220px; font-family: inherit; }
+.lc-status { position: absolute; top: 10px; right: 10px; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; }
+.lc-status.s-live { background: var(--green-pale); color: var(--green); }
+.lc-status.s-closed { background: #FEE2E2; color: #DC2626; }
+.new-listing-card { border: 2px dashed var(--border); border-radius: 12px; background: var(--cream); display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: var(--mid); min-height: 220px; text-align: center; transition: all .2s; }
+.new-listing-card:hover { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); }
+.new-listing-card .plus { font-size: 32px; margin-bottom: 8px; }
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .listing-row, .app-row { flex-wrap: wrap; }
+  .row-actions { width: 100%; justify-content: flex-start; }
+}
 /* =========================================
    MODAL STYLES
 ========================================= */

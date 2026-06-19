@@ -1,279 +1,126 @@
 'use client';
-
 import './styles.css';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import { getLocalApplications, getLocalListings, updateLocalApplicationStatus } from '@/lib/local-store';
+import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, type Pet } from '@/lib/pet-service';
+import { getMyPets, getMyApplications, getIncomingApplications } from '@/lib/profile-data';
 
-type DashboardTab = 'my-applications' | 'inbox' | 'listings';
-
-export default function UnifiedDashboard() {
+export default function DashboardOverview() {
   const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState('Demo User');
-  const [activeTab, setActiveTab] = useState<DashboardTab>('my-applications');
+  const [userName, setUserName] = useState('there');
   const [myApplications, setMyApplications] = useState<any[]>([]);
   const [myPets, setMyPets] = useState<Pet[]>([]);
   const [incomingApps, setIncomingApps] = useState<any[]>([]);
-  const [selectedApp, setSelectedApp] = useState<any>(null);
-  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     async function fetchDashboardData() {
-      const localApplications = getLocalApplications();
-      const localListings = getLocalListings();
-
-      setMyApplications(localApplications);
-      setIncomingApps(localApplications);
-      setMyPets([...localListings, ...localPets.filter((pet) => pet.rescuer_id === 'demo-rescuer')]);
+      setMyApplications(getLocalApplications());
+      setMyPets([...getLocalListings(), ...localPets.filter((pet) => pet.rescuer_id === 'demo-rescuer')]);
 
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setLoading(false);
-        return;
-      }
+      if (!user) { setLoading(false); return; }
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('first_name')
-        .eq('id', user.id)
-        .single();
+      const { data: profile } = await supabase.from('profiles').select('first_name').eq('id', user.id).single();
+      setUserName(profile?.first_name || user.email?.split('@')[0] || 'there');
 
-      setUserName(profile?.first_name || user.email?.split('@')[0] || 'User');
+      const [adopterApps, petsData] = await Promise.all([
+        getMyApplications(supabase, user.id),
+        getMyPets(supabase, user.id),
+      ]);
 
-      const { data: adopterApps } = await supabase
-        .from('applications')
-        .select('*, pets (id, name, image_url, species, gender, location)')
-        .eq('applicant_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (adopterApps?.length) setMyApplications(adopterApps);
-
-      const { data: petsData } = await supabase
-        .from('pets')
-        .select('*')
-        .eq('rescuer_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (petsData?.length) {
+      if (adopterApps.length) setMyApplications(adopterApps);
+      if (petsData.length) {
         setMyPets(petsData);
-        const myPetIds = petsData.map((pet: Pet) => pet.id);
-        const { data: appsData } = await supabase
-          .from('applications')
-          .select('*, pets (id, name, image_url, rescuer_id), profiles:applicant_id (first_name, last_name)')
-          .in('pet_id', myPetIds)
-          .order('created_at', { ascending: false });
-
-        if (appsData?.length) setIncomingApps(appsData);
+        const incoming = await getIncomingApplications(supabase, petsData.map((p: Pet) => p.id));
+        setIncomingApps(incoming);
       }
 
-      setActiveTab(petsData?.length ? 'inbox' : 'my-applications');
       setLoading(false);
     }
-
     fetchDashboardData();
   }, []);
 
-  const handleUpdateStatus = async (appId: string, _petId: string, newStatus: 'approved' | 'rejected' | 'cancelled') => {
-    setIsUpdating(true);
-    const updatedLocal = updateLocalApplicationStatus(appId, newStatus);
-    setIncomingApps((prev) => prev.map((app) => app.id === appId ? { ...app, status: newStatus } : app));
-    setMyApplications((prev) => prev.map((app) => app.id === appId ? { ...app, status: newStatus } : app));
-
-    if (!supabase.__isMock) {
-      const { error } = await supabase.from('applications').update({ status: newStatus }).eq('id', appId);
-      if (error) console.error('Update Error:', error);
-    }
-
-    if (!incomingApps.some((app) => app.id === appId)) {
-      setIncomingApps(updatedLocal);
-      setMyApplications(updatedLocal);
-    }
-
-    setSelectedApp(null);
-    setIsUpdating(false);
-  };
-
-  const handleRevertAdoption = async (appId: string, petId: string) => {
-    if (!confirm('Cancel this adoption and reopen the pet listing?')) return;
-    await handleUpdateStatus(appId, petId, 'cancelled');
-  };
-
   if (loading) return <div className="loading-state">Loading your dashboard...</div>;
+
+  const pendingCount = incomingApps.filter((a) => a.status === 'pending').length;
+  const activeListings = myPets.filter((p) => p.status === 'available').length;
+  const approvedCount = incomingApps.filter((a) => a.status === 'approved').length;
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
+      <div className="welcome-bar">
         <div>
-          <h1>Welcome back, {userName}</h1>
-          <p>Manage applications, saved progress, and rescue listings.</p>
+          <h1>Welcome back, {userName}! 🌿</h1>
+          <p>You have <strong>{pendingCount}</strong> pending application{pendingCount === 1 ? '' : 's'} to review today.</p>
         </div>
-        <Link href="/rescuer-listing" className="btn-add-pet">+ Add New Pet</Link>
-      </header>
-
-      <div className="tabs-nav">
-        <button className={`tab-btn ${activeTab === 'my-applications' ? 'active' : ''}`} onClick={() => setActiveTab('my-applications')}>
-          My Applications ({myApplications.length})
-        </button>
-        {myPets.length > 0 && (
-          <>
-            <button className={`tab-btn ${activeTab === 'inbox' ? 'active' : ''}`} onClick={() => setActiveTab('inbox')}>
-              Inbox ({incomingApps.length})
-            </button>
-            <button className={`tab-btn ${activeTab === 'listings' ? 'active' : ''}`} onClick={() => setActiveTab('listings')}>
-              My Listings ({myPets.length})
-            </button>
-          </>
-        )}
+        <Link href="/rescuer-listing" className="btn-add-pet">+ New Listing</Link>
       </div>
 
-      {activeTab === 'my-applications' && (
-        <div className="tab-content">
-          {myApplications.length > 0 ? (
-            <div className="applications-feed">
-              {myApplications.map((app) => (
-                <div key={app.id} className="application-card">
-                  <div className="app-header">
-                    <img src={app.pets?.image_url} alt={app.pets?.name} className="app-pet-img" />
-                    <div className="app-meta">
-                      <h3>Application for {app.pets?.name}</h3>
-                      <p>Applied on {new Date(app.created_at).toLocaleDateString()}</p>
-                      <span className={`status-badge ${app.status}`}>{app.status}</span>
-                    </div>
-                  </div>
-                  <div className="app-details" style={{ marginTop: '16px' }}>
-                    {app.status === 'pending' && <p style={{ fontSize: '13px', color: 'var(--mid)' }}>The rescuer is currently reviewing your application.</p>}
-                    {app.status === 'approved' && <p style={{ fontSize: '13px', color: '#10B981', fontWeight: 600 }}>Congratulations. The rescuer has approved your application.</p>}
-                    {app.status === 'rejected' && <p style={{ fontSize: '13px', color: '#DC2626' }}>This application was declined.</p>}
-                    {app.status === 'cancelled' && <p style={{ fontSize: '13px', color: 'var(--mid)' }}>This application was archived.</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-icon">FH</div>
-              <h3>No applications yet</h3>
-              <p>When you apply to adopt a pet, you can track the status here.</p>
-              <Link href="/browse" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>Browse Pets</Link>
-            </div>
-          )}
+      <div className="stats-grid">
+        <div className="stat-tile orange"><div className="stat-tile-icon">🐾</div><div className="stat-tile-num">{activeListings}</div><div className="stat-tile-label">Active Listings</div></div>
+        <div className="stat-tile green"><div className="stat-tile-icon">✅</div><div className="stat-tile-num">{approvedCount}</div><div className="stat-tile-label">Approved Adoptions</div></div>
+        <div className="stat-tile blue"><div className="stat-tile-icon">📋</div><div className="stat-tile-num">{incomingApps.length}</div><div className="stat-tile-label">Applications Received</div></div>
+        <div className="stat-tile purple"><div className="stat-tile-icon">💌</div><div className="stat-tile-num">{myApplications.length}</div><div className="stat-tile-label">My Applications Sent</div></div>
+      </div>
+
+      {myPets.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">🐾</div>
+          <h3>No listings yet</h3>
+          <p>Ready to find your first pet a forever home? Create your first listing — it only takes 3 minutes.</p>
+          <Link href="/rescuer-listing" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>+ Create Your First Listing</Link>
         </div>
-      )}
-
-      {activeTab === 'inbox' && (
-        <div className="tab-content">
-          {incomingApps.length > 0 ? (
-            <div className="applications-feed">
-              {incomingApps.map((app) => (
-                <div key={app.id} className="application-card">
-                  <div className="app-header">
-                    <img src={app.pets?.image_url} alt={app.pets?.name} className="app-pet-img" />
-                    <div className="app-meta">
-                      <h3>Application for {app.pets?.name}</h3>
-                      <p>From: <strong>{app.profiles?.first_name || 'Demo'} {app.profiles?.last_name || 'Adopter'}</strong></p>
-                      <span className={`status-badge ${app.status}`}>{app.status}</span>
-                    </div>
-                    <div className="app-date">{new Date(app.created_at).toLocaleDateString()}</div>
-                  </div>
-
-                  <div className="app-details">
-                    <div className="qa-block"><strong>Home Type:</strong> {app.q2 || 'N/A'}</div>
-                    <div className="qa-block"><strong>Time Alone:</strong> {app.q5 || 'N/A'}</div>
-                    <button className="btn-view-full" onClick={() => setSelectedApp(app)}>
-                      Review Full Application →
-                    </button>
-                  </div>
-                </div>
-              ))}
+      ) : (
+        <>
+          <div className="section-card">
+            <div className="section-card-header">
+              <h3>Active Listings</h3>
+              <Link href="/all-listings">View all →</Link>
             </div>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-icon">FH</div>
-              <h3>No applications yet</h3>
-              <p>When adopters apply for your pets, they will appear here.</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {activeTab === 'listings' && (
-        <div className="tab-content">
-          {myPets.length > 0 ? (
-            <div className="listings-grid">
-              {myPets.map((pet) => (
-                <div key={pet.id} className="listing-card">
-                  <img src={pet.image_url} alt={pet.name} />
-                  <div className="listing-info">
-                    <div className="listing-title-row">
-                      <h4>{pet.name}</h4>
-                      <span className={`status-dot ${pet.status === 'available' ? 'green' : 'gray'}`}></span>
-                    </div>
-                    <p>{pet.species} • {pet.gender} • {pet.location}</p>
-                    <div className="listing-actions">
-                      <Link href={`/pet/${pet.id}`}>View Public</Link>
-                      <Link href="/rescuer-listing">Add Another</Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-icon">FH</div>
-              <h3>No pets listed</h3>
-              <p>You haven't added any pets to the platform yet.</p>
-              <Link href="/rescuer-listing" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>Add Your First Pet</Link>
-            </div>
-          )}
-        </div>
-      )}
-
-      {selectedApp && (
-        <div className="modal-overlay" onClick={() => setSelectedApp(null)}>
-          <div className="modal-content" onClick={(event) => event.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Application for {selectedApp.pets?.name}</h2>
-              <button className="btn-close" onClick={() => setSelectedApp(null)}>×</button>
-            </div>
-
-            <div className="modal-body">
-              <div className="applicant-info">
-                <strong>Applicant:</strong> {selectedApp.profiles?.first_name || 'Demo'} {selectedApp.profiles?.last_name || 'Adopter'}
+            {myPets.slice(0, 4).map((pet) => (
+              <div className="listing-row" key={pet.id}>
+                <img src={pet.image_url} className="row-thumb" alt={pet.name} />
+                <div className="row-info"><h4>{pet.name} · {pet.gender}</h4><p>{pet.age} · {pet.location}</p></div>
+                <div className="row-actions"><Link href={`/pet/${pet.id}`}>View</Link></div>
               </div>
-
-              <div className="qa-full"><span className="q-label">1. Why adopt?</span><p>{selectedApp.q1?.join(', ') || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">2. Home type</span><p>{selectedApp.q2 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">3. Windows/Balconies secured?</span><p>{selectedApp.q3 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">4. Other pets?</span><p>{selectedApp.q4 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">5. Hours left alone?</span><p>{selectedApp.q5 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">6. Household agreement?</span><p>{selectedApp.q6 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">7. Anything else to know?</span><p>{selectedApp.q7 || 'N/A'}</p></div>
-            </div>
-
-            <div className="modal-actions">
-              {selectedApp.status === 'pending' && (
-                <>
-                  <button className="btn-approve" onClick={() => handleUpdateStatus(selectedApp.id, selectedApp.pet_id, 'approved')} disabled={isUpdating}>Approve</button>
-                  <button className="btn-reject" onClick={() => handleUpdateStatus(selectedApp.id, selectedApp.pet_id, 'rejected')} disabled={isUpdating}>Decline</button>
-                </>
-              )}
-
-              {selectedApp.status === 'approved' && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                  <div className="status-notice" style={{ color: '#10B981', fontWeight: 600 }}>Approved.</div>
-                  <button className="btn-reject" onClick={() => handleRevertAdoption(selectedApp.id, selectedApp.pet_id)} disabled={isUpdating}>Cancel Adoption & Reopen</button>
-                </div>
-              )}
-
-              {(selectedApp.status === 'rejected' || selectedApp.status === 'cancelled') && (
-                <div className="status-notice">This application is <strong>{selectedApp.status}</strong> and archived.</div>
-              )}
-            </div>
+            ))}
           </div>
-        </div>
+
+          <div className="section-card">
+            <div className="section-card-header">
+              <h3>Recent Applications</h3>
+              <Link href="/manage-applications">View all →</Link>
+            </div>
+            {incomingApps.length === 0 ? (
+              <p style={{ color: 'var(--light)', fontSize: '13px' }}>No applications yet for your listings.</p>
+            ) : incomingApps.slice(0, 4).map((app) => (
+              <div className="app-row" key={app.id}>
+                <div className="row-avatar">{(app.profiles?.first_name || 'A')[0]}</div>
+                <div className="row-info"><h4>{app.profiles?.first_name || 'Demo'} {app.profiles?.last_name || 'Adopter'}</h4><p>For: {app.pets?.name}</p></div>
+                <span className={`status-badge ${app.status}`}>{app.status}</span>
+              </div>
+            ))}
+          </div>
+        </>
       )}
+
+      <div className="section-card">
+        <div className="section-card-header">
+          <h3>My Applications</h3>
+          <Link href="/my-applications">View all →</Link>
+        </div>
+        {myApplications.length === 0 ? (
+          <p style={{ color: 'var(--light)', fontSize: '13px' }}>You haven't applied for any pets yet.</p>
+        ) : myApplications.slice(0, 3).map((app) => (
+          <div className="app-row" key={app.id}>
+            <img src={app.pets?.image_url} className="row-thumb" style={{ borderRadius: '50%' }} alt={app.pets?.name} />
+            <div className="row-info"><h4>Application for {app.pets?.name}</h4></div>
+            <span className={`status-badge ${app.status}`}>{app.status}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

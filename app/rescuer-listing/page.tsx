@@ -164,8 +164,7 @@ export default function RescuerListingFlow() {
         is_potty_trained: health.includes('Potty Trained'),
       });
 
-      alert("Listing published and saved locally.");
-      router.push('/dashboard');
+      router.push(`/rescuer-listing/created?name=${encodeURIComponent(name || 'Your pet')}`);
       setIsSubmitting(false);
       return;
     }
@@ -227,8 +226,7 @@ export default function RescuerListingFlow() {
     }]);
 
     if (!error) {
-      // 4. Redirect to the live feed
-      router.push('/browse'); 
+      router.push(`/rescuer-listing/created?name=${encodeURIComponent(name || 'Your pet')}`);
     } else {
       console.error("Database Error:", error);
       alert("Error publishing listing details.");

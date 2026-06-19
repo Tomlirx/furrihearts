@@ -76,8 +76,7 @@ export default function QuestionnairePage() {
           last_name: 'Adopter',
         },
       });
-      alert("Application submitted and saved locally.");
-      router.push('/dashboard');
+      router.push(`/apply/${pet.id}/thank-you`);
       setSubmitting(false);
       return;
     }
@@ -96,10 +95,9 @@ export default function QuestionnairePage() {
       status: 'pending' 
     }]);
 
-    if (!error) { 
-      alert("Application submitted!"); 
-      router.push('/dashboard'); 
-    } else { 
+    if (!error) {
+      router.push(`/apply/${pet.id}/thank-you`);
+    } else {
       console.error(error); 
       alert("There was an error submitting your application.");
       setSubmitting(false); 

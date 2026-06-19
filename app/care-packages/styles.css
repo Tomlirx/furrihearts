@@ -1,0 +1,28 @@
+.page-hero { background: linear-gradient(135deg, #FDF5EF, #FEF8F3); padding: 60px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+.page-hero-inner { max-width: 600px; margin: 0 auto; }
+.page-tag { font-size: 12px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.page-title { font-size: 34px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-fraunces), serif; }
+.page-sub { color: var(--mid); font-size: 15px; }
+
+.trust-bar { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 28px 24px; }
+.trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mid); font-weight: 600; }
+
+.packages-grid { max-width: 1000px; margin: 0 auto; padding: 8px 24px 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.package-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all .2s; }
+.package-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.package-img { height: 140px; background: var(--orange-pale); display: flex; align-items: center; justify-content: center; position: relative; }
+.package-emoji { font-size: 48px; }
+.package-badge { position: absolute; top: 10px; left: 10px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; }
+.package-body { padding: 18px; }
+.package-body h3 { font-size: 15px; margin-bottom: 8px; }
+.package-body ul { list-style: none; font-size: 12px; color: var(--light); margin-bottom: 14px; }
+.package-body li::before { content: "• "; color: var(--orange); }
+.package-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+.price-now { font-size: 18px; font-weight: 700; color: var(--orange); }
+.price-old { font-size: 13px; color: var(--light); text-decoration: line-through; }
+.btn-add-cart { width: 100%; background: var(--orange); color: #fff; border: none; border-radius: 8px; padding: 10px; font-weight: 700; cursor: pointer; font-size: 13px; }
+
+@media (max-width: 768px) {
+  .packages-grid { grid-template-columns: 1fr; }
+  .trust-bar { grid-template-columns: repeat(2, 1fr); }
+}

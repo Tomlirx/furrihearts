@@ -11,15 +11,19 @@ export default function Footer() {
             <h4>For Adopters</h4>
             <a href="/browse">Adopt a Pet</a>
             <a href="/furrimatch">FurriMatch</a>
+            <a href="/guide">Adoption Guide</a>
+            <a href="/care-packages">Care Packages</a>
           </div>
           <div className="footer-col">
             <h4>For Rescuers</h4>
             <a href="/rescuer-listing">List a Pet</a>
+            <a href="/rescuer-landing">For Rescuers</a>
           </div>
           <div className="footer-col">
             <h4>Company</h4>
             <a href="/about">About Us</a>
             <a href="/contact">Contact</a>
+            <a href="/legal">Privacy & Terms</a>
           </div>
         </div>
         <div className="footer-bottom">
