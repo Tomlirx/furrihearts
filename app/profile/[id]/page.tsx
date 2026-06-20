@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getMyPets, getFollowedRescuerIds } from '@/lib/profile-data';
 import FollowButton from './FollowButton';
 import EmptyState from '@/components/EmptyState';
+import PublicListingsGrid from '@/components/profile/PublicListingsGrid';
 import '../styles.css';
 import './styles.css';
 
@@ -63,18 +64,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <div className="profile-section">
             <h2>Active Listings</h2>
             {activePets.length > 0 ? (
-              <div className="public-listings-grid">
-                {activePets.map((pet: any) => (
-                  <Link key={pet.id} href={`/pet/${pet.id}`} className="public-listing-card">
-                    <img src={pet.image_url} alt={pet.name} />
-                    <div className="public-listing-info">
-                      <h4>{pet.name} · {pet.gender}</h4>
-                      <p>{pet.age} · {pet.location}</p>
-                      <p className="public-listing-fee">RM{pet.fee || 0}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <PublicListingsGrid pets={activePets} />
             ) : (
               <EmptyState
                 icon="🐾"

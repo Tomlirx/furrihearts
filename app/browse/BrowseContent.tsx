@@ -78,6 +78,8 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
   );
 }
 
+const BATCH_SIZE = 12;
+
 export default function BrowseContent({ launchedStates }: { launchedStates: string[] }) {
   const searchParams = useSearchParams();
   const [allPets, setAllPets] = useState<Pet[]>([]);
@@ -86,6 +88,7 @@ export default function BrowseContent({ launchedStates }: { launchedStates: stri
   const [location, setLocation] = useState(searchParams.get('loc') || 'All Malaysia');
   const [search, setSearch] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
 
   useEffect(() => {
     async function loadPets() {
@@ -109,6 +112,11 @@ export default function BrowseContent({ launchedStates }: { launchedStates: stri
 
   const spotlightPets = sortedPets.slice(0, 3);
   const remainingPets = sortedPets.slice(3);
+  const visiblePets = remainingPets.slice(0, visibleCount);
+
+  useEffect(() => {
+    setVisibleCount(BATCH_SIZE);
+  }, [search, type, gender, location]);
 
   const resetFilters = () => {
     setType('all');
@@ -173,10 +181,17 @@ export default function BrowseContent({ launchedStates }: { launchedStates: stri
                 <div className="section-label" style={{ color: 'var(--mid)' }}>All Pets</div>
               </div>
               <div className="pets-grid">
-                {remainingPets.map((pet) => (
+                {visiblePets.map((pet) => (
                   <PetCard key={pet.id} pet={pet} featured={isPetCurrentlyFeatured(pet)} />
                 ))}
               </div>
+              {visibleCount < remainingPets.length && (
+                <div style={{ textAlign: 'center', marginTop: '24px' }}>
+                  <button className="btn-outline" onClick={() => setVisibleCount((count) => count + BATCH_SIZE)}>
+                    Load More
+                  </button>
+                </div>
+              )}
             </>
           )}
 

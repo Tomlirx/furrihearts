@@ -1,4 +1,5 @@
 // app/layout.tsx
+import type { Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import { createClient } from '@/utils/supabase/server';
@@ -8,6 +9,11 @@ import Footer from '@/components/Footer';
 // Define the fonts here so they are available globally
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-dm-sans" });
 const fraunces = Fraunces({ subsets: ["latin"], weight: ["400", "600", "700"], style: ["normal", "italic"], variable: "--font-fraunces" });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();

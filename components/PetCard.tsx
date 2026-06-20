@@ -14,7 +14,7 @@ export default function PetCard({
   return (
     <Link href={`/pet/${pet.id}`} className={`pet-card ${featured ? 'featured' : ''}`}>
       <div className="pet-img">
-        <img src={pet.image_url} alt={pet.name} />
+        <img src={pet.image_url} alt={pet.name} loading="lazy" />
         {pet.status === 'adopted' ? (
           <span className="adopted-badge">Adopted</span>
         ) : featured ? (

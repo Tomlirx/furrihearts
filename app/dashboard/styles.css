@@ -232,7 +232,7 @@
 
 /* .empty-state/.empty-icon are defined globally in globals.css */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .dashboard-header { flex-direction: column; align-items: flex-start; gap: 16px; }
   .app-header { flex-direction: column; align-items: flex-start; }
 }
@@ -317,7 +317,7 @@
 .tier-card-price { font-weight: 700; font-size: 16px; color: var(--orange); margin-bottom: 6px; }
 .tier-card-blurb { font-size: 11px; color: var(--light); line-height: 1.4; }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .tier-picker { grid-template-columns: 1fr; }
 }
 
