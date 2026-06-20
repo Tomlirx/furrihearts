@@ -74,9 +74,9 @@ export default function BoostModal({
       return;
     }
 
-    const { data: publicUrlData } = supabase.storage.from('boost-receipts').getPublicUrl(fileName);
-
-    const result = await requestBoost(petId, tier.id, tier.days, tier.price, publicUrlData.publicUrl);
+    // Receipts contain payment info, so they're kept private — store the storage
+    // path (not a public URL); admins view them via a short-lived signed URL.
+    const result = await requestBoost(petId, tier.id, tier.days, tier.price, fileName);
     setSubmitting(false);
     if (result?.error) {
       setError(result.error);

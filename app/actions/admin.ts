@@ -65,6 +65,19 @@ export async function resolveContactMessage(messageId: string) {
   return { success: true };
 }
 
+export async function getBoostReceiptUrl(boostId: string) {
+  const admin = await getAdminOrFail();
+  if (!admin) return { error: 'Not authorized.' };
+
+  const { data: boost } = await admin.from('listing_boosts').select('receipt_url').eq('id', boostId).single();
+  if (!boost?.receipt_url) return { error: 'No receipt on file.' };
+
+  const { data, error } = await admin.storage.from('boost-receipts').createSignedUrl(boost.receipt_url, 60);
+  if (error || !data) return { error: error?.message || 'Could not generate receipt link.' };
+
+  return { url: data.signedUrl };
+}
+
 export async function reviewBoost(boostId: string, petId: string, days: number, approve: boolean) {
   const adminUserId = await requireAdmin();
   if (!adminUserId) return { error: 'Not authorized.' };

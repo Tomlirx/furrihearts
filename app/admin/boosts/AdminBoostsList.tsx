@@ -1,14 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { reviewBoost } from '@/app/actions/admin';
+import { reviewBoost, getBoostReceiptUrl } from '@/app/actions/admin';
 
 export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
   const [rows, setRows] = useState(boosts);
+  const [loadingReceipt, setLoadingReceipt] = useState<string | null>(null);
 
   const handleReview = async (boost: any, approve: boolean) => {
     setRows((prev) => prev.map((b) => (b.id === boost.id ? { ...b, status: approve ? 'approved' : 'rejected' } : b)));
     await reviewBoost(boost.id, boost.pet_id, boost.days, approve);
+  };
+
+  const handleViewReceipt = async (boostId: string) => {
+    setLoadingReceipt(boostId);
+    const result = await getBoostReceiptUrl(boostId);
+    setLoadingReceipt(null);
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
+    window.open(result.url, '_blank', 'noopener,noreferrer');
   };
 
   if (rows.length === 0) {
@@ -29,7 +41,9 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
             <td>RM{b.price}</td>
             <td>
               {b.receipt_url ? (
-                <a href={b.receipt_url} target="_blank" rel="noopener noreferrer">View Receipt</a>
+                <button className="admin-btn" onClick={() => handleViewReceipt(b.id)} disabled={loadingReceipt === b.id}>
+                  {loadingReceipt === b.id ? 'Loading...' : 'View Receipt'}
+                </button>
               ) : '—'}
             </td>
             <td>{b.status}</td>
