@@ -39,11 +39,13 @@ export async function GET(request: Request) {
     // 2. Fetch the newly logged-in user
     const { data: { user } } = await supabase.auth.getUser();
 
+    let needsProfileCompletion = false;
+
     if (user) {
       // 3. Check for an existing profile
       const { data: profile } = await supabase
         .from('profiles')
-        .select('id')
+        .select('id, first_name, last_name')
         .eq('id', user.id)
         .single();
 
@@ -60,10 +62,21 @@ export async function GET(request: Request) {
           last_name: lastName,
           name: `${firstName} ${lastName}`.trim() || user.email,
         }]);
+
+        needsProfileCompletion = !firstName || !lastName;
+      } else {
+        needsProfileCompletion = !profile.first_name || !profile.last_name;
       }
     }
+
+    // 5. Send the user to the requested destination (e.g. password reset), or
+    // to complete their profile if Google didn't return enough info to fill
+    // in a name, or to the app by default.
+    if (next) {
+      return NextResponse.redirect(new URL(next, origin));
+    }
+    return NextResponse.redirect(new URL(needsProfileCompletion ? '/profile/edit' : '/browse', origin));
   }
 
-  // 5. Send the user to the requested destination (e.g. password reset), or the app by default
   return NextResponse.redirect(new URL(next || '/browse', origin));
 }
