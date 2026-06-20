@@ -6,7 +6,6 @@ import { supabase } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { fetchPetById, findLocalPetById } from '@/lib/pet-service';
-import { saveLocalApplication } from '@/lib/local-store';
 
 export default function QuestionnairePage() {
   const { id } = useParams();
@@ -39,6 +38,13 @@ export default function QuestionnairePage() {
   useEffect(() => {
     async function fetchPet() {
       if (!id) return;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.replace(`/login?next=${encodeURIComponent(`/apply/${id}`)}`);
+        return;
+      }
+
       const localPet = findLocalPetById(String(id));
       if (localPet) setPet(localPet);
 
@@ -96,33 +102,7 @@ export default function QuestionnairePage() {
     }
 
     if (authError || !user) {
-      saveLocalApplication({
-        id: `local-app-${pet.id}-${Date.now()}`,
-        pet_id: pet.id,
-        applicant_id: 'demo-adopter',
-        status: 'pending',
-        created_at: new Date().toISOString(),
-        q1,
-        q2,
-        q3,
-        q4,
-        q5,
-        q6,
-        q7,
-        pets: {
-          id: pet.id,
-          name: pet.name,
-          image_url: pet.image_url,
-          species: pet.species,
-          gender: pet.gender,
-          location: pet.location,
-        },
-        profiles: {
-          first_name: 'Demo',
-          last_name: 'Adopter',
-        },
-      });
-      router.push(`/apply/${pet.id}/thank-you`);
+      router.push(`/login?next=${encodeURIComponent(`/apply/${pet.id}`)}`);
       setSubmitting(false);
       return;
     }
