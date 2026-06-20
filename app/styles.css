@@ -56,10 +56,6 @@
 .how-step h3 { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
 .how-step p { font-size: 13px; color: var(--mid); line-height: 1.6; }
 
-/* TESTIMONIALS */
-.testimonials { padding: 72px 40px; background: var(--cream); }
-.testimonials-inner { max-width: 1200px; margin: 0 auto; }
-
 /* RESPONSIVE (Homepage Only) */
 @media(max-width: 768px) {
   .hero { padding: 28px 16px 32px; }
@@ -82,7 +78,6 @@
   .how-section { padding: 40px 16px; }
   .how-steps { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .how-steps::before { display: none; }
-  .testimonials { padding: 40px 16px; }
 }
 
 @media(max-width: 480px) {

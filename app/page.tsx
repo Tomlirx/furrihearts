@@ -8,7 +8,6 @@ import PetCard from '@/components/PetCard';
 import { HeroSection } from '@/components/home/HeroSection';
 import { FeatureGrid } from '@/components/home/FeatureGrid';
 import { HowItWorksSteps } from '@/components/home/HowItWorksSteps';
-import { TestimonialsEmpty } from '@/components/home/TestimonialsEmpty';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -40,7 +39,6 @@ export default async function Home() {
 
       <FeatureGrid />
       <HowItWorksSteps />
-      <TestimonialsEmpty />
     </>
   );
 }
