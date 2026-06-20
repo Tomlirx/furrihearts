@@ -163,11 +163,6 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                     }}>
                     {[
                       { href: '/dashboard', label: 'My Dashboard' },
-                      { href: '/profile', label: 'My Profile' },
-                      { href: '/my-applications', label: 'My Applications' },
-                      { href: '/all-listings', label: 'My Listings' },
-                      { href: '/manage-applications', label: 'Manage Applications' },
-                      { href: '/messages', label: 'Messages', badge: unreadCount },
                       ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
                     ].map((item) => (
                       <Link
@@ -177,7 +172,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                         onClick={() => setIsDropdownOpen(false)}
                         className="dropdown-item"
                       >
-                        {item.label} {!!item.badge && <span className="dd-badge">{item.badge > 9 ? '9+' : item.badge}</span>}
+                        {item.label}
                       </Link>
                     ))}
 
@@ -221,13 +216,6 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
             <>
               <Link href="/dashboard" className="mob-link" style={{ color: 'var(--orange)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
                 My Dashboard
-              </Link>
-              <Link href="/profile" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Profile</Link>
-              <Link href="/my-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Applications</Link>
-              <Link href="/all-listings" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Listings</Link>
-              <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Manage Applications</Link>
-              <Link href="/messages" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>
-                Messages {unreadCount > 0 && <span className="dd-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
               </Link>
               {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
             </>

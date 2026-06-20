@@ -8,6 +8,7 @@ import { localPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getMyPets, getMyApplications, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import { setListingVisibility } from '@/app/actions/listings';
 import EmptyState from '@/components/EmptyState';
+import DashboardTabs from '@/components/DashboardTabs';
 import BoostModal from '@/components/BoostModal';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import { useToast } from '@/lib/useToast';
@@ -92,6 +93,7 @@ export default function DashboardOverview() {
 
   return (
     <div className="dashboard-container">
+      <DashboardTabs />
       <div className="welcome-bar">
         <div>
           <h1>Welcome back, {userName}! 🌿</h1>

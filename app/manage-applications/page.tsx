@@ -8,6 +8,7 @@ import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
 import { closeApplication } from '@/app/actions/applications';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
+import DashboardTabs from '@/components/DashboardTabs';
 
 const PAGE_SIZE = 20;
 
@@ -108,6 +109,7 @@ function ManageApplicationsContent() {
 
   return (
     <div className="dashboard-container">
+      <DashboardTabs />
       <div className="dashboard-header">
         <div>
           <h1>{petFilter ? `Applications for ${petName || 'this pet'}` : `Applications (${apps.length})`}</h1>

@@ -10,6 +10,7 @@ import { setListingVisibility } from '@/app/actions/listings';
 import BoostModal from '@/components/BoostModal';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
+import DashboardTabs from '@/components/DashboardTabs';
 import { useToast } from '@/lib/useToast';
 
 const PAGE_SIZE = 20;
@@ -119,6 +120,7 @@ export default function AllListingsPage() {
 
   return (
     <div className="dashboard-container">
+      <DashboardTabs />
       <div className="dashboard-header">
         <div><h1>My Listings</h1><p>Manage every pet you've listed for adoption.</p></div>
         <Link href="/rescuer-listing" className="btn-add-pet">+ New Listing</Link>

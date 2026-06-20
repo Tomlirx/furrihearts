@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getMyPets, getMyApplications } from '@/lib/profile-data';
+import DashboardTabs from '@/components/DashboardTabs';
 import './styles.css';
 
 export default async function ProfilePage() {
@@ -20,6 +21,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="profile-page">
+      <DashboardTabs />
       <div className="profile-header">
         <div className="profile-avatar-lg">{(profile?.first_name || user!.email || '?')[0]?.toUpperCase()}</div>
         <div className="profile-header-info">

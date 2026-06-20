@@ -57,7 +57,7 @@ export default function RescuerListingFlow() {
   // Handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const MAX_SIZE_MB = 2;
+      const MAX_SIZE_MB = 5;
       const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
       const rawFiles = Array.from(e.target.files);
       const validFiles = rawFiles.filter(file => {

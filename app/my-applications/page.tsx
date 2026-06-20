@@ -8,6 +8,7 @@ import { getMyApplications } from '@/lib/profile-data';
 import MessageComposer from '@/components/MessageComposer';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
+import DashboardTabs from '@/components/DashboardTabs';
 import { useToast } from '@/lib/useToast';
 
 const PAGE_SIZE = 20;
@@ -65,6 +66,7 @@ export default function MyApplicationsPage() {
 
   return (
     <div className="dashboard-container">
+      <DashboardTabs />
       <div className="dashboard-header">
         <div><h1>My Applications</h1><p>Track all your adoption applications and their current status.</p></div>
       </div>
