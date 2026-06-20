@@ -30,8 +30,16 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
     filterLocalPets(allPets, { search, type, gender, location })
   ), [allPets, search, type, gender, location]);
 
-  const spotlightPets = pets.slice(0, 3);
-  const remainingPets = pets.slice(3);
+  const sortedPets = useMemo(() => {
+    const featured = pets
+      .filter(isPetCurrentlyFeatured)
+      .sort((a, b) => new Date(b.featured_until!).getTime() - new Date(a.featured_until!).getTime());
+    const rest = pets.filter((p) => !isPetCurrentlyFeatured(p));
+    return [...featured, ...rest];
+  }, [pets]);
+
+  const spotlightPets = sortedPets.slice(0, 3);
+  const remainingPets = sortedPets.slice(3);
 
   const resetFilters = () => {
     setType('all');
