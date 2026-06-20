@@ -33,7 +33,7 @@ export function RescuerSidebar({
         <div>
           <div className="rescuer-name">{rescuerName}</div>
           <div className="rescuer-verified-badge">Verified Rescuer</div>
-          <Link href="/rescuer-landing" className="rescuer-link">View Rescuer Info →</Link>
+          <Link href={`/profile/${pet.rescuer_id}`} className="rescuer-link">View Rescuer Info →</Link>
         </div>
       </div>
 
