@@ -1,10 +1,11 @@
 'use client';
 import './styles.css';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { saveLocalListing } from '@/lib/local-store';
+import { getLaunchedStates } from '@/lib/locations';
 
 // Arrays for dynamic filtering
 const CAT_BREEDS = ['Domestic Shorthair', 'Domestic Longhair', 'Persian', 'Siamese', 'Maine Coon', 'Ragdoll', 'Scottish Fold', 'Bengal', 'British Shorthair', 'Other'];
@@ -36,6 +37,7 @@ export default function RescuerListingFlow() {
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('2–4 months');
   const [location, setLocation] = useState('Kuala Lumpur');
+  const [launchedStates, setLaunchedStates] = useState<string[]>(['Kuala Lumpur', 'Selangor', 'Penang', 'Johor']);
   const [fee, setFee] = useState('');
   const [traits, setTraits] = useState<string[]>([]);
   const [health, setHealth] = useState<string[]>([]);
@@ -47,6 +49,10 @@ export default function RescuerListingFlow() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [traitsWarning, setTraitsWarning] = useState(false);
+
+  useEffect(() => {
+    getLaunchedStates(supabase).then(setLaunchedStates);
+  }, []);
 
   // Handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -360,7 +366,9 @@ export default function RescuerListingFlow() {
                   <div className="form-field">
                     <div className="field-label">Location</div>
                     <select className="form-select" value={location} onChange={e => setLocation(e.target.value)}>
-                      <option>Kuala Lumpur</option><option>Selangor</option><option>Penang</option><option>Johor</option>
+                      {launchedStates.map((state) => (
+                        <option key={state}>{state}</option>
+                      ))}
                     </select>
                   </div>
 

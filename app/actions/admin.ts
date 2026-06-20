@@ -108,3 +108,19 @@ export async function reviewBoost(boostId: string, petId: string, days: number, 
   revalidatePath('/dashboard');
   return { success: true };
 }
+
+export async function toggleStateLaunch(stateName: string, launched: boolean) {
+  const admin = await getAdminOrFail();
+  if (!admin) return { error: 'Not authorized.' };
+
+  const { error } = await admin
+    .from('state_rollouts')
+    .update({ is_launched: launched, launched_at: launched ? new Date().toISOString() : null })
+    .eq('state_name', stateName);
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/locations');
+  revalidatePath('/');
+  revalidatePath('/browse');
+  return { success: true };
+}

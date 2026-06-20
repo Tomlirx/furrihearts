@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export function HomeSearch() {
+export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
   const router = useRouter();
   
   // Default to 'cat' to match your original HTML design
@@ -91,22 +91,9 @@ export function HomeSearch() {
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="Anywhere in Malaysia">Anywhere in Malaysia</option>
-              <option value="Kuala Lumpur">Kuala Lumpur</option>
-              <option value="Selangor">Selangor</option>
-              <option value="Penang">Penang</option>
-              <option value="Johor">Johor</option>
-              <option value="Perak">Perak</option>
-              <option value="Melaka">Melaka</option>
-              <option value="Negeri Sembilan">Negeri Sembilan</option>
-              <option value="Pahang">Pahang</option>
-              <option value="Terengganu">Terengganu</option>
-              <option value="Kelantan">Kelantan</option>
-              <option value="Kedah">Kedah</option>
-              <option value="Perlis">Perlis</option>
-              <option value="Sabah">Sabah</option>
-              <option value="Sarawak">Sarawak</option>
-              <option value="Putrajaya">Putrajaya</option>
-              <option value="Labuan">Labuan</option>
+              {launchedStates.map((state) => (
+                <option key={state} value={state}>{state}</option>
+              ))}
             </select>
           </div>
 

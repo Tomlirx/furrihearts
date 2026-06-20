@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 import './styles.css';
 import Link from 'next/link';
 import { getFeaturedPets } from '@/lib/pet-service';
+import { getLaunchedStates } from '@/lib/locations';
 import { createClient } from '@/utils/supabase/server';
 import { HomeSearch } from '@/components/HomeSearch';
 import PetCard from '@/components/PetCard';
@@ -12,12 +13,13 @@ import { HowItWorksSteps } from '@/components/home/HowItWorksSteps';
 export default async function Home() {
   const supabase = await createClient();
   const featuredEntries = await getFeaturedPets(supabase, 4);
+  const launchedStates = await getLaunchedStates(supabase);
 
   return (
     <>
       <HeroSection />
 
-      <HomeSearch />
+      <HomeSearch launchedStates={launchedStates} />
 
       <section className="featured-section">
         <div className="featured-inner">

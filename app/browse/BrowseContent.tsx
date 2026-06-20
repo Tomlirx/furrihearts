@@ -19,9 +19,10 @@ interface FilterControlsProps {
   location: string;
   setLocation: (value: string) => void;
   resetFilters: () => void;
+  launchedStates: string[];
 }
 
-function FilterControls({ search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters }: FilterControlsProps) {
+function FilterControls({ search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters, launchedStates }: FilterControlsProps) {
   return (
     <>
       <div className="filter-group">
@@ -64,10 +65,9 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
         <span className="filter-label">Location</span>
         <select className="location-select" value={location} onChange={(event) => setLocation(event.target.value)}>
           <option>All Malaysia</option>
-          <option>Kuala Lumpur</option>
-          <option>Selangor</option>
-          <option>Penang</option>
-          <option>Johor</option>
+          {launchedStates.map((state) => (
+            <option key={state}>{state}</option>
+          ))}
         </select>
       </div>
 
@@ -78,7 +78,7 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
   );
 }
 
-export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
+export default function BrowseContent({ isLoggedIn, launchedStates }: { isLoggedIn: boolean; launchedStates: string[] }) {
   const searchParams = useSearchParams();
   const [allPets, setAllPets] = useState<Pet[]>([]);
   const [type, setType] = useState(searchParams.get('type') || 'all');
@@ -118,7 +118,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   };
 
   const filterControlsProps: FilterControlsProps = {
-    search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters,
+    search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters, launchedStates,
   };
 
   return (

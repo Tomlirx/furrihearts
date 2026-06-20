@@ -104,3 +104,8 @@ export async function getBoostStats(admin: any) {
 
   return { totalRevenue, activeBoosts, approvalRate };
 }
+
+export async function getAllStateRollouts(admin: any) {
+  const { data, error } = await admin.from('state_rollouts').select('*').order('state_name');
+  return error ? [] : (data || []);
+}
