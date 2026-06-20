@@ -90,7 +90,7 @@ export default function PetProfile() {
 
       <div className="profile-layout">
         <div>
-          <PetImageGallery petName={pet.name} petAge={pet.age} fallbackImage={pet.image_url} gallery={pet.gallery} isFeatured={isPetCurrentlyFeatured(pet)} />
+          <PetImageGallery petName={pet.name} fallbackImage={pet.image_url} gallery={pet.gallery} isFeatured={isPetCurrentlyFeatured(pet)} />
           <PetInfoCard pet={pet} />
         </div>
 

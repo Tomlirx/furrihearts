@@ -4,13 +4,11 @@ import { useState } from 'react';
 
 export function PetImageGallery({
   petName,
-  petAge,
   fallbackImage,
   gallery,
   isFeatured = false,
 }: {
   petName: string;
-  petAge: string;
   fallbackImage: string;
   gallery?: string[];
   isFeatured?: boolean;
@@ -23,7 +21,6 @@ export function PetImageGallery({
     <>
       <div className="main-img">
         <img src={mainImage || fallbackImage} alt={petName} />
-        <span className="age-label">{petAge}</span>
         {isFeatured && <span className="featured-tag">Featured</span>}
 
         {photos.length > 1 && (
