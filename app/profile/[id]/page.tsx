@@ -17,7 +17,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   if (!profile) notFound();
 
   const allPets = await getMyPets(supabase, id);
-  const activePets = allPets.filter((p: any) => p.status === 'available');
+  const activePets = allPets.filter((p: any) => p.status === 'available' && !p.is_hidden && p.review_status === 'approved');
   const isRescuer = allPets.length > 0;
   const memberSince = profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-MY', { month: 'long', year: 'numeric' }) : '—';
 

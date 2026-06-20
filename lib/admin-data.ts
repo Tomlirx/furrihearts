@@ -109,3 +109,22 @@ export async function getAllStateRollouts(admin: any) {
   const { data, error } = await admin.from('state_rollouts').select('*').order('state_name');
   return error ? [] : (data || []);
 }
+
+export async function getPendingListings(admin: any) {
+  const { data, error } = await admin
+    .from('pets')
+    .select('*, profiles:rescuer_id (first_name, last_name)')
+    .eq('review_status', 'pending')
+    .order('created_at', { ascending: false });
+  return error ? [] : (data || []);
+}
+
+export async function getRecentReviewedListings(admin: any, limit = 20) {
+  const { data, error } = await admin
+    .from('pets')
+    .select('*, profiles:rescuer_id (first_name, last_name)')
+    .in('review_status', ['approved', 'rejected'])
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  return error ? [] : (data || []);
+}

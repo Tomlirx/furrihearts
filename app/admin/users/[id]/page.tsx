@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createAdminClient } from '@/utils/supabase/admin';
 import { getUserDetail } from '@/lib/admin-data';
+import AuditorToggleButton from './AuditorToggleButton';
 import '../../../dashboard/styles.css';
 
 export default async function AdminUserDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,6 +22,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
         <div className="detail-row"><span>Phone</span><span>{profile.phone || '—'}</span></div>
         <div className="detail-row"><span>Location</span><span>{profile.location || '—'}</span></div>
         <div className="detail-row"><span>Admin</span><span>{profile.is_admin ? 'Yes' : 'No'}</span></div>
+        <div className="detail-row"><span>Auditor</span><span><AuditorToggleButton userId={profile.id} isAuditor={!!profile.is_auditor} /></span></div>
         <div className="detail-row"><span>Joined</span><span>{profile.updated_at ? new Date(profile.updated_at).toLocaleDateString() : '—'}</span></div>
       </div>
 

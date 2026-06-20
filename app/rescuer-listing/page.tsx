@@ -218,6 +218,7 @@ export default function RescuerListingFlow() {
       location: location,
       description: description,
       status: 'available',
+      review_status: 'pending',
       image_url: primaryImageUrl,
       gallery: allUploadedUrls,
       fee: Number(fee) || 0,

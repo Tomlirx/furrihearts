@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import { isPetCurrentlyFeatured } from '@/lib/pet-service';
+import { BOOST_ENABLED } from '@/lib/feature-flags';
 import { setListingVisibility } from '@/app/actions/listings';
 import BoostModal from '@/components/BoostModal';
 import ConfirmDialog from '@/components/ConfirmDialog';
@@ -69,9 +70,11 @@ export default function AllListingsPage() {
   }, [pets, appCounts]);
 
   const filtered = pets.filter((pet) => {
-    if (filter === 'live' && (pet.status !== 'available' || pet.is_hidden)) return false;
+    if (filter === 'live' && (pet.status !== 'available' || pet.is_hidden || pet.review_status !== 'approved')) return false;
     if (filter === 'closed' && pet.status !== 'adopted') return false;
     if (filter === 'offline' && !pet.is_hidden) return false;
+    if (filter === 'pending' && pet.review_status !== 'pending') return false;
+    if (filter === 'rejected' && pet.review_status !== 'rejected') return false;
     if (search && !pet.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -89,6 +92,14 @@ export default function AllListingsPage() {
   };
 
   const goOffline = (pet: any) => setOfflineTarget(pet);
+
+  const listingStatusBadge = (pet: any) => {
+    if (pet.review_status === 'pending') return { cls: 's-pending', label: 'Pending Review' };
+    if (pet.review_status === 'rejected') return { cls: 's-rejected', label: 'Rejected' };
+    if (pet.is_hidden) return { cls: 's-offline', label: 'Offline' };
+    if (pet.status === 'available') return { cls: 's-live', label: 'Live' };
+    return { cls: 's-closed', label: 'Closed' };
+  };
 
   const confirmGoOffline = async () => {
     if (!offlineTarget) return;
@@ -135,7 +146,9 @@ export default function AllListingsPage() {
       <div className="listings-toolbar">
         <div className="filter-tabs" style={{ marginBottom: 0 }}>
           <button className={`filter-tab ${filter === 'all' ? 'active' : ''}`} onClick={() => handleFilterChange('all')}>All ({pets.length})</button>
-          <button className={`filter-tab ${filter === 'live' ? 'active' : ''}`} onClick={() => handleFilterChange('live')}>Live ({pets.filter((p) => p.status === 'available' && !p.is_hidden).length})</button>
+          <button className={`filter-tab ${filter === 'live' ? 'active' : ''}`} onClick={() => handleFilterChange('live')}>Live ({pets.filter((p) => p.status === 'available' && !p.is_hidden && p.review_status === 'approved').length})</button>
+          <button className={`filter-tab ${filter === 'pending' ? 'active' : ''}`} onClick={() => handleFilterChange('pending')}>Pending Review ({pets.filter((p) => p.review_status === 'pending').length})</button>
+          <button className={`filter-tab ${filter === 'rejected' ? 'active' : ''}`} onClick={() => handleFilterChange('rejected')}>Rejected ({pets.filter((p) => p.review_status === 'rejected').length})</button>
           <button className={`filter-tab ${filter === 'offline' ? 'active' : ''}`} onClick={() => handleFilterChange('offline')}>Offline ({pets.filter((p) => p.is_hidden).length})</button>
           <button className={`filter-tab ${filter === 'closed' ? 'active' : ''}`} onClick={() => handleFilterChange('closed')}>Closed ({pets.filter((p) => p.status === 'adopted').length})</button>
         </div>
@@ -156,11 +169,10 @@ export default function AllListingsPage() {
             const isActiveBoost = isPetCurrentlyFeatured(pet);
             const latestBoost = boostsByPet[pet.id];
             const isPendingBoost = latestBoost?.status === 'pending_verification';
+            const statusBadge = listingStatusBadge(pet);
             return (
               <div className="listing-card" key={pet.id} style={{ position: 'relative' }}>
-                <span className={`lc-status ${pet.is_hidden ? 's-offline' : pet.status === 'available' ? 's-live' : 's-closed'}`}>
-                  {pet.is_hidden ? 'Offline' : pet.status === 'available' ? 'Live' : 'Closed'}
-                </span>
+                <span className={`lc-status ${statusBadge.cls}`}>{statusBadge.label}</span>
                 <Link href={`/pet/${pet.id}`}>
                   <img src={pet.image_url} alt={pet.name} />
                 </Link>
@@ -168,16 +180,18 @@ export default function AllListingsPage() {
                   <div className="listing-title-row">
                     <h4>{pet.name}</h4>
                     {isActiveBoost && <span className="boost-status active">⭐ Featured</span>}
-                    {!isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending review</span>}
+                    {BOOST_ENABLED && !isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending review</span>}
                   </div>
                   <p>{pet.species} · {pet.gender} · {pet.location}</p>
                   <p style={{ marginBottom: '12px' }}>{counts.total} application{counts.total === 1 ? '' : 's'} · {counts.approved} approved</p>
                   <div className="listing-actions">
-                    {!isActiveBoost && !isPendingBoost ? (
+                    {BOOST_ENABLED && (!isActiveBoost && !isPendingBoost ? (
                       <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
-                    ) : <span />}
+                    ) : <span />)}
                     <Link href={`/manage-applications?pet=${pet.id}`}>Applications</Link>
-                    {pet.is_hidden ? (
+                    {pet.review_status === 'rejected' ? (
+                      <span style={{ fontSize: '13px', color: 'var(--light)' }}>Not shown to adopters</span>
+                    ) : pet.is_hidden ? (
                       <button className="btn-view-full" disabled={isUpdating} onClick={() => goOnline(pet)}>Bring Online</button>
                     ) : (
                       <button className="btn-view-full" disabled={isUpdating} onClick={() => goOffline(pet)}>Take Offline</button>

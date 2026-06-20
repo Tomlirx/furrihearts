@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
 
-export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?: boolean }) {
+export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -164,6 +164,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                     {[
                       { href: '/dashboard', label: 'My Dashboard' },
                       ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
+                      ...(isAuditor ? [{ href: '/auditor', label: '📋 Auditor Panel' }] : []),
                     ].map((item) => (
                       <Link
                         key={item.href}
@@ -218,6 +219,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                 My Dashboard
               </Link>
               {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
+              {isAuditor && <Link href="/auditor" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>📋 Auditor Panel</Link>}
             </>
           )}
 

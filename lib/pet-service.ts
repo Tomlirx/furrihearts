@@ -1,4 +1,5 @@
 import seedPets from '@/data/pets.json';
+import { BOOST_ENABLED } from '@/lib/feature-flags';
 
 export type PetStatus = 'available' | 'adopted' | string;
 
@@ -29,6 +30,8 @@ export interface Pet {
   is_potty_trained?: boolean;
   featured_until?: string | null;
   is_hidden?: boolean;
+  is_featured?: boolean;
+  review_status?: 'pending' | 'approved' | 'rejected';
 }
 
 export interface PetFilters {
@@ -82,7 +85,7 @@ export async function fetchPets(supabase?: any, filters: PetFilters | string = {
 
   if (supabase?.from && !supabase.__isMock) {
     try {
-      let query = supabase.from('pets').select('*').in('status', normalizedFilters.status || ['available', 'adopted']).eq('is_hidden', false);
+      let query = supabase.from('pets').select('*').in('status', normalizedFilters.status || ['available', 'adopted']).eq('is_hidden', false).eq('review_status', 'approved');
 
       if (normalizedFilters.type && normalizedFilters.type !== 'all') {
         query = query.ilike('species', `%${normalizedFilters.type}%`);
@@ -110,7 +113,8 @@ export interface FeaturedPetEntry {
 }
 
 export function isPetCurrentlyFeatured(pet: Pet): boolean {
-  return !!pet.featured_until && new Date(pet.featured_until) > new Date();
+  if (pet.is_featured) return true;
+  return BOOST_ENABLED && !!pet.featured_until && new Date(pet.featured_until) > new Date();
 }
 
 export async function getFeaturedPets(supabase?: any, limit = 4): Promise<FeaturedPetEntry[]> {
@@ -120,14 +124,30 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
 
   if (supabase?.from && !supabase.__isMock) {
     try {
-      const { data: featuredData } = await supabase
+      const { data: curatedData } = await supabase
         .from('pets')
         .select('*')
-        .gt('featured_until', nowIso)
+        .eq('is_featured', true)
         .eq('is_hidden', false)
-        .order('featured_until', { ascending: false })
+        .eq('review_status', 'approved')
+        .order('created_at', { ascending: false })
         .limit(limit);
-      if (featuredData) featured = featuredData as Pet[];
+      if (curatedData) featured = curatedData as Pet[];
+
+      if (BOOST_ENABLED && featured.length < limit) {
+        const { data: boostedData } = await supabase
+          .from('pets')
+          .select('*')
+          .gt('featured_until', nowIso)
+          .eq('is_hidden', false)
+          .eq('review_status', 'approved')
+          .order('featured_until', { ascending: false })
+          .limit(limit - featured.length);
+        if (boostedData) {
+          const seenIds = new Set(featured.map((p) => p.id));
+          featured = [...featured, ...(boostedData as Pet[]).filter((p) => !seenIds.has(p.id))];
+        }
+      }
 
       if (featured.length < limit) {
         const { data: recentData } = await supabase
@@ -135,6 +155,7 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
           .select('*')
           .eq('status', 'available')
           .eq('is_hidden', false)
+          .eq('review_status', 'approved')
           .order('created_at', { ascending: false })
           .limit(limit + featured.length);
         if (recentData) pool = recentData as Pet[];
@@ -171,9 +192,9 @@ export async function getPlatformStats(supabase?: any): Promise<PlatformStats> {
   if (supabase?.from && !supabase.__isMock) {
     try {
       const [animalsRes, adoptedRes, rescuersRes] = await Promise.all([
-        supabase.from('pets').select('id', { count: 'exact', head: true }),
-        supabase.from('pets').select('id', { count: 'exact', head: true }).eq('status', 'adopted'),
-        supabase.from('pets').select('rescuer_id'),
+        supabase.from('pets').select('id', { count: 'exact', head: true }).eq('review_status', 'approved'),
+        supabase.from('pets').select('id', { count: 'exact', head: true }).eq('status', 'adopted').eq('review_status', 'approved'),
+        supabase.from('pets').select('rescuer_id').eq('review_status', 'approved'),
       ]);
 
       const animalsListed = animalsRes.count ?? 0;

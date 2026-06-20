@@ -109,6 +109,18 @@ export async function reviewBoost(boostId: string, petId: string, days: number, 
   return { success: true };
 }
 
+export async function toggleUserAuditor(userId: string, isAuditor: boolean) {
+  const admin = await getAdminOrFail();
+  if (!admin) return { error: 'Not authorized.' };
+
+  const { error } = await admin.from('profiles').update({ is_auditor: isAuditor }).eq('id', userId);
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin/users');
+  revalidatePath(`/admin/users/${userId}`);
+  return { success: true };
+}
+
 export async function toggleStateLaunch(stateName: string, launched: boolean) {
   const admin = await getAdminOrFail();
   if (!admin) return { error: 'Not authorized.' };

@@ -299,6 +299,8 @@
 .lc-status.s-live { background: var(--green-pale); color: var(--green); }
 .lc-status.s-closed { background: #FEE2E2; color: #DC2626; }
 .lc-status.s-offline { background: var(--cream); color: var(--mid); }
+.lc-status.s-pending { background: #FEF3C7; color: #D97706; }
+.lc-status.s-rejected { background: #FEE2E2; color: #DC2626; }
 .new-listing-card { border: 2px dashed var(--border); border-radius: 12px; background: var(--cream); display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: var(--mid); min-height: 220px; text-align: center; transition: all .2s; }
 .new-listing-card:hover { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); }
 .new-listing-card .plus { font-size: 32px; margin-bottom: 8px; }
@@ -308,6 +310,7 @@
 .boost-status.pending { background: #FEF3C7; color: #D97706; }
 .boost-status.active { background: var(--orange-pale); color: var(--orange); }
 .boost-status.offline { background: var(--cream); color: var(--mid); }
+.boost-status.rejected { background: #FEE2E2; color: #DC2626; }
 
 .tier-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .tier-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 10px; background: #fff; cursor: pointer; text-align: center; font-family: inherit; transition: all .2s; }

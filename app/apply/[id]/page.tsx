@@ -89,6 +89,12 @@ export default function QuestionnairePage() {
       return;
     }
 
+    if (pet.is_hidden || (pet.review_status && pet.review_status !== 'approved')) {
+      setFormError('This listing isn\'t available for applications right now.');
+      setSubmitting(false);
+      return;
+    }
+
     if (authError || !user) {
       saveLocalApplication({
         id: `local-app-${pet.id}-${Date.now()}`,

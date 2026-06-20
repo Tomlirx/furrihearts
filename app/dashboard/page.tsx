@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
+import { BOOST_ENABLED } from '@/lib/feature-flags';
 import { getMyPets, getMyApplications, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import { setListingVisibility } from '@/app/actions/listings';
 import EmptyState from '@/components/EmptyState';
@@ -130,14 +131,16 @@ export default function DashboardOverview() {
                   <div className="row-info">
                     <h4>
                       {pet.name} · {pet.gender}
+                      {pet.review_status === 'pending' && <span className="boost-status pending">Pending Review</span>}
+                      {pet.review_status === 'rejected' && <span className="boost-status rejected">Rejected</span>}
                       {pet.is_hidden && <span className="boost-status offline">Offline</span>}
                       {isActiveBoost && <span className="boost-status active">⭐ Featured</span>}
-                      {!isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending</span>}
+                      {BOOST_ENABLED && !isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending</span>}
                     </h4>
                     <p>{pet.age} · {pet.location}</p>
                   </div>
                   <div className="row-actions">
-                    {!isActiveBoost && !isPendingBoost && (
+                    {BOOST_ENABLED && !isActiveBoost && !isPendingBoost && (
                       <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
                     )}
                     {pet.is_hidden ? (
