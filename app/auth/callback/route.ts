@@ -2,11 +2,12 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { safeNext } from '@/lib/safe-redirect';
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next');
+  const next = safeNext(requestUrl.searchParams.get('next'));
   const origin = requestUrl.origin;
 
   if (code) {

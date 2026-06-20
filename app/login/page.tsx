@@ -1,18 +1,21 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signInUser } from '../actions/auth';
 import { supabase } from '@/lib/supabase'; // Import your Supabase client
+import { safeNext } from '@/lib/safe-redirect';
 import '../signup/styles.css';
 
-export default function Login() {
+function LoginForm() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = safeNext(searchParams.get('next'));
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -34,11 +37,11 @@ export default function Login() {
 
     setLoading(true);
     const result = await signInUser(formData);
-    
+
     if (result.error) {
       setErrors({ email: result.error });
     } else {
-      router.push('/browse');
+      router.push(next || '/browse');
       router.refresh();
     }
     setLoading(false);
@@ -46,10 +49,14 @@ export default function Login() {
 
   // NEW: Google Auth Handler
   const handleGoogleSignIn = async () => {
+    const callbackUrl = next
+      ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`
+      : `${window.location.origin}/auth/callback`;
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: callbackUrl,
       },
     });
 
@@ -93,7 +100,7 @@ export default function Login() {
           </button>
 
           <div className="divider">or continue with</div>
-          
+
           {/* UPDATED: Added the onClick handler to your social button */}
           <button className="btn-social" onClick={handleGoogleSignIn}>
             🌐 Continue with Google
@@ -101,5 +108,13 @@ export default function Login() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 import '../dashboard/styles.css';
 import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
@@ -17,6 +18,7 @@ import { useToast } from '@/lib/useToast';
 const PAGE_SIZE = 20;
 
 export default function AllListingsPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [pets, setPets] = useState<any[]>([]);
   const [appCounts, setAppCounts] = useState<Record<string, { total: number; approved: number; declined: number }>>({});
@@ -32,7 +34,7 @@ export default function AllListingsPage() {
     async function load() {
       setPets(getLocalListings());
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setLoading(false); return; }
+      if (!user) { router.replace('/login?next=/all-listings'); return; }
       const myPets = await getMyPets(supabase, user.id);
       if (myPets.length) {
         setPets(myPets);

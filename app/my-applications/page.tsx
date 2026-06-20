@@ -1,6 +1,7 @@
 'use client';
 import '../dashboard/styles.css';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
@@ -23,6 +24,7 @@ const TABS = [
 ];
 
 export default function MyApplicationsPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [apps, setApps] = useState<any[]>([]);
   const [filter, setFilter] = useState('all');
@@ -34,7 +36,7 @@ export default function MyApplicationsPage() {
     async function load() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setLoading(false); return; }
+      if (!user) { router.replace('/login?next=/my-applications'); return; }
       const data = await getMyApplications(supabase, user.id);
       if (data.length) setApps(data);
       setLoading(false);

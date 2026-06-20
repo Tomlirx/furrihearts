@@ -1,18 +1,21 @@
 'use client';
 import '../dashboard/styles.css';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import MessagesPanel from '@/components/MessagesPanel';
 import DashboardTabs from '@/components/DashboardTabs';
 
 export default function MessagesPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
-      setUserId(user?.id || null);
+      if (!user) { router.replace('/login?next=/messages'); return; }
+      setUserId(user.id);
       setLoading(false);
     }
     load();
@@ -27,11 +30,7 @@ export default function MessagesPage() {
         <div><h1>Messages</h1><p>Conversations with adopters and rescuers about pets.</p></div>
       </div>
 
-      {userId ? (
-        <MessagesPanel currentUserId={userId} />
-      ) : (
-        <p style={{ color: 'var(--mid)', fontSize: '13px' }}>Log in to view your messages.</p>
-      )}
+      <MessagesPanel currentUserId={userId!} />
     </div>
   );
 }

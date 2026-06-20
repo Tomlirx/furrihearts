@@ -1,6 +1,7 @@
 'use client';
 import './styles.css';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
@@ -15,6 +16,7 @@ import ConfirmDialog from '@/components/ConfirmDialog';
 import { useToast } from '@/lib/useToast';
 
 export default function DashboardOverview() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('there');
   const [myApplications, setMyApplications] = useState<any[]>([]);
@@ -31,7 +33,7 @@ export default function DashboardOverview() {
       setMyPets([...getLocalListings(), ...localPets.filter((pet) => pet.rescuer_id === 'demo-rescuer')]);
 
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setLoading(false); return; }
+      if (!user) { router.replace('/login?next=/dashboard'); return; }
 
       const { data: profile } = await supabase.from('profiles').select('first_name').eq('id', user.id).single();
       setUserName(profile?.first_name || user.email?.split('@')[0] || 'there');

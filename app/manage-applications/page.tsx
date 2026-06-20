@@ -1,7 +1,7 @@
 'use client';
 import '../dashboard/styles.css';
 import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
@@ -22,6 +22,7 @@ const TABS = [
 ];
 
 function ManageApplicationsContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const petFilter = searchParams.get('pet');
 
@@ -39,7 +40,7 @@ function ManageApplicationsContent() {
     async function load() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setLoading(false); return; }
+      if (!user) { router.replace('/login?next=/manage-applications'); return; }
       const pets = await getMyPets(supabase, user.id);
       if (pets.length) {
         const incoming = await getIncomingApplications(supabase, pets.map((p: any) => p.id));

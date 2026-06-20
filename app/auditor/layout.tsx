@@ -10,7 +10,7 @@ const NAV_ITEMS = [
 export default async function AuditorLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login');
+  if (!user) redirect('/login?next=/auditor');
 
   const { data: profile } = await supabase.from('profiles').select('is_auditor').eq('id', user.id).single();
   if (!profile?.is_auditor) redirect('/');

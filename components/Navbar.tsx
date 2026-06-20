@@ -2,10 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
 
 export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
+  const pathname = usePathname();
+  const loginHref = pathname && pathname !== '/login' && pathname !== '/signup'
+    ? `/login?next=${encodeURIComponent(pathname)}`
+    : '/login';
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -191,7 +196,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                 )}
               </div>
             ) : (
-              <Link href="/login" className="btn-ghost">Log in</Link>
+              <Link href={loginHref} className="btn-ghost">Log in</Link>
             )}
 
             {/* Hamburger Trigger */}
@@ -236,7 +241,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                 Sign Out
               </button>
             ) : (
-              <Link href="/login" className="mob-primary" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href={loginHref} className="mob-primary" onClick={() => setIsMobileMenuOpen(false)}>
                 Log in
               </Link>
             )}
