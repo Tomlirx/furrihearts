@@ -78,7 +78,7 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
   );
 }
 
-export default function BrowseContent({ isLoggedIn, launchedStates }: { isLoggedIn: boolean; launchedStates: string[] }) {
+export default function BrowseContent({ launchedStates }: { launchedStates: string[] }) {
   const searchParams = useSearchParams();
   const [allPets, setAllPets] = useState<Pet[]>([]);
   const [type, setType] = useState(searchParams.get('type') || 'all');
@@ -150,7 +150,6 @@ export default function BrowseContent({ isLoggedIn, launchedStates }: { isLogged
               <h1>Find Your New Best Friend</h1>
               <p>{pets.length} pets available across Malaysia</p>
             </div>
-            {isLoggedIn && <Link href="/rescuer-listing" className="btn-outline">Add listing</Link>}
           </div>
 
           <button className="filter-toggle" onClick={() => setIsFilterOpen(true)}>

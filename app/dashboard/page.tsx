@@ -99,7 +99,6 @@ export default function DashboardOverview() {
           <h1>Welcome back, {userName}! 🌿</h1>
           <p>You have <strong>{pendingCount}</strong> pending application{pendingCount === 1 ? '' : 's'} to review today.</p>
         </div>
-        <Link href="/rescuer-listing" className="btn-add-pet">+ New Listing</Link>
       </div>
 
       <div className="stats-grid">
@@ -114,7 +113,6 @@ export default function DashboardOverview() {
           <div className="empty-icon">🐾</div>
           <h3>No listings yet</h3>
           <p>Ready to find your first pet a forever home? Create your first listing — it only takes 3 minutes.</p>
-          <Link href="/rescuer-listing" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>+ Create Your First Listing</Link>
         </div>
       ) : (
         <>

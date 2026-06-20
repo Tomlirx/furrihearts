@@ -123,7 +123,6 @@ export default function AllListingsPage() {
       <DashboardTabs />
       <div className="dashboard-header">
         <div><h1>My Listings</h1><p>Manage every pet you've listed for adoption.</p></div>
-        <Link href="/rescuer-listing" className="btn-add-pet">+ New Listing</Link>
       </div>
 
       <div className="stats-grid">
@@ -148,7 +147,6 @@ export default function AllListingsPage() {
           <div className="empty-icon">🐾</div>
           <h3>No listings yet</h3>
           <p>Ready to find your first pet a forever home? Create your first listing — it only takes 3 minutes.</p>
-          <Link href="/rescuer-listing" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>+ Create Your First Listing</Link>
         </div>
       ) : (
         <>
@@ -189,13 +187,6 @@ export default function AllListingsPage() {
               </div>
             );
           })}
-          {page === totalPages && (
-            <Link href="/rescuer-listing" className="new-listing-card">
-              <div className="plus">+</div>
-              <div style={{ fontWeight: 700, fontSize: '14px' }}>List a Pet</div>
-              <div style={{ fontSize: '12px' }}>Add another pet to your listings</div>
-            </Link>
-          )}
         </div>
         <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </>
