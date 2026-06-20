@@ -124,6 +124,7 @@
 .status-badge.pending { background: #FEF3C7; color: #D97706; }
 .status-badge.approved { background: #D1FAE5; color: #059669; }
 .status-badge.rejected { background: #FEE2E2; color: #DC2626; }
+.status-badge.closed { background: #D1FAE5; color: #059669; }
 
 .app-date {
   color: var(--light);

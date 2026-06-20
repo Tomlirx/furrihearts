@@ -29,6 +29,7 @@ export default function AdminApplicationsTable({ apps }: { apps: any[] }) {
                   <option value="approved">approved</option>
                   <option value="rejected">rejected</option>
                   <option value="cancelled">cancelled</option>
+                  <option value="closed">closed</option>
                 </select>
               </td>
               <td><button className="admin-btn" onClick={() => setSelected(app)}>View Q&A</button></td>

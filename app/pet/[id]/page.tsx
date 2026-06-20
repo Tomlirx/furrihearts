@@ -41,9 +41,10 @@ export default function PetProfile() {
           .select('status')
           .eq('pet_id', id)
           .eq('applicant_id', user.id)
-          .maybeSingle();
+          .order('created_at', { ascending: false })
+          .limit(1);
 
-        if (appData) setUserApplication(appData);
+        if (appData?.[0]) setUserApplication(appData[0]);
       }
 
       setLoading(false);

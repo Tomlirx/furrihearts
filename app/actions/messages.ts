@@ -23,6 +23,21 @@ export async function sendMessage(formData: FormData) {
     return { error: `Messages are limited to ${MAX_MESSAGE_WORDS} words.` };
   }
 
+  if (petId) {
+    const { data: latestApplication } = await supabase
+      .from('applications')
+      .select('status')
+      .eq('pet_id', petId)
+      .in('applicant_id', [user.id, recipientId])
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (latestApplication && ['cancelled', 'closed'].includes(latestApplication.status)) {
+      return { error: 'This conversation is closed — the application is no longer active.' };
+    }
+  }
+
   const { error } = await supabase.from('messages').insert({
     sender_id: user.id,
     recipient_id: recipientId,

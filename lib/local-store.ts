@@ -4,7 +4,7 @@ export interface LocalApplication {
   id: string;
   pet_id: string;
   applicant_id: string;
-  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled' | 'closed';
   created_at: string;
   q1: string[];
   q2: string;

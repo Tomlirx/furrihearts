@@ -83,6 +83,12 @@ export default function QuestionnairePage() {
     // 1. Get the currently authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+    if (!authError && user && user.id === pet.rescuer_id) {
+      setFormError('You can\'t apply to adopt your own listed pet.');
+      setSubmitting(false);
+      return;
+    }
+
     if (authError || !user) {
       saveLocalApplication({
         id: `local-app-${pet.id}-${Date.now()}`,

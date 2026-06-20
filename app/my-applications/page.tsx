@@ -16,8 +16,9 @@ const TABS = [
   { key: 'all', label: 'All' },
   { key: 'pending', label: 'Under Review' },
   { key: 'approved', label: 'Approved' },
-  { key: 'rejected', label: 'Closed' },
+  { key: 'rejected', label: 'Declined' },
   { key: 'cancelled', label: 'Withdrawn' },
+  { key: 'closed', label: 'Completed' },
 ];
 
 export default function MyApplicationsPage() {
@@ -103,12 +104,13 @@ export default function MyApplicationsPage() {
                     {' '}<Link href={`/profile/${app.pets?.rescuer_id}`}>rescuer's profile</Link> for contact details.
                   </p>
                 )}
-                {app.status === 'rejected' && <p style={{ fontSize: '13px', color: '#DC2626' }}>This application was declined.</p>}
-                {app.status === 'cancelled' && <p style={{ fontSize: '13px', color: 'var(--mid)' }}>This application was withdrawn.</p>}
+                {app.status === 'rejected' && <p style={{ fontSize: '13px', color: '#DC2626' }}>This application was declined. You can apply again if the pet is still available.</p>}
+                {app.status === 'cancelled' && <p style={{ fontSize: '13px', color: 'var(--mid)' }}>This application was withdrawn. You can apply again any time.</p>}
+                {app.status === 'closed' && <p style={{ fontSize: '13px', color: '#10B981', fontWeight: 600 }}>🎉 This pet found its forever home with you!</p>}
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <Link href={`/pet/${app.pet_id || app.pets?.id}`} className="btn-view-full" style={{ flex: 'none', padding: '8px 16px' }}>View Pet</Link>
-                  {app.pets?.rescuer_id && app.pets.rescuer_id !== 'demo-rescuer' && (
+                  {app.pets?.rescuer_id && app.pets.rescuer_id !== 'demo-rescuer' && app.status !== 'cancelled' && app.status !== 'closed' && (
                     <MessageComposer
                       recipientId={app.pets.rescuer_id}
                       petId={app.pet_id || app.pets?.id}

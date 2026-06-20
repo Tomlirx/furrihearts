@@ -17,9 +17,12 @@ export function RescuerSidebar({
   currentUserId: string | null;
   userApplication: { status: string } | null;
 }) {
+  const isOwnPet = Boolean(currentUserId && pet.rescuer_id && currentUserId === pet.rescuer_id);
+  const isClosedConversation = userApplication?.status === 'cancelled' || userApplication?.status === 'closed';
   const canMessage = Boolean(
     currentUserId && pet.rescuer_id && pet.rescuer_id !== 'demo-rescuer' && currentUserId !== pet.rescuer_id
-  );
+  ) && !isClosedConversation;
+  const isBlockingApplication = userApplication && ['pending', 'approved'].includes(userApplication.status);
 
   return (
     <div className="right-card">
@@ -45,23 +48,23 @@ export function RescuerSidebar({
         </div>
       )}
 
-      {!userApplication ? (
-        pet.status === 'available' ? (
-          <>
-            <Link href={`/apply/${pet.id}`} style={{ display: 'block', background: 'var(--orange)', color: '#fff', borderRadius: '10px', padding: '14px', textAlign: 'center', fontSize: '15px', fontWeight: 700, textDecoration: 'none', marginBottom: '10px' }}>
-              I'm Interested
-            </Link>
-            <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center' }}>Usually replies within 1 day</div>
-          </>
-        ) : (
-          <div className="application-status-banner status-adopted">Happily Adopted</div>
-        )
+      {isOwnPet ? (
+        <div className="application-status-banner status-pending">This is your own listing</div>
+      ) : pet.status !== 'available' ? (
+        <div className="application-status-banner status-adopted">
+          {userApplication?.status === 'closed' ? '🎉 You adopted this pet!' : 'Happily Adopted'}
+        </div>
+      ) : !isBlockingApplication ? (
+        <>
+          <Link href={`/apply/${pet.id}`} style={{ display: 'block', background: 'var(--orange)', color: '#fff', borderRadius: '10px', padding: '14px', textAlign: 'center', fontSize: '15px', fontWeight: 700, textDecoration: 'none', marginBottom: '10px' }}>
+            I'm Interested
+          </Link>
+          <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'center' }}>Usually replies within 1 day</div>
+        </>
       ) : (
-        <div className={`application-status-banner status-${userApplication.status}`}>
-          {userApplication.status === 'pending' && 'Application Under Review'}
-          {userApplication.status === 'approved' && 'Application Approved'}
-          {userApplication.status === 'rejected' && 'Application Declined'}
-          {userApplication.status === 'cancelled' && 'Application Archived'}
+        <div className={`application-status-banner status-${userApplication!.status}`}>
+          {userApplication!.status === 'pending' && 'Application Under Review'}
+          {userApplication!.status === 'approved' && 'Application Approved'}
         </div>
       )}
 

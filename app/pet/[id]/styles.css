@@ -59,7 +59,7 @@
 .application-status-banner { padding: 14px; border-radius: 10px; text-align: center; font-weight: 600; border: 1px solid var(--border); }
 .application-status-banner.status-pending { background: var(--cream); color: var(--dark); }
 .application-status-banner.status-approved, .application-status-banner.status-rejected, .application-status-banner.status-cancelled { background: #f3f4f6; color: var(--mid); }
-.application-status-banner.status-adopted { background: #d1fae5; color: #065f46; font-weight: 700; }
+.application-status-banner.status-adopted, .application-status-banner.status-closed { background: #d1fae5; color: #065f46; font-weight: 700; }
 .benefits-list { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid var(--border); }
 .benefit-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mid); }
 .benefit-item .benefit-check { color: var(--green); font-weight: 700; }
