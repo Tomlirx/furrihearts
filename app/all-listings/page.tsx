@@ -6,8 +6,11 @@ import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import { isPetCurrentlyFeatured } from '@/lib/pet-service';
+import { setListingVisibility } from '@/app/actions/listings';
 import BoostModal from '@/components/BoostModal';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
+import { useToast } from '@/lib/useToast';
 
 const PAGE_SIZE = 20;
 
@@ -19,6 +22,9 @@ export default function AllListingsPage() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [offlineTarget, setOfflineTarget] = useState<any>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { toast, showToast } = useToast();
 
   useEffect(() => {
     async function load() {
@@ -54,7 +60,7 @@ export default function AllListingsPage() {
   const stats = useMemo(() => {
     const allCounts = Object.values(appCounts);
     return {
-      active: pets.filter((p) => p.status === 'available').length,
+      active: pets.filter((p) => p.status === 'available' && !p.is_hidden).length,
       applications: allCounts.reduce((sum, c) => sum + c.total, 0),
       approved: allCounts.reduce((sum, c) => sum + c.approved, 0),
       declined: allCounts.reduce((sum, c) => sum + c.declined, 0),
@@ -62,8 +68,9 @@ export default function AllListingsPage() {
   }, [pets, appCounts]);
 
   const filtered = pets.filter((pet) => {
-    if (filter === 'live' && pet.status !== 'available') return false;
+    if (filter === 'live' && (pet.status !== 'available' || pet.is_hidden)) return false;
     if (filter === 'closed' && pet.status !== 'adopted') return false;
+    if (filter === 'offline' && !pet.is_hidden) return false;
     if (search && !pet.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -78,6 +85,34 @@ export default function AllListingsPage() {
   const handleSearchChange = (value: string) => {
     setSearch(value);
     setPage(1);
+  };
+
+  const goOffline = (pet: any) => setOfflineTarget(pet);
+
+  const confirmGoOffline = async () => {
+    if (!offlineTarget) return;
+    setIsUpdating(true);
+    const result = await setListingVisibility(offlineTarget.id, true);
+    if (result.error) {
+      showToast(result.error, 'decline');
+    } else {
+      setPets((prev) => prev.map((p) => (p.id === offlineTarget.id ? { ...p, is_hidden: true } : p)));
+      showToast(`${offlineTarget.name} is now offline`, 'decline');
+    }
+    setIsUpdating(false);
+    setOfflineTarget(null);
+  };
+
+  const goOnline = async (pet: any) => {
+    setIsUpdating(true);
+    const result = await setListingVisibility(pet.id, false);
+    if (result.error) {
+      showToast(result.error, 'decline');
+    } else {
+      setPets((prev) => prev.map((p) => (p.id === pet.id ? { ...p, is_hidden: false } : p)));
+      showToast(`${pet.name} is back online`, 'success');
+    }
+    setIsUpdating(false);
   };
 
   if (loading) return <div className="loading-state">Loading your listings...</div>;
@@ -99,7 +134,8 @@ export default function AllListingsPage() {
       <div className="listings-toolbar">
         <div className="filter-tabs" style={{ marginBottom: 0 }}>
           <button className={`filter-tab ${filter === 'all' ? 'active' : ''}`} onClick={() => handleFilterChange('all')}>All ({pets.length})</button>
-          <button className={`filter-tab ${filter === 'live' ? 'active' : ''}`} onClick={() => handleFilterChange('live')}>Live ({pets.filter((p) => p.status === 'available').length})</button>
+          <button className={`filter-tab ${filter === 'live' ? 'active' : ''}`} onClick={() => handleFilterChange('live')}>Live ({pets.filter((p) => p.status === 'available' && !p.is_hidden).length})</button>
+          <button className={`filter-tab ${filter === 'offline' ? 'active' : ''}`} onClick={() => handleFilterChange('offline')}>Offline ({pets.filter((p) => p.is_hidden).length})</button>
           <button className={`filter-tab ${filter === 'closed' ? 'active' : ''}`} onClick={() => handleFilterChange('closed')}>Closed ({pets.filter((p) => p.status === 'adopted').length})</button>
         </div>
         <input className="search-input" placeholder="Search listings..." value={search} onChange={(e) => handleSearchChange(e.target.value)} />
@@ -122,7 +158,9 @@ export default function AllListingsPage() {
             const isPendingBoost = latestBoost?.status === 'pending_verification';
             return (
               <div className="listing-card" key={pet.id} style={{ position: 'relative' }}>
-                <span className={`lc-status ${pet.status === 'available' ? 's-live' : 's-closed'}`}>{pet.status === 'available' ? 'Live' : 'Closed'}</span>
+                <span className={`lc-status ${pet.is_hidden ? 's-offline' : pet.status === 'available' ? 's-live' : 's-closed'}`}>
+                  {pet.is_hidden ? 'Offline' : pet.status === 'available' ? 'Live' : 'Closed'}
+                </span>
                 <Link href={`/pet/${pet.id}`}>
                   <img src={pet.image_url} alt={pet.name} />
                 </Link>
@@ -139,6 +177,11 @@ export default function AllListingsPage() {
                       <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
                     ) : <span />}
                     <Link href={`/manage-applications?pet=${pet.id}`}>Applications</Link>
+                    {pet.is_hidden ? (
+                      <button className="btn-view-full" disabled={isUpdating} onClick={() => goOnline(pet)}>Bring Online</button>
+                    ) : (
+                      <button className="btn-view-full" disabled={isUpdating} onClick={() => goOffline(pet)}>Take Offline</button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -155,6 +198,20 @@ export default function AllListingsPage() {
         <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </>
       )}
+
+      <ConfirmDialog
+        open={!!offlineTarget}
+        icon="👁️"
+        title={`Take ${offlineTarget?.name} offline?`}
+        body="This listing will be hidden from Browse, Home, and search — adopters won't be able to find or apply to it until you bring it back online."
+        confirmLabel="Take Offline"
+        cancelLabel="Keep it online"
+        danger
+        onConfirm={confirmGoOffline}
+        onCancel={() => setOfflineTarget(null)}
+      />
+
+      {toast && <div className={`toast ${toast.type}`}>{toast.msg}</div>}
     </div>
   );
 }

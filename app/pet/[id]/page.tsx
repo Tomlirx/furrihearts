@@ -73,6 +73,9 @@ export default function PetProfile() {
     );
   }
   if (!pet) return <div style={{ padding: '60px', textAlign: 'center' }}>Pet not found.</div>;
+  if (pet.is_hidden && currentUserId !== pet.rescuer_id) {
+    return <div style={{ padding: '60px', textAlign: 'center' }}>This listing isn't available right now.</div>;
+  }
 
   const rescuerName = pet.profiles?.first_name
     ? `${pet.profiles.first_name} ${pet.profiles.last_name || ''}`

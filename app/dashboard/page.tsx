@@ -6,8 +6,11 @@ import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getMyPets, getMyApplications, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
+import { setListingVisibility } from '@/app/actions/listings';
 import EmptyState from '@/components/EmptyState';
 import BoostModal from '@/components/BoostModal';
+import ConfirmDialog from '@/components/ConfirmDialog';
+import { useToast } from '@/lib/useToast';
 
 export default function DashboardOverview() {
   const [loading, setLoading] = useState(true);
@@ -16,6 +19,9 @@ export default function DashboardOverview() {
   const [myPets, setMyPets] = useState<Pet[]>([]);
   const [incomingApps, setIncomingApps] = useState<any[]>([]);
   const [boostsByPet, setBoostsByPet] = useState<Record<string, any>>({});
+  const [offlineTarget, setOfflineTarget] = useState<Pet | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { toast, showToast } = useToast();
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -55,8 +61,34 @@ export default function DashboardOverview() {
   if (loading) return <div className="loading-state">Loading your dashboard...</div>;
 
   const pendingCount = incomingApps.filter((a) => a.status === 'pending').length;
-  const activeListings = myPets.filter((p) => p.status === 'available').length;
+  const activeListings = myPets.filter((p) => p.status === 'available' && !p.is_hidden).length;
   const approvedCount = incomingApps.filter((a) => a.status === 'approved').length;
+
+  const confirmGoOffline = async () => {
+    if (!offlineTarget) return;
+    setIsUpdating(true);
+    const result = await setListingVisibility(offlineTarget.id, true);
+    if (result.error) {
+      showToast(result.error, 'decline');
+    } else {
+      setMyPets((prev) => prev.map((p) => (p.id === offlineTarget.id ? { ...p, is_hidden: true } : p)));
+      showToast(`${offlineTarget.name} is now offline`, 'decline');
+    }
+    setIsUpdating(false);
+    setOfflineTarget(null);
+  };
+
+  const goOnline = async (pet: Pet) => {
+    setIsUpdating(true);
+    const result = await setListingVisibility(pet.id, false);
+    if (result.error) {
+      showToast(result.error, 'decline');
+    } else {
+      setMyPets((prev) => prev.map((p) => (p.id === pet.id ? { ...p, is_hidden: false } : p)));
+      showToast(`${pet.name} is back online`, 'success');
+    }
+    setIsUpdating(false);
+  };
 
   return (
     <div className="dashboard-container">
@@ -98,6 +130,7 @@ export default function DashboardOverview() {
                   <div className="row-info">
                     <h4>
                       {pet.name} · {pet.gender}
+                      {pet.is_hidden && <span className="boost-status offline">Offline</span>}
                       {isActiveBoost && <span className="boost-status active">⭐ Featured</span>}
                       {!isActiveBoost && isPendingBoost && <span className="boost-status pending">Boost pending</span>}
                     </h4>
@@ -106,6 +139,11 @@ export default function DashboardOverview() {
                   <div className="row-actions">
                     {!isActiveBoost && !isPendingBoost && (
                       <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
+                    )}
+                    {pet.is_hidden ? (
+                      <button className="btn-view-full" disabled={isUpdating} onClick={() => goOnline(pet)}>Bring Online</button>
+                    ) : (
+                      <button className="btn-view-full" disabled={isUpdating} onClick={() => setOfflineTarget(pet)}>Take Offline</button>
                     )}
                     <Link href={`/pet/${pet.id}`}>View</Link>
                   </div>
@@ -147,6 +185,20 @@ export default function DashboardOverview() {
           </div>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={!!offlineTarget}
+        icon="👁️"
+        title={`Take ${offlineTarget?.name} offline?`}
+        body="This listing will be hidden from Browse, Home, and search — adopters won't be able to find or apply to it until you bring it back online."
+        confirmLabel="Take Offline"
+        cancelLabel="Keep it online"
+        danger
+        onConfirm={confirmGoOffline}
+        onCancel={() => setOfflineTarget(null)}
+      />
+
+      {toast && <div className={`toast ${toast.type}`}>{toast.msg}</div>}
     </div>
   );
 }

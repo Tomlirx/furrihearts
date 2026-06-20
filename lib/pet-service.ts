@@ -28,6 +28,7 @@ export interface Pet {
   is_flea_treated?: boolean;
   is_potty_trained?: boolean;
   featured_until?: string | null;
+  is_hidden?: boolean;
 }
 
 export interface PetFilters {
@@ -66,6 +67,7 @@ export function filterLocalPets(pets: Pet[], filters: PetFilters = {}) {
       .join(' ')
       .toLowerCase();
 
+    if (pet.is_hidden) return false;
     if (!statuses.includes(pet.status)) return false;
     if (query && !text.includes(query)) return false;
     if (type !== 'all' && pet.species.toLowerCase() !== type.toLowerCase()) return false;
@@ -80,7 +82,7 @@ export async function fetchPets(supabase?: any, filters: PetFilters | string = {
 
   if (supabase?.from && !supabase.__isMock) {
     try {
-      let query = supabase.from('pets').select('*').in('status', normalizedFilters.status || ['available', 'adopted']);
+      let query = supabase.from('pets').select('*').in('status', normalizedFilters.status || ['available', 'adopted']).eq('is_hidden', false);
 
       if (normalizedFilters.type && normalizedFilters.type !== 'all') {
         query = query.ilike('species', `%${normalizedFilters.type}%`);
@@ -122,6 +124,7 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
         .from('pets')
         .select('*')
         .gt('featured_until', nowIso)
+        .eq('is_hidden', false)
         .order('featured_until', { ascending: false })
         .limit(limit);
       if (featuredData) featured = featuredData as Pet[];
@@ -131,6 +134,7 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
           .from('pets')
           .select('*')
           .eq('status', 'available')
+          .eq('is_hidden', false)
           .order('created_at', { ascending: false })
           .limit(limit + featured.length);
         if (recentData) pool = recentData as Pet[];
@@ -141,7 +145,7 @@ export async function getFeaturedPets(supabase?: any, limit = 4): Promise<Featur
   }
 
   if (featured.length === 0 && pool.length === 0) {
-    const all = getLocalPets();
+    const all = getLocalPets().filter((p) => !p.is_hidden);
     featured = all
       .filter((p) => p.featured_until && new Date(p.featured_until) > new Date())
       .sort((a, b) => new Date(b.featured_until!).getTime() - new Date(a.featured_until!).getTime());
