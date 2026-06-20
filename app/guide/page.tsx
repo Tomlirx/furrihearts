@@ -59,7 +59,6 @@ export default function AdoptionGuide() {
           <a href="#costs" className={`sidebar-link ${activeSection === 'costs' ? 'active' : ''}`}>Understanding Costs</a>
           <a href="#health" className={`sidebar-link ${activeSection === 'health' ? 'active' : ''}`}>Health & Vet Care</a>
           <div className="sidebar-div"></div>
-          <Link href="/furrimatch" className="sidebar-link">✨ Take FurriMatch Quiz</Link>
           <Link href="/browse" className="sidebar-link">🐾 Browse Pets</Link>
         </aside>
 
@@ -135,10 +134,8 @@ export default function AdoptionGuide() {
 
           <div className="cta-bar">
             <h3>Ready to find your perfect match? 🐾</h3>
-            <p>Take our FurriMatch quiz or browse available pets near you.</p>
-            <Link href="/furrimatch" className="btn-find">✨ Take FurriMatch Quiz</Link>
-            &nbsp;&nbsp;
-            <Link href="/browse" className="btn-find" style={{ background: '#fff', color: 'var(--orange)', border: '1.5px solid var(--orange)' }}>Adopt a Pet</Link>
+            <p>Browse available pets near you.</p>
+            <Link href="/browse" className="btn-find">🐾 Browse Pets</Link>
           </div>
 
         </main>

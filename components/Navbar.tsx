@@ -71,8 +71,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
   return (
     <>
       <div className="top-ribbon">
-        🐾 Malaysia's #1 Pet Adoption Platform &nbsp;·&nbsp; 
-        <Link href="/furrimatch">Take the FurriMatch Quiz →</Link>
+        🐾 Malaysia's #1 Pet Adoption Platform
       </div>
 
       <nav>
@@ -84,7 +83,6 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
 
           <div className="nav-links">
             <Link href="/browse">Adopt a Pet</Link>
-            <Link href="/furrimatch">FurriMatch</Link>
             <Link href="/guide">Adoption Guide</Link>
             <Link href="/rescuer-landing">For Rescuers</Link>
           </div>
@@ -120,7 +118,7 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                       unreadThreads.map((thread) => (
                         <Link
                           key={`${thread.otherId}-${thread.petId}`}
-                          href="/manage-applications?view=messages"
+                          href="/messages"
                           className="notif-item unread"
                           onClick={() => setIsNotifOpen(false)}
                         >
@@ -168,7 +166,8 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
                       { href: '/profile', label: 'My Profile' },
                       { href: '/my-applications', label: 'My Applications' },
                       { href: '/all-listings', label: 'My Listings' },
-                      { href: '/manage-applications', label: 'Inbox (Applications & Messages)', badge: unreadCount },
+                      { href: '/manage-applications', label: 'Manage Applications' },
+                      { href: '/messages', label: 'Messages', badge: unreadCount },
                       ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
                     ].map((item) => (
                       <Link
@@ -214,7 +213,6 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
           <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu">✕</button>
           
           <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adopt a Pet</Link>
-          <Link href="/furrimatch" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>FurriMatch</Link>
           <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adoption Guide</Link>
           <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>For Rescuers</Link>
           
@@ -227,8 +225,9 @@ export default function Navbar({ user, isAdmin = false }: { user: any; isAdmin?:
               <Link href="/profile" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Profile</Link>
               <Link href="/my-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Applications</Link>
               <Link href="/all-listings" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>My Listings</Link>
-              <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>
-                Inbox (Applications & Messages) {unreadCount > 0 && <span className="dd-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
+              <Link href="/manage-applications" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Manage Applications</Link>
+              <Link href="/messages" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>
+                Messages {unreadCount > 0 && <span className="dd-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
               </Link>
               {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
             </>

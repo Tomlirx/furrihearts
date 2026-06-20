@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { fetchPets, filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-service';
-import { getLocalListings, getSavedPetIds, toggleSavedPet } from '@/lib/local-store';
+import { getLocalListings } from '@/lib/local-store';
 import { supabase } from '@/lib/supabase';
 import PetCard from '@/components/PetCard';
 import EmptyState from '@/components/EmptyState';
@@ -12,7 +12,6 @@ import EmptyState from '@/components/EmptyState';
 export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
   const searchParams = useSearchParams();
   const [allPets, setAllPets] = useState<Pet[]>([]);
-  const [savedPetIds, setSavedPetIds] = useState<string[]>([]);
   const [type, setType] = useState(searchParams.get('type') || 'all');
   const [gender, setGender] = useState('Any');
   const [location, setLocation] = useState(searchParams.get('loc') || 'All Malaysia');
@@ -25,7 +24,6 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
       setAllPets(getLocalPets([...getLocalListings(), ...dbPets]));
     }
     loadPets();
-    setSavedPetIds(getSavedPetIds());
   }, []);
 
   const pets = useMemo(() => (
@@ -34,11 +32,6 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   const spotlightPets = pets.slice(0, 3);
   const remainingPets = pets.slice(3);
-
-  const handleSavePet = (e: React.MouseEvent, petId: string) => {
-    e.preventDefault();
-    setSavedPetIds(toggleSavedPet(petId));
-  };
 
   const resetFilters = () => {
     setType('all');
@@ -123,19 +116,13 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
         <aside className="sidebar">
           <h3>Filters</h3>
           <FilterControls />
-
-          <div className="furrimatch-banner">
-            <h4>Try FurriMatch</h4>
-            <p>Let our quiz find your perfect pet based on your lifestyle.</p>
-            <Link href="/furrimatch" className="btn-furi">Find My Match</Link>
-          </div>
         </aside>
 
         <main className="main-content">
           <div className="browse-header">
             <div>
               <h1>Find Your New Best Friend</h1>
-              <p>{pets.length} pets available across Malaysia · {savedPetIds.length} saved</p>
+              <p>{pets.length} pets available across Malaysia</p>
             </div>
             {isLoggedIn && <Link href="/rescuer-listing" className="btn-outline">Add listing</Link>}
           </div>
@@ -149,7 +136,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
               <div className="section-label">Spotlight Pets</div>
               <div className="spotlight-grid">
                 {spotlightPets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} featured isSaved={savedPetIds.includes(pet.id)} onToggleSave={handleSavePet} />
+                  <PetCard key={pet.id} pet={pet} featured />
                 ))}
               </div>
             </>
@@ -162,7 +149,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
               </div>
               <div className="pets-grid">
                 {remainingPets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} isSaved={savedPetIds.includes(pet.id)} onToggleSave={handleSavePet} />
+                  <PetCard key={pet.id} pet={pet} />
                 ))}
               </div>
             </>

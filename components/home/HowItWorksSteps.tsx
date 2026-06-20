@@ -5,7 +5,7 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-  { num: 1, title: 'Find Your Match', description: 'Browse pets or take FurriMatch to find a companion that fits your lifestyle.' },
+  { num: 1, title: 'Find Your Match', description: 'Browse pets that fit your lifestyle and home.' },
   { num: 2, title: 'Apply', description: 'Submit a short questionnaire. Your profile is automatically included.' },
   { num: 3, title: 'Pending Approval', description: 'The rescuer reviews your application and gets back to you.' },
   { num: 4, title: 'Connected', description: 'Coordinate collection with your rescuer and welcome your new family member home!' },

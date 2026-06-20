@@ -9,7 +9,6 @@ export function HeroSection() {
         <p className="hero-sub">FurriHearts connects loving adopters with rescued pets across Malaysia. Because every heart deserves a forever home.</p>
         <div className="hero-btns">
           <Link href="/browse" className="btn-hero-primary">🐾 Adopt a Pet</Link>
-          <Link href="/furrimatch" className="btn-hero-outline">✨ Take FurriMatch Quiz</Link>
         </div>
       </div>
     </section>

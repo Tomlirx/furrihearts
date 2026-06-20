@@ -20,7 +20,6 @@ export interface LocalApplication {
   };
 }
 
-const SAVED_PETS_KEY = 'furrihearts.savedPets';
 const APPLICATIONS_KEY = 'furrihearts.applications';
 const LOCAL_PETS_KEY = 'furrihearts.localPets';
 
@@ -38,19 +37,6 @@ function readJson<T>(key: string, fallback: T): T {
 function writeJson<T>(key: string, value: T) {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem(key, JSON.stringify(value));
-}
-
-export function getSavedPetIds() {
-  return readJson<string[]>(SAVED_PETS_KEY, []);
-}
-
-export function toggleSavedPet(petId: string) {
-  const current = getSavedPetIds();
-  const next = current.includes(petId)
-    ? current.filter((id) => id !== petId)
-    : [...current, petId];
-  writeJson(SAVED_PETS_KEY, next);
-  return next;
 }
 
 export function getLocalApplications() {

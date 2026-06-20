@@ -10,7 +10,6 @@ export default function Footer() {
           <div className="footer-col">
             <h4>For Adopters</h4>
             <a href="/browse">Adopt a Pet</a>
-            <a href="/furrimatch">FurriMatch</a>
             <a href="/guide">Adoption Guide</a>
             <a href="/care-packages">Care Packages</a>
           </div>
@@ -22,7 +21,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Company</h4>
             <a href="/about">About Us</a>
-            <a href="/contact">Contact</a>
+            <a href="/contact">Contact Us</a>
             <a href="/legal">Privacy & Terms</a>
           </div>
         </div>

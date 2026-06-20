@@ -114,12 +114,12 @@ export default function RescuerLanding() {
                 Simple steps to finding your <em style={{ color: 'var(--orange)', fontStyle: 'normal' }}>purrfect match</em>
               </h2>
               <div className="how-steps">
-                <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>1</div><h3>Find Your Match</h3><p>Browse pets or take the FurriMatch quiz to find a cat that truly fits your lifestyle and home.</p></div>
+                <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>1</div><h3>Find Your Match</h3><p>Browse pets to find a cat that truly fits your lifestyle and home.</p></div>
                 <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>2</div><h3>Apply to Adopt</h3><p>Submit a short questionnaire — your profile info is automatically included so it only takes minutes.</p></div>
                 <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>3</div><h3>Welcome Home</h3><p>Once approved, arrange collection with the rescuer and bring your new family member home! 🏠</p></div>
               </div>
               <div style={{ textAlign: 'center', marginTop: '40px' }}>
-                <Link href="/furrimatch" className="btn-hero" style={{ background: 'var(--green)' }}>✨ Take FurriMatch Quiz →</Link>
+                <Link href="/browse" className="btn-hero" style={{ background: 'var(--green)' }}>🐾 Browse Pets →</Link>
               </div>
             </div>
           )}

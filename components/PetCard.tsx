@@ -7,13 +7,9 @@ import './PetCard.css';
 export default function PetCard({
   pet,
   featured = false,
-  isSaved = false,
-  onToggleSave,
 }: {
   pet: Pet;
   featured?: boolean;
-  isSaved?: boolean;
-  onToggleSave?: (e: React.MouseEvent, petId: string) => void;
 }) {
   return (
     <Link href={`/pet/${pet.id}`} className={`pet-card ${featured ? 'featured' : ''}`}>
@@ -24,15 +20,6 @@ export default function PetCard({
         ) : featured ? (
           <span className="featured-tag">Featured</span>
         ) : null}
-        {onToggleSave && (
-          <button
-            className="save-btn"
-            aria-label={isSaved ? `Unsave ${pet.name}` : `Save ${pet.name}`}
-            onClick={(event) => onToggleSave(event, pet.id)}
-          >
-            {isSaved ? '♥' : '♡'}
-          </button>
-        )}
       </div>
       <div className="pet-info">
         <div className="pet-name-row">

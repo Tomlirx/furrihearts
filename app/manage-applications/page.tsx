@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
-import MessagesPanel from '@/components/MessagesPanel';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
 
@@ -29,8 +28,6 @@ function ManageApplicationsContent() {
   const [selectedApp, setSelectedApp] = useState<any>(null);
   const [toast, setToast] = useState<{ msg: string; type: string } | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [view, setView] = useState<'applications' | 'messages'>('applications');
-  const [userId, setUserId] = useState<string | null>(null);
   const [declineTarget, setDeclineTarget] = useState<any>(null);
   const [page, setPage] = useState(1);
 
@@ -39,7 +36,6 @@ function ManageApplicationsContent() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setLoading(false); return; }
-      setUserId(user.id);
       const pets = await getMyPets(supabase, user.id);
       if (pets.length) {
         const incoming = await getIncomingApplications(supabase, pets.map((p: any) => p.id));
@@ -96,15 +92,6 @@ function ManageApplicationsContent() {
       </div>
 
       <div className="filter-tabs">
-        <button className={`filter-tab ${view === 'applications' ? 'active' : ''}`} onClick={() => setView('applications')}>Applications</button>
-        <button className={`filter-tab ${view === 'messages' ? 'active' : ''}`} onClick={() => setView('messages')}>Messages</button>
-      </div>
-
-      {view === 'messages' ? (
-        userId ? <MessagesPanel currentUserId={userId} /> : <p style={{ color: 'var(--mid)', fontSize: '13px' }}>Log in to view your messages.</p>
-      ) : (
-      <>
-      <div className="filter-tabs">
         {TABS.map((tab) => (
           <button key={tab.key} className={`filter-tab ${filter === tab.key ? 'active' : ''}`} onClick={() => handleFilterChange(tab.key)}>
             {tab.label} ({tab.key === 'all' ? petScoped.length : petScoped.filter((a) => a.status === tab.key).length})
@@ -140,8 +127,6 @@ function ManageApplicationsContent() {
         </div>
         <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </>
-      )}
-      </>
       )}
 
       {selectedApp && (

@@ -83,11 +83,6 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
               />
             )}
           </div>
-
-          <div className="profile-section">
-            <h2>Reviews from Adopters</h2>
-            <p className="profile-bio">No reviews yet — be the first to adopt from {profile?.first_name} and share your experience.</p>
-          </div>
         </>
       )}
     </div>

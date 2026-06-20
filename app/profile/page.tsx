@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { getMyPets, getMyApplications, getSavedPetIdsForUser } from '@/lib/profile-data';
+import { getMyPets, getMyApplications } from '@/lib/profile-data';
 import './styles.css';
 
 export default async function ProfilePage() {
@@ -10,10 +10,9 @@ export default async function ProfilePage() {
   if (!user) redirect('/login');
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
-  const [myPets, myApplications, savedPetIds] = await Promise.all([
+  const [myPets, myApplications] = await Promise.all([
     getMyPets(supabase, user!.id),
     getMyApplications(supabase, user!.id),
-    getSavedPetIdsForUser(supabase, user!.id),
   ]);
 
   const isRescuer = myPets.length > 0;
@@ -43,7 +42,6 @@ export default async function ProfilePage() {
 
       <div className="profile-stats">
         <div className="stat-card"><div className="stat-num">{myApplications.length}</div><div className="stat-label">Applications</div></div>
-        <div className="stat-card"><div className="stat-num">{savedPetIds.length}</div><div className="stat-label">Saved Pets</div></div>
         {isRescuer && <div className="stat-card"><div className="stat-num">{myPets.length}</div><div className="stat-label">Active Listings</div></div>}
       </div>
 

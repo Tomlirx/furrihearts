@@ -5,7 +5,7 @@ interface Feature {
 }
 
 const FEATURES: Feature[] = [
-  { icon: '✨', title: 'Smart Matching', description: 'Our FurriMatch algorithm finds the right companion based on your lifestyle and home.' },
+  { icon: '✨', title: 'Curated Listings', description: 'Browse by what matters to you — type, location, and lifestyle fit.' },
   { icon: '🏅', title: 'Verified Rescuers', description: 'Every rescuer is reviewed to ensure a safe and responsible adoption experience.' },
   { icon: '❤️', title: 'Adoption Support', description: "From application to adoption day, we're here to guide you every step of the way." },
   { icon: '🌱', title: 'Make an Impact', description: 'Every adoption gives a rescued pet a second chance at a happy, loving life.' },
