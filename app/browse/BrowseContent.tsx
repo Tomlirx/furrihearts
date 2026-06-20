@@ -9,46 +9,20 @@ import { supabase } from '@/lib/supabase';
 import PetCard from '@/components/PetCard';
 import EmptyState from '@/components/EmptyState';
 
-export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
-  const searchParams = useSearchParams();
-  const [allPets, setAllPets] = useState<Pet[]>([]);
-  const [type, setType] = useState(searchParams.get('type') || 'all');
-  const [gender, setGender] = useState('Any');
-  const [location, setLocation] = useState(searchParams.get('loc') || 'All Malaysia');
-  const [search, setSearch] = useState('');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+interface FilterControlsProps {
+  search: string;
+  setSearch: (value: string) => void;
+  type: string;
+  setType: (value: string) => void;
+  gender: string;
+  setGender: (value: string) => void;
+  location: string;
+  setLocation: (value: string) => void;
+  resetFilters: () => void;
+}
 
-  useEffect(() => {
-    async function loadPets() {
-      const dbPets = await fetchPets(supabase);
-      setAllPets(getLocalPets([...getLocalListings(), ...dbPets]));
-    }
-    loadPets();
-  }, []);
-
-  const pets = useMemo(() => (
-    filterLocalPets(allPets, { search, type, gender, location })
-  ), [allPets, search, type, gender, location]);
-
-  const sortedPets = useMemo(() => {
-    const featured = pets
-      .filter(isPetCurrentlyFeatured)
-      .sort((a, b) => new Date(b.featured_until!).getTime() - new Date(a.featured_until!).getTime());
-    const rest = pets.filter((p) => !isPetCurrentlyFeatured(p));
-    return [...featured, ...rest];
-  }, [pets]);
-
-  const spotlightPets = sortedPets.slice(0, 3);
-  const remainingPets = sortedPets.slice(3);
-
-  const resetFilters = () => {
-    setType('all');
-    setGender('Any');
-    setLocation('All Malaysia');
-    setSearch('');
-  };
-
-  const FilterControls = () => (
+function FilterControls({ search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters }: FilterControlsProps) {
+  return (
     <>
       <div className="filter-group">
         <span className="filter-label">Search</span>
@@ -102,6 +76,50 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
       </button>
     </>
   );
+}
+
+export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
+  const searchParams = useSearchParams();
+  const [allPets, setAllPets] = useState<Pet[]>([]);
+  const [type, setType] = useState(searchParams.get('type') || 'all');
+  const [gender, setGender] = useState('Any');
+  const [location, setLocation] = useState(searchParams.get('loc') || 'All Malaysia');
+  const [search, setSearch] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadPets() {
+      const dbPets = await fetchPets(supabase);
+      setAllPets(getLocalPets([...getLocalListings(), ...dbPets]));
+    }
+    loadPets();
+  }, []);
+
+  const pets = useMemo(() => (
+    filterLocalPets(allPets, { search, type, gender, location })
+  ), [allPets, search, type, gender, location]);
+
+  const sortedPets = useMemo(() => {
+    const featured = pets
+      .filter(isPetCurrentlyFeatured)
+      .sort((a, b) => new Date(b.featured_until!).getTime() - new Date(a.featured_until!).getTime());
+    const rest = pets.filter((p) => !isPetCurrentlyFeatured(p));
+    return [...featured, ...rest];
+  }, [pets]);
+
+  const spotlightPets = sortedPets.slice(0, 3);
+  const remainingPets = sortedPets.slice(3);
+
+  const resetFilters = () => {
+    setType('all');
+    setGender('Any');
+    setLocation('All Malaysia');
+    setSearch('');
+  };
+
+  const filterControlsProps: FilterControlsProps = {
+    search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters,
+  };
 
   return (
     <>
@@ -110,7 +128,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
         <div className="filter-panel">
           <div className="filter-handle"></div>
           <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>Filters</h3>
-          <FilterControls />
+          <FilterControls {...filterControlsProps} />
           <button
             onClick={() => setIsFilterOpen(false)}
             style={{ width: '100%', background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '10px', padding: '14px', fontSize: '15px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginTop: '8px' }}
@@ -123,7 +141,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
       <div className="page-layout">
         <aside className="sidebar">
           <h3>Filters</h3>
-          <FilterControls />
+          <FilterControls {...filterControlsProps} />
         </aside>
 
         <main className="main-content">
