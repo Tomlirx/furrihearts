@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
+import { isPetCurrentlyFeatured } from '@/lib/pet-service';
 import BoostModal from '@/components/BoostModal';
 import Pagination from '@/components/Pagination';
 
@@ -116,7 +117,7 @@ export default function AllListingsPage() {
         <div className="listings-grid">
           {paginated.map((pet) => {
             const counts = appCounts[pet.id] || { total: 0, approved: 0, declined: 0 };
-            const isActiveBoost = pet.featured_until && new Date(pet.featured_until) > new Date();
+            const isActiveBoost = isPetCurrentlyFeatured(pet);
             const latestBoost = boostsByPet[pet.id];
             const isPendingBoost = latestBoost?.status === 'pending_verification';
             return (

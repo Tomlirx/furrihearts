@@ -7,11 +7,13 @@ export function PetImageGallery({
   petAge,
   fallbackImage,
   gallery,
+  isFeatured = false,
 }: {
   petName: string;
   petAge: string;
   fallbackImage: string;
   gallery?: string[];
+  isFeatured?: boolean;
 }) {
   const photos = gallery?.length ? gallery : [fallbackImage];
   const [mainImage, setMainImage] = useState(fallbackImage);
@@ -22,6 +24,7 @@ export function PetImageGallery({
       <div className="main-img">
         <img src={mainImage || fallbackImage} alt={petName} />
         <span className="age-label">{petAge}</span>
+        {isFeatured && <span className="featured-tag">Featured</span>}
 
         {photos.length > 1 && (
           <>

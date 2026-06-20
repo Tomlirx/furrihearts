@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { fetchPets, filterLocalPets, getLocalPets, type Pet } from '@/lib/pet-service';
+import { fetchPets, filterLocalPets, getLocalPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getLocalListings } from '@/lib/local-store';
 import { supabase } from '@/lib/supabase';
 import PetCard from '@/components/PetCard';
@@ -136,7 +136,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
               <div className="section-label">Spotlight Pets</div>
               <div className="spotlight-grid">
                 {spotlightPets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} featured />
+                  <PetCard key={pet.id} pet={pet} featured={isPetCurrentlyFeatured(pet)} />
                 ))}
               </div>
             </>
@@ -149,7 +149,7 @@ export default function BrowseContent({ isLoggedIn }: { isLoggedIn: boolean }) {
               </div>
               <div className="pets-grid">
                 {remainingPets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} />
+                  <PetCard key={pet.id} pet={pet} featured={isPetCurrentlyFeatured(pet)} />
                 ))}
               </div>
             </>

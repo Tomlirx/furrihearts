@@ -107,6 +107,10 @@ export interface FeaturedPetEntry {
   isFeatured: boolean;
 }
 
+export function isPetCurrentlyFeatured(pet: Pet): boolean {
+  return !!pet.featured_until && new Date(pet.featured_until) > new Date();
+}
+
 export async function getFeaturedPets(supabase?: any, limit = 4): Promise<FeaturedPetEntry[]> {
   const nowIso = new Date().toISOString();
   let featured: Pet[] = [];

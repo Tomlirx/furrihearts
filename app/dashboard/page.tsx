@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
-import { localPets, type Pet } from '@/lib/pet-service';
+import { localPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getMyPets, getMyApplications, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import EmptyState from '@/components/EmptyState';
 import BoostModal from '@/components/BoostModal';
@@ -90,7 +90,7 @@ export default function DashboardOverview() {
               <Link href="/all-listings">View all →</Link>
             </div>
             {myPets.slice(0, 4).map((pet) => {
-              const isActiveBoost = pet.featured_until && new Date(pet.featured_until) > new Date();
+              const isActiveBoost = isPetCurrentlyFeatured(pet);
               const isPendingBoost = boostsByPet[pet.id]?.status === 'pending_verification';
               return (
                 <div className="listing-row" key={pet.id}>

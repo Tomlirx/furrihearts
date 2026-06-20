@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import { fetchPetById, findLocalPetById, type Pet } from '@/lib/pet-service';
+import { fetchPetById, findLocalPetById, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getLocalApplications } from '@/lib/local-store';
 import { Skeleton, SkeletonText } from '@/components/Skeleton';
 import { PetImageGallery } from '@/components/pet/PetImageGallery';
@@ -86,7 +86,7 @@ export default function PetProfile() {
 
       <div className="profile-layout">
         <div>
-          <PetImageGallery petName={pet.name} petAge={pet.age} fallbackImage={pet.image_url} gallery={pet.gallery} />
+          <PetImageGallery petName={pet.name} petAge={pet.age} fallbackImage={pet.image_url} gallery={pet.gallery} isFeatured={isPetCurrentlyFeatured(pet)} />
           <PetInfoCard pet={pet} />
         </div>
 
