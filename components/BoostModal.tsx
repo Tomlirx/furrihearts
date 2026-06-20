@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { supabase } from '@/lib/supabase';
 import { requestBoost } from '@/app/actions/boosts';
 
 interface Tier {
@@ -29,33 +30,59 @@ export default function BoostModal({
   triggerClassName?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [step, setStep] = useState<'tier' | 'payment' | 'success'>('tier');
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+
+  const tier = TIERS.find((t) => t.id === selectedTier);
 
   const close = () => {
     setOpen(false);
+    setStep('tier');
     setSelectedTier(null);
+    setReceiptFile(null);
     setError('');
-    setSubmitted(false);
+  };
+
+  const goToPayment = () => {
+    if (!selectedTier) {
+      setError('Please choose a boost tier.');
+      return;
+    }
+    setError('');
+    setStep('payment');
   };
 
   const handleSubmit = async () => {
-    const tier = TIERS.find((t) => t.id === selectedTier);
-    if (!tier) {
-      setError('Please choose a boost tier.');
+    if (!tier) return;
+    if (!receiptFile) {
+      setError('Please upload your payment receipt.');
       return;
     }
     setSubmitting(true);
     setError('');
-    const result = await requestBoost(petId, tier.id, tier.days, tier.price);
+
+    const fileExt = receiptFile.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage.from('boost-receipts').upload(fileName, receiptFile);
+    if (uploadError) {
+      setError('Could not upload receipt: ' + uploadError.message);
+      setSubmitting(false);
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage.from('boost-receipts').getPublicUrl(fileName);
+
+    const result = await requestBoost(petId, tier.id, tier.days, tier.price, publicUrlData.publicUrl);
     setSubmitting(false);
     if (result?.error) {
       setError(result.error);
       return;
     }
-    setSubmitted(true);
+    setStep('success');
   };
 
   return (
@@ -66,42 +93,68 @@ export default function BoostModal({
         <div className="modal-overlay" onClick={close}>
           <div className="modal-content" style={{ maxWidth: '460px' }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>{submitted ? 'Boost requested' : `Boost ${petName}`}</h2>
+              <h2>{step === 'success' ? 'Boost requested' : `Boost ${petName}`}</h2>
               <button className="btn-close" onClick={close} aria-label="Close">×</button>
             </div>
             <div className="modal-body">
-              {submitted ? (
-                <p style={{ color: 'var(--mid)' }}>Your boost request has been submitted for review. We'll feature {petName} on the homepage once an admin approves it.</p>
-              ) : (
+              {step === 'tier' && (
                 <>
                   <p style={{ color: 'var(--mid)', fontSize: '14px', marginBottom: '16px' }}>
                     Choose a tier to feature {petName} on the homepage Featured Pets section. An admin reviews every request before it goes live.
                   </p>
                   <div className="tier-picker">
-                    {TIERS.map((tier) => (
+                    {TIERS.map((t) => (
                       <button
-                        key={tier.id}
+                        key={t.id}
                         type="button"
-                        className={`tier-card ${selectedTier === tier.id ? 'selected' : ''}`}
-                        onClick={() => setSelectedTier(tier.id)}
+                        className={`tier-card ${selectedTier === t.id ? 'selected' : ''}`}
+                        onClick={() => setSelectedTier(t.id)}
                       >
-                        <div className="tier-card-label">{tier.label}</div>
-                        <div className="tier-card-price">RM{tier.price}</div>
-                        <div className="tier-card-blurb">{tier.blurb}</div>
+                        <div className="tier-card-label">{t.label}</div>
+                        <div className="tier-card-price">RM{t.price}</div>
+                        <div className="tier-card-blurb">{t.blurb}</div>
                       </button>
                     ))}
                   </div>
                   {error && <div className="contact-error" style={{ marginTop: '12px' }}>{error}</div>}
                 </>
               )}
+
+              {step === 'payment' && tier && (
+                <>
+                  <p style={{ color: 'var(--mid)', fontSize: '14px', marginBottom: '12px' }}>
+                    Scan the QR code below and transfer <strong>RM{tier.price}</strong> to pay for the {tier.label} boost. Then upload your payment receipt so an admin can verify it.
+                  </p>
+                  <img src="/boost-payment-qr.png" alt="Payment QR code" style={{ width: '180px', height: '180px', display: 'block', margin: '0 auto 16px', borderRadius: '8px', border: '1px solid var(--border)' }} />
+                  <div className="form-field">
+                    <label className="form-label" htmlFor="receipt">Payment Receipt</label>
+                    <input
+                      id="receipt"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setReceiptFile(e.target.files?.[0] || null)}
+                      className="form-input"
+                    />
+                  </div>
+                  {error && <div className="contact-error" style={{ marginTop: '8px' }}>{error}</div>}
+                </>
+              )}
+
+              {step === 'success' && (
+                <p style={{ color: 'var(--mid)' }}>Your boost request has been submitted for review. We'll feature {petName} on the homepage once an admin verifies your payment and approves it.</p>
+              )}
             </div>
             <div className="modal-actions">
-              {submitted ? (
-                <button className="btn-approve" onClick={close}>Done</button>
-              ) : (
+              {step === 'tier' && (
+                <button className="btn-approve" onClick={goToPayment}>Continue to Payment</button>
+              )}
+              {step === 'payment' && (
                 <button className="btn-approve" onClick={handleSubmit} disabled={submitting}>
                   {submitting ? 'Submitting...' : 'Request Boost'}
                 </button>
+              )}
+              {step === 'success' && (
+                <button className="btn-approve" onClick={close}>Done</button>
               )}
             </div>
           </div>

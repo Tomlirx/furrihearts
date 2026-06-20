@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
 
-export async function requestBoost(petId: string, tier: string, days: number, price: number) {
+export async function requestBoost(petId: string, tier: string, days: number, price: number, receiptUrl: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'You must be logged in to request a boost.' };
@@ -13,7 +13,7 @@ export async function requestBoost(petId: string, tier: string, days: number, pr
 
   const { error } = await supabase
     .from('listing_boosts')
-    .insert([{ pet_id: petId, tier, days, price, status: 'pending_verification' }]);
+    .insert([{ pet_id: petId, tier, days, price, status: 'pending_verification', receipt_url: receiptUrl }]);
 
   if (error) return { error: error.message };
 

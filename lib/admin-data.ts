@@ -79,3 +79,28 @@ export async function getPendingBoosts(admin: any) {
     .order('created_at', { ascending: false });
   return error ? [] : (data || []);
 }
+
+export async function getBoostStats(admin: any) {
+  const { data, error } = await admin.from('listing_boosts').select('price, status, pet_id, days');
+  if (error || !data) return { totalRevenue: 0, activeBoosts: 0, approvalRate: 0 };
+
+  const approved = data.filter((b: any) => b.status === 'approved');
+  const rejected = data.filter((b: any) => b.status === 'rejected');
+  const totalRevenue = approved.reduce((sum: number, b: any) => sum + Number(b.price), 0);
+  const approvalRate = approved.length + rejected.length > 0
+    ? Math.round((approved.length / (approved.length + rejected.length)) * 100)
+    : 0;
+
+  const petIds = approved.map((b: any) => b.pet_id);
+  let activeBoosts = 0;
+  if (petIds.length > 0) {
+    const { count } = await admin
+      .from('pets')
+      .select('id', { count: 'exact', head: true })
+      .in('id', petIds)
+      .gt('featured_until', new Date().toISOString());
+    activeBoosts = count || 0;
+  }
+
+  return { totalRevenue, activeBoosts, approvalRate };
+}

@@ -66,17 +66,32 @@ export async function resolveContactMessage(messageId: string) {
 }
 
 export async function reviewBoost(boostId: string, petId: string, days: number, approve: boolean) {
-  const admin = await getAdminOrFail();
-  if (!admin) return { error: 'Not authorized.' };
+  const adminUserId = await requireAdmin();
+  if (!adminUserId) return { error: 'Not authorized.' };
+  const admin = createAdminClient();
 
-  const { error } = await admin.from('listing_boosts').update({ status: approve ? 'approved' : 'rejected' }).eq('id', boostId);
+  const { error } = await admin
+    .from('listing_boosts')
+    .update({ status: approve ? 'approved' : 'rejected', reviewed_by: adminUserId, reviewed_at: new Date().toISOString() })
+    .eq('id', boostId);
   if (error) return { error: error.message };
+
+  const { data: pet } = await admin.from('pets').select('name, rescuer_id').eq('id', petId).single();
 
   if (approve) {
     const featuredUntil = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
     await admin.from('pets').update({ featured_until: featuredUntil }).eq('id', petId);
   }
 
+  if (pet?.rescuer_id) {
+    const content = approve
+      ? `Your boost request for ${pet.name} was approved — it'll be featured for ${days} days.`
+      : `Your boost request for ${pet.name} was declined. Please contact us if you have questions about your payment.`;
+    await admin.from('messages').insert([{ sender_id: adminUserId, recipient_id: pet.rescuer_id, pet_id: petId, content }]);
+  }
+
   revalidatePath('/admin/boosts');
+  revalidatePath('/all-listings');
+  revalidatePath('/dashboard');
   return { success: true };
 }

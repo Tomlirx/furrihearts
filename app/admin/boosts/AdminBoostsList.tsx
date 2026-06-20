@@ -18,7 +18,7 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
   return (
     <table className="admin-table">
       <thead>
-        <tr><th>Pet</th><th>Tier</th><th>Days</th><th>Price</th><th>Status</th><th></th></tr>
+        <tr><th>Pet</th><th>Tier</th><th>Days</th><th>Price</th><th>Receipt</th><th>Status</th><th></th></tr>
       </thead>
       <tbody>
         {rows.map((b) => (
@@ -27,6 +27,11 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
             <td>{b.tier}</td>
             <td>{b.days}</td>
             <td>RM{b.price}</td>
+            <td>
+              {b.receipt_url ? (
+                <a href={b.receipt_url} target="_blank" rel="noopener noreferrer">View Receipt</a>
+              ) : '—'}
+            </td>
             <td>{b.status}</td>
             <td>
               {b.status === 'pending_verification' && (

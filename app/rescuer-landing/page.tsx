@@ -72,6 +72,11 @@ export default function RescuerLanding() {
               <div className="feature-title">Dashboard & Analytics</div>
               <p className="feature-desc">Track your listings, monitor application statuses, and measure your adoption impact over time.</p>
             </div>
+            <div className="feature-card">
+              <div className="feature-icon">⭐</div>
+              <div className="feature-title">Boost Your Listing</div>
+              <p className="feature-desc">Feature a pet on the homepage for 7–30 days from as little as RM15, so more adopters see it first.</p>
+            </div>
           </div>
         </div>
       </section>
