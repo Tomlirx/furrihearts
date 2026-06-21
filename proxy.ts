@@ -15,14 +15,43 @@ function isInScopePath(pathname: string): boolean {
   return IN_SCOPE_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
+const LOCALE_HEADER = 'x-app-locale';
+
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
+
+  // Resolve the locale for THIS exact request, deterministically from the
+  // URL (when prefixed) or the NEXT_LOCALE cookie. The root layout
+  // (app/layout.tsx) sits above the [locale] segment, so it cannot read
+  // params.locale the way nested [locale] pages can — without this, root
+  // layout falls back to the cookie alone, which is wrong/missing on a
+  // first-ever visit to a non-default-locale URL (e.g. /zh with no cookie
+  // set yet), causing Navbar/Footer to show English while the page body
+  // (resolved from the URL directly) correctly shows Chinese.
+  const localeMatch = path.match(LOCALE_RE);
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  const resolvedLocale: string = localeMatch?.[1]
+    || (cookieLocale && (routing.locales as readonly string[]).includes(cookieLocale) ? cookieLocale : routing.defaultLocale);
 
   // 0. LOCALE ROUTING: only for in-scope pages, so deferred pages keep their
   // existing unprefixed paths exactly as before.
   let response: NextResponse = isInScopePath(path)
     ? handleI18nRouting(request)
     : NextResponse.next({ request: { headers: request.headers } });
+
+  // Stamp the resolved locale onto the request so every Server Component —
+  // including the root layout — reads the same value next-intl's own
+  // requestLocale resolves for the nested [locale] segment. Skip when the
+  // response is a redirect (no content renders for this request anyway).
+  if (!response.headers.get('location')) {
+    const headers = new Headers(request.headers);
+    headers.set(LOCALE_HEADER, resolvedLocale);
+    response = NextResponse.next({ request: { headers } });
+    // Reconstructing the response above discards next-intl's own
+    // NEXT_LOCALE cookie write — restore it so a bare in-scope visit (e.g.
+    // /zh with no prior cookie) is still remembered for future bare visits.
+    response.cookies.set('NEXT_LOCALE', resolvedLocale, { path: '/', maxAge: 60 * 60 * 24 * 365 });
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -61,10 +90,6 @@ export async function proxy(request: NextRequest) {
   // Strip a leading locale segment so route-protection checks below work the
   // same whether or not the current path carries an /en|/zh|/ms prefix.
   const bare = path.replace(LOCALE_RE, '') || '/';
-  const localeMatch = path.match(LOCALE_RE);
-  const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
-  const locale: string = localeMatch?.[1]
-    || (localeCookie && (routing.locales as readonly string[]).includes(localeCookie) ? localeCookie : routing.defaultLocale);
 
   // 3. ROUTE PROTECTION (The Bouncer)
   // Define all routes that require a logged-in user
@@ -73,7 +98,7 @@ export async function proxy(request: NextRequest) {
 
   // If they are a stranger/guest trying to access a protected route, kick them to login
   if (isProtectedRoute && !user) {
-    return NextResponse.redirect(new URL(localeHref('/login', locale), request.url));
+    return NextResponse.redirect(new URL(localeHref('/login', resolvedLocale), request.url));
   }
 
   // 4. AUTH REDIRECTION (The Usher)
@@ -83,7 +108,7 @@ export async function proxy(request: NextRequest) {
 
   // If they are already logged in and try to go to login/signup, push them to the app
   if (isAuthRoute && user) {
-    return NextResponse.redirect(new URL(localeHref('/browse', locale), request.url));
+    return NextResponse.redirect(new URL(localeHref('/browse', resolvedLocale), request.url));
   }
 
   // Always return the response to ensure cookies (and any locale redirect) are applied
