@@ -2,11 +2,15 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { getServerLocale, localeHref } from '@/lib/locale';
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login');
+  if (!user) {
+    const locale = await getServerLocale();
+    redirect(localeHref('/login', locale));
+  }
 
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;

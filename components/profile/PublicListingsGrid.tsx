@@ -2,18 +2,20 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { getClientLocale, localeHref } from '@/lib/locale';
 
 const BATCH_SIZE = 12;
 
 export default function PublicListingsGrid({ pets }: { pets: any[] }) {
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const visiblePets = pets.slice(0, visibleCount);
+  const locale = getClientLocale();
 
   return (
     <>
       <div className="public-listings-grid">
         {visiblePets.map((pet: any) => (
-          <Link key={pet.id} href={`/pet/${pet.id}`} className="public-listing-card">
+          <Link key={pet.id} href={localeHref(`/pet/${pet.id}`, locale)} className="public-listing-card">
             <img src={pet.image_url} alt={pet.name} loading="lazy" />
             <div className="public-listing-info">
               <h4>{pet.name} · {pet.gender}</h4>

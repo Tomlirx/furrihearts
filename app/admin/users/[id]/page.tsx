@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createAdminClient } from '@/utils/supabase/admin';
 import { getUserDetail } from '@/lib/admin-data';
+import { getServerLocale, localeHref } from '@/lib/locale';
 import AuditorToggleButton from './AuditorToggleButton';
 import '../../../dashboard/styles.css';
 
@@ -10,6 +11,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
   const admin = createAdminClient();
   const { profile, pets, applications } = await getUserDetail(admin, id);
   if (!profile) notFound();
+  const locale = await getServerLocale();
 
   return (
     <div>
@@ -32,7 +34,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
           <div className="listing-row" key={pet.id}>
             <img src={pet.image_url} className="row-thumb" alt={pet.name} />
             <div className="row-info"><h4>{pet.name}</h4><p>{pet.status} · {pet.location}</p></div>
-            <Link href={`/pet/${pet.id}`} className="admin-btn">View</Link>
+            <Link href={localeHref(`/pet/${pet.id}`, locale)} className="admin-btn">View</Link>
           </div>
         ))}
       </div>

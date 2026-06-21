@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export function PetImageGallery({
   petName,
@@ -13,6 +14,7 @@ export function PetImageGallery({
   gallery?: string[];
   isFeatured?: boolean;
 }) {
+  const t = useTranslations('PetDetail.imageGallery');
   const photos = gallery?.length ? gallery : [fallbackImage];
   const [mainImage, setMainImage] = useState(fallbackImage);
   const currentIndex = Math.max(0, photos.indexOf(mainImage));
@@ -21,7 +23,7 @@ export function PetImageGallery({
     <>
       <div className="main-img">
         <img src={mainImage || fallbackImage} alt={petName} />
-        {isFeatured && <span className="featured-tag">Featured</span>}
+        {isFeatured && <span className="featured-tag">{t('featured')}</span>}
 
         {photos.length > 1 && (
           <>
@@ -29,7 +31,7 @@ export function PetImageGallery({
               onClick={() => setMainImage(photos[(currentIndex - 1 + photos.length) % photos.length])}
               className="img-nav-btn"
               style={{ left: '12px' }}
-              aria-label="Previous photo"
+              aria-label={t('previousPhoto')}
             >
               ‹
             </button>
@@ -37,7 +39,7 @@ export function PetImageGallery({
               onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])}
               className="img-nav-btn"
               style={{ right: '12px' }}
-              aria-label="Next photo"
+              aria-label={t('nextPhoto')}
             >
               ›
             </button>

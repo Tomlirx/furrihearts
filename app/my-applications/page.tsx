@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { getClientLocale, localeHref } from '@/lib/locale';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyApplications } from '@/lib/profile-data';
 import MessageComposer from '@/components/MessageComposer';
@@ -25,6 +26,7 @@ const TABS = [
 
 export default function MyApplicationsPage() {
   const router = useRouter();
+  const locale = getClientLocale();
   const [loading, setLoading] = useState(true);
   const [apps, setApps] = useState<any[]>([]);
   const [filter, setFilter] = useState('all');
@@ -36,7 +38,7 @@ export default function MyApplicationsPage() {
     async function load() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace('/login?next=/my-applications'); return; }
+      if (!user) { router.replace(`${localeHref('/login', getClientLocale())}?next=/my-applications`); return; }
       const data = await getMyApplications(supabase, user.id);
       if (data.length) setApps(data);
       setLoading(false);
@@ -86,7 +88,7 @@ export default function MyApplicationsPage() {
           <div className="empty-icon">🐱</div>
           <h3>No applications yet</h3>
           <p>You haven't applied for any pets yet. Browse pets looking for a loving home!</p>
-          <Link href="/browse" className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>🐾 Browse Pets</Link>
+          <Link href={localeHref('/browse', locale)} className="btn-add-pet" style={{ marginTop: '16px', display: 'inline-block' }}>🐾 Browse Pets</Link>
         </div>
       ) : (
         <>
@@ -113,7 +115,7 @@ export default function MyApplicationsPage() {
                 {app.status === 'closed' && <p style={{ fontSize: '13px', color: '#10B981', fontWeight: 600 }}>🎉 This pet found its forever home with you!</p>}
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  <Link href={`/pet/${app.pet_id || app.pets?.id}`} className="btn-view-full" style={{ flex: 'none', padding: '8px 16px' }}>View Pet</Link>
+                  <Link href={localeHref(`/pet/${app.pet_id || app.pets?.id}`, locale)} className="btn-view-full" style={{ flex: 'none', padding: '8px 16px' }}>View Pet</Link>
                   {app.pets?.rescuer_id && app.pets.rescuer_id !== 'demo-rescuer' && app.status !== 'cancelled' && app.status !== 'closed' && (
                     <MessageComposer
                       recipientId={app.pets.rescuer_id}

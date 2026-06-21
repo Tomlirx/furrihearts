@@ -1,6 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import type { Pet } from '@/lib/pet-service';
 import './PetCard.css';
 
@@ -11,14 +12,16 @@ export default function PetCard({
   pet: Pet;
   featured?: boolean;
 }) {
+  const t = useTranslations('PetCard');
+
   return (
     <Link href={`/pet/${pet.id}`} className={`pet-card ${featured ? 'featured' : ''}`}>
       <div className="pet-img">
         <img src={pet.image_url} alt={pet.name} loading="lazy" />
         {pet.status === 'adopted' ? (
-          <span className="adopted-badge">Adopted</span>
+          <span className="adopted-badge">{t('adopted')}</span>
         ) : featured ? (
-          <span className="featured-tag">Featured</span>
+          <span className="featured-tag">{t('featured')}</span>
         ) : null}
       </div>
       <div className="pet-info">

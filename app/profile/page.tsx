@@ -2,13 +2,17 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getMyPets, getMyApplications } from '@/lib/profile-data';
+import { getServerLocale, localeHref } from '@/lib/locale';
 import DashboardTabs from '@/components/DashboardTabs';
 import './styles.css';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login');
+  if (!user) {
+    const locale = await getServerLocale();
+    redirect(`${localeHref('/login', locale)}?next=/profile`);
+  }
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
   const [myPets, myApplications] = await Promise.all([

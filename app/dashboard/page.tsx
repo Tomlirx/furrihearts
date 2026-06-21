@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { getClientLocale, localeHref } from '@/lib/locale';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { BOOST_ENABLED } from '@/lib/feature-flags';
@@ -33,7 +34,7 @@ export default function DashboardOverview() {
       setMyPets([...getLocalListings(), ...localPets.filter((pet) => pet.rescuer_id === 'demo-rescuer')]);
 
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace('/login?next=/dashboard'); return; }
+      if (!user) { router.replace(`${localeHref('/login', getClientLocale())}?next=/dashboard`); return; }
 
       const { data: profile } = await supabase.from('profiles').select('first_name').eq('id', user.id).single();
       setUserName(profile?.first_name || user.email?.split('@')[0] || 'there');
@@ -150,7 +151,7 @@ export default function DashboardOverview() {
                     ) : (
                       <button className="btn-view-full" disabled={isUpdating} onClick={() => setOfflineTarget(pet)}>Take Offline</button>
                     )}
-                    <Link href={`/pet/${pet.id}`}>View</Link>
+                    <Link href={localeHref(`/pet/${pet.id}`, getClientLocale())}>View</Link>
                   </div>
                 </div>
               );
@@ -181,7 +182,7 @@ export default function DashboardOverview() {
           <Link href="/my-applications">View all →</Link>
         </div>
         {myApplications.length === 0 ? (
-          <EmptyState icon="💌" title="No applications yet" description="You haven't applied for any pets yet." ctaLabel="Browse Pets" ctaHref="/browse" />
+          <EmptyState icon="💌" title="No applications yet" description="You haven't applied for any pets yet." ctaLabel="Browse Pets" ctaHref={localeHref('/browse', getClientLocale())} />
         ) : myApplications.slice(0, 3).map((app) => (
           <div className="app-row" key={app.id}>
             <img src={app.pets?.image_url} className="row-thumb" style={{ borderRadius: '50%' }} alt={app.pets?.name} />

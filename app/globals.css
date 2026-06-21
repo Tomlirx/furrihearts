@@ -41,6 +41,13 @@ nav { background: #fff; border-bottom: 1px solid var(--border); position: sticky
 .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
 .hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
 
+/* Language Switcher */
+.lang-switcher { display: flex; align-items: center; gap: 2px; background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px; }
+.lang-opt { border: none; background: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; color: var(--mid); padding: 5px 10px; border-radius: 16px; transition: background .2s, color .2s; }
+.lang-opt:hover { color: var(--dark); }
+.lang-opt.active { background: var(--orange); color: #fff; }
+.mob-lang-switcher { margin-top: 16px; align-self: flex-start; }
+
 /* ==========================================================================
    3. FOOTER (Locked)
 ========================================================================== */
@@ -74,12 +81,13 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
   }
   
   /* Hide Desktop Elements */
-  .nav-links, 
-  .nav-right .btn-ghost, 
+  .nav-links,
+  .nav-right .btn-ghost,
   .nav-right .btn-primary-nav,
+  .nav-right .lang-switcher,
   .profile-name,
-  .profile-chip { 
-    display: none !important; 
+  .profile-chip {
+    display: none !important;
   }
   
   /* Reveal Mobile Hamburger */

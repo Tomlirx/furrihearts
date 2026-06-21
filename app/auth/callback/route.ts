@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { safeNext } from '@/lib/safe-redirect';
+import { getServerLocale, localeHref } from '@/lib/locale';
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -76,8 +77,10 @@ export async function GET(request: Request) {
     if (next) {
       return NextResponse.redirect(new URL(next, origin));
     }
-    return NextResponse.redirect(new URL(needsProfileCompletion ? '/profile/edit' : '/browse', origin));
+    const locale = await getServerLocale();
+    return NextResponse.redirect(new URL(needsProfileCompletion ? '/profile/edit' : localeHref('/browse', locale), origin));
   }
 
-  return NextResponse.redirect(new URL(next || '/browse', origin));
+  const locale = await getServerLocale();
+  return NextResponse.redirect(new URL(next || localeHref('/browse', locale), origin));
 }

@@ -1,23 +1,24 @@
 import Link from 'next/link';
 
-export default function NotFound() {
+// Root-level fallback — only reached when the URL's locale segment itself is
+// invalid (e.g. /xx/browse), since that's caught above app/[locale]/layout.tsx
+// before it can render that segment's own not-found.tsx. Normal 404s inside a
+// valid locale are handled by app/[locale]/not-found.tsx instead.
+export default function RootNotFound() {
   return (
-    <main style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '48px 24px' }}>
-      <div style={{ fontSize: '80px', marginBottom: '16px' }}>🐾</div>
-      <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 700, marginBottom: '8px' }}>
-        Page Not <span style={{ color: 'var(--orange)' }}>Found</span>
-      </h1>
-      <p style={{ color: 'var(--mid)', marginBottom: '24px', maxWidth: '400px' }}>
-        The page you're looking for doesn't exist or may have been moved.
-      </p>
-      <div style={{ display: 'flex', gap: '12px' }}>
-        <Link href="/" style={{ background: 'var(--orange)', color: '#fff', borderRadius: '10px', padding: '12px 24px', fontWeight: 700, textDecoration: 'none', fontSize: '14px' }}>
-          Back Home
-        </Link>
-        <Link href="/browse" style={{ border: '1.5px solid var(--border)', color: 'var(--dark)', borderRadius: '10px', padding: '12px 24px', fontWeight: 600, textDecoration: 'none', fontSize: '14px' }}>
-          Browse Pets
-        </Link>
-      </div>
-    </main>
+    <html lang="en">
+      <body>
+        <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '48px 24px', fontFamily: 'sans-serif' }}>
+          <div style={{ fontSize: '80px', marginBottom: '16px' }}>🐾</div>
+          <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '8px' }}>Page Not Found</h1>
+          <p style={{ color: '#666', marginBottom: '24px', maxWidth: '400px' }}>
+            The page you're looking for doesn't exist or may have been moved.
+          </p>
+          <Link href="/" style={{ background: '#E8744C', color: '#fff', borderRadius: '10px', padding: '12px 24px', fontWeight: 700, textDecoration: 'none', fontSize: '14px' }}>
+            Back Home
+          </Link>
+        </main>
+      </body>
+    </html>
   );
 }

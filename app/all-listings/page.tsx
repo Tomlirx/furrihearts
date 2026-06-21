@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { getClientLocale, localeHref } from '@/lib/locale';
 import { getLocalListings } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
 import { isPetCurrentlyFeatured } from '@/lib/pet-service';
@@ -19,6 +20,7 @@ const PAGE_SIZE = 20;
 
 export default function AllListingsPage() {
   const router = useRouter();
+  const locale = getClientLocale();
   const [loading, setLoading] = useState(true);
   const [pets, setPets] = useState<any[]>([]);
   const [appCounts, setAppCounts] = useState<Record<string, { total: number; approved: number; declined: number }>>({});
@@ -34,7 +36,7 @@ export default function AllListingsPage() {
     async function load() {
       setPets(getLocalListings());
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace('/login?next=/all-listings'); return; }
+      if (!user) { router.replace(`${localeHref('/login', locale)}?next=/all-listings`); return; }
       const myPets = await getMyPets(supabase, user.id);
       if (myPets.length) {
         setPets(myPets);
@@ -175,7 +177,7 @@ export default function AllListingsPage() {
             return (
               <div className="listing-card" key={pet.id} style={{ position: 'relative' }}>
                 <span className={`lc-status ${statusBadge.cls}`}>{statusBadge.label}</span>
-                <Link href={`/pet/${pet.id}`}>
+                <Link href={localeHref(`/pet/${pet.id}`, locale)}>
                   <img src={pet.image_url} alt={pet.name} />
                 </Link>
                 <div className="listing-info">

@@ -3,6 +3,7 @@ import '../dashboard/styles.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { getClientLocale, localeHref } from '@/lib/locale';
 import MessagesPanel from '@/components/MessagesPanel';
 import DashboardTabs from '@/components/DashboardTabs';
 
@@ -14,7 +15,7 @@ export default function MessagesPage() {
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace('/login?next=/messages'); return; }
+      if (!user) { router.replace(`${localeHref('/login', getClientLocale())}?next=/messages`); return; }
       setUserId(user.id);
       setLoading(false);
     }

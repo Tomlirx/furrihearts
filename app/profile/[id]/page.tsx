@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getMyPets, getFollowedRescuerIds } from '@/lib/profile-data';
+import { getServerLocale, localeHref } from '@/lib/locale';
 import FollowButton from './FollowButton';
 import EmptyState from '@/components/EmptyState';
 import PublicListingsGrid from '@/components/profile/PublicListingsGrid';
@@ -12,6 +13,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const locale = await getServerLocale();
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
   if (!profile) notFound();
@@ -48,7 +50,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <div>
               <strong>Interested in adopting?</strong> {profile?.first_name} typically responds {profile?.response_time?.toLowerCase() || 'within 24 hours'}.
             </div>
-            <Link href="/browse" className="btn-edit-profile">Browse Listings</Link>
+            <Link href={localeHref('/browse', locale)} className="btn-edit-profile">Browse Listings</Link>
           </div>
 
           <div className="profile-section">

@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
+import { getServerLocale, localeHref } from '@/lib/locale';
 import './styles.css';
 
 const NAV_ITEMS = [
@@ -17,7 +18,10 @@ const NAV_ITEMS = [
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login?next=/admin');
+  if (!user) {
+    const locale = await getServerLocale();
+    redirect(`${localeHref('/login', locale)}?next=/admin`);
+  }
 
   const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', user.id).single();
   if (!profile?.is_admin) redirect('/');
