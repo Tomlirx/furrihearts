@@ -45,6 +45,7 @@ nav { background: #fff; border-bottom: 1px solid var(--border); position: sticky
 .lang-opt { border: none; background: none; cursor: pointer; font: inherit; font-size: 16px; line-height: 1; color: var(--mid); padding: 6px 8px; border-radius: 16px; transition: background .2s, color .2s; }
 .lang-opt:hover { color: var(--dark); }
 .lang-opt.active { background: var(--orange); color: #fff; }
+.lang-opt-text { font-size: 12px; font-weight: 700; padding: 6px 9px; }
 .mob-lang-switcher { margin-top: 16px; align-self: flex-start; }
 
 /* ==========================================================================
