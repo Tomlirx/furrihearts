@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from 'next/navigation';
 
 export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
-  const t = useTranslations('HomeSearch');
   const router = useRouter();
   
   // Default to 'cat' to match your original HTML design
@@ -54,7 +52,7 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
                   gap: '6px'
                 }}
               >
-                {t('cat')}
+                🐱 Cat
               </button>
 
               <button 
@@ -76,7 +74,7 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
                   gap: '6px'
                 }}
               >
-                {t('dog')}
+                🐶 Dog
               </button>
 
             </div>
@@ -86,20 +84,20 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
 
           {/* Location */}
           <div className="search-field">
-            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--light)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: '6px' }}>{t('locationLabel')}</label>
-            <select
-              className="search-select"
-              value={location}
+            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--light)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: '6px' }}>📍 Where in Malaysia?</label>
+            <select 
+              className="search-select" 
+              value={location} 
               onChange={(e) => setLocation(e.target.value)}
             >
-              <option value="Anywhere in Malaysia">{t('anywhere')}</option>
+              <option value="Anywhere in Malaysia">Anywhere in Malaysia</option>
               {launchedStates.map((state) => (
                 <option key={state} value={state}>{state}</option>
               ))}
             </select>
           </div>
 
-          <button type="submit" className="btn-search">{t('submit')}</button>
+          <button type="submit" className="btn-search">Find a Pet 🐾</button>
         </form>
       </div>
     </div>

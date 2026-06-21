@@ -1,8 +1,6 @@
 // app/layout.tsx
 import type { Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
 import "./globals.css";
 import { createClient } from '@/utils/supabase/server';
 import Navbar from '@/components/Navbar';
@@ -29,22 +27,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     isAuditor = !!profile?.is_auditor;
   }
 
-  // Resolved from the [locale] route segment (Phase 1 pages) or, for
-  // deferred pages outside app/[locale], the NEXT_LOCALE cookie — see
-  // i18n/request.ts. This is what lets Navbar/Footer render in the user's
-  // chosen language on every route, including ones not yet translated.
-  const locale = await getLocale();
-  const messages = await getMessages();
-
   return (
-    <html lang={locale}>
+    <html lang="en">
       {/* Apply the font variables to the body */}
       <body className={`${dmSans.variable} ${fraunces.variable}`}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar user={user} isAdmin={isAdmin} isAuditor={isAuditor} />
-          <main>{children}</main>
-          <Footer />
-        </NextIntlClientProvider>
+        <Navbar user={user} isAdmin={isAdmin} isAuditor={isAuditor} />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

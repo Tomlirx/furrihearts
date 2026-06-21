@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { reviewListing, setListingFeatured } from '@/app/actions/auditor';
-import { getClientLocale, localeHref } from '@/lib/locale';
 
 function rescuerName(pet: any) {
   if (!pet.profiles?.first_name) return '—';
@@ -13,7 +12,6 @@ function rescuerName(pet: any) {
 export default function AuditorListingsTable({ pending, recent }: { pending: any[]; recent: any[] }) {
   const [pendingRows, setPendingRows] = useState(pending);
   const [recentRows, setRecentRows] = useState(recent);
-  const locale = getClientLocale();
 
   const handleReview = async (pet: any, decision: 'approved' | 'rejected') => {
     setPendingRows((prev) => prev.filter((p) => p.id !== pet.id));
@@ -39,7 +37,7 @@ export default function AuditorListingsTable({ pending, recent }: { pending: any
           <tbody>
             {pendingRows.map((pet) => (
               <tr key={pet.id}>
-                <td><Link href={localeHref(`/pet/${pet.id}`, locale)} target="_blank">{pet.name}</Link></td>
+                <td><Link href={`/pet/${pet.id}`} target="_blank">{pet.name}</Link></td>
                 <td>{rescuerName(pet)}</td>
                 <td>{pet.location}</td>
                 <td>
@@ -63,7 +61,7 @@ export default function AuditorListingsTable({ pending, recent }: { pending: any
           <tbody>
             {recentRows.map((pet) => (
               <tr key={pet.id}>
-                <td><Link href={localeHref(`/pet/${pet.id}`, locale)} target="_blank">{pet.name}</Link></td>
+                <td><Link href={`/pet/${pet.id}`} target="_blank">{pet.name}</Link></td>
                 <td>{rescuerName(pet)}</td>
                 <td>{pet.review_status}</td>
                 <td>

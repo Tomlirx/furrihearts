@@ -1,20 +1,9 @@
-import { useTranslations } from 'next-intl';
 import type { Pet } from '@/lib/pet-service';
 
 export function PetInfoCard({ pet }: { pet: Pet }) {
-  const t = useTranslations('PetDetail.infoCard');
-
-  const healthItems: [string, boolean | undefined][] = [
-    [t('vaccinated'), pet.is_vaccinated],
-    [t('dewormed'), pet.is_dewormed],
-    [t('neutered'), pet.is_neutered],
-    [t('fleaTreated'), pet.is_flea_treated],
-    [t('pottyTrained'), pet.is_potty_trained],
-  ];
-
   return (
     <div className="section-card">
-      <h2>{t('aboutPet', { name: pet.name })}</h2>
+      <h2>About {pet.name}</h2>
       <div className="pet-meta-line">{pet.gender} · {pet.age} · {pet.location}</div>
 
       {!!pet.traits?.length && (
@@ -29,10 +18,16 @@ export function PetInfoCard({ pet }: { pet: Pet }) {
 
       <div className="about-grid">
         <div>
-          <h4 className="about-heading">{t('healthMedical')}</h4>
+          <h4 className="about-heading">Health & Medical</h4>
           <ul className="health-list">
-            {healthItems.map(([label, checked]) => (
-              <li key={label}>
+            {[
+              ['Vaccinated', pet.is_vaccinated],
+              ['Dewormed', pet.is_dewormed],
+              ['Neutered', pet.is_neutered],
+              ['Flea Treated', pet.is_flea_treated],
+              ['Potty Trained', pet.is_potty_trained],
+            ].map(([label, checked]) => (
+              <li key={label as string}>
                 <div className={`check-icon ${!checked ? 'unchecked' : ''}`}>{checked ? '✓' : '✕'}</div>
                 {label}
               </li>
@@ -40,18 +35,18 @@ export function PetInfoCard({ pet }: { pet: Pet }) {
           </ul>
         </div>
         <div>
-          <h4 className="about-heading">{t('adoptionInformation')}</h4>
+          <h4 className="about-heading">Adoption Information</h4>
           <ul className="health-list">
             <li className="adoption-info-row">
-              <span className="info-label">{t('adoptionFee')}</span>
+              <span className="info-label">Adoption Fee</span>
               <span className="info-value">RM {pet.fee || '0'}</span>
             </li>
             <li className="adoption-info-row">
-              <span className="info-label">{t('location')}</span>
+              <span className="info-label">Location</span>
               <span className="info-value">{pet.location}</span>
             </li>
             <li className="adoption-info-row">
-              <span className="info-label">{t('status')}</span>
+              <span className="info-label">Status</span>
               <span className="info-value" style={{ textTransform: 'capitalize' }}>{pet.status}</span>
             </li>
           </ul>

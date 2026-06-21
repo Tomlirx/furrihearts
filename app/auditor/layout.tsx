@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
-import { getServerLocale, localeHref } from '@/lib/locale';
 import '../admin/styles.css';
 
 const NAV_ITEMS = [
@@ -11,10 +10,7 @@ const NAV_ITEMS = [
 export default async function AuditorLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    const locale = await getServerLocale();
-    redirect(`${localeHref('/login', locale)}?next=/auditor`);
-  }
+  if (!user) redirect('/login?next=/auditor');
 
   const { data: profile } = await supabase.from('profiles').select('is_auditor').eq('id', user.id).single();
   if (!profile?.is_auditor) redirect('/');

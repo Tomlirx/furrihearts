@@ -1,16 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import NextLink from 'next/link';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
 import { supabase } from '@/lib/supabase';
 import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
-import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
-  const t = useTranslations('Navbar');
   const pathname = usePathname();
   const loginHref = pathname && pathname !== '/login' && pathname !== '/signup'
     ? `/login?next=${encodeURIComponent(pathname)}`
@@ -80,7 +76,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
   return (
     <>
       <div className="top-ribbon">
-        {t('ribbon')}
+        🐾 Malaysia's #1 Pet Adoption Platform
       </div>
 
       <nav>
@@ -91,14 +87,13 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
           </Link>
 
           <div className="nav-links">
-            <Link href="/browse">{t('adoptAPet')}</Link>
-            <Link href="/guide">{t('adoptionGuide')}</Link>
-            <Link href="/rescuer-landing">{t('forRescuers')}</Link>
+            <Link href="/browse">Adopt a Pet</Link>
+            <Link href="/guide">Adoption Guide</Link>
+            <Link href="/rescuer-landing">For Rescuers</Link>
           </div>
 
           <div className="nav-right">
-            <LanguageSwitcher />
-            <NextLink href="/rescuer-listing" className="btn-primary-nav">{t('listNow')}</NextLink>
+            <Link href="/rescuer-listing" className="btn-primary-nav">List Now</Link>
 
             {user && (
               <div className="notif-wrap" ref={notifRef}>
@@ -108,7 +103,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                   onClick={() => setIsNotifOpen(!isNotifOpen)}
                   aria-haspopup="true"
                   aria-expanded={isNotifOpen}
-                  aria-label={unreadCount > 0 ? t('unreadMessages', { count: unreadCount }) : t('notifications')}
+                  aria-label={unreadCount > 0 ? `${unreadCount} unread messages` : 'Notifications'}
                 >
                   🔔
                   {unreadCount > 0 && <span className="notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
@@ -117,16 +112,16 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                 {isNotifOpen && (
                   <div className="notif-dropdown open" role="menu">
                     <div className="notif-header">
-                      <span className="notif-header-title">{t('messagesHeader')}</span>
+                      <span className="notif-header-title">Messages</span>
                       {unreadCount > 0 && (
-                        <button className="notif-mark-read" onClick={handleMarkAllRead}>{t('markAllRead')}</button>
+                        <button className="notif-mark-read" onClick={handleMarkAllRead}>Mark all read</button>
                       )}
                     </div>
                     {unreadThreads.length === 0 ? (
-                      <div className="notif-item" style={{ color: 'var(--light)', fontSize: '13px' }}>{t('noNewMessages')}</div>
+                      <div className="notif-item" style={{ color: 'var(--light)', fontSize: '13px' }}>No new messages.</div>
                     ) : (
                       unreadThreads.map((thread) => (
-                        <NextLink
+                        <Link
                           key={`${thread.otherId}-${thread.petId}`}
                           href="/messages"
                           className="notif-item unread"
@@ -137,7 +132,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                             <div className="notif-title">{thread.otherName} · {thread.petName}: {thread.latest.content.slice(0, 60)}{thread.latest.content.length > 60 ? '…' : ''}</div>
                             <div className="notif-time">{new Date(thread.latest.created_at).toLocaleString()}</div>
                           </div>
-                        </NextLink>
+                        </Link>
                       ))
                     )}
                   </div>
@@ -172,11 +167,11 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                       display: 'flex', flexDirection: 'column', gap: '4px'
                     }}>
                     {[
-                      { href: '/dashboard', label: t('myDashboard') },
-                      ...(isAdmin ? [{ href: '/admin', label: t('adminPanel') }] : []),
-                      ...(isAuditor ? [{ href: '/auditor', label: t('auditorPanel') }] : []),
+                      { href: '/dashboard', label: 'My Dashboard' },
+                      ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
+                      ...(isAuditor ? [{ href: '/auditor', label: '📋 Auditor Panel' }] : []),
                     ].map((item) => (
-                      <NextLink
+                      <Link
                         key={item.href}
                         href={item.href}
                         role="menuitem"
@@ -184,7 +179,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                         className="dropdown-item"
                       >
                         {item.label}
-                      </NextLink>
+                      </Link>
                     ))}
 
                     <div style={{ height: '1px', background: 'var(--border)', margin: '4px 0' }}></div>
@@ -195,17 +190,17 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                       onClick={handleLogout}
                       className="dropdown-item dropdown-item-danger"
                     >
-                      {t('signOut')}
+                      Sign Out
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <Link href={loginHref} className="btn-ghost">{t('logIn')}</Link>
+              <Link href={loginHref} className="btn-ghost">Log in</Link>
             )}
 
             {/* Hamburger Trigger */}
-            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)} aria-label={t('openMenu')} aria-expanded={isMobileMenuOpen}>
+            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)} aria-label="Open menu" aria-expanded={isMobileMenuOpen}>
               <span></span><span></span><span></span>
             </button>
           </div>
@@ -216,40 +211,38 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
       <div className={`mob-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mob-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
         <div className="mob-panel">
-          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label={t('closeMenu')}>✕</button>
-
-          <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptAPet')}</Link>
-          <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptionGuide')}</Link>
-          <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('forRescuers')}</Link>
-
-          <LanguageSwitcher className="lang-switcher mob-lang-switcher" />
-
+          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu">✕</button>
+          
+          <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adopt a Pet</Link>
+          <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adoption Guide</Link>
+          <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>For Rescuers</Link>
+          
           {/* Mobile account links */}
           {user && (
             <>
-              <NextLink href="/dashboard" className="mob-link" style={{ color: 'var(--orange)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
-                {t('myDashboard')}
-              </NextLink>
-              {isAdmin && <NextLink href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('adminPanel')}</NextLink>}
-              {isAuditor && <NextLink href="/auditor" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('auditorPanel')}</NextLink>}
+              <Link href="/dashboard" className="mob-link" style={{ color: 'var(--orange)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
+                My Dashboard
+              </Link>
+              {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
+              {isAuditor && <Link href="/auditor" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>📋 Auditor Panel</Link>}
             </>
           )}
 
           <div className="mob-cta">
-            <NextLink href="/rescuer-listing" className="mob-primary" style={{ background: 'var(--green)' }} onClick={() => setIsMobileMenuOpen(false)}>
-              {t('listNow')}
-            </NextLink>
-
+            <Link href="/rescuer-listing" className="mob-primary" style={{ background: 'var(--green)' }} onClick={() => setIsMobileMenuOpen(false)}>
+              List Now
+            </Link>
+            
             {user ? (
-              <button
-                onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
+              <button 
+                onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} 
                 className="mob-danger"
               >
-                {t('signOut')}
+                Sign Out
               </button>
             ) : (
               <Link href={loginHref} className="mob-primary" onClick={() => setIsMobileMenuOpen(false)}>
-                {t('logIn')}
+                Log in
               </Link>
             )}
           </div>

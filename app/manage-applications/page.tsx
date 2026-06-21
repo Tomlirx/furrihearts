@@ -3,7 +3,6 @@ import '../dashboard/styles.css';
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { getClientLocale, localeHref } from '@/lib/locale';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
 import { closeApplication } from '@/app/actions/applications';
@@ -41,7 +40,7 @@ function ManageApplicationsContent() {
     async function load() {
       setApps(getLocalApplications());
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace(`${localeHref('/login', getClientLocale())}?next=/manage-applications`); return; }
+      if (!user) { router.replace('/login?next=/manage-applications'); return; }
       const pets = await getMyPets(supabase, user.id);
       if (pets.length) {
         const incoming = await getIncomingApplications(supabase, pets.map((p: any) => p.id));
