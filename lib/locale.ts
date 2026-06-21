@@ -8,12 +8,15 @@ function normalizeLocale(value: string | undefined | null): string {
   return routing.defaultLocale;
 }
 
-// Builds a locale-prefixed href into one of the Phase 1 (in-scope) pages —
-// used by deferred, non-[locale] pages and by shared chrome (Navbar/Footer)
-// that link into Phase 1 routes, since they sit outside the [locale] segment
-// and next-intl's own Link/redirect helpers only work inside it.
+// Builds an href into one of the Phase 1 (in-scope) pages — used by deferred,
+// non-[locale] pages and by shared chrome (Navbar/Footer) that link into
+// Phase 1 routes, since they sit outside the [locale] segment and next-intl's
+// own Link/redirect helpers only work inside it. Mirrors next-intl's
+// `localePrefix: 'as-needed'` setting (i18n/routing.ts): the default locale
+// gets no prefix, other locales do.
 export function localeHref(path: string, locale: string): string {
   const resolved = normalizeLocale(locale);
+  if (resolved === routing.defaultLocale) return path;
   return path === '/' ? `/${resolved}` : `/${resolved}${path}`;
 }
 

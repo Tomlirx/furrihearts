@@ -2,16 +2,25 @@
 
 import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
-import { routing } from '@/i18n/routing';
-import { LOCALE_COOKIE_NAME } from '@/lib/locale';
+import { LOCALE_COOKIE_NAME, localeHref } from '@/lib/locale';
+import { IN_SCOPE_PREFIXES } from '@/lib/in-scope-routes';
 
 const LOCALE_OPTIONS = [
-  { code: 'en', label: 'EN' },
-  { code: 'zh', label: '中文' },
-  { code: 'ms', label: 'BM' },
+  { code: 'en', flag: '🇬🇧', name: 'English' },
+  { code: 'zh', flag: '🇨🇳', name: '中文' },
+  { code: 'ms', flag: '🇲🇾', name: 'Bahasa Malaysia' },
 ];
 
-const prefixPattern = new RegExp(`^/(${routing.locales.join('|')})(/.*)?$`);
+const LOCALE_RE = /^\/(en|zh|ms)(?=\/|$)/;
+
+// Mirrors proxy.ts's isInScopePath — under localePrefix: 'as-needed' the
+// default locale (en) carries no URL prefix, so in-scope-ness can no longer
+// be detected just by checking for a /en|/zh|/ms prefix.
+function isInScopePath(pathname: string): boolean {
+  const bare = pathname.replace(LOCALE_RE, '') || '/';
+  if (bare === '/') return true;
+  return IN_SCOPE_PREFIXES.some((p) => bare === p || bare.startsWith(`${p}/`));
+}
 
 export default function LanguageSwitcher({ className = 'lang-switcher' }: { className?: string }) {
   const currentLocale = useLocale();
@@ -21,16 +30,17 @@ export default function LanguageSwitcher({ className = 'lang-switcher' }: { clas
   const switchTo = (code: string) => {
     document.cookie = `${LOCALE_COOKIE_NAME}=${code}; path=/; max-age=31536000`;
 
-    // Only an in-scope (Phase 1) path will ever carry a /en|/zh|/ms prefix —
-    // deferred pages (dashboard, admin, etc.) never do, so for those we just
-    // refresh and let the root layout re-read the cookie for Navbar/Footer.
-    const match = rawPathname.match(prefixPattern);
-    if (match) {
-      const rest = match[2] || '';
-      router.push(`/${code}${rest}`);
-    } else {
-      router.refresh();
+    if (isInScopePath(rawPathname)) {
+      const bare = rawPathname.replace(LOCALE_RE, '') || '/';
+      router.push(localeHref(bare, code));
     }
+
+    // Always refresh: the root layout's NextIntlClientProvider doesn't
+    // automatically refetch on client-side navigation since it sits above
+    // the [locale] segment (needed so deferred pages also get translated
+    // chrome) — without this, Navbar/Footer and any Client Component reading
+    // useTranslations() stay stuck on whichever locale first rendered.
+    router.refresh();
   };
 
   return (
@@ -41,8 +51,10 @@ export default function LanguageSwitcher({ className = 'lang-switcher' }: { clas
           type="button"
           className={`lang-opt ${currentLocale === l.code ? 'active' : ''}`}
           onClick={() => switchTo(l.code)}
+          aria-label={l.name}
+          title={l.name}
         >
-          {l.label}
+          {l.flag}
         </button>
       ))}
     </div>

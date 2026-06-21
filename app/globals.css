@@ -43,7 +43,7 @@ nav { background: #fff; border-bottom: 1px solid var(--border); position: sticky
 
 /* Language Switcher */
 .lang-switcher { display: flex; align-items: center; gap: 2px; background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px; }
-.lang-opt { border: none; background: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; color: var(--mid); padding: 5px 10px; border-radius: 16px; transition: background .2s, color .2s; }
+.lang-opt { border: none; background: none; cursor: pointer; font: inherit; font-size: 16px; line-height: 1; color: var(--mid); padding: 6px 8px; border-radius: 16px; transition: background .2s, color .2s; }
 .lang-opt:hover { color: var(--dark); }
 .lang-opt.active { background: var(--orange); color: #fff; }
 .mob-lang-switcher { margin-top: 16px; align-self: flex-start; }

@@ -3,17 +3,11 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
+import { localeHref } from './lib/locale';
+import { IN_SCOPE_PREFIXES } from './lib/in-scope-routes';
 
 const handleI18nRouting = createIntlMiddleware(routing);
 
-// Phase-1 (in-scope) public/conversion pages — these live under app/[locale]/
-// and need next-intl's locale-prefix routing. Everything else (dashboard,
-// admin, auditor, etc.) is deferred and must be left untouched by it.
-const IN_SCOPE_PREFIXES = [
-  '/browse', '/pet', '/apply', '/login', '/signup', '/forgot-password',
-  '/reset-password', '/rescuer-landing', '/about', '/contact', '/guide',
-  '/legal', '/care-packages',
-];
 const LOCALE_RE = /^\/(en|zh|ms)(?=\/|$)/;
 
 function isInScopePath(pathname: string): boolean {
@@ -69,8 +63,8 @@ export async function proxy(request: NextRequest) {
   const bare = path.replace(LOCALE_RE, '') || '/';
   const localeMatch = path.match(LOCALE_RE);
   const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
-  const locale = localeMatch?.[1]
-    || ((routing.locales as readonly string[]).includes(localeCookie ?? '') ? localeCookie : routing.defaultLocale);
+  const locale: string = localeMatch?.[1]
+    || (localeCookie && (routing.locales as readonly string[]).includes(localeCookie) ? localeCookie : routing.defaultLocale);
 
   // 3. ROUTE PROTECTION (The Bouncer)
   // Define all routes that require a logged-in user
@@ -79,7 +73,7 @@ export async function proxy(request: NextRequest) {
 
   // If they are a stranger/guest trying to access a protected route, kick them to login
   if (isProtectedRoute && !user) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    return NextResponse.redirect(new URL(localeHref('/login', locale), request.url));
   }
 
   // 4. AUTH REDIRECTION (The Usher)
@@ -89,7 +83,7 @@ export async function proxy(request: NextRequest) {
 
   // If they are already logged in and try to go to login/signup, push them to the app
   if (isAuthRoute && user) {
-    return NextResponse.redirect(new URL(`/${locale}/browse`, request.url));
+    return NextResponse.redirect(new URL(localeHref('/browse', locale), request.url));
   }
 
   // Always return the response to ensure cookies (and any locale redirect) are applied
