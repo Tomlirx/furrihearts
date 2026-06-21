@@ -89,8 +89,8 @@ export default function RescuerLanding() {
       </section>
 
       {/* How It Works Section */}
-      <section className="how" id="how">
-        <div className="how-inner">
+      <section className="rl-how" id="how">
+        <div className="rl-how-inner">
           <div className="section-tag" style={{ textAlign: 'center' }}>{t('howItWorksTag')}</div>
 
           <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0 40px' }}>
@@ -109,10 +109,10 @@ export default function RescuerLanding() {
               <h2 style={{ textAlign: 'center', fontFamily: 'var(--font-fraunces)', fontSize: '34px', fontWeight: 700, marginBottom: '40px' }}>
                 {t.rich('rescuerStepsTitle', { em: (chunks) => <em style={{ color: 'var(--orange)', fontStyle: 'normal' }}>{chunks}</em> })}
               </h2>
-              <div className="how-steps">
-                <div className="how-step"><div className="how-step-num">1</div><h3>{t('rescuerStep1Title')}</h3><p>{t('rescuerStep1Desc')}</p></div>
-                <div className="how-step"><div className="how-step-num">2</div><h3>{t('rescuerStep2Title')}</h3><p>{t('rescuerStep2Desc')}</p></div>
-                <div className="how-step"><div className="how-step-num">3</div><h3>{t('rescuerStep3Title')}</h3><p>{t('rescuerStep3Desc')}</p></div>
+              <div className="rl-how-steps">
+                <div className="rl-how-step"><div className="rl-how-step-num">1</div><h3>{t('rescuerStep1Title')}</h3><p>{t('rescuerStep1Desc')}</p></div>
+                <div className="rl-how-step"><div className="rl-how-step-num">2</div><h3>{t('rescuerStep2Title')}</h3><p>{t('rescuerStep2Desc')}</p></div>
+                <div className="rl-how-step"><div className="rl-how-step-num">3</div><h3>{t('rescuerStep3Title')}</h3><p>{t('rescuerStep3Desc')}</p></div>
               </div>
               <div style={{ textAlign: 'center', marginTop: '40px' }}>
                 <Link href="/rescuer-listing" className="btn-hero">{t('startListingArrow')}</Link>
@@ -125,10 +125,10 @@ export default function RescuerLanding() {
               <h2 style={{ textAlign: 'center', fontFamily: 'var(--font-fraunces)', fontSize: '34px', fontWeight: 700, marginBottom: '40px' }}>
                 {t.rich('adopterStepsTitle', { em: (chunks) => <em style={{ color: 'var(--orange)', fontStyle: 'normal' }}>{chunks}</em> })}
               </h2>
-              <div className="how-steps">
-                <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>1</div><h3>{t('adopterStep1Title')}</h3><p>{t('adopterStep1Desc')}</p></div>
-                <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>2</div><h3>{t('adopterStep2Title')}</h3><p>{t('adopterStep2Desc')}</p></div>
-                <div className="how-step"><div className="how-step-num" style={{ background: 'var(--green)' }}>3</div><h3>{t('adopterStep3Title')}</h3><p>{t('adopterStep3Desc')}</p></div>
+              <div className="rl-how-steps">
+                <div className="rl-how-step"><div className="rl-how-step-num" style={{ background: 'var(--green)' }}>1</div><h3>{t('adopterStep1Title')}</h3><p>{t('adopterStep1Desc')}</p></div>
+                <div className="rl-how-step"><div className="rl-how-step-num" style={{ background: 'var(--green)' }}>2</div><h3>{t('adopterStep2Title')}</h3><p>{t('adopterStep2Desc')}</p></div>
+                <div className="rl-how-step"><div className="rl-how-step-num" style={{ background: 'var(--green)' }}>3</div><h3>{t('adopterStep3Title')}</h3><p>{t('adopterStep3Desc')}</p></div>
               </div>
               <div style={{ textAlign: 'center', marginTop: '40px' }}>
                 <Link href="/browse" className="btn-hero" style={{ background: 'var(--green)' }}>{t('browsePets')}</Link>

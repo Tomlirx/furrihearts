@@ -29,14 +29,14 @@
 .feature-desc { font-size: 13px; color: var(--mid); line-height: 1.7; }
 
 /* How it works */
-.how { padding: 72px 40px; background: var(--cream); }
-.how-inner { max-width: 900px; margin: 0 auto; }
-.how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; margin-top: 40px; }
-.how-steps::before { content: ''; position: absolute; top: 32px; left: calc(16.6% + 10px); right: calc(16.6% + 10px); height: 2px; background: var(--border); }
-.how-step { text-align: center; position: relative; padding: 0 20px; }
-.how-step-num { width: 64px; height: 64px; border-radius: 50%; background: var(--orange); color: #fff; font-family: var(--font-fraunces), serif; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; position: relative; z-index: 1; }
-.how-step h3 { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
-.how-step p { font-size: 13px; color: var(--mid); line-height: 1.6; }
+.rl-how { padding: 72px 40px; background: var(--cream); }
+.rl-how-inner { max-width: 900px; margin: 0 auto; }
+.rl-how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; margin-top: 40px; }
+.rl-how-steps::before { content: ''; position: absolute; top: 32px; left: calc(16.6% + 10px); right: calc(16.6% + 10px); height: 2px; background: var(--border); }
+.rl-how-step { text-align: center; position: relative; padding: 0 20px; }
+.rl-how-step-num { width: 64px; height: 64px; border-radius: 50%; background: var(--orange); color: #fff; font-family: var(--font-fraunces), serif; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; position: relative; z-index: 1; }
+.rl-how-step h3 { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+.rl-how-step p { font-size: 13px; color: var(--mid); line-height: 1.6; }
 
 /* Social proof */
 .social-proof { padding: 72px 40px; background: #fff; }
@@ -60,8 +60,8 @@
   .hero-title { font-size: 32px; }
   .rl-features { padding: 36px 16px; }
   .rl-features-grid { grid-template-columns: 1fr; gap: 14px; }
-  .how-steps { grid-template-columns: 1fr; gap: 20px; }
-  .how-steps::before { display: none; }
+  .rl-how-steps { grid-template-columns: 1fr; gap: 20px; }
+  .rl-how-steps::before { display: none; }
   .proof-grid { grid-template-columns: 1fr; gap: 14px; }
   .cta-bottom { padding: 40px 16px; }
   .cta-bottom h2 { font-size: 28px; }
