@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { fetchPets, filterLocalPets, getLocalPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getLocalListings } from '@/lib/local-store';
 import { supabase } from '@/lib/supabase';
@@ -23,14 +24,16 @@ interface FilterControlsProps {
 }
 
 function FilterControls({ search, setSearch, type, setType, gender, setGender, location, setLocation, resetFilters, launchedStates }: FilterControlsProps) {
+  const t = useTranslations('Browse');
+
   return (
     <>
       <div className="filter-group">
-        <span className="filter-label">Search</span>
+        <span className="filter-label">{t('search')}</span>
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Name, breed, trait..."
+          placeholder={t('searchPlaceholder')}
           style={{
             width: '100%',
             border: '1.5px solid var(--border)',
@@ -44,25 +47,28 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
       </div>
 
       <div className="filter-group">
-        <span className="filter-label">Pet Type</span>
+        <span className="filter-label">{t('petType')}</span>
         <div className="filter-options">
-          <button className={`filter-btn ${type === 'all' ? 'active' : ''}`} onClick={() => setType('all')}>All</button>
-          <button className={`filter-btn ${type === 'cat' ? 'active' : ''}`} onClick={() => setType('cat')}>Cat</button>
-          <button className={`filter-btn ${type === 'dog' ? 'active' : ''}`} onClick={() => setType('dog')}>Dog</button>
+          <button className={`filter-btn ${type === 'all' ? 'active' : ''}`} onClick={() => setType('all')}>{t('all')}</button>
+          <button className={`filter-btn ${type === 'cat' ? 'active' : ''}`} onClick={() => setType('cat')}>{t('cat')}</button>
+          <button className={`filter-btn ${type === 'dog' ? 'active' : ''}`} onClick={() => setType('dog')}>{t('dog')}</button>
         </div>
       </div>
 
       <div className="filter-group">
-        <span className="filter-label">Gender</span>
+        <span className="filter-label">{t('gender')}</span>
         <div className="filter-options">
-          <button className={`filter-btn ${gender === 'Any' ? 'active' : ''}`} onClick={() => setGender('Any')}>Any</button>
-          <button className={`filter-btn ${gender === 'Male' ? 'active' : ''}`} onClick={() => setGender('Male')}>Male</button>
-          <button className={`filter-btn ${gender === 'Female' ? 'active' : ''}`} onClick={() => setGender('Female')}>Female</button>
+          <button className={`filter-btn ${gender === 'Any' ? 'active' : ''}`} onClick={() => setGender('Any')}>{t('any')}</button>
+          <button className={`filter-btn ${gender === 'Male' ? 'active' : ''}`} onClick={() => setGender('Male')}>{t('male')}</button>
+          <button className={`filter-btn ${gender === 'Female' ? 'active' : ''}`} onClick={() => setGender('Female')}>{t('female')}</button>
         </div>
       </div>
 
       <div className="filter-group">
-        <span className="filter-label">Location</span>
+        <span className="filter-label">{t('location')}</span>
+        {/* State names stay English regardless of locale — the option text
+            doubles as the filter value, so translating it would require a
+            separate value/label split for no real benefit. */}
         <select className="location-select" value={location} onChange={(event) => setLocation(event.target.value)}>
           <option>All Malaysia</option>
           {launchedStates.map((state) => (
@@ -72,7 +78,7 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
       </div>
 
       <button className="btn-outline" type="button" onClick={resetFilters} style={{ width: '100%' }}>
-        Reset filters
+        {t('resetFilters')}
       </button>
     </>
   );
@@ -81,6 +87,8 @@ function FilterControls({ search, setSearch, type, setType, gender, setGender, l
 const BATCH_SIZE = 12;
 
 export default function BrowseContent({ launchedStates }: { launchedStates: string[] }) {
+  const t = useTranslations('Browse');
+  const tPetCard = useTranslations('PetCard');
   const searchParams = useSearchParams();
   const [allPets, setAllPets] = useState<Pet[]>([]);
   const [type, setType] = useState(searchParams.get('type') || 'all');
@@ -135,41 +143,47 @@ export default function BrowseContent({ launchedStates }: { launchedStates: stri
         <div className="filter-overlay" onClick={() => setIsFilterOpen(false)}></div>
         <div className="filter-panel">
           <div className="filter-handle"></div>
-          <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>Filters</h3>
+          <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>{t('filters')}</h3>
           <FilterControls {...filterControlsProps} />
           <button
             onClick={() => setIsFilterOpen(false)}
             style={{ width: '100%', background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '10px', padding: '14px', fontSize: '15px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginTop: '8px' }}
           >
-            Apply Filters
+            {t('applyFilters')}
           </button>
         </div>
       </div>
 
       <div className="page-layout">
         <aside className="sidebar">
-          <h3>Filters</h3>
+          <h3>{t('filters')}</h3>
           <FilterControls {...filterControlsProps} />
         </aside>
 
         <main className="main-content">
           <div className="browse-header">
             <div>
-              <h1>Find Your New Best Friend</h1>
-              <p>{pets.length} pets available across Malaysia</p>
+              <h1>{t('heading')}</h1>
+              <p>{t('petsAvailable', { count: pets.length })}</p>
             </div>
           </div>
 
           <button className="filter-toggle" onClick={() => setIsFilterOpen(true)}>
-            Filters & Search
+            {t('filtersAndSearch')}
           </button>
 
           {spotlightPets.length > 0 && (
             <>
-              <div className="section-label">Spotlight Pets</div>
+              <div className="section-label">{t('spotlightPets')}</div>
               <div className="spotlight-grid">
                 {spotlightPets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} featured={isPetCurrentlyFeatured(pet)} />
+                  <PetCard
+                    key={pet.id}
+                    pet={pet}
+                    featured={isPetCurrentlyFeatured(pet)}
+                    adoptedLabel={tPetCard('adopted')}
+                    featuredLabel={tPetCard('featured')}
+                  />
                 ))}
               </div>
             </>
@@ -178,17 +192,23 @@ export default function BrowseContent({ launchedStates }: { launchedStates: stri
           {remainingPets.length > 0 && (
             <>
               <div className="section-divider">
-                <div className="section-label" style={{ color: 'var(--mid)' }}>All Pets</div>
+                <div className="section-label" style={{ color: 'var(--mid)' }}>{t('allPets')}</div>
               </div>
               <div className="pets-grid">
                 {visiblePets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} featured={isPetCurrentlyFeatured(pet)} />
+                  <PetCard
+                    key={pet.id}
+                    pet={pet}
+                    featured={isPetCurrentlyFeatured(pet)}
+                    adoptedLabel={tPetCard('adopted')}
+                    featuredLabel={tPetCard('featured')}
+                  />
                 ))}
               </div>
               {visibleCount < remainingPets.length && (
                 <div style={{ textAlign: 'center', marginTop: '24px' }}>
                   <button className="btn-outline" onClick={() => setVisibleCount((count) => count + BATCH_SIZE)}>
-                    Load More
+                    {t('loadMore')}
                   </button>
                 </div>
               )}
@@ -198,9 +218,9 @@ export default function BrowseContent({ launchedStates }: { launchedStates: stri
           {pets.length === 0 && (
             <EmptyState
               icon="🔍"
-              title="No pets found"
-              description="Try adjusting your filters or search to see more pets."
-              ctaLabel="Clear filters"
+              title={t('emptyTitle')}
+              description={t('emptyDescription')}
+              ctaLabel={t('clearFilters')}
               onCta={resetFilters}
             />
           )}

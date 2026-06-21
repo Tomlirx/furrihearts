@@ -4,6 +4,7 @@ import './styles.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import { fetchPetById, findLocalPetById, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
 import { getLocalApplications } from '@/lib/local-store';
@@ -13,6 +14,7 @@ import { PetInfoCard } from '@/components/pet/PetInfoCard';
 import { RescuerSidebar } from '@/components/pet/RescuerSidebar';
 
 export default function PetProfile() {
+  const t = useTranslations('PetDetail');
   const { id } = useParams<{ id: string }>();
   const [pet, setPet] = useState<Pet | null>(null);
   const [loading, setLoading] = useState(true);
@@ -73,9 +75,9 @@ export default function PetProfile() {
       </div>
     );
   }
-  if (!pet) return <div style={{ padding: '60px', textAlign: 'center' }}>Pet not found.</div>;
+  if (!pet) return <div style={{ padding: '60px', textAlign: 'center' }}>{t('notFound')}</div>;
   if ((pet.is_hidden || (pet.review_status && pet.review_status !== 'approved')) && currentUserId !== pet.rescuer_id) {
-    return <div style={{ padding: '60px', textAlign: 'center' }}>This listing isn't available right now.</div>;
+    return <div style={{ padding: '60px', textAlign: 'center' }}>{t('notAvailable')}</div>;
   }
 
   const rescuerName = pet.profiles?.first_name
@@ -85,7 +87,7 @@ export default function PetProfile() {
   return (
     <>
       <div className="top-bar">
-        <Link href="/browse" className="back-link">← Back to Browse</Link>
+        <Link href="/browse" className="back-link">{t('backToBrowse')}</Link>
       </div>
 
       <div className="profile-layout">

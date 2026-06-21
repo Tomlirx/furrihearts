@@ -4,21 +4,30 @@ import Link from 'next/link';
 import type { Pet } from '@/lib/pet-service';
 import './PetCard.css';
 
+// Client Component (no useTranslations — that would need its own
+// NextIntlClientProvider just for two badge strings). Callers are Server
+// Components that already call getTranslations() for their own page, so
+// they pass the two labels down as plain strings, with English defaults
+// for any caller that hasn't been localized.
 export default function PetCard({
   pet,
   featured = false,
+  adoptedLabel = 'Adopted',
+  featuredLabel = 'Featured',
 }: {
   pet: Pet;
   featured?: boolean;
+  adoptedLabel?: string;
+  featuredLabel?: string;
 }) {
   return (
     <Link href={`/pet/${pet.id}`} className={`pet-card ${featured ? 'featured' : ''}`}>
       <div className="pet-img">
         <img src={pet.image_url} alt={pet.name} loading="lazy" />
         {pet.status === 'adopted' ? (
-          <span className="adopted-badge">Adopted</span>
+          <span className="adopted-badge">{adoptedLabel}</span>
         ) : featured ? (
-          <span className="featured-tag">Featured</span>
+          <span className="featured-tag">{featuredLabel}</span>
         ) : null}
       </div>
       <div className="pet-info">

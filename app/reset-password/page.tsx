@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import '../signup/styles.css';
 
 export default function ResetPasswordPage() {
+  const t = useTranslations('ResetPassword');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
@@ -15,11 +17,11 @@ export default function ResetPasswordPage() {
 
   const handleSubmit = async () => {
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+      setError(t('passwordTooShort'));
       return;
     }
     if (password !== confirm) {
-      setError("Passwords don't match");
+      setError(t('passwordsDontMatch'));
       return;
     }
     setLoading(true);
@@ -36,23 +38,23 @@ export default function ResetPasswordPage() {
   return (
     <div className="signup-layout">
       <div className="left-panel" style={{ background: 'linear-gradient(135deg,#FBE8D8,#F5C9A0,#E8A87C)' }}>
-        <h1 className="right-title" style={{ color: 'var(--dark)' }}>Set a new password</h1>
-        <p style={{ color: 'var(--mid)', marginTop: '16px', maxWidth: '300px', textAlign: 'center' }}>Almost there — choose a strong new password.</p>
+        <h1 className="right-title" style={{ color: 'var(--dark)' }}>{t('title')}</h1>
+        <p style={{ color: 'var(--mid)', marginTop: '16px', maxWidth: '300px', textAlign: 'center' }}>{t('subtitle')}</p>
       </div>
 
       <div className="right-panel">
         <div className="right-inner">
           {done ? (
             <>
-              <h2 className="right-title">Password updated</h2>
-              <p className="right-sub">Redirecting you to your dashboard...</p>
+              <h2 className="right-title">{t('passwordUpdated')}</h2>
+              <p className="right-sub">{t('redirecting')}</p>
             </>
           ) : (
             <>
-              <h2 className="right-title">New password</h2>
+              <h2 className="right-title">{t('newPassword')}</h2>
 
               <div className="form-field">
-                <label className="form-label" htmlFor="password">New Password</label>
+                <label className="form-label" htmlFor="password">{t('newPasswordLabel')}</label>
                 <input
                   id="password"
                   className={`form-input ${error ? 'error' : ''}`}
@@ -64,7 +66,7 @@ export default function ResetPasswordPage() {
               </div>
 
               <div className="form-field">
-                <label className="form-label" htmlFor="confirm">Confirm Password</label>
+                <label className="form-label" htmlFor="confirm">{t('confirmPasswordLabel')}</label>
                 <input
                   id="confirm"
                   className={`form-input ${error ? 'error' : ''}`}
@@ -77,7 +79,7 @@ export default function ResetPasswordPage() {
               </div>
 
               <button className="btn-continue" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Updating...' : 'Update password'}
+                {loading ? t('updating') : t('updatePassword')}
               </button>
             </>
           )}

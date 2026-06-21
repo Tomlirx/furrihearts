@@ -1,45 +1,51 @@
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import './styles.css';
 
-const PACKAGES = [
-  { name: 'Starter Pack', tag: 'Popular', emoji: '🐱', items: ['Food (2kg)', 'Litter (5L)', 'Toy bundle', 'Feeding bowls'], price: 89, oldPrice: 119 },
-  { name: 'Health Bundle', tag: 'Recommended', emoji: '💊', items: ['Deworming tablets', 'Flea treatment', 'Vitamin supplements'], price: 65, oldPrice: 85 },
-  { name: 'Comfort Set', tag: 'New', emoji: '🛏️', items: ['Pet bed', 'Carrier bag', 'Grooming brush'], price: 110, oldPrice: 150 },
+const PRICES = [
+  { emoji: '🐱', price: 89, oldPrice: 119 },
+  { emoji: '💊', price: 65, oldPrice: 85 },
+  { emoji: '🛏️', price: 110, oldPrice: 150 },
 ];
 
-export default function CarePackagesPage() {
+interface PackageData { name: string; tag: string; items: string[] }
+
+export default async function CarePackagesPage() {
+  const t = await getTranslations('CarePackages');
+  const packages = t.raw('packages') as PackageData[];
+
   return (
     <>
       <div className="page-hero">
         <div className="page-hero-inner">
-          <div className="page-tag">For New Adopters</div>
-          <h1 className="page-title">Pet Care Packages 🎁</h1>
-          <p className="page-sub">Everything your new pet needs, bundled and delivered across Malaysia.</p>
+          <div className="page-tag">{t('tag')}</div>
+          <h1 className="page-title">{t('title')}</h1>
+          <p className="page-sub">{t('subtitle')}</p>
         </div>
       </div>
 
       <div className="trust-bar">
-        <div className="trust-item"><span>🚚</span> Free delivery over RM100</div>
-        <div className="trust-item"><span>✅</span> Vet-approved products</div>
-        <div className="trust-item"><span>↩️</span> 7-day returns</div>
-        <div className="trust-item"><span>🤝</span> Supports local rescues</div>
+        <div className="trust-item"><span>🚚</span> {t('freeDelivery')}</div>
+        <div className="trust-item"><span>✅</span> {t('vetApproved')}</div>
+        <div className="trust-item"><span>↩️</span> {t('returns')}</div>
+        <div className="trust-item"><span>🤝</span> {t('supportsRescues')}</div>
       </div>
 
       <div className="packages-grid">
-        {PACKAGES.map((pkg) => (
+        {packages.map((pkg, i) => (
           <div className="package-card" key={pkg.name}>
             <div className="package-img">
               <span className="package-badge">{pkg.tag}</span>
-              <span className="package-emoji">{pkg.emoji}</span>
+              <span className="package-emoji">{PRICES[i].emoji}</span>
             </div>
             <div className="package-body">
               <h3>{pkg.name}</h3>
-              <ul>{pkg.items.map((i) => <li key={i}>{i}</li>)}</ul>
+              <ul>{pkg.items.map((item) => <li key={item}>{item}</li>)}</ul>
               <div className="package-price-row">
-                <span className="price-now">RM{pkg.price}</span>
-                <span className="price-old">RM{pkg.oldPrice}</span>
+                <span className="price-now">RM{PRICES[i].price}</span>
+                <span className="price-old">RM{PRICES[i].oldPrice}</span>
               </div>
-              <Link href="/contact" className="btn-add-cart">Inquire to Order</Link>
+              <Link href="/contact" className="btn-add-cart">{t('inquireToOrder')}</Link>
             </div>
           </div>
         ))}

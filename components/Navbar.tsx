@@ -3,10 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
+  const t = useTranslations('Navbar');
   const pathname = usePathname();
   const loginHref = pathname && pathname !== '/login' && pathname !== '/signup'
     ? `/login?next=${encodeURIComponent(pathname)}`
@@ -76,7 +79,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
   return (
     <>
       <div className="top-ribbon">
-        🐾 Malaysia's #1 Pet Adoption Platform
+        {t('ribbon')}
       </div>
 
       <nav>
@@ -87,13 +90,14 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
           </Link>
 
           <div className="nav-links">
-            <Link href="/browse">Adopt a Pet</Link>
-            <Link href="/guide">Adoption Guide</Link>
-            <Link href="/rescuer-landing">For Rescuers</Link>
+            <Link href="/browse">{t('adoptAPet')}</Link>
+            <Link href="/guide">{t('adoptionGuide')}</Link>
+            <Link href="/rescuer-landing">{t('forRescuers')}</Link>
           </div>
 
           <div className="nav-right">
-            <Link href="/rescuer-listing" className="btn-primary-nav">List Now</Link>
+            <LanguageSwitcher />
+            <Link href="/rescuer-listing" className="btn-primary-nav">{t('listNow')}</Link>
 
             {user && (
               <div className="notif-wrap" ref={notifRef}>
@@ -103,7 +107,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                   onClick={() => setIsNotifOpen(!isNotifOpen)}
                   aria-haspopup="true"
                   aria-expanded={isNotifOpen}
-                  aria-label={unreadCount > 0 ? `${unreadCount} unread messages` : 'Notifications'}
+                  aria-label={unreadCount > 0 ? t('unreadMessages', { count: unreadCount }) : t('notifications')}
                 >
                   🔔
                   {unreadCount > 0 && <span className="notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
@@ -112,13 +116,13 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                 {isNotifOpen && (
                   <div className="notif-dropdown open" role="menu">
                     <div className="notif-header">
-                      <span className="notif-header-title">Messages</span>
+                      <span className="notif-header-title">{t('messagesHeader')}</span>
                       {unreadCount > 0 && (
-                        <button className="notif-mark-read" onClick={handleMarkAllRead}>Mark all read</button>
+                        <button className="notif-mark-read" onClick={handleMarkAllRead}>{t('markAllRead')}</button>
                       )}
                     </div>
                     {unreadThreads.length === 0 ? (
-                      <div className="notif-item" style={{ color: 'var(--light)', fontSize: '13px' }}>No new messages.</div>
+                      <div className="notif-item" style={{ color: 'var(--light)', fontSize: '13px' }}>{t('noNewMessages')}</div>
                     ) : (
                       unreadThreads.map((thread) => (
                         <Link
@@ -167,9 +171,9 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                       display: 'flex', flexDirection: 'column', gap: '4px'
                     }}>
                     {[
-                      { href: '/dashboard', label: 'My Dashboard' },
-                      ...(isAdmin ? [{ href: '/admin', label: '⚙️ Admin Panel' }] : []),
-                      ...(isAuditor ? [{ href: '/auditor', label: '📋 Auditor Panel' }] : []),
+                      { href: '/dashboard', label: t('myDashboard') },
+                      ...(isAdmin ? [{ href: '/admin', label: t('adminPanel') }] : []),
+                      ...(isAuditor ? [{ href: '/auditor', label: t('auditorPanel') }] : []),
                     ].map((item) => (
                       <Link
                         key={item.href}
@@ -190,17 +194,17 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                       onClick={handleLogout}
                       className="dropdown-item dropdown-item-danger"
                     >
-                      Sign Out
+                      {t('signOut')}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <Link href={loginHref} className="btn-ghost">Log in</Link>
+              <Link href={loginHref} className="btn-ghost">{t('logIn')}</Link>
             )}
 
             {/* Hamburger Trigger */}
-            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)} aria-label="Open menu" aria-expanded={isMobileMenuOpen}>
+            <button className="hamburger" onClick={() => setIsMobileMenuOpen(true)} aria-label={t('openMenu')} aria-expanded={isMobileMenuOpen}>
               <span></span><span></span><span></span>
             </button>
           </div>
@@ -211,38 +215,40 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
       <div className={`mob-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mob-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
         <div className="mob-panel">
-          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu">✕</button>
-          
-          <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adopt a Pet</Link>
-          <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>Adoption Guide</Link>
-          <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>For Rescuers</Link>
-          
+          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label={t('closeMenu')}>✕</button>
+
+          <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptAPet')}</Link>
+          <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptionGuide')}</Link>
+          <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('forRescuers')}</Link>
+
+          <LanguageSwitcher className="lang-switcher mob-lang-switcher" />
+
           {/* Mobile account links */}
           {user && (
             <>
               <Link href="/dashboard" className="mob-link" style={{ color: 'var(--orange)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
-                My Dashboard
+                {t('myDashboard')}
               </Link>
-              {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>⚙️ Admin Panel</Link>}
-              {isAuditor && <Link href="/auditor" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>📋 Auditor Panel</Link>}
+              {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('adminPanel')}</Link>}
+              {isAuditor && <Link href="/auditor" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('auditorPanel')}</Link>}
             </>
           )}
 
           <div className="mob-cta">
             <Link href="/rescuer-listing" className="mob-primary" style={{ background: 'var(--green)' }} onClick={() => setIsMobileMenuOpen(false)}>
-              List Now
+              {t('listNow')}
             </Link>
-            
+
             {user ? (
-              <button 
-                onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} 
+              <button
+                onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
                 className="mob-danger"
               >
-                Sign Out
+                {t('signOut')}
               </button>
             ) : (
               <Link href={loginHref} className="mob-primary" onClick={() => setIsMobileMenuOpen(false)}>
-                Log in
+                {t('logIn')}
               </Link>
             )}
           </div>

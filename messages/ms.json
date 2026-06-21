@@ -1,0 +1,600 @@
+{
+  "Navbar": {
+    "ribbon": "🐾 Platform Pengangkatan Haiwan Peliharaan #1 di Malaysia",
+    "adoptAPet": "Angkat Haiwan",
+    "adoptionGuide": "Panduan Pengangkatan",
+    "forRescuers": "Untuk Penyelamat",
+    "listNow": "Senaraikan Sekarang",
+    "myDashboard": "Papan Pemuka Saya",
+    "adminPanel": "⚙️ Panel Admin",
+    "auditorPanel": "📋 Panel Juruaudit",
+    "signOut": "Log Keluar",
+    "logIn": "Log Masuk",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu",
+    "notifications": "Pemberitahuan",
+    "unreadMessages": "{count} mesej belum dibaca",
+    "messagesHeader": "Mesej",
+    "markAllRead": "Tandakan semua dibaca",
+    "noNewMessages": "Tiada mesej baharu."
+  },
+  "Footer": {
+    "tagline": "Menyatukan hati. Mencipta rumah selamanya.",
+    "trustedPlatform": "Platform pengangkatan haiwan peliharaan yang dipercayai di Malaysia.",
+    "forAdopters": "Untuk Pengangkat",
+    "adoptAPet": "Angkat Haiwan",
+    "adoptionGuide": "Panduan Pengangkatan",
+    "carePackages": "Pek Penjagaan",
+    "forRescuers": "Untuk Penyelamat",
+    "listAPet": "Senaraikan Haiwan",
+    "company": "Syarikat",
+    "aboutUs": "Tentang Kami",
+    "contactUs": "Hubungi Kami",
+    "privacyTerms": "Privasi & Terma",
+    "copyright": "© 2026 FurriHearts. Hak cipta terpelihara.",
+    "madeWith": "Dibuat dengan ❤️ untuk haiwan di Malaysia"
+  },
+  "Homepage": {
+    "featuredTag": "Haiwan Pilihan",
+    "featuredTitle": "Cari pasangan <em>sempurna</em> anda 🐾",
+    "viewAll": "Lihat semua haiwan →"
+  },
+  "HeroSection": {
+    "tag": "🐾 Platform Pengangkatan Haiwan Peliharaan Malaysia",
+    "headingLine1": "Setiap tapak kaki",
+    "headingLine2Prefix": "menemui ",
+    "headingHome": "sebuah rumah",
+    "headingEmoji": "🤍",
+    "subtitle": "FurriHearts menghubungkan pengangkat yang penyayang dengan haiwan yang diselamatkan di seluruh Malaysia. Kerana setiap hati layak mendapat rumah selamanya.",
+    "cta": "🐾 Angkat Haiwan"
+  },
+  "FeatureGrid": {
+    "tag": "Mengapa FurriHearts",
+    "title": "Dibina untuk pengangkatan yang <em>bermakna</em>",
+    "items": [
+      {
+        "icon": "✨",
+        "title": "Senarai Terpilih",
+        "description": "Cari mengikut apa yang penting bagi anda — jenis, lokasi, dan gaya hidup."
+      },
+      {
+        "icon": "🏅",
+        "title": "Penyelamat Disahkan",
+        "description": "Setiap penyelamat disemak untuk memastikan pengalaman pengangkatan yang selamat dan bertanggungjawab."
+      },
+      {
+        "icon": "❤️",
+        "title": "Sokongan Pengangkatan",
+        "description": "Dari permohonan hingga hari pengangkatan, kami sentiasa membantu anda di setiap langkah."
+      },
+      {
+        "icon": "🌱",
+        "title": "Beri Impak",
+        "description": "Setiap pengangkatan memberi haiwan yang diselamatkan peluang kedua untuk hidup gembira."
+      }
+    ]
+  },
+  "HowItWorksSteps": {
+    "tag": "Panduan Pengangkatan",
+    "title": "Langkah mudah untuk pengangkatan yang <em>berjaya</em>",
+    "steps": [
+      {
+        "title": "Cari Padanan Anda",
+        "description": "Cari haiwan yang sesuai dengan gaya hidup dan rumah anda."
+      },
+      {
+        "title": "Mohon",
+        "description": "Hantar soal selidik ringkas. Profil anda akan disertakan secara automatik."
+      },
+      {
+        "title": "Menunggu Kelulusan",
+        "description": "Penyelamat akan menyemak permohonan anda dan menghubungi anda semula."
+      },
+      {
+        "title": "Berhubung",
+        "description": "Selaraskan pengambilan dengan penyelamat anda dan sambut ahli keluarga baharu anda!"
+      }
+    ]
+  },
+  "PetCard": {
+    "adopted": "Telah Diangkat",
+    "featured": "Pilihan"
+  },
+  "HomeSearch": {
+    "cat": "🐱 Kucing",
+    "dog": "🐶 Anjing",
+    "locationLabel": "📍 Di mana di Malaysia?",
+    "submit": "Cari Haiwan 🐾"
+  },
+  "Browse": {
+    "search": "Carian",
+    "searchPlaceholder": "Nama, baka, ciri...",
+    "petType": "Jenis Haiwan",
+    "all": "Semua",
+    "cat": "Kucing",
+    "dog": "Anjing",
+    "gender": "Jantina",
+    "any": "Mana-mana",
+    "male": "Jantan",
+    "female": "Betina",
+    "location": "Lokasi",
+    "resetFilters": "Set semula penapis",
+    "filters": "Penapis",
+    "applyFilters": "Guna Penapis",
+    "heading": "Cari Sahabat Baharu Anda",
+    "petsAvailable": "{count} haiwan tersedia di seluruh Malaysia",
+    "filtersAndSearch": "Penapis & Carian",
+    "spotlightPets": "Haiwan Pilihan",
+    "allPets": "Semua Haiwan",
+    "loadMore": "Muat Lagi",
+    "emptyTitle": "Tiada haiwan dijumpai",
+    "emptyDescription": "Cuba laraskan penapis atau carian anda untuk melihat lebih ramai haiwan.",
+    "clearFilters": "Kosongkan penapis",
+    "loadingFallback": "Mencari sahabat berbulu..."
+  },
+  "PetDetail": {
+    "backToBrowse": "← Kembali ke Pelayaran",
+    "notFound": "Haiwan tidak dijumpai.",
+    "notAvailable": "Senarai ini tidak tersedia sekarang.",
+    "imageGallery": {
+      "featured": "Pilihan",
+      "previousPhoto": "Foto sebelumnya",
+      "nextPhoto": "Foto seterusnya"
+    },
+    "infoCard": {
+      "aboutPet": "Tentang {name}",
+      "healthMedical": "Kesihatan & Perubatan",
+      "vaccinated": "Telah Divaksin",
+      "dewormed": "Telah Dicacing",
+      "neutered": "Telah Dimandulkan",
+      "fleaTreated": "Telah Dirawat Kutu",
+      "pottyTrained": "Terlatih Buang Air",
+      "adoptionInformation": "Maklumat Pengangkatan",
+      "adoptionFee": "Yuran Pengangkatan",
+      "location": "Lokasi",
+      "status": "Status"
+    },
+    "sidebar": {
+      "interestedIn": "Berminat dengan {name}?",
+      "verifiedRescuer": "Penyelamat Disahkan",
+      "viewRescuerInfo": "Lihat Maklumat Penyelamat →",
+      "messageFirstName": "Hantar mesej kepada {name}",
+      "ownListing": "Ini adalah senarai anda sendiri",
+      "adoptedByYou": "🎉 Anda telah mengangkat haiwan ini!",
+      "happilyAdopted": "Telah Diangkat dengan Gembira",
+      "imInterested": "Saya Berminat",
+      "repliesWithinDay": "Biasanya membalas dalam 1 hari",
+      "applicationUnderReview": "Permohonan Sedang Disemak",
+      "applicationApproved": "Permohonan Diluluskan",
+      "benefits": [
+        "Hanya 3 minit",
+        "Tanpa komitmen",
+        "Penyelamat dimaklumkan serta-merta"
+      ]
+    }
+  },
+  "Apply": {
+    "loading": "Memuatkan...",
+    "notFound": "Haiwan tidak dijumpai.",
+    "step": "Mohon",
+    "backToProfile": "← Kembali ke Profil {name}",
+    "title": "Soal Selidik untuk {name}",
+    "subtitle": "Bantu penyelamat memahami sama ada anda dan {name} sesuai antara satu sama lain.",
+    "infoBanner": "Ini membantu penyelamat membuat keputusan terbaik untuk masa depan {name}.",
+    "noWrongAnswers": "Tiada jawapan yang betul atau salah.",
+    "q1": "1. Mengapa anda berminat untuk mengangkat haiwan ini?",
+    "q1Options": [
+      "Saya mencari teman",
+      "Haiwan peliharaan saya perlukan kawan",
+      "Saya ingin membantu haiwan yang diselamatkan",
+      "Lain-lain"
+    ],
+    "selectAtLeastOne": "Sila pilih sekurang-kurangnya satu pilihan.",
+    "q2": "2. Apakah jenis kediaman anda?",
+    "q2Options": [
+      "Apartmen / Kondo",
+      "Rumah berkembar/teres",
+      "Rumah dengan kawasan luas",
+      "Lain-lain"
+    ],
+    "chooseOption": "Sila pilih satu pilihan.",
+    "q3": "3. Adakah tingkap dan balkoni anda selamat?",
+    "q3Options": [
+      "Ya, selamat sepenuhnya",
+      "Sebahagian — saya akan lengkapkan",
+      "Belum lagi",
+      "Tidak berkenaan"
+    ],
+    "q4": "4. Adakah anda mempunyai haiwan peliharaan lain di rumah?",
+    "q4Options": [
+      "Ya, seekor kucing",
+      "Ya, seekor anjing",
+      "Ya, beberapa haiwan",
+      "Tiada haiwan lain"
+    ],
+    "q5": "5. Berapa jam sehari haiwan ini akan bersendirian?",
+    "q5Options": [
+      "Kurang daripada 4 jam",
+      "4–8 jam",
+      "Lebih daripada 8 jam",
+      "Jarang — biasanya ada orang di rumah"
+    ],
+    "q6": "6. Adakah semua ahli rumah bersetuju untuk mengangkat?",
+    "q6Options": [
+      "Ya, semua bersetuju",
+      "Kebanyakan mereka",
+      "Saya tinggal sendiri",
+      "Belum dibincangkan"
+    ],
+    "q7": "7. Ada apa-apa lagi yang anda ingin penyelamat tahu?",
+    "charCount": "{count} / 500",
+    "missingRequired": "Sila jawab semua soalan wajib sebelum menghantar.",
+    "cantApplyOwn": "Anda tidak boleh memohon untuk mengangkat haiwan senarai anda sendiri.",
+    "listingUnavailable": "Senarai ini tidak tersedia untuk permohonan sekarang.",
+    "submitError": "Terdapat ralat semasa menghantar permohonan anda. Sila cuba lagi.",
+    "submitting": "Menghantar...",
+    "submit": "Hantar Permohonan →"
+  },
+  "ApplyThankYou": {
+    "heading": "Terima Kasih Atas Minat Anda!",
+    "headingWithPet": "Terima Kasih Atas Minat Anda Terhadap <em>{name}</em>!",
+    "subtitle": "Permohonan anda telah dihantar. Kami akan memberitahu anda sebaik sahaja penyelamat membalas.",
+    "whatHappensNext": "Apa yang akan berlaku seterusnya?",
+    "step1Title": "Permohonan diterima",
+    "step1Desc": "Kami telah menghantar permohonan anda kepada penyelamat.",
+    "step2Title": "Sedang disemak",
+    "step2Desc": "Penyelamat sedang menyemak permohonan dan jawapan anda.",
+    "step3Title": "Menunggu keputusan",
+    "step3Desc": "Anda akan dimaklumkan sebaik sahaja keputusan dibuat.",
+    "checkApplications": "Semak Permohonan Saya",
+    "browseMore": "Lihat Lebih Ramai Haiwan"
+  },
+  "Login": {
+    "welcomeBack": "Selamat kembali ke FurriHearts",
+    "welcomeBackSub": "Teruskan perjalanan anda mencari sahabat selamanya.",
+    "title": "Log masuk",
+    "noAccount": "Tidak mempunyai akaun?",
+    "signUp": "Daftar →",
+    "emailLabel": "Alamat E-mel",
+    "passwordLabel": "Kata Laluan",
+    "forgotPassword": "Lupa kata laluan?",
+    "captchaVerified": "✅ Anda bukan robot",
+    "captchaUnverified": "Saya bukan robot",
+    "loggingIn": "Sedang log masuk...",
+    "logIn": "Log Masuk",
+    "orContinueWith": "atau teruskan dengan",
+    "continueWithGoogle": "🌐 Teruskan dengan Google",
+    "invalidEmail": "Sila masukkan e-mel yang sah",
+    "passwordTooShort": "Kata laluan mesti sekurang-kurangnya 8 aksara",
+    "captchaRequired": "Sila lengkapkan CAPTCHA",
+    "googleLoginFailed": "Log masuk Google gagal: {message}"
+  },
+  "Signup": {
+    "logoText": "FurriHearts",
+    "title": "Cipta akaun anda",
+    "haveAccount": "Sudah mempunyai akaun?",
+    "logIn": "Log masuk",
+    "stepAccount": "Akaun",
+    "stepSecurity": "Keselamatan",
+    "stepDone": "Selesai",
+    "firstName": "Nama Pertama",
+    "lastName": "Nama Akhir",
+    "email": "E-mel",
+    "password": "Kata Laluan",
+    "continue": "Teruskan",
+    "back": "← Kembali",
+    "captchaUnverified": "Klik untuk mengesahkan anda manusia",
+    "captchaVerified": "✅ Disahkan",
+    "creating": "Mencipta...",
+    "createAccount": "Cipta Akaun",
+    "welcome": "Selamat datang!",
+    "accountReady": "Akaun anda sudah sedia. Apa yang anda ingin lakukan dahulu?",
+    "wantToAdopt": "Saya ingin mengangkat",
+    "wantToAdoptDesc": "Cari haiwan yang mencari rumah selamanya berdekatan anda.",
+    "wantToList": "Saya ingin senaraikan haiwan",
+    "wantToListDesc": "Cipta senarai percuma untuk mencari rumah bagi haiwan yang anda selamatkan.",
+    "explorePets": "Jelajah Haiwan",
+    "firstNameRequired": "Nama pertama diperlukan",
+    "lastNameRequired": "Nama akhir diperlukan",
+    "validEmailRequired": "E-mel yang sah diperlukan",
+    "minCharsRequired": "Sekurang-kurangnya 8 aksara diperlukan"
+  },
+  "ForgotPassword": {
+    "title": "Lupa kata laluan anda?",
+    "subtitle": "Jangan risau — kami akan hantar pautan untuk menetapkannya semula.",
+    "checkEmail": "Semak e-mel anda",
+    "checkEmailDesc": "Jika akaun wujud untuk <strong>{email}</strong>, kami telah menghantar pautan untuk menetapkan semula kata laluan anda.",
+    "backToLogin": "Kembali log masuk",
+    "resetPassword": "Tetapkan semula kata laluan",
+    "rememberedIt": "Sudah ingat?",
+    "logIn": "Log masuk →",
+    "emailLabel": "Alamat E-mel",
+    "sending": "Menghantar...",
+    "sendResetLink": "Hantar pautan tetapan semula",
+    "invalidEmail": "Sila masukkan e-mel yang sah"
+  },
+  "ResetPassword": {
+    "title": "Tetapkan kata laluan baharu",
+    "subtitle": "Hampir selesai — pilih kata laluan baharu yang kukuh.",
+    "passwordUpdated": "Kata laluan dikemas kini",
+    "redirecting": "Mengalihkan anda ke papan pemuka anda...",
+    "newPassword": "Kata laluan baharu",
+    "newPasswordLabel": "Kata Laluan Baharu",
+    "confirmPasswordLabel": "Sahkan Kata Laluan",
+    "passwordTooShort": "Kata laluan mesti sekurang-kurangnya 8 aksara",
+    "passwordsDontMatch": "Kata laluan tidak sepadan",
+    "updating": "Mengemas kini...",
+    "updatePassword": "Kemas kini kata laluan"
+  },
+  "RescuerLanding": {
+    "heroTag": "Untuk Penyelamat",
+    "heroTitle": "Cari Rumah Baharu dengan <em>Hati</em> 🐾",
+    "heroSub": "FurriHearts membantu penyelamat seperti anda mencari rumah selamanya yang sempurna untuk setiap kucing — dengan alat pintar, senarai berbantukan AI, dan komuniti yang prihatin.",
+    "startListing": "✨ Mulakan Senarai Pertama Anda",
+    "activeRescuers": "Penyelamat Aktif",
+    "successfulAdoptions": "Pengangkatan Berjaya",
+    "hiddenFees": "Yuran Tersembunyi",
+    "madeForMalaysia": "Dibuat untuk Malaysia",
+    "alwaysFree": "Sentiasa Percuma untuk Disenaraikan",
+    "featuresTag": "CIRI-CIRI",
+    "featuresTitle": "Semua yang anda perlukan untuk <em>mencari rumah baharu dengan mudah</em>",
+    "featuresSub": "Dibina untuk penyelamat, oleh mereka yang menyayangi haiwan.",
+    "feature1Title": "Senarai Berbantukan AI",
+    "feature1Desc": "Muat naik foto dan isi beberapa butiran — AI kami menulis catatan pengangkatan yang menarik untuk anda.",
+    "feature2Title": "Pengurusan Permohonan Pintar",
+    "feature2Desc": "Semak permohonan pengangkat, tapis mengikut kesesuaian, dan berkomunikasi dengan mudah — semuanya di satu tempat.",
+    "feature3Title": "Lencana Penyelamat Disahkan",
+    "feature3Desc": "Disahkan untuk membina kepercayaan dengan pengangkat. Penyelamat yang disahkan menerima 3x lebih banyak permohonan.",
+    "feature4Title": "Papan Pemuka & Analitik",
+    "feature4Desc": "Jejaki senarai anda, pantau status permohonan, dan ukur impak pengangkatan anda dari semasa ke semasa.",
+    "feature5Title": "Tingkatkan Senarai Anda",
+    "feature5Desc": "Paparkan haiwan di halaman utama selama 7–30 hari bermula serendah RM15, supaya lebih ramai pengangkat melihatnya dahulu.",
+    "howItWorksTag": "CARA IA BERFUNGSI",
+    "forRescuersTab": "🏅 Untuk Penyelamat",
+    "forAdoptersTab": "🐱 Untuk Pengangkat",
+    "rescuerStepsTitle": "Langkah mudah untuk <em>pencarian rumah baharu yang berjaya</em>",
+    "rescuerStep1Title": "Cipta Senarai",
+    "rescuerStep1Desc": "Muat naik foto, tambah butiran asas, dan biarkan AI kami menjana profil pengangkatan yang menarik dalam beberapa saat.",
+    "rescuerStep2Title": "Semak Permohonan",
+    "rescuerStep2Desc": "Terima dan semak soal selidik pengangkat. Tapis mengikut skor kesesuaian dan berkomunikasi terus.",
+    "rescuerStep3Title": "Luluskan & Berhubung",
+    "rescuerStep3Desc": "Luluskan pengangkat pilihan anda, atur pertemuan, dan raikan pencarian rumah baharu yang berjaya! 🎉",
+    "startListingArrow": "Mulakan Senarai Pertama Anda →",
+    "adopterStepsTitle": "Langkah mudah untuk mencari <em>padanan sempurna</em> anda",
+    "adopterStep1Title": "Cari Padanan Anda",
+    "adopterStep1Desc": "Cari haiwan untuk menemui kucing yang benar-benar sesuai dengan gaya hidup dan rumah anda.",
+    "adopterStep2Title": "Mohon untuk Mengangkat",
+    "adopterStep2Desc": "Hantar soal selidik ringkas — maklumat profil anda disertakan secara automatik supaya hanya mengambil masa beberapa minit.",
+    "adopterStep3Title": "Selamat Pulang",
+    "adopterStep3Desc": "Setelah diluluskan, atur pengambilan dengan penyelamat dan bawa ahli keluarga baharu anda pulang! 🏠",
+    "browsePets": "🐾 Lihat Haiwan →",
+    "storiesTag": "KISAH PENYELAMAT",
+    "storiesTitle": "Penyelamat menyukai <em>FurriHearts</em>",
+    "proofQuote1": "\"FurriHearts telah mengubah cara saya mencari rumah baharu untuk haiwan yang saya selamatkan. Alat senarai AI menjimatkan masa saya setiap minggu dan permohonan kini lebih tersusun.\"",
+    "proofName1": "Sheryl Ng",
+    "proofRole1": "Penyelamat Bebas · KL"
+  },
+  "About": {
+    "tag": "Tentang Kami",
+    "title": "Menyatukan hati, <em>mencipta rumah selamanya</em> 🐾",
+    "subtitle": "FurriHearts menghubungkan haiwan yang diselamatkan di seluruh Malaysia dengan mereka yang sedia menyayanginya.",
+    "animalsListed": "Haiwan Disenaraikan",
+    "successfulAdoptions": "Pengangkatan Berjaya",
+    "activeRescuers": "Penyelamat Aktif",
+    "justStarting": "Baru bermula — jadilah salah seorang penyelamat pertama kami",
+    "missionTitle": "Misi Kami",
+    "mission1": "Kami memulakan FurriHearts kerana mencari rumah penyayang untuk haiwan yang diselamatkan di Malaysia adalah lebih sukar daripada yang sepatutnya. Penyelamat bebas melakukan kerja yang luar biasa tanpa platform untuk menghubungi pengangkat yang sesuai — jadi kami membinanya.",
+    "mission2": "Kini, FurriHearts memberi setiap <rescuer>penyelamat</rescuer> cara percuma dan mudah untuk menyenaraikan haiwan, dan setiap <adopter>pengangkat</adopter> tempat yang dipercayai untuk mencari sahabat baharu mereka.",
+    "rescuerHighlight": "penyelamat",
+    "adopterHighlight": "pengangkat",
+    "value1Title": "Haiwan diutamakan",
+    "value1Desc": "Setiap keputusan yang kami buat bermula dengan apa yang terbaik untuk haiwan.",
+    "value2Title": "Kepercayaan & ketelusan",
+    "value2Desc": "Penyelamat disahkan, senarai jujur, tanpa yuran tersembunyi.",
+    "value3Title": "Dibina untuk Malaysia",
+    "value3Desc": "Baka tempatan, penyelamat tempatan, komuniti tempatan.",
+    "ctaTitle": "Ingin membantu lebih ramai haiwan mencari rumah?",
+    "ctaSub": "Sama ada anda mengangkat atau menyelamatkan, anda adalah sebahagian daripada misi ini.",
+    "browsePets": "Lihat Haiwan",
+    "listAPet": "Senaraikan Haiwan"
+  },
+  "Contact": {
+    "tag": "Hubungi kami",
+    "title": "Bagaimana kami boleh <em>membantu?</em> 🐾",
+    "subtitle": "Kami biasanya membalas dalam masa 2 hari bekerja.",
+    "email": "E-mel",
+    "phone": "Telefon",
+    "whatsapp": "WhatsApp",
+    "chatWithUs": "Berbual dengan kami",
+    "sendMessage": "Hantar mesej kepada kami",
+    "formIntro": "Isi borang dan kami akan menghubungi anda semula.",
+    "faqTitle": "Soalan Lazim",
+    "faq1Q": "Berapa lama untuk mendapat maklum balas daripada penyelamat?",
+    "faq1A": "Kebanyakan penyelamat membalas dalam masa 24 jam selepas anda menghantar permohonan.",
+    "faq2Q": "Adakah menyenaraikan haiwan percuma?",
+    "faq2A": "Ya — menyenaraikan haiwan untuk pengangkatan di FurriHearts adalah sepenuhnya percuma.",
+    "faq3Q": "Bagaimana saya melaporkan senarai yang mencurigakan?",
+    "faq3A": "Gunakan butang Laporkan pada profil haiwan, atau hubungi kami menggunakan borang di halaman ini."
+  },
+  "ContactForm": {
+    "messageSent": "Mesej dihantar!",
+    "thanks": "Terima kasih kerana menghubungi kami — kami biasanya membalas dalam masa 2 hari bekerja.",
+    "yourName": "Nama Anda",
+    "email": "E-mel",
+    "category": "Kategori",
+    "categoryGeneral": "Soalan Umum",
+    "categoryReport": "Laporkan Senarai",
+    "categoryAccount": "Isu Akaun",
+    "categoryPartnership": "Perkongsian",
+    "categoryOther": "Lain-lain",
+    "message": "Mesej",
+    "sending": "Menghantar...",
+    "send": "Hantar Mesej"
+  },
+  "Guide": {
+    "tag": "Panduan Pengangkatan",
+    "title": "Panduan lengkap anda untuk <em>mengangkat haiwan</em> 🐾",
+    "subtitle": "Semua yang anda perlu tahu — dari menyediakan rumah anda hingga minggu-minggu pertama bersama ahli keluarga berbulu baharu anda.",
+    "navPrepare": "Sediakan Rumah Anda",
+    "navFirstDays": "Hari-hari Pertama di Rumah",
+    "navCosts": "Memahami Kos",
+    "navHealth": "Kesihatan & Penjagaan Veterinar",
+    "navBrowse": "🐾 Lihat Haiwan",
+    "step1": "Langkah 1",
+    "prepareTitle": "Sediakan Rumah Anda",
+    "prepareIntro": "Sebelum membawa haiwan baharu anda pulang, pastikan ruang anda selamat, terjamin, dan mesra.",
+    "checklist": [
+      {
+        "title": "Pastikan semua tingkap dan balkoni selamat",
+        "desc": "Haiwan peliharaan suka menjelajah. Pasang jaring atau gril untuk mengelakkan terlepas atau terjatuh."
+      },
+      {
+        "title": "Sediakan kotak pasir atau kawasan tandas",
+        "desc": "Kucing memerlukan kotak pasir di tempat yang tenang. Anjing memerlukan kawasan luar atau pad khusus."
+      },
+      {
+        "title": "Sediakan bilik yang tenang untuk hari-hari pertama",
+        "desc": "Ruang kecil yang tenang membantu haiwan anda menyesuaikan diri tanpa berasa terbeban."
+      },
+      {
+        "title": "Buang tumbuhan toksik dan bahaya",
+        "desc": "Tumbuhan toksik biasa termasuk lili, pothos, dan lidah buaya. Selamatkan wayar terdedah juga."
+      },
+      {
+        "title": "Stok keperluan asas",
+        "desc": "Makanan, mangkuk air, sangkar, mainan, dan tempat tidur atau berehat."
+      },
+      {
+        "title": "Cari doktor haiwan berdekatan",
+        "desc": "Sediakan doktor haiwan sebelum haiwan anda tiba untuk ketenangan fikiran."
+      }
+    ],
+    "step2": "Langkah 2",
+    "firstDaysTitle": "Hari-hari Pertama di Rumah",
+    "firstDaysIntro": "Beberapa hari pertama amat penting. Beri haiwan anda masa dan ruang untuk menjelajah dan menyesuaikan diri mengikut kadarnya sendiri.",
+    "phase1Title": "Hari 1 — Tiba & Menetap",
+    "phase1Desc": "Biarkan haiwan anda menjelajah satu bilik dahulu. Jangan paksa interaksi. Letakkan makanan, air, dan tempat tidur di dalam bilik.",
+    "phase1Tips": [
+      "Pastikan ia tenang — tiada muzik kuat atau tetamu",
+      "Biarkan ia mendekati anda, bukan sebaliknya",
+      "Kekal tenang dan bercakap dengan nada lembut"
+    ],
+    "phase2Title": "Hari 2–7 — Bina Kepercayaan",
+    "phase2Desc": "Perkenalkan lebih banyak bahagian rumah secara beransur-ansur. Tawarkan snek, permainan lembut, dan rutin yang konsisten.",
+    "phase2Tips": [
+      "Gunakan nada yang tenang dan menenangkan",
+      "Bermain untuk membina keyakinan dan ikatan",
+      "Tetapkan masa makan yang tetap"
+    ],
+    "phase3Title": "Minggu 2 ke atas — Berkembang",
+    "phase3Desc": "Kebanyakan haiwan mula menunjukkan personaliti sebenar mereka selepas 2 minggu. Inilah masa keajaiban berlaku! 🐾",
+    "phase3Tips": [
+      "Perkenalkan ahli keluarga secara perlahan-lahan",
+      "Tempah lawatan doktor haiwan pertama jika belum dilakukan",
+      "Mulakan rutin penjagaan/dandanan secara tetap"
+    ],
+    "costsTag": "Kos",
+    "costsTitle": "Memahami Kos",
+    "costsIntro": "Memiliki haiwan peliharaan adalah komitmen jangka panjang. Berikut adalah anggaran sebenar untuk membantu anda merancang.",
+    "costCategory": "Kategori",
+    "costOneTime": "Sekali Bayar",
+    "costMonthly": "Bulanan",
+    "costAdoptionFee": "Yuran Pengangkatan",
+    "costStarterSupplies": "Bekalan Permulaan",
+    "costFood": "Makanan",
+    "costLitter": "Pasir Kucing / Kebersihan",
+    "costVet": "Doktor Haiwan & Vaksinasi",
+    "costEstimatedTotal": "Anggaran Jumlah",
+    "healthTag": "Kesihatan & Penjagaan",
+    "healthTitle": "Mengekalkan Kesihatan Haiwan Anda",
+    "healthIntro": "Penjagaan berkala memastikan haiwan anda gembira dan mengelakkan masalah kesihatan yang mahal pada masa hadapan.",
+    "tip1Title": "Pemeriksaan Doktor Haiwan Tahunan",
+    "tip1Desc": "Walaupun haiwan yang sihat memerlukan lawatan kesihatan tahunan. Pengesanan awal menyelamatkan nyawa dan kos.",
+    "tip2Title": "Vaksinasi",
+    "tip2Desc": "Vaksin utama berbeza mengikut spesies. Pastikan vaksin penggalak dikemas kini seperti yang disyorkan doktor haiwan anda.",
+    "tip3Title": "Rawatan Cacing & Kutu",
+    "tip3Desc": "Rawatan cacing berkala setiap 3–6 bulan. Pencegahan kutu dan kutu busuk bulanan disyorkan.",
+    "tip4Title": "Pemandulan / Pengembiraan",
+    "tip4Desc": "Mengelakkan kelahiran yang tidak diingini dan mengurangkan risiko kanser dan masalah tingkah laku tertentu.",
+    "ctaTitle": "Sedia untuk mencari padanan sempurna anda? 🐾",
+    "ctaSub": "Cari haiwan yang tersedia berdekatan anda.",
+    "ctaBtn": "🐾 Lihat Haiwan"
+  },
+  "Legal": {
+    "tag": "Undang-undang",
+    "title": "Privasi & Terma",
+    "lastUpdated": "Kemas kini terakhir Jun 2026",
+    "privacyTab": "Polisi Privasi",
+    "termsTab": "Terma Perkhidmatan",
+    "privacySections": [
+      {
+        "h": "Maklumat Yang Kami Kumpul",
+        "p": "Kami mengumpul nama, e-mel, nombor telefon anda, dan sebarang butiran yang anda berikan semasa menyenaraikan haiwan atau menghantar permohonan pengangkatan."
+      },
+      {
+        "h": "Bagaimana Kami Menggunakan Maklumat Anda",
+        "p": "Kami menggunakan maklumat anda untuk menghubungkan pengangkat dengan penyelamat, menghantar kemas kini permohonan, dan menambah baik platform."
+      },
+      {
+        "h": "Berkongsi Maklumat Anda",
+        "p": "Kami hanya berkongsi butiran hubungan anda dengan pihak lain dalam pengangkatan (contohnya penyelamat atau pengangkat) sebaik permohonan diluluskan."
+      }
+    ],
+    "termsSections": [
+      {
+        "h": "Menggunakan FurriHearts",
+        "p": "FurriHearts adalah platform percuma yang menghubungkan penyelamat dan pengangkat haiwan di Malaysia. Anda mestilah berumur 18 tahun ke atas untuk menyenaraikan atau memohon haiwan."
+      },
+      {
+        "h": "Senarai",
+        "p": "Penyelamat bertanggungjawab terhadap ketepatan senarai mereka. FurriHearts tidak mengesahkan dakwaan kesihatan atau perangai dalam mana-mana senarai."
+      },
+      {
+        "h": "Tatalaku",
+        "p": "Gangguan, penipuan, atau penyalahgunaan maklumat hubungan yang dikongsi melalui platform boleh menyebabkan akaun digantung."
+      }
+    ],
+    "haveQuestions": "Ada soalan?",
+    "contactUs": "Hubungi kami"
+  },
+  "CarePackages": {
+    "tag": "Untuk Pengangkat Baharu",
+    "title": "Pek Penjagaan Haiwan 🎁",
+    "subtitle": "Semua yang haiwan baharu anda perlukan, dibungkus dan dihantar ke seluruh Malaysia.",
+    "freeDelivery": "Penghantaran percuma untuk pesanan atas RM100",
+    "vetApproved": "Produk diluluskan doktor haiwan",
+    "returns": "Pemulangan 7 hari",
+    "supportsRescues": "Menyokong penyelamat tempatan",
+    "inquireToOrder": "Bertanya untuk Memesan",
+    "packages": [
+      {
+        "name": "Pek Permulaan",
+        "tag": "Popular",
+        "items": [
+          "Makanan (2kg)",
+          "Pasir Kucing (5L)",
+          "Set mainan",
+          "Mangkuk makan"
+        ]
+      },
+      {
+        "name": "Bundle Kesihatan",
+        "tag": "Disyorkan",
+        "items": [
+          "Pil cacing",
+          "Rawatan kutu",
+          "Suplemen vitamin"
+        ]
+      },
+      {
+        "name": "Set Keselesaan",
+        "tag": "Baharu",
+        "items": [
+          "Tempat tidur haiwan",
+          "Beg sangkar",
+          "Berus dandanan"
+        ]
+      }
+    ]
+  }
+}

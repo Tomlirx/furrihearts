@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
+  const t = useTranslations('HomeSearch');
   const router = useRouter();
   
   // Default to 'cat' to match your original HTML design
@@ -52,7 +54,7 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
                   gap: '6px'
                 }}
               >
-                🐱 Cat
+                {t('cat')}
               </button>
 
               <button 
@@ -74,7 +76,7 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
                   gap: '6px'
                 }}
               >
-                🐶 Dog
+                {t('dog')}
               </button>
 
             </div>
@@ -84,10 +86,13 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
 
           {/* Location */}
           <div className="search-field">
-            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--light)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: '6px' }}>📍 Where in Malaysia?</label>
-            <select 
-              className="search-select" 
-              value={location} 
+            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: 'var(--light)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: '6px' }}>{t('locationLabel')}</label>
+            {/* State names stay English regardless of locale — the option
+                text doubles as the filter value, so translating it would
+                require a separate value/label split for no real benefit. */}
+            <select
+              className="search-select"
+              value={location}
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="Anywhere in Malaysia">Anywhere in Malaysia</option>
@@ -97,7 +102,7 @@ export function HomeSearch({ launchedStates }: { launchedStates: string[] }) {
             </select>
           </div>
 
-          <button type="submit" className="btn-search">Find a Pet 🐾</button>
+          <button type="submit" className="btn-search">{t('submit')}</button>
         </form>
       </div>
     </div>

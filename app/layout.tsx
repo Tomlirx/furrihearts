@@ -1,8 +1,11 @@
 // app/layout.tsx
 import type { Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import "./globals.css";
 import { createClient } from '@/utils/supabase/server';
+import { pickMessages } from '@/lib/intl';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -27,13 +30,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     isAuditor = !!profile?.is_auditor;
   }
 
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const chromeMessages = pickMessages(messages, ['Navbar']);
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       {/* Apply the font variables to the body */}
       <body className={`${dmSans.variable} ${fraunces.variable}`}>
-        <Navbar user={user} isAdmin={isAdmin} isAuditor={isAuditor} />
-        <main>{children}</main>
-        <Footer />
+        <NextIntlClientProvider locale={locale} messages={chromeMessages}>
+          <Navbar user={user} isAdmin={isAdmin} isAuditor={isAuditor} />
+          <main>{children}</main>
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
