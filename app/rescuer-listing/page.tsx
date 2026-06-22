@@ -10,11 +10,56 @@ import { getLaunchedStates } from '@/lib/locations';
 // Arrays for dynamic filtering
 const CAT_BREEDS = ['Domestic Shorthair', 'Domestic Longhair', 'Persian', 'Siamese', 'Maine Coon', 'Ragdoll', 'Scottish Fold', 'Bengal', 'British Shorthair', 'Other'];
 const DOG_BREEDS = ['Kampung Dog', 'Labrador Retriever', 'Golden Retriever', 'Poodle', 'Shih Tzu', 'Maltese', 'Corgi', 'Husky', 'Beagle', 'Dachshund', 'Schnauzer', 'Border Collie', 'Other'];
-const AI_DESCRIPTIONS = [
-  "Milo is a friendly and curious young kitten who was found near a residential condo, where he quickly won everyone over with his playful personality. He loves following people around and is never short of affection to give. Despite his young age, he is confident, social, and settles in quickly with new surroundings. Milo is looking for a loving indoor home where he can grow up safe and cherished.",
-  "Meet Milo — a cheerful little orange tabby with a big personality! Found exploring on his own, Milo immediately showed how social and trusting he is. He's playful, affectionate, and loves being around people. At just 2–4 months old, he's ready to grow up in a warm, loving home where he'll thrive with patience and care.",
-  "Milo is a spirited young kitten full of energy and love. He was found near a condo and has been friendly from day one — following his foster carer everywhere and purring non-stop. He gets along well with other cats and would be a wonderful companion for anyone looking for a lively, affectionate addition to their family."
-];
+function buildDescription({ name, petType, breed, gender, age, traits, indoor }: {
+  name: string; petType: string; breed: string; gender: string; age: string; traits: string[]; indoor: string;
+}) {
+  const petName = name || (petType === 'cat' ? 'This cat' : 'This dog');
+  const pronoun = gender === 'Male' ? 'He' : gender === 'Female' ? 'She' : 'They';
+  const possessive = gender === 'Male' ? 'his' : gender === 'Female' ? 'her' : 'their';
+
+  const openings = [
+    `${petName} is a ${age} ${breed} looking for a loving home.`,
+    `Meet ${petName}, a ${age} ${breed} ready for a fresh start.`,
+    `${petName} is a ${breed} around ${age} old, hoping to find a forever family.`,
+  ];
+
+  let personality: string;
+  if (traits.length > 0) {
+    const traitList = traits.map((t) => t.toLowerCase());
+    const joined = traitList.length === 1
+      ? traitList[0]
+      : `${traitList.slice(0, -1).join(', ')} and ${traitList[traitList.length - 1]}`;
+    const personalityOptions = [
+      `${pronoun} is known for being ${joined}.`,
+      `${petName} is ${joined} — the kind of companion who makes a house feel like home.`,
+      `Foster carers describe ${possessive} personality as ${joined}.`,
+    ];
+    personality = personalityOptions[Math.floor(Math.random() * personalityOptions.length)];
+  } else {
+    personality = `${pronoun} is still settling in, and ${possessive} full personality is waiting to be discovered by the right family.`;
+  }
+
+  const closings = indoor === 'yes' ? [
+    `${petName} does best as a strictly indoor pet and would love a safe, comfortable home to settle into.`,
+    `Looking for a quiet, indoor-only home where ${pronoun.toLowerCase()} can feel safe and loved.`,
+  ] : [
+    `${petName} would thrive with a family that can give ${possessive} space to roam and explore safely.`,
+    `With access to the outdoors and a loving family, ${petName} would settle in beautifully.`,
+  ];
+
+  const cta = [
+    `Could ${petName} be the newest member of your family?`,
+    `Reach out today to learn more about adopting ${petName}.`,
+    `${petName} is ready to meet ${possessive} new family — could that be you?`,
+  ];
+
+  return [
+    openings[Math.floor(Math.random() * openings.length)],
+    personality,
+    closings[Math.floor(Math.random() * closings.length)],
+    cta[Math.floor(Math.random() * cta.length)],
+  ].join(' ');
+}
 
 export default function RescuerListingFlow() {
   const router = useRouter();
@@ -45,7 +90,6 @@ export default function RescuerListingFlow() {
   const [description, setDescription] = useState('');
   
   // UI State for Step 3
-  const [descIndex, setDescIndex] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [traitsWarning, setTraitsWarning] = useState(false);
@@ -130,8 +174,15 @@ export default function RescuerListingFlow() {
   const handleGenerate = () => {
     setIsGenerating(true);
     setTimeout(() => {
-      setDescription(AI_DESCRIPTIONS[descIndex % AI_DESCRIPTIONS.length]);
-      setDescIndex(prev => prev + 1);
+      setDescription(buildDescription({
+        name,
+        petType,
+        breed: breed === 'Other' ? customBreed : breed,
+        gender,
+        age,
+        traits,
+        indoor,
+      }));
       setIsGenerating(false);
       setHasGenerated(true);
     }, 1200);
