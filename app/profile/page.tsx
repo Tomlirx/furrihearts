@@ -31,9 +31,6 @@ export default async function ProfilePage() {
             <span className={user!.email_confirmed_at ? 'badge-verified' : 'badge-pending'}>
               {user!.email_confirmed_at ? '✅ Email Verified' : '⏳ Email Pending'}
             </span>
-            <span className={profile?.is_id_verified ? 'badge-verified' : 'badge-pending'}>
-              {profile?.is_id_verified ? '✅ ID Verified' : '⏳ ID Pending'}
-            </span>
           </div>
         </div>
         <div className="profile-header-actions">
@@ -51,11 +48,6 @@ export default async function ProfilePage() {
         <div className="profile-section">
           <h2>About Me</h2>
           <p className="profile-bio">{profile?.bio || 'No bio added yet — tell adopters a bit about your rescue work in Edit Profile.'}</p>
-          {profile?.specialities?.length > 0 && (
-            <div className="speciality-tags">
-              {profile.specialities.map((s: string) => <span key={s} className="speciality-tag">{s}</span>)}
-            </div>
-          )}
         </div>
       )}
 

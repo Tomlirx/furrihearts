@@ -56,28 +56,6 @@ export default function EditProfileForm({ profile, email }: { profile: any; emai
         </div>
 
         <div className="profile-section">
-          <h2>Specialities</h2>
-          <p className="field-hint">Comma-separated, e.g. Kittens, Senior Cats, Special Needs</p>
-          <input name="specialities" className="form-input" defaultValue={(profile?.specialities || []).join(', ')} />
-        </div>
-
-        <div className="profile-section">
-          <h2>Serving Areas</h2>
-          <p className="field-hint">Comma-separated, e.g. Kuala Lumpur, Petaling Jaya</p>
-          <input name="servingAreas" className="form-input" defaultValue={(profile?.serving_areas || []).join(', ')} />
-        </div>
-
-        <div className="profile-section">
-          <h2>Typical Response Time</h2>
-          <select name="responseTime" className="form-input" defaultValue={profile?.response_time || 'Within 24 hours'}>
-            <option>Within a few hours</option>
-            <option>Within 24 hours</option>
-            <option>Within 2–3 days</option>
-            <option>Within a week</option>
-          </select>
-        </div>
-
-        <div className="profile-section">
           <h2>Contact Visibility</h2>
           <p className="field-hint">When contact sharing is off, adopters can still apply through FurriHearts.</p>
           <label className="toggle-row"><input type="checkbox" name="showEmail" defaultChecked={profile?.show_email ?? true} /> Show Email</label>
@@ -88,7 +66,6 @@ export default function EditProfileForm({ profile, email }: { profile: any; emai
         <div className="profile-section">
           <h2>Verification & Trust</h2>
           <div className="detail-row"><span>Email</span><span>✅ Verified</span></div>
-          <div className="detail-row"><span>ID Verification</span><span>{profile?.is_id_verified ? '✅ Verified' : '⏳ Pending'}</span></div>
         </div>
 
         <div className="profile-section">

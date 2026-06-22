@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import type { Pet } from '@/lib/pet-service';
-import MessageComposer from '@/components/MessageComposer';
 
 export function RescuerSidebar({
   pet,
@@ -20,10 +19,6 @@ export function RescuerSidebar({
   const benefits = t.raw('benefits') as string[];
 
   const isOwnPet = Boolean(currentUserId && pet.rescuer_id && currentUserId === pet.rescuer_id);
-  const isClosedConversation = userApplication?.status === 'cancelled' || userApplication?.status === 'closed';
-  const canMessage = Boolean(
-    currentUserId && pet.rescuer_id && pet.rescuer_id !== 'demo-rescuer' && currentUserId !== pet.rescuer_id
-  ) && !isClosedConversation;
   const isBlockingApplication = userApplication && ['pending', 'approved'].includes(userApplication.status);
 
   return (
@@ -38,17 +33,6 @@ export function RescuerSidebar({
           <Link href={`/profile/${pet.rescuer_id}`} className="rescuer-link">{t('viewRescuerInfo')}</Link>
         </div>
       </div>
-
-      {canMessage && (
-        <div style={{ marginBottom: '12px' }}>
-          <MessageComposer
-            recipientId={pet.rescuer_id!}
-            petId={pet.id}
-            triggerLabel={t('messageFirstName', { name: rescuerName.split(' ')[0] })}
-            triggerClassName="btn-message"
-          />
-        </div>
-      )}
 
       {isOwnPet ? (
         <div className="application-status-banner status-pending">{t('ownListing')}</div>

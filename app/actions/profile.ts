@@ -13,9 +13,6 @@ export async function updateProfile(formData: FormData) {
   const phone = formData.get('phone') as string;
   const location = formData.get('location') as string;
   const bio = formData.get('bio') as string;
-  const responseTime = formData.get('responseTime') as string;
-  const specialities = (formData.get('specialities') as string || '').split(',').map((s) => s.trim()).filter(Boolean);
-  const servingAreas = (formData.get('servingAreas') as string || '').split(',').map((s) => s.trim()).filter(Boolean);
   const showEmail = formData.get('showEmail') === 'on';
   const showPhone = formData.get('showPhone') === 'on';
   const showWhatsapp = formData.get('showWhatsapp') === 'on';
@@ -29,9 +26,6 @@ export async function updateProfile(formData: FormData) {
       phone,
       location,
       bio,
-      response_time: responseTime,
-      specialities,
-      serving_areas: servingAreas,
       show_email: showEmail,
       show_phone: showPhone,
       show_whatsapp: showWhatsapp,

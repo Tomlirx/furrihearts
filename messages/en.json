@@ -149,6 +149,12 @@
       "neutered": "Neutered",
       "fleaTreated": "Flea Treated",
       "pottyTrained": "Potty Trained",
+      "parvoTested": "Parvo Tested",
+      "giardiaTested": "Giardia Tested",
+      "fivTested": "FIV Tested",
+      "felvTested": "FeLV Tested",
+      "fcovTested": "FCoV Tested",
+      "heartwormTested": "Heartworm Tested",
       "adoptionInformation": "Adoption Information",
       "adoptionFee": "Adoption Fee",
       "location": "Location",
@@ -324,7 +330,10 @@
     "passwordTooShort": "Password must be at least 8 characters",
     "passwordsDontMatch": "Passwords don't match",
     "updating": "Updating...",
-    "updatePassword": "Update password"
+    "updatePassword": "Update password",
+    "invalidLinkTitle": "This link is invalid or has expired",
+    "invalidLinkSubtitle": "Password reset links can only be used once and expire after a short time.",
+    "requestNewLink": "Request a new link"
   },
   "RescuerLanding": {
     "heroTag": "For Rescuers",

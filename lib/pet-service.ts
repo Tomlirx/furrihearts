@@ -28,6 +28,12 @@ export interface Pet {
   is_neutered?: boolean;
   is_flea_treated?: boolean;
   is_potty_trained?: boolean;
+  is_parvo_tested?: boolean;
+  is_giardia_tested?: boolean;
+  is_fiv_tested?: boolean;
+  is_felv_tested?: boolean;
+  is_fcov_tested?: boolean;
+  is_heartworm_tested?: boolean;
   featured_until?: string | null;
   is_hidden?: boolean;
   is_featured?: boolean;

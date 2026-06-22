@@ -149,6 +149,12 @@
       "neutered": "已绝育",
       "fleaTreated": "已除蚤",
       "pottyTrained": "已训练定点排便",
+      "parvoTested": "已检测犬细小病毒",
+      "giardiaTested": "已检测贾第虫",
+      "fivTested": "已检测猫艾滋病病毒",
+      "felvTested": "已检测猫白血病病毒",
+      "fcovTested": "已检测猫冠状病毒",
+      "heartwormTested": "已检测心丝虫",
       "adoptionInformation": "领养信息",
       "adoptionFee": "领养费",
       "location": "地区",
@@ -324,7 +330,10 @@
     "passwordTooShort": "密码必须至少 8 个字符",
     "passwordsDontMatch": "两次输入的密码不一致",
     "updating": "更新中……",
-    "updatePassword": "更新密码"
+    "updatePassword": "更新密码",
+    "invalidLinkTitle": "此链接无效或已过期",
+    "invalidLinkSubtitle": "密码重置链接只能使用一次，且会在短时间内失效。",
+    "requestNewLink": "重新申请链接"
   },
   "RescuerLanding": {
     "heroTag": "救援人士专区",

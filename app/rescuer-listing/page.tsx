@@ -168,6 +168,12 @@ export default function RescuerListingFlow() {
         is_neutered: health.includes('Neutered'),
         is_flea_treated: health.includes('Flea Treated'),
         is_potty_trained: health.includes('Potty Trained'),
+        is_parvo_tested: health.includes('Parvo'),
+        is_giardia_tested: health.includes('Giardia'),
+        is_fiv_tested: health.includes('FIV Tested'),
+        is_felv_tested: health.includes('FeLV Tested'),
+        is_fcov_tested: health.includes('FCoV Tested'),
+        is_heartworm_tested: health.includes('Heartworm'),
       });
 
       router.push(`/rescuer-listing/created?name=${encodeURIComponent(name || 'Your pet')}`);
@@ -229,7 +235,13 @@ export default function RescuerListingFlow() {
       is_dewormed: health.includes('Dewormed'),
       is_neutered: health.includes('Neutered'),
       is_flea_treated: health.includes('Flea Treated'),
-      is_potty_trained: health.includes('Potty Trained')
+      is_potty_trained: health.includes('Potty Trained'),
+      is_parvo_tested: health.includes('Parvo'),
+      is_giardia_tested: health.includes('Giardia'),
+      is_fiv_tested: health.includes('FIV Tested'),
+      is_felv_tested: health.includes('FeLV Tested'),
+      is_fcov_tested: health.includes('FCoV Tested'),
+      is_heartworm_tested: health.includes('Heartworm')
     }]);
 
     if (!error) {
@@ -434,7 +446,7 @@ export default function RescuerListingFlow() {
                     {['Vaccinated', 'Dewormed', 'Flea Treated', 'Neutered', 'Potty Trained', 'Parvo', 'Giardia'].map(h => (
                       <button key={h} className={`health-chip ${health.includes(h) ? 'on' : ''}`} onClick={() => toggleHealth(h)}>{h}</button>
                     ))}
-                    {petType === 'cat' && ['FIV Tested', 'FeLV Tested', 'FCoV'].map(h => (
+                    {petType === 'cat' && ['FIV Tested', 'FeLV Tested', 'FCoV Tested'].map(h => (
                       <button key={h} className={`health-chip ${health.includes(h) ? 'on' : ''}`} onClick={() => toggleHealth(h)}>{h}</button>
                     ))}
                     {petType === 'dog' && ['Heartworm'].map(h => (

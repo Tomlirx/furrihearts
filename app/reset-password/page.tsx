@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import '../signup/styles.css';
@@ -13,7 +14,14 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [hasSession, setHasSession] = useState<boolean | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: any) => {
+      setHasSession(!!data?.session);
+    });
+  }, []);
 
   const handleSubmit = async () => {
     if (password.length < 8) {
@@ -49,7 +57,15 @@ export default function ResetPasswordPage() {
               <h2 className="right-title">{t('passwordUpdated')}</h2>
               <p className="right-sub">{t('redirecting')}</p>
             </>
-          ) : (
+          ) : hasSession === false ? (
+            <>
+              <h2 className="right-title">{t('invalidLinkTitle')}</h2>
+              <p className="right-sub">{t('invalidLinkSubtitle')}</p>
+              <Link href="/forgot-password" className="btn-continue" style={{ display: 'inline-block', textAlign: 'center', textDecoration: 'none', marginTop: '16px' }}>
+                {t('requestNewLink')}
+              </Link>
+            </>
+          ) : hasSession === null ? null : (
             <>
               <h2 className="right-title">{t('newPassword')}</h2>
 

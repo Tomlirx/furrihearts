@@ -33,9 +33,6 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <p className="profile-meta">{profile?.location || 'Malaysia'} · Member since {memberSince}</p>
           <div className="profile-badges">
             <span className="badge-verified">✅ Email Verified</span>
-            <span className={profile?.is_id_verified ? 'badge-verified' : 'badge-pending'}>
-              {profile?.is_id_verified ? '✅ ID Verified' : '⏳ ID Pending'}
-            </span>
           </div>
         </div>
         {!isSelf && user && <FollowButton rescuerId={id} initialFollowing={isFollowing} />}
@@ -46,7 +43,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         <>
           <div className="cta-banner">
             <div>
-              <strong>Interested in adopting?</strong> {profile?.first_name} typically responds {profile?.response_time?.toLowerCase() || 'within 24 hours'}.
+              <strong>Interested in adopting?</strong> Get in touch with {profile?.first_name}.
             </div>
             <Link href="/browse" className="btn-edit-profile">Browse Listings</Link>
           </div>
@@ -54,12 +51,16 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <div className="profile-section">
             <h2>About {profile?.first_name}</h2>
             <p className="profile-bio">{profile?.bio || 'This rescuer hasn\'t added a bio yet.'}</p>
-            {profile?.specialities?.length > 0 && (
-              <div className="speciality-tags">
-                {profile.specialities.map((s: string) => <span key={s} className="speciality-tag">{s}</span>)}
-              </div>
-            )}
           </div>
+
+          {(profile?.show_email || profile?.show_phone || profile?.show_whatsapp) && (
+            <div className="profile-section">
+              <h2>Contact</h2>
+              {profile?.show_email && <div className="detail-row"><span>Email</span><span>{profile.email}</span></div>}
+              {profile?.show_phone && <div className="detail-row"><span>Phone</span><span>{profile.phone}</span></div>}
+              {profile?.show_whatsapp && <div className="detail-row"><span>WhatsApp</span><span>{profile.phone}</span></div>}
+            </div>
+          )}
 
           <div className="profile-section">
             <h2>Active Listings</h2>

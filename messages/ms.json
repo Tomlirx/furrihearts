@@ -149,6 +149,12 @@
       "neutered": "Telah Dimandulkan",
       "fleaTreated": "Telah Dirawat Kutu",
       "pottyTrained": "Terlatih Buang Air",
+      "parvoTested": "Telah Diuji Parvo",
+      "giardiaTested": "Telah Diuji Giardia",
+      "fivTested": "Telah Diuji FIV",
+      "felvTested": "Telah Diuji FeLV",
+      "fcovTested": "Telah Diuji FCoV",
+      "heartwormTested": "Telah Diuji Cacing Jantung",
       "adoptionInformation": "Maklumat Pengangkatan",
       "adoptionFee": "Yuran Pengangkatan",
       "location": "Lokasi",
@@ -324,7 +330,10 @@
     "passwordTooShort": "Kata laluan mesti sekurang-kurangnya 8 aksara",
     "passwordsDontMatch": "Kata laluan tidak sepadan",
     "updating": "Mengemas kini...",
-    "updatePassword": "Kemas kini kata laluan"
+    "updatePassword": "Kemas kini kata laluan",
+    "invalidLinkTitle": "Pautan ini tidak sah atau telah luput",
+    "invalidLinkSubtitle": "Pautan tetapan semula kata laluan hanya boleh digunakan sekali dan luput selepas tempoh masa yang singkat.",
+    "requestNewLink": "Minta pautan baharu"
   },
   "RescuerLanding": {
     "heroTag": "Untuk Penyelamat",
