@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { requestPasswordReset } from '../actions/auth';
+import { supabase } from '@/lib/supabase';
 import '../signup/styles.css';
 
 export default function ForgotPasswordPage() {
@@ -19,7 +19,13 @@ export default function ForgotPasswordPage() {
       return;
     }
     setLoading(true);
-    await requestPasswordReset(email, window.location.origin);
+    // Called from the browser client (not a server action) so the PKCE
+    // code_verifier gets stored in this browser's localStorage — the same
+    // browser that will later complete exchangeCodeForSession on the reset link.
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (resetError) console.error('Password reset error:', resetError);
     setLoading(false);
     setSent(true);
   };
