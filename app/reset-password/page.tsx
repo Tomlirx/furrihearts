@@ -1,15 +1,14 @@
 'use client';
 
-import { Suspense, useState, useEffect, useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import '../signup/styles.css';
 
-function ResetPasswordContent() {
+export default function ResetPasswordPage() {
   const t = useTranslations('ResetPassword');
-  const searchParams = useSearchParams();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
@@ -17,45 +16,47 @@ function ResetPasswordContent() {
   const [done, setDone] = useState(false);
   const [hasSession, setHasSession] = useState<boolean | null>(null);
   const router = useRouter();
-  const hasAttempted = useRef(false);
+  const resolved = useRef(false);
 
   useEffect(() => {
-    async function establishSession() {
-      // PKCE flow (the default for @supabase/ssr's browser client): the
-      // recovery link carries ?code=... rather than a #access_token hash, so
-      // it must be explicitly exchanged for a session — getSession() alone
-      // never reads it. No fallback to an existing session: updateUser()
-      // always targets whatever session is active, with no email check, so
-      // an unrelated pre-existing session must never be allowed to reach the
-      // password form here. exchangeCodeForSession() itself overwrites any
-      // existing session with the freshly-exchanged one once it succeeds —
-      // don't sign out beforehand, that would delete the PKCE code_verifier
-      // resetPasswordForEmail just stored, breaking the exchange entirely.
-      //
-      // The code is single-use: if this effect ever runs a second time
-      // (Suspense re-render, a router refresh triggered elsewhere after the
-      // auth-state-change listener fires, etc.) with the same ?code= still
-      // in the URL, re-exchanging it fails and clobbers the first successful
-      // result. Guard against that, and strip the code from the URL once
-      // it's been used so nothing can find it again.
-      // eslint-disable-next-line no-console
-      console.log('[reset-password] effect running, already attempted:', hasAttempted.current, 'href:', window.location.href, 'searchParams code:', searchParams.get('code'));
-      if (hasAttempted.current) return;
-      hasAttempted.current = true;
-
-      const code = searchParams.get('code');
-      if (!code) {
-        setHasSession(false);
-        return;
+    // The browser client (@supabase/ssr, PKCE flow) handles the ?code= in
+    // the URL entirely on its own as part of its construction-time
+    // _initialize() — it detects the code, exchanges it using the stored
+    // code_verifier, and fires a PASSWORD_RECOVERY event once done. Manually
+    // calling exchangeCodeForSession() ourselves here would race against
+    // that and fail (the verifier is single-use and already consumed by the
+    // SDK's own internal exchange by the time a second, redundant call
+    // runs) — so just listen for the event instead of re-doing the exchange.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, session: any) => {
+      if (event === 'PASSWORD_RECOVERY' && session) {
+        resolved.current = true;
+        setHasSession(true);
       }
-      const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-      // eslint-disable-next-line no-console
-      console.log('[reset-password] exchange result, error:', exchangeError, 'session:', !!data?.session);
-      const ok = !exchangeError && !!data?.session;
-      setHasSession(ok);
-      if (ok) router.replace('/reset-password', { scroll: false });
-    }
-    establishSession();
+    });
+
+    // If a session already exists by the time this mounts (the SDK's
+    // initializePromise may have resolved before this listener attached),
+    // onAuthStateChange won't fire again — check directly as a fallback.
+    supabase.auth.getSession().then(({ data }: any) => {
+      if (!resolved.current && data?.session) {
+        resolved.current = true;
+        setHasSession(true);
+      }
+    });
+
+    // No recovery session materialized within a reasonable window — either
+    // there was no code at all, or the link is genuinely invalid/expired.
+    const timeout = setTimeout(() => {
+      if (!resolved.current) {
+        resolved.current = true;
+        setHasSession(false);
+      }
+    }, 4000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleSubmit = async () => {
@@ -137,13 +138,5 @@ function ResetPasswordContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={null}>
-      <ResetPasswordContent />
-    </Suspense>
   );
 }
