@@ -43,19 +43,18 @@ export default function DashboardOverview() {
         getMyPets(supabase, user.id),
       ]);
 
-      if (adopterApps.length) setMyApplications(adopterApps);
-      if (petsData.length) {
-        setMyPets(petsData);
-        const incoming = await getIncomingApplications(supabase, petsData.map((p: Pet) => p.id));
-        setIncomingApps(incoming);
+      setMyApplications(adopterApps);
+      setMyPets(petsData);
 
-        const boosts = await getMyBoosts(supabase, petsData.map((p: Pet) => p.id));
-        const latestByPet: Record<string, any> = {};
-        boosts.forEach((b: any) => {
-          if (!latestByPet[b.pet_id]) latestByPet[b.pet_id] = b; // already ordered newest-first
-        });
-        setBoostsByPet(latestByPet);
-      }
+      const incoming = await getIncomingApplications(supabase, petsData.map((p: Pet) => p.id));
+      setIncomingApps(incoming);
+
+      const boosts = await getMyBoosts(supabase, petsData.map((p: Pet) => p.id));
+      const latestByPet: Record<string, any> = {};
+      boosts.forEach((b: any) => {
+        if (!latestByPet[b.pet_id]) latestByPet[b.pet_id] = b; // already ordered newest-first
+      });
+      setBoostsByPet(latestByPet);
 
       setLoading(false);
     }

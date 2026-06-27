@@ -38,7 +38,7 @@ export default function MyApplicationsPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace('/login?next=/my-applications'); return; }
       const data = await getMyApplications(supabase, user.id);
-      if (data.length) setApps(data);
+      setApps(data);
       setLoading(false);
     }
     load();

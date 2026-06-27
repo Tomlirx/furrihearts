@@ -42,10 +42,8 @@ function ManageApplicationsContent() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace('/login?next=/manage-applications'); return; }
       const pets = await getMyPets(supabase, user.id);
-      if (pets.length) {
-        const incoming = await getIncomingApplications(supabase, pets.map((p: any) => p.id));
-        if (incoming.length) setApps(incoming);
-      }
+      const incoming = pets.length ? await getIncomingApplications(supabase, pets.map((p: any) => p.id)) : [];
+      setApps(incoming);
       setLoading(false);
     }
     load();
