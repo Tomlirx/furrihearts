@@ -26,16 +26,14 @@ function ResetPasswordContent() {
       // never reads it. No fallback to an existing session: updateUser()
       // always targets whatever session is active, with no email check, so
       // an unrelated pre-existing session must never be allowed to reach the
-      // password form here. Sign it out first so the only way to get a
-      // session is via this exact code exchange.
+      // password form here. exchangeCodeForSession() itself overwrites any
+      // existing session with the freshly-exchanged one once it succeeds —
+      // don't sign out beforehand, that would delete the PKCE code_verifier
+      // resetPasswordForEmail just stored, breaking the exchange entirely.
       const code = searchParams.get('code');
       if (!code) {
         setHasSession(false);
         return;
-      }
-      const { data: existing } = await supabase.auth.getSession();
-      if (existing?.session) {
-        await supabase.auth.signOut();
       }
       const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
       setHasSession(!exchangeError && !!data?.session);
