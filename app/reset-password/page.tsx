@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import '../signup/styles.css';
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const t = useTranslations('ResetPassword');
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
@@ -18,9 +19,21 @@ export default function ResetPasswordPage() {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }: any) => {
+    async function establishSession() {
+      // PKCE flow (the default for @supabase/ssr's browser client): the
+      // recovery link carries ?code=... rather than a #access_token hash, so
+      // it must be explicitly exchanged for a session — getSession() alone
+      // never reads it.
+      const code = searchParams.get('code');
+      if (code) {
+        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+        setHasSession(!exchangeError && !!data?.session);
+        return;
+      }
+      const { data } = await supabase.auth.getSession();
       setHasSession(!!data?.session);
-    });
+    }
+    establishSession();
   }, []);
 
   const handleSubmit = async () => {
@@ -102,5 +115,13 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }
