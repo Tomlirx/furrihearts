@@ -38,6 +38,8 @@ function ResetPasswordContent() {
       // in the URL, re-exchanging it fails and clobbers the first successful
       // result. Guard against that, and strip the code from the URL once
       // it's been used so nothing can find it again.
+      // eslint-disable-next-line no-console
+      console.log('[reset-password] effect running, already attempted:', hasAttempted.current, 'href:', window.location.href, 'searchParams code:', searchParams.get('code'));
       if (hasAttempted.current) return;
       hasAttempted.current = true;
 
@@ -47,6 +49,8 @@ function ResetPasswordContent() {
         return;
       }
       const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+      // eslint-disable-next-line no-console
+      console.log('[reset-password] exchange result, error:', exchangeError, 'session:', !!data?.session);
       const ok = !exchangeError && !!data?.session;
       setHasSession(ok);
       if (ok) router.replace('/reset-password', { scroll: false });
