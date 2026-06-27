@@ -49,3 +49,13 @@ export async function signInUser(formData: any) {
   // Success
   return { success: true };
 }
+
+export async function signOutUser() {
+  // Auth cookies are httpOnly, so the browser client's signOut() can clear
+  // its own localStorage/in-memory state but can never actually clear the
+  // server-readable session cookie — only a server response can do that.
+  // Without this, the server (layout.tsx, proxy.ts) keeps seeing the old
+  // session after "logging out" client-side.
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+}

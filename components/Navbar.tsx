@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
+import { signOutUser } from '@/app/actions/auth';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
@@ -69,7 +70,11 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
 
   const handleLogout = async () => {
     try {
+      // Clear the browser client's own state, and separately clear the
+      // server-readable httpOnly session cookie via a server action — the
+      // browser client alone cannot clear that cookie.
       await supabase.auth.signOut();
+      await signOutUser();
       window.location.href = '/';
     } catch (error) {
       console.error("Error logging out:", error);
