@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -17,6 +17,7 @@ function ResetPasswordContent() {
   const [done, setDone] = useState(false);
   const [hasSession, setHasSession] = useState<boolean | null>(null);
   const router = useRouter();
+  const hasAttempted = useRef(false);
 
   useEffect(() => {
     async function establishSession() {
@@ -30,13 +31,25 @@ function ResetPasswordContent() {
       // existing session with the freshly-exchanged one once it succeeds —
       // don't sign out beforehand, that would delete the PKCE code_verifier
       // resetPasswordForEmail just stored, breaking the exchange entirely.
+      //
+      // The code is single-use: if this effect ever runs a second time
+      // (Suspense re-render, a router refresh triggered elsewhere after the
+      // auth-state-change listener fires, etc.) with the same ?code= still
+      // in the URL, re-exchanging it fails and clobbers the first successful
+      // result. Guard against that, and strip the code from the URL once
+      // it's been used so nothing can find it again.
+      if (hasAttempted.current) return;
+      hasAttempted.current = true;
+
       const code = searchParams.get('code');
       if (!code) {
         setHasSession(false);
         return;
       }
       const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-      setHasSession(!exchangeError && !!data?.session);
+      const ok = !exchangeError && !!data?.session;
+      setHasSession(ok);
+      if (ok) router.replace('/reset-password', { scroll: false });
     }
     establishSession();
   }, []);
