@@ -76,6 +76,11 @@ export default function ResetPasswordPage() {
       return;
     }
     setDone(true);
+    // router.push alone is a soft client-side navigation — it won't re-run
+    // the root layout's server-side user check, so the Navbar would keep
+    // showing the stale "logged out" state captured before this session
+    // existed. router.refresh() forces that to re-fetch with the new cookie.
+    router.refresh();
     setTimeout(() => router.push('/dashboard'), 1500);
   };
 
