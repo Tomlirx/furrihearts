@@ -23,15 +23,22 @@ function ResetPasswordContent() {
       // PKCE flow (the default for @supabase/ssr's browser client): the
       // recovery link carries ?code=... rather than a #access_token hash, so
       // it must be explicitly exchanged for a session — getSession() alone
-      // never reads it.
+      // never reads it. No fallback to an existing session: updateUser()
+      // always targets whatever session is active, with no email check, so
+      // an unrelated pre-existing session must never be allowed to reach the
+      // password form here. Sign it out first so the only way to get a
+      // session is via this exact code exchange.
       const code = searchParams.get('code');
-      if (code) {
-        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-        setHasSession(!exchangeError && !!data?.session);
+      if (!code) {
+        setHasSession(false);
         return;
       }
-      const { data } = await supabase.auth.getSession();
-      setHasSession(!!data?.session);
+      const { data: existing } = await supabase.auth.getSession();
+      if (existing?.session) {
+        await supabase.auth.signOut();
+      }
+      const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+      setHasSession(!exchangeError && !!data?.session);
     }
     establishSession();
   }, []);
