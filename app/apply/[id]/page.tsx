@@ -13,10 +13,13 @@ import { fetchPetById, findLocalPetById } from '@/lib/pet-service';
 // regardless of the applicant's locale. Display labels are translated
 // separately and zipped to these by index.
 const Q1_VALUES = ["I'm looking for a companion", "My current pet needs a friend", "I want to help a rescue animal", "Other"];
-const Q2_VALUES = ["Apartment / Condo", "Landed house", "House with large compound", "Other"];
+const Q2_VALUES = ["Apartment", "Large compound", "Village", "Other"];
 const Q3_VALUES = ["Yes, fully secured", "Partially — I plan to", "Not yet", "Not applicable"];
 const Q4_VALUES = ["Yes, a cat", "Yes, a dog", "Yes, multiple pets", "No other pets"];
-const Q5_VALUES = ["Less than 4 hours", "4–8 hours", "More than 8 hours", "Rarely — someone is usually home"];
+// Q5 form state/DB column is reused here for the "pet experience" question
+// (displayed 3rd, between home type and windows/balconies) — the original
+// "hours alone" question this column stored has been retired.
+const Q5_VALUES = ["This will be my first Pet", "I currently have pet(s)", "I have cared for pets before"];
 const Q6_VALUES = ["Yes, everyone is on board", "Most of them", "I live alone", "Not yet discussed"];
 
 export default function QuestionnairePage() {
@@ -213,6 +216,16 @@ export default function QuestionnairePage() {
             {invalidQs.has(2) && <div className="field-error">{t('chooseOption')}</div>}
           </div>
 
+          <div className={`question-block ${invalidQs.has(5) ? 'invalid' : ''}`} ref={questionRefs[5]}>
+            <div className="q-num">{t('q5')}</div>
+            <div className="q-opt-grid q-opt-3">
+              {Q5_VALUES.map((opt, i) => (
+                <button key={opt} className={`q-opt ${q5 === opt ? 'selected' : ''}`} onClick={() => setQ5(opt)}>{q5Labels[i]}</button>
+              ))}
+            </div>
+            {invalidQs.has(5) && <div className="field-error">{t('chooseOption')}</div>}
+          </div>
+
           <div className={`question-block ${invalidQs.has(3) ? 'invalid' : ''}`} ref={questionRefs[3]}>
             <div className="q-num">{t('q3')}</div>
             <div className="q-opt-grid q-opt-4">
@@ -231,18 +244,6 @@ export default function QuestionnairePage() {
               ))}
             </div>
             {invalidQs.has(4) && <div className="field-error">{t('chooseOption')}</div>}
-          </div>
-
-          <div className={`question-block ${invalidQs.has(5) ? 'invalid' : ''}`} ref={questionRefs[5]}>
-            <div className="q-num">{t('q5')}</div>
-            <div className="radio-list">
-              {Q5_VALUES.map((opt, i) => (
-                <div key={opt} className={`radio-list-item ${q5 === opt ? 'selected' : ''}`} onClick={() => setQ5(opt)}>
-                  <div className="big-radio"></div>{q5Labels[i]}
-                </div>
-              ))}
-            </div>
-            {invalidQs.has(5) && <div className="field-error">{t('chooseOption')}</div>}
           </div>
 
           <div className={`question-block ${invalidQs.has(6) ? 'invalid' : ''}`} ref={questionRefs[6]}>

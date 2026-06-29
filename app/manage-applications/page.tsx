@@ -144,7 +144,7 @@ function ManageApplicationsContent() {
               </div>
               <div className="app-details">
                 <div className="qa-block"><strong>Home Type:</strong> {app.q2 || 'N/A'}</div>
-                <div className="qa-block"><strong>Time Alone:</strong> {app.q5 || 'N/A'}</div>
+                <div className="qa-block"><strong>Pet Experience:</strong> {app.q5 || 'N/A'}</div>
                 <button className="btn-view-full" onClick={() => setSelectedApp(app)}>Review Full Application →</button>
               </div>
             </div>
@@ -165,9 +165,9 @@ function ManageApplicationsContent() {
               <div className="applicant-info"><strong>Applicant:</strong> {selectedApp.profiles?.first_name || 'Demo'} {selectedApp.profiles?.last_name || 'Adopter'}</div>
               <div className="qa-full"><span className="q-label">1. Why adopt?</span><p>{selectedApp.q1?.join(', ') || 'N/A'}</p></div>
               <div className="qa-full"><span className="q-label">2. Home type</span><p>{selectedApp.q2 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">3. Windows/Balconies secured?</span><p>{selectedApp.q3 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">4. Other pets?</span><p>{selectedApp.q4 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">5. Hours left alone?</span><p>{selectedApp.q5 || 'N/A'}</p></div>
+              <div className="qa-full"><span className="q-label">3. Pet experience?</span><p>{selectedApp.q5 || 'N/A'}</p></div>
+              <div className="qa-full"><span className="q-label">4. Windows/Balconies secured?</span><p>{selectedApp.q3 || 'N/A'}</p></div>
+              <div className="qa-full"><span className="q-label">5. Other pets?</span><p>{selectedApp.q4 || 'N/A'}</p></div>
               <div className="qa-full"><span className="q-label">6. Household agreement?</span><p>{selectedApp.q6 || 'N/A'}</p></div>
               <div className="qa-full"><span className="q-label">7. Anything else?</span><p>{selectedApp.q7 || 'N/A'}</p></div>
             </div>

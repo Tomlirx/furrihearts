@@ -198,32 +198,31 @@
     "selectAtLeastOne": "Please select at least one option.",
     "q2": "2. What type of home do you live in?",
     "q2Options": [
-      "Apartment / Condo",
-      "Landed house",
-      "House with large compound",
+      "Apartment",
+      "Large compound",
+      "Village",
       "Other"
     ],
     "chooseOption": "Please choose an option.",
-    "q3": "3. Are your windows and balconies secured?",
+    "q5": "3. What best describes your experience with pets?",
+    "q5Options": [
+      "This will be my first Pet",
+      "I currently have pet(s)",
+      "I have cared for pets before"
+    ],
+    "q3": "4. Are your windows and balconies secured?",
     "q3Options": [
       "Yes, fully secured",
       "Partially — I plan to",
       "Not yet",
       "Not applicable"
     ],
-    "q4": "4. Do you have other pets at home?",
+    "q4": "5. Do you have other pets at home?",
     "q4Options": [
       "Yes, a cat",
       "Yes, a dog",
       "Yes, multiple pets",
       "No other pets"
-    ],
-    "q5": "5. How many hours a day will the pet be alone?",
-    "q5Options": [
-      "Less than 4 hours",
-      "4–8 hours",
-      "More than 8 hours",
-      "Rarely — someone is usually home"
     ],
     "q6": "6. Do all household members agree to adopt?",
     "q6Options": [

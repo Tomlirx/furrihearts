@@ -48,9 +48,9 @@ export default function AdminApplicationsTable({ apps }: { apps: any[] }) {
             <div className="modal-body">
               <div className="qa-full"><span className="q-label">1. Why adopt?</span><p>{selected.q1?.join(', ') || 'N/A'}</p></div>
               <div className="qa-full"><span className="q-label">2. Home type</span><p>{selected.q2 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">3. Windows/Balconies secured?</span><p>{selected.q3 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">4. Other pets?</span><p>{selected.q4 || 'N/A'}</p></div>
-              <div className="qa-full"><span className="q-label">5. Hours left alone?</span><p>{selected.q5 || 'N/A'}</p></div>
+              <div className="qa-full"><span className="q-label">3. Pet experience?</span><p>{selected.q5 || 'N/A'}</p></div>
+              <div className="qa-full"><span className="q-label">4. Windows/Balconies secured?</span><p>{selected.q3 || 'N/A'}</p></div>
+              <div className="qa-full"><span className="q-label">5. Other pets?</span><p>{selected.q4 || 'N/A'}</p></div>
               <div className="qa-full"><span className="q-label">6. Household agreement?</span><p>{selected.q6 || 'N/A'}</p></div>
               <div className="qa-full"><span className="q-label">7. Anything else?</span><p>{selected.q7 || 'N/A'}</p></div>
             </div>

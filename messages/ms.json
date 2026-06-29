@@ -198,32 +198,31 @@
     "selectAtLeastOne": "Sila pilih sekurang-kurangnya satu pilihan.",
     "q2": "2. Apakah jenis kediaman anda?",
     "q2Options": [
-      "Apartmen / Kondo",
-      "Rumah berkembar/teres",
-      "Rumah dengan kawasan luas",
+      "Apartmen",
+      "Kawasan luas",
+      "Kampung",
       "Lain-lain"
     ],
     "chooseOption": "Sila pilih satu pilihan.",
-    "q3": "3. Adakah tingkap dan balkoni anda selamat?",
+    "q5": "3. Apa yang terbaik menggambarkan pengalaman anda dengan haiwan peliharaan?",
+    "q5Options": [
+      "Ini akan menjadi Haiwan Peliharaan pertama saya",
+      "Saya kini mempunyai haiwan peliharaan",
+      "Saya pernah menjaga haiwan peliharaan sebelum ini"
+    ],
+    "q3": "4. Adakah tingkap dan balkoni anda selamat?",
     "q3Options": [
       "Ya, selamat sepenuhnya",
       "Sebahagian — saya akan lengkapkan",
       "Belum lagi",
       "Tidak berkenaan"
     ],
-    "q4": "4. Adakah anda mempunyai haiwan peliharaan lain di rumah?",
+    "q4": "5. Adakah anda mempunyai haiwan peliharaan lain di rumah?",
     "q4Options": [
       "Ya, seekor kucing",
       "Ya, seekor anjing",
       "Ya, beberapa haiwan",
       "Tiada haiwan lain"
-    ],
-    "q5": "5. Berapa jam sehari haiwan ini akan bersendirian?",
-    "q5Options": [
-      "Kurang daripada 4 jam",
-      "4–8 jam",
-      "Lebih daripada 8 jam",
-      "Jarang — biasanya ada orang di rumah"
     ],
     "q6": "6. Adakah semua ahli rumah bersetuju untuk mengangkat?",
     "q6Options": [

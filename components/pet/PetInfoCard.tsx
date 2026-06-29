@@ -9,12 +9,20 @@ import type { Pet } from '@/lib/pet-service';
 export function PetInfoCard({ pet }: { pet: Pet }) {
   const t = useTranslations('PetDetail.infoCard');
 
-  const healthItems: [string, boolean | undefined][] = [
+  const alwaysShowItems: [string, boolean | undefined][] = [
     [t('vaccinated'), pet.is_vaccinated],
     [t('dewormed'), pet.is_dewormed],
     [t('neutered'), pet.is_neutered],
     [t('fleaTreated'), pet.is_flea_treated],
     [t('pottyTrained'), pet.is_potty_trained],
+    ...(pet.species === 'dog' ? ([
+      [t('heartwormTested'), pet.is_heartworm_tested],
+    ] as [string, boolean | undefined][]) : []),
+  ];
+
+  // These are only shown when actually tested (true) — an untested badge
+  // would otherwise look like a confirmed "not tested" result to adopters.
+  const onlyIfTrueItems = ([
     [t('parvoTested'), pet.is_parvo_tested],
     [t('giardiaTested'), pet.is_giardia_tested],
     ...(pet.species === 'cat' ? ([
@@ -22,10 +30,9 @@ export function PetInfoCard({ pet }: { pet: Pet }) {
       [t('felvTested'), pet.is_felv_tested],
       [t('fcovTested'), pet.is_fcov_tested],
     ] as [string, boolean | undefined][]) : []),
-    ...(pet.species === 'dog' ? ([
-      [t('heartwormTested'), pet.is_heartworm_tested],
-    ] as [string, boolean | undefined][]) : []),
-  ];
+  ] as [string, boolean | undefined][]).filter(([, checked]) => checked);
+
+  const healthItems = [...alwaysShowItems, ...onlyIfTrueItems];
 
   return (
     <div className="section-card">
