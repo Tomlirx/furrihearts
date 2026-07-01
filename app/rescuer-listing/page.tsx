@@ -219,12 +219,13 @@ export default function RescuerListingFlow() {
         is_neutered: health.includes('Neutered'),
         is_flea_treated: health.includes('Flea Treated'),
         is_potty_trained: health.includes('Potty Trained'),
-        is_parvo_tested: health.includes('Parvo'),
-        is_giardia_tested: health.includes('Giardia'),
+        is_parvo_tested: health.includes('Parvo Tested'),
+        is_giardia_tested: health.includes('Giardia Tested'),
         is_fiv_tested: health.includes('FIV Tested'),
         is_felv_tested: health.includes('FeLV Tested'),
         is_fcov_tested: health.includes('FCoV Tested'),
         is_heartworm_tested: health.includes('Heartworm'),
+        is_strictly_indoor: indoor === 'yes',
       });
 
       router.push(`/rescuer-listing/created?name=${encodeURIComponent(name || 'Your pet')}`);
@@ -287,12 +288,13 @@ export default function RescuerListingFlow() {
       is_neutered: health.includes('Neutered'),
       is_flea_treated: health.includes('Flea Treated'),
       is_potty_trained: health.includes('Potty Trained'),
-      is_parvo_tested: health.includes('Parvo'),
-      is_giardia_tested: health.includes('Giardia'),
+      is_parvo_tested: health.includes('Parvo Tested'),
+      is_giardia_tested: health.includes('Giardia Tested'),
       is_fiv_tested: health.includes('FIV Tested'),
       is_felv_tested: health.includes('FeLV Tested'),
       is_fcov_tested: health.includes('FCoV Tested'),
-      is_heartworm_tested: health.includes('Heartworm')
+      is_heartworm_tested: health.includes('Heartworm'),
+      is_strictly_indoor: indoor === 'yes',
     }]);
 
     if (!error) {
@@ -390,7 +392,7 @@ export default function RescuerListingFlow() {
                   </div>
 
                   <div className="form-field">
-                    <div className="field-label">Name <span style={{fontSize: '11px', color: 'var(--light)', fontWeight: 400, textTransform: 'none'}}>(optional)</span></div>
+                    <div className="field-label">Name</div>
                     <input className="form-input" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Milo" />
                   </div>
 
@@ -403,7 +405,7 @@ export default function RescuerListingFlow() {
                   </div>
 
                   <div className="form-field">
-                    <div className="field-label">Age <span className="ai-filled">AI</span></div>
+                    <div className="field-label">Age</div>
                     <select className="form-select ai-value" value={age} onChange={e => setAge(e.target.value)}>
                       <option>Under 2 months</option><option>2–4 months</option><option>4–6 months</option><option>6–12 months</option><option>1–3 years</option><option>3–7 years</option><option>7+ years</option>
                     </select>
@@ -494,7 +496,7 @@ export default function RescuerListingFlow() {
                 <div className="section">
                   <div className="section-label">Health & Medical</div>
                   <div className="health-options">
-                    {['Vaccinated', 'Dewormed', 'Flea Treated', 'Neutered', 'Potty Trained', 'Parvo', 'Giardia'].map(h => (
+                    {['Vaccinated', 'Dewormed', 'Flea Treated', 'Neutered', 'Potty Trained', 'Parvo Tested', 'Giardia Tested'].map(h => (
                       <button key={h} className={`health-chip ${health.includes(h) ? 'on' : ''}`} onClick={() => toggleHealth(h)}>{h}</button>
                     ))}
                     {petType === 'cat' && ['FIV Tested', 'FeLV Tested', 'FCoV Tested'].map(h => (
@@ -508,8 +510,9 @@ export default function RescuerListingFlow() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={() => {
+                if (!name.trim()) return alert("Please enter the pet's name.");
                 if (!gender) return alert("Please select a gender (Male or Female).");
                 setStep(4);
               }} 
@@ -525,18 +528,31 @@ export default function RescuerListingFlow() {
           <div style={{ maxWidth: '760px', width: '100%' }}>
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '24px' }}>Review & Publish 🎉</h1>
              
-            <div style={{ background: '#fff', borderRadius: '16px', padding: '24px', border: '1px solid var(--border)', marginBottom: '24px' }}>
-              <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>{name || 'Unknown Pet'}</h2>
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-                <span style={{ background: 'var(--orange-pale)', color: 'var(--orange)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{breed === 'Other' ? customBreed : breed}</span>
-                <span style={{ background: 'var(--green-pale)', color: 'var(--green)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{location}</span>
-                <span style={{ background: '#EFF6FF', color: '#1D4ED8', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{gender}</span>
-                {/* NEW: Display selected traits in Review */}
-  {traits.map(t => (
-    <span key={t} style={{ background: '#F9FAFB', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', color: 'var(--mid)' }}>{t}</span>
-  ))}
+            <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid var(--border)', marginBottom: '24px', overflow: 'hidden' }}>
+              {photos.length > 0 && (
+                <div style={{ width: '100%', height: '220px' }}>
+                  <img src={URL.createObjectURL(photos[0])} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
+                </div>
+              )}
+              <div style={{ padding: '24px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>{name || 'Unknown Pet'}</h2>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                  <span style={{ background: 'var(--orange-pale)', color: 'var(--orange)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{breed === 'Other' ? customBreed : breed}</span>
+                  <span style={{ background: 'var(--green-pale)', color: 'var(--green)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{location}</span>
+                  <span style={{ background: '#EFF6FF', color: '#1D4ED8', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{gender}</span>
+                  {traits.map(t => (
+                    <span key={t} style={{ background: '#F9FAFB', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', color: 'var(--mid)' }}>{t}</span>
+                  ))}
+                </div>
+                <p style={{ color: 'var(--mid)', lineHeight: 1.6, marginBottom: health.length > 0 ? '16px' : 0 }}>{description || "No description provided."}</p>
+                {health.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {health.map(h => (
+                      <span key={h} style={{ background: 'var(--green-pale)', color: 'var(--green)', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>✓ {h}</span>
+                    ))}
+                  </div>
+                )}
               </div>
-              <p style={{ color: 'var(--mid)', lineHeight: 1.6 }}>{description || "No description provided."}</p>
             </div>
 
             <div style={{ display: 'flex', gap: '12px' }}>

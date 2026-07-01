@@ -145,7 +145,10 @@ export default function DashboardOverview() {
                       <BoostModal petId={pet.id} petName={pet.name} triggerLabel="⭐ Boost" triggerClassName="" />
                     )}
                     {pet.is_hidden ? (
-                      <button className="btn-view-full" disabled={isUpdating} onClick={() => goOnline(pet)}>Bring Online</button>
+                      <>
+                        <Link href={`/rescuer-listing/edit/${pet.id}`} className="btn-view-full">Edit</Link>
+                        <button className="btn-view-full" disabled={isUpdating} onClick={() => goOnline(pet)}>Bring Online</button>
+                      </>
                     ) : (
                       <button className="btn-view-full" disabled={isUpdating} onClick={() => setOfflineTarget(pet)}>Take Offline</button>
                     )}

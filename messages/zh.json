@@ -158,7 +158,8 @@
       "adoptionInformation": "领养信息",
       "adoptionFee": "领养费",
       "location": "地区",
-      "status": "状态"
+      "status": "状态",
+      "strictlyIndoor": "仅限室内"
     },
     "sidebar": {
       "interestedIn": "对 {name} 感兴趣？",
@@ -199,7 +200,7 @@
     "q2": "2. 你住在什么类型的住所？",
     "q2Options": [
       "公寓",
-      "带大院子的住所",
+      "有地房产",
       "甘榜/村庄",
       "其他"
     ],

@@ -63,7 +63,7 @@ export default function AuditorListingsTable({ pending, recent }: { pending: any
               <tr key={pet.id}>
                 <td><Link href={`/pet/${pet.id}`} target="_blank">{pet.name}</Link></td>
                 <td>{rescuerName(pet)}</td>
-                <td>{pet.review_status}</td>
+                <td style={{ textTransform: 'capitalize' }}>{pet.review_status}</td>
                 <td>
                   {pet.review_status === 'approved' ? (
                     pet.is_featured ? (

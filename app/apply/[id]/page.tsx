@@ -13,7 +13,7 @@ import { fetchPetById, findLocalPetById } from '@/lib/pet-service';
 // regardless of the applicant's locale. Display labels are translated
 // separately and zipped to these by index.
 const Q1_VALUES = ["I'm looking for a companion", "My current pet needs a friend", "I want to help a rescue animal", "Other"];
-const Q2_VALUES = ["Apartment", "Large compound", "Village", "Other"];
+const Q2_VALUES = ["Apartment", "Landed property", "Village", "Other"];
 const Q3_VALUES = ["Yes, fully secured", "Partially — I plan to", "Not yet", "Not applicable"];
 const Q4_VALUES = ["Yes, a cat", "Yes, a dog", "Yes, multiple pets", "No other pets"];
 // Q5 form state/DB column is reused here for the "pet experience" question

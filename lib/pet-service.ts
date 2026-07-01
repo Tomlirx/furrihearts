@@ -34,6 +34,7 @@ export interface Pet {
   is_felv_tested?: boolean;
   is_fcov_tested?: boolean;
   is_heartworm_tested?: boolean;
+  is_strictly_indoor?: boolean;
   featured_until?: string | null;
   is_hidden?: boolean;
   is_featured?: boolean;

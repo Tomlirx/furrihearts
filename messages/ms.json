@@ -158,7 +158,8 @@
       "adoptionInformation": "Maklumat Pengangkatan",
       "adoptionFee": "Yuran Pengangkatan",
       "location": "Lokasi",
-      "status": "Status"
+      "status": "Status",
+      "strictlyIndoor": "Hanya dalam rumah"
     },
     "sidebar": {
       "interestedIn": "Berminat dengan {name}?",
@@ -199,7 +200,7 @@
     "q2": "2. Apakah jenis kediaman anda?",
     "q2Options": [
       "Apartmen",
-      "Kawasan luas",
+      "Hartanah bertanah",
       "Kampung",
       "Lain-lain"
     ],

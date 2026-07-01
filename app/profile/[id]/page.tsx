@@ -1,8 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getMyPets, getFollowedRescuerIds } from '@/lib/profile-data';
-import FollowButton from './FollowButton';
+import { getMyPets } from '@/lib/profile-data';
 import EmptyState from '@/components/EmptyState';
 import PublicListingsGrid from '@/components/profile/PublicListingsGrid';
 import '../styles.css';
@@ -21,7 +20,6 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   const isRescuer = allPets.length > 0;
   const memberSince = profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-MY', { month: 'long', year: 'numeric' }) : '—';
 
-  const isFollowing = user ? (await getFollowedRescuerIds(supabase, user.id)).includes(id) : false;
   const isSelf = user?.id === id;
 
   return (
@@ -35,7 +33,6 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <span className="badge-verified">✅ Email Verified</span>
           </div>
         </div>
-        {!isSelf && user && <FollowButton rescuerId={id} initialFollowing={isFollowing} />}
         {isSelf && <Link href="/profile/edit" className="btn-edit-profile">Edit Profile</Link>}
       </div>
 

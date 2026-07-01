@@ -76,6 +76,10 @@ export function PetInfoCard({ pet }: { pet: Pet }) {
               <span className="info-label">{t('status')}</span>
               <span className="info-value" style={{ textTransform: 'capitalize' }}>{pet.status}</span>
             </li>
+            <li className="adoption-info-row">
+              <span className="info-label">{t('strictlyIndoor')}</span>
+              <span className="info-value">{pet.is_strictly_indoor ? 'Yes' : 'No'}</span>
+            </li>
           </ul>
         </div>
       </div>

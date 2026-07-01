@@ -158,7 +158,8 @@
       "adoptionInformation": "Adoption Information",
       "adoptionFee": "Adoption Fee",
       "location": "Location",
-      "status": "Status"
+      "status": "Status",
+      "strictlyIndoor": "Strictly Indoor"
     },
     "sidebar": {
       "interestedIn": "Interested in {name}?",
@@ -199,7 +200,7 @@
     "q2": "2. What type of home do you live in?",
     "q2Options": [
       "Apartment",
-      "Large compound",
+      "Landed property",
       "Village",
       "Other"
     ],
