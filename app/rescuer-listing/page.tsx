@@ -6,6 +6,9 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { saveLocalListing } from '@/lib/local-store';
 import { getLaunchedStates } from '@/lib/locations';
+import { usePhotoManager, displayUrl } from '@/lib/use-photo-manager';
+import { uploadPhotoBlob } from '@/lib/image-crop';
+import PhotoManager from '@/components/listing/PhotoManager';
 
 // Arrays for dynamic filtering
 const CAT_BREEDS = ['Domestic Shorthair', 'Domestic Longhair', 'Persian', 'Siamese', 'Maine Coon', 'Ragdoll', 'Scottish Fold', 'Bengal', 'British Shorthair', 'Other'];
@@ -67,8 +70,9 @@ export default function RescuerListingFlow() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Step 1: Upload
-  const [photos, setPhotos] = useState<File[]>([]);
+  const { photos, primaryId, addFiles, removePhoto, setPrimary, applyCrop, orderedPhotos } = usePhotoManager();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const primaryPhoto = photos.find(p => p.id === primaryId) ?? photos[0];
 
   // Step 2: Scanner Progress
   const [scanProgress, setScanProgress] = useState(0);
@@ -101,26 +105,9 @@ export default function RescuerListingFlow() {
   // Handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const MAX_SIZE_MB = 5;
-      const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
-      const rawFiles = Array.from(e.target.files);
-      const validFiles = rawFiles.filter(file => {
-        if (file.size > MAX_SIZE_BYTES) {
-          alert(`"${file.name}" is too large. Please upload photos under ${MAX_SIZE_MB}MB.`);
-          return false;
-        }
-        return true;
-      });
-      setPhotos(prev => {
-        const newFiles = validFiles.slice(0, 5 - prev.length);
-        return [...prev, ...newFiles];
-      });
+      addFiles(e.target.files);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
-  };
-
-  const removePhoto = (index: number) => {
-    setPhotos(photos.filter((_, i) => i !== index));
   };
 
   const startScanning = () => {
@@ -236,28 +223,14 @@ export default function RescuerListingFlow() {
     let primaryImageUrl = 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800';
     const allUploadedUrls: string[] = [];
 
-    // 2. Upload Images to Storage
-    if (photos.length > 0) {
-      for (let i = 0; i < photos.length; i++) {
-        const file = photos[i];
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('pet-photos')
-          .upload(fileName, file);
-
-        if (uploadError) {
-          console.error(`Error uploading photo ${i + 1}:`, uploadError);
-          continue;
-        }
-
-        const { data: publicUrlData } = supabase.storage
-          .from('pet-photos')
-          .getPublicUrl(fileName);
-
-        allUploadedUrls.push(publicUrlData.publicUrl);
-      }
+    // 2. Upload Images to Storage (primary photo first, cropped version if adjusted)
+    for (const photo of orderedPhotos()) {
+      const body = photo.croppedBlob ?? photo.originalFile;
+      if (!body) continue;
+      const ext = photo.croppedBlob ? 'jpg' : (photo.originalFile!.name.split('.').pop() || 'jpg');
+      const contentType = photo.croppedBlob ? 'image/jpeg' : undefined;
+      const url = await uploadPhotoBlob(supabase, body, ext, contentType);
+      if (url) allUploadedUrls.push(url);
     }
 
     if (allUploadedUrls.length > 0) {
@@ -315,30 +288,26 @@ export default function RescuerListingFlow() {
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '28px', fontWeight: 700, textAlign: 'center', marginBottom: '8px' }}>Upload your pet's photos 📸</h1>
             <p style={{ textAlign: 'center', color: 'var(--mid)', marginBottom: '32px' }}>Start by uploading up to <strong>5 clear photos</strong>.<br/>We'll take care of the rest.</p>
             
-            <div className="upload-area" onClick={() => fileInputRef.current?.click()} style={{ padding: photos.length > 0 ? '16px' : '48px 32px' }}>
-              <input type="file" ref={fileInputRef} hidden accept="image/*" multiple onChange={handleFileChange} />
-              {photos.length === 0 && (
-                <>
-                  <div className="upload-icon">📷</div>
-                  <div className="upload-label">Click to browse photos</div>
-                  <div style={{ fontSize: '12px', color: 'var(--light)', marginTop: '12px' }}>JPG or PNG · Max 5 photos</div>
-                </>
-              )}
-            </div>
-
-            {photos.length > 0 && (
-              <div className="photo-previews">
-                {photos.map((photo, i) => (
-                  <div key={i} className="photo-thumb-wrap">
-                    <img src={URL.createObjectURL(photo)} className="photo-thumb" alt="preview" />
-                    <button className="photo-remove" onClick={() => removePhoto(i)}>✕</button>
-                  </div>
-                ))}
+            <input type="file" ref={fileInputRef} hidden accept="image/jpeg,image/png,image/webp" multiple onChange={handleFileChange} />
+            {photos.length === 0 && (
+              <div className="upload-area" onClick={() => fileInputRef.current?.click()}>
+                <div className="upload-icon">📷</div>
+                <div className="upload-label">Click to browse photos</div>
+                <div style={{ fontSize: '12px', color: 'var(--light)', marginTop: '12px' }}>JPG or PNG · Max 5 photos</div>
               </div>
             )}
 
+            <PhotoManager
+              photos={photos}
+              primaryId={primaryId}
+              onAddClick={() => fileInputRef.current?.click()}
+              onRemove={removePhoto}
+              onSetPrimary={setPrimary}
+              onApplyCrop={applyCrop}
+            />
+
             {photos.length > 0 && (
-              <button onClick={startScanning} style={{ width: '100%', background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '12px', padding: '16px', fontSize: '16px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+              <button onClick={startScanning} style={{ width: '100%', marginTop: '20px', background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '12px', padding: '16px', fontSize: '16px', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
                 Continue →
               </button>
             )}
@@ -458,9 +427,9 @@ export default function RescuerListingFlow() {
                     <button onClick={() => setStep(1)} style={{ background: 'none', border: 'none', fontSize: '12px', color: 'var(--orange)', fontWeight: 600, cursor: 'pointer' }}>+ Add more</button>
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '8px' }}>
-                    {photos.map((p, i) => (
-                      <div key={i} style={{ width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden', border: i === 0 ? '2px solid var(--orange)' : 'none' }}>
-                        <img src={URL.createObjectURL(p)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="thumb"/>
+                    {photos.map(p => (
+                      <div key={p.id} style={{ width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden', border: p.id === primaryId ? '2px solid var(--orange)' : 'none' }}>
+                        <img src={displayUrl(p)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="thumb"/>
                       </div>
                     ))}
                   </div>
@@ -529,9 +498,9 @@ export default function RescuerListingFlow() {
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '24px' }}>Review & Publish 🎉</h1>
              
             <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid var(--border)', marginBottom: '24px', overflow: 'hidden' }}>
-              {photos.length > 0 && (
+              {primaryPhoto && (
                 <div style={{ width: '100%', height: '220px' }}>
-                  <img src={URL.createObjectURL(photos[0])} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
+                  <img src={displayUrl(primaryPhoto)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
                 </div>
               )}
               <div style={{ padding: '24px' }}>

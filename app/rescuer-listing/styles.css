@@ -13,6 +13,32 @@
 .photo-thumb { width: 100px; height: 100px; border-radius: 12px; object-fit: cover; border: 2px solid var(--border); }
 .photo-remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: #DC2626; border-radius: 50%; color: #fff; font-size: 11px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
+/* --- Photo manager (main photo + crop) --- */
+.photo-thumb.is-primary { border-color: var(--orange); }
+.photo-primary-badge { position: absolute; bottom: 6px; left: 6px; background: var(--orange); color: #fff; font-size: 10px; font-weight: 700; border-radius: 6px; padding: 2px 6px; pointer-events: none; }
+.photo-star-btn { position: absolute; bottom: 6px; left: 6px; width: 24px; height: 24px; background: rgba(0,0,0,0.55); border: none; border-radius: 6px; color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+.photo-star-btn:hover { background: var(--orange); }
+.photo-crop-btn { position: absolute; bottom: 6px; right: 6px; width: 24px; height: 24px; background: rgba(0,0,0,0.55); border: none; border-radius: 6px; color: #fff; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+.photo-crop-btn:hover { background: var(--orange); }
+.photo-adjusted-dot { position: absolute; top: 6px; left: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--green); border: 1.5px solid #fff; pointer-events: none; }
+.photo-add-tile { width: 100px; height: 100px; border: 2px dashed var(--border); border-radius: 12px; background: #fff; color: var(--light); font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.photo-add-tile:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
+.photo-manager-hint { font-size: 12px; color: var(--light); margin-top: 10px; }
+
+/* --- Crop dialog --- */
+.crop-dialog { max-width: 520px; padding: 24px; }
+.crop-dialog-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.crop-dialog-hint { font-size: 13px; color: var(--mid); margin-bottom: 16px; }
+.crop-canvas-wrap { position: relative; height: 360px; border-radius: 12px; overflow: hidden; background: #111; }
+.crop-zoom-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-size: 13px; color: var(--mid); font-weight: 600; }
+.crop-zoom-row input[type="range"] { flex: 1; accent-color: var(--orange); }
+.crop-reset-btn { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--mid); cursor: pointer; }
+.crop-reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+.crop-error { background: #FEE2E2; border: 1px solid #DC2626; color: #DC2626; border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-top: 12px; }
+.crop-dialog-actions { display: flex; gap: 12px; margin-top: 20px; }
+.crop-dialog-actions button { flex: 1; }
+@media(max-width: 560px) { .crop-canvas-wrap { height: 65vw; } }
+
 /* --- Step 2: Scanner --- */
 .photo-strip { display: flex; gap: 10px; justify-content: center; margin-bottom: 32px; }
 .photo-mock { width: 90px; height: 90px; border-radius: 12px; background: linear-gradient(135deg, #E8D5C4, #C9A88A); display: flex; align-items: center; justify-content: center; font-size: 32px; position: relative; overflow: hidden; }

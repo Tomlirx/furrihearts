@@ -1,10 +1,13 @@
 'use client';
 import '../../styles.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import { getLaunchedStates } from '@/lib/locations';
+import { usePhotoManager, displayUrl } from '@/lib/use-photo-manager';
+import { uploadPhotoBlob } from '@/lib/image-crop';
+import PhotoManager from '@/components/listing/PhotoManager';
 
 const CAT_BREEDS = ['Domestic Shorthair', 'Domestic Longhair', 'Persian', 'Siamese', 'Maine Coon', 'Ragdoll', 'Scottish Fold', 'Bengal', 'British Shorthair', 'Other'];
 const DOG_BREEDS = ['Kampung Dog', 'Labrador Retriever', 'Golden Retriever', 'Poodle', 'Shih Tzu', 'Maltese', 'Corgi', 'Husky', 'Beagle', 'Dachshund', 'Schnauzer', 'Border Collie', 'Other'];
@@ -35,6 +38,11 @@ export default function EditListingPage() {
   const [traitsWarning, setTraitsWarning] = useState(false);
   const [launchedStates, setLaunchedStates] = useState<string[]>(['Kuala Lumpur', 'Selangor', 'Penang', 'Johor']);
   const [saveError, setSaveError] = useState('');
+
+  // Photos
+  const { photos, primaryId, addFiles, initFromUrls, removePhoto, setPrimary, applyCrop, orderedPhotos } = usePhotoManager();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const primaryPhoto = photos.find(p => p.id === primaryId) ?? photos[0];
 
   // Form fields
   const [petType, setPetType] = useState('cat');
@@ -83,6 +91,8 @@ export default function EditListingPage() {
       setHealth(healthFromPet(data));
       setIndoor(data.is_strictly_indoor ? 'yes' : 'no');
       setDescription(data.description || '');
+      const urls: string[] = data.gallery?.length ? data.gallery : (data.image_url ? [data.image_url] : []);
+      initFromUrls(urls, data.image_url);
       setLoading(false);
     }
     load();
@@ -104,12 +114,35 @@ export default function EditListingPage() {
   const handleSave = async () => {
     if (!name.trim()) return setSaveError("Please enter the pet's name.");
     if (!gender) return setSaveError("Please select a gender.");
+    if (photos.length === 0) return setSaveError('Please keep at least one photo.');
     setSaveError('');
     setIsSaving(true);
 
     const finalBreed = breed === 'Other' ? customBreed : breed;
 
+    // Upload new or re-cropped photos; untouched existing photos keep their URL.
+    const finalUrls: string[] = [];
+    for (const photo of orderedPhotos()) {
+      if (photo.croppedBlob || photo.kind === 'file') {
+        const body = photo.croppedBlob ?? photo.originalFile;
+        if (!body) continue;
+        const ext = photo.croppedBlob ? 'jpg' : (photo.originalFile!.name.split('.').pop() || 'jpg');
+        const contentType = photo.croppedBlob ? 'image/jpeg' : undefined;
+        const url = await uploadPhotoBlob(supabase, body, ext, contentType);
+        if (url) finalUrls.push(url);
+      } else if (photo.remoteUrl) {
+        finalUrls.push(photo.remoteUrl);
+      }
+    }
+
+    if (finalUrls.length === 0) {
+      setIsSaving(false);
+      return setSaveError('Failed to upload photos. Please try again.');
+    }
+
     const { error } = await supabase.from('pets').update({
+      image_url: finalUrls[0],
+      gallery: finalUrls,
       name,
       species: petType,
       breed: finalBreed,
@@ -151,9 +184,9 @@ export default function EditListingPage() {
         </Link>
 
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '24px' }}>
-          {pet?.image_url && (
+          {primaryPhoto && (
             <div style={{ width: '72px', height: '72px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border)' }}>
-              <img src={pet.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={pet.name} />
+              <img src={displayUrl(primaryPhoto)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={pet?.name || 'Pet'} />
             </div>
           )}
           <div>
@@ -243,6 +276,27 @@ export default function EditListingPage() {
 
           {/* RIGHT COL */}
           <div className="col-right">
+            <div className="section">
+              <div className="section-label" style={{ marginBottom: '8px' }}>Photos <span className="ai-filled">{photos.length} of 5</span></div>
+              <input type="file" ref={fileInputRef} hidden accept="image/jpeg,image/png,image/webp" multiple onChange={(e) => {
+                if (e.target.files) {
+                  addFiles(e.target.files);
+                  if (fileInputRef.current) fileInputRef.current.value = '';
+                }
+              }} />
+              <PhotoManager
+                photos={photos}
+                primaryId={primaryId}
+                onAddClick={() => fileInputRef.current?.click()}
+                onRemove={removePhoto}
+                onSetPrimary={setPrimary}
+                onApplyCrop={applyCrop}
+              />
+              {photos.length === 0 && (
+                <button className="photo-add-tile" onClick={() => fileInputRef.current?.click()} aria-label="Add photo">+</button>
+              )}
+            </div>
+
             <div className="section">
               <div className="section-label" style={{ marginBottom: '8px' }}>Description</div>
               <textarea
