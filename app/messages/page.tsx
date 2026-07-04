@@ -1,6 +1,6 @@
 'use client';
 import '../dashboard/styles.css';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import MessagesPanel from '@/components/MessagesPanel';
@@ -30,7 +30,10 @@ export default function MessagesPage() {
         <div><h1>Messages</h1><p>Conversations with adopters and rescuers about pets.</p></div>
       </div>
 
-      <MessagesPanel currentUserId={userId!} />
+      {/* MessagesPanel reads useSearchParams (deep links) — needs a Suspense boundary for prerendering. */}
+      <Suspense fallback={<div className="loading-state">Loading messages...</div>}>
+        <MessagesPanel currentUserId={userId!} />
+      </Suspense>
     </div>
   );
 }

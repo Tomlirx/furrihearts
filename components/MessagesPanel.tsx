@@ -1,19 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { getInbox, getSentMessages, getThread, groupThreads, markThreadRead } from '@/lib/messages-data';
+import { getInbox, getSentMessages, getThread, groupThreads, markThreadRead, getLatestApplicationStatus, TERMINAL_APPLICATION_STATUSES } from '@/lib/messages-data';
 import MessageComposer from './MessageComposer';
 import Pagination from './Pagination';
 
 const PAGE_SIZE = 20;
 
 export default function MessagesPanel({ currentUserId }: { currentUserId: string }) {
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [threads, setThreads] = useState<any[]>([]);
   const [activeThread, setActiveThread] = useState<any>(null);
   const [threadMessages, setThreadMessages] = useState<any[]>([]);
+  const [threadClosed, setThreadClosed] = useState(false);
   const [page, setPage] = useState(1);
+  const lastDeepLink = useRef<string | null>(null);
 
   const loadThreads = async () => {
     const [inbox, sent] = await Promise.all([
@@ -28,11 +32,30 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
 
   const openThread = async (thread: any) => {
     setActiveThread(thread);
-    const msgs = await getThread(supabase, currentUserId, thread.otherId, thread.petId);
+    setThreadClosed(false);
+    const [msgs, appStatus] = await Promise.all([
+      getThread(supabase, currentUserId, thread.otherId, thread.petId),
+      getLatestApplicationStatus(supabase, thread.petId, currentUserId, thread.otherId),
+    ]);
     setThreadMessages(msgs);
+    setThreadClosed(appStatus !== null && TERMINAL_APPLICATION_STATUSES.includes(appStatus));
     await markThreadRead(supabase, currentUserId, thread.otherId, thread.petId);
     window.dispatchEvent(new Event('furrihearts:messages-read'));
   };
+
+  // Deep link from the navbar notification dropdown: /messages?with=<otherId>[&pet=<petId>].
+  // Each distinct link auto-opens its thread once, so "Back to Messages" isn't overridden.
+  useEffect(() => {
+    if (loading) return;
+    const withId = searchParams.get('with');
+    if (!withId) return;
+    const petId = searchParams.get('pet');
+    const signature = `${withId}|${petId ?? ''}`;
+    if (lastDeepLink.current === signature) return;
+    lastDeepLink.current = signature;
+    const match = threads.find(t => t.otherId === withId && (t.petId ?? '') === (petId ?? ''));
+    if (match) openThread(match);
+  }, [loading, threads, searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) return <div className="loading-state">Loading messages...</div>;
 
@@ -55,13 +78,19 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
             </div>
           ))}
         </div>
-        <MessageComposer
-          recipientId={activeThread.otherId}
-          petId={activeThread.petId}
-          triggerLabel="Reply"
-          triggerClassName="btn-message"
-          onSent={() => { openThread(activeThread); loadThreads(); }}
-        />
+        {threadClosed ? (
+          <div style={{ background: 'var(--cream)', border: '1px solid var(--border)', borderRadius: '10px', padding: '12px 16px', fontSize: '13px', color: 'var(--mid)' }}>
+            This conversation is closed — the application is no longer active.
+          </div>
+        ) : (
+          <MessageComposer
+            recipientId={activeThread.otherId}
+            petId={activeThread.petId}
+            triggerLabel="Reply"
+            triggerClassName="btn-message"
+            onSent={() => { openThread(activeThread); loadThreads(); }}
+          />
+        )}
       </div>
     );
   }

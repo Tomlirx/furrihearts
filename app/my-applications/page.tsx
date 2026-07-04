@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyApplications } from '@/lib/profile-data';
+import { TERMINAL_APPLICATION_STATUSES } from '@/lib/messages-data';
 import MessageComposer from '@/components/MessageComposer';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
@@ -114,7 +115,7 @@ export default function MyApplicationsPage() {
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <Link href={`/pet/${app.pet_id || app.pets?.id}`} className="btn-view-full" style={{ flex: 'none', padding: '8px 16px' }}>View Pet</Link>
-                  {app.pets?.rescuer_id && app.pets.rescuer_id !== 'demo-rescuer' && app.status !== 'cancelled' && app.status !== 'closed' && (
+                  {app.pets?.rescuer_id && app.pets.rescuer_id !== 'demo-rescuer' && !TERMINAL_APPLICATION_STATUSES.includes(app.status) && (
                     <MessageComposer
                       recipientId={app.pets.rescuer_id}
                       petId={app.pet_id || app.pets?.id}

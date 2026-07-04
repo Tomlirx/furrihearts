@@ -23,17 +23,41 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
-  const loadUnread = async () => {
-    if (!user) return;
-    const unread = await getUnreadMessages(supabase, user.id);
-    setUnreadCount(unread.length);
-    setUnreadThreads(groupThreads(unread, user.id).slice(0, 5));
-  };
-
   useEffect(() => {
-    loadUnread();
-    window.addEventListener('furrihearts:messages-read', loadUnread);
-    return () => window.removeEventListener('furrihearts:messages-read', loadUnread);
+    const userId = user?.id;
+    if (!userId) {
+      setUnreadCount(0);
+      setUnreadThreads([]);
+      return;
+    }
+
+    let inFlight = false;
+    const refresh = async () => {
+      if (inFlight) return;
+      inFlight = true;
+      try {
+        const unread = await getUnreadMessages(supabase, userId);
+        setUnreadCount(unread.length);
+        setUnreadThreads(groupThreads(unread, userId).slice(0, 5));
+      } finally {
+        inFlight = false;
+      }
+    };
+
+    refresh();
+    // Poll every 60s (skipping hidden tabs), and refresh immediately when the
+    // tab regains focus/visibility or a thread is marked as read.
+    const interval = setInterval(() => { if (!document.hidden) refresh(); }, 60_000);
+    const onVisibilityChange = () => { if (!document.hidden) refresh(); };
+    window.addEventListener('furrihearts:messages-read', refresh);
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('furrihearts:messages-read', refresh);
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
   }, [user?.id]);
 
   useEffect(() => {
@@ -65,7 +89,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
   const handleMarkAllRead = async () => {
     if (!user) return;
     await markAllMessagesRead(supabase, user.id);
-    loadUnread();
+    window.dispatchEvent(new Event('furrihearts:messages-read'));
   };
 
   const handleLogout = async () => {
@@ -132,7 +156,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                       unreadThreads.map((thread) => (
                         <Link
                           key={`${thread.otherId}-${thread.petId}`}
-                          href="/messages"
+                          href={`/messages?with=${thread.otherId}${thread.petId ? `&pet=${thread.petId}` : ''}`}
                           className="notif-item unread"
                           onClick={() => setIsNotifOpen(false)}
                         >

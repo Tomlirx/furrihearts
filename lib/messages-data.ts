@@ -4,6 +4,10 @@
 
 export const MAX_MESSAGE_WORDS = 200;
 
+// Once an application reaches one of these states its lifecycle is over and
+// the conversation is closed to new messages (history stays readable).
+export const TERMINAL_APPLICATION_STATUSES: readonly string[] = ['rejected', 'cancelled', 'closed'];
+
 export function countWords(text: string) {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
@@ -34,12 +38,14 @@ export async function getSentMessages(supabase: any, userId: string) {
   }
 }
 
-export async function getThread(supabase: any, userId: string, otherId: string, petId: string) {
+export async function getThread(supabase: any, userId: string, otherId: string, petId: string | null) {
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from('messages')
-      .select('*, sender:sender_id (first_name, last_name)')
-      .eq('pet_id', petId)
+      .select('*, sender:sender_id (first_name, last_name)');
+    // .eq('pet_id', null) never matches NULL rows — use .is() for pet-less threads.
+    query = petId ? query.eq('pet_id', petId) : query.is('pet_id', null);
+    const { data, error } = await query
       .or(`and(sender_id.eq.${userId},recipient_id.eq.${otherId}),and(sender_id.eq.${otherId},recipient_id.eq.${userId})`)
       .order('created_at', { ascending: true });
     return error ? [] : (data || []);
@@ -62,17 +68,37 @@ export async function getUnreadMessages(supabase: any, userId: string) {
   }
 }
 
-export async function markThreadRead(supabase: any, userId: string, otherId: string, petId: string) {
+export async function markThreadRead(supabase: any, userId: string, otherId: string, petId: string | null) {
   try {
-    await supabase
+    let query = supabase
       .from('messages')
       .update({ read_at: new Date().toISOString() })
       .eq('recipient_id', userId)
-      .eq('sender_id', otherId)
-      .eq('pet_id', petId)
-      .is('read_at', null);
+      .eq('sender_id', otherId);
+    query = petId ? query.eq('pet_id', petId) : query.is('pet_id', null);
+    await query.is('read_at', null);
   } catch {
     // Best-effort — if this fails the badge just won't decrement until the next full refetch.
+  }
+}
+
+// Latest application between the two participants for this pet, or null when
+// there is no pet / no application / the query fails (degrade-open — the
+// server action remains the authoritative guard).
+export async function getLatestApplicationStatus(supabase: any, petId: string | null, userA: string, userB: string): Promise<string | null> {
+  if (!petId) return null;
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .select('status')
+      .eq('pet_id', petId)
+      .in('applicant_id', [userA, userB])
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    return error ? null : (data?.status ?? null);
+  } catch {
+    return null;
   }
 }
 
