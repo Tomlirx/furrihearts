@@ -28,6 +28,7 @@ export type Database = {
           q6: string | null
           q7: string | null
           status: string | null
+          status_changed_at: string | null
         }
         Insert: {
           applicant_id?: string | null
@@ -42,6 +43,7 @@ export type Database = {
           q6?: string | null
           q7?: string | null
           status?: string | null
+          status_changed_at?: string | null
         }
         Update: {
           applicant_id?: string | null
@@ -56,6 +58,7 @@ export type Database = {
           q6?: string | null
           q7?: string | null
           status?: string | null
+          status_changed_at?: string | null
         }
         Relationships: [
           {
