@@ -21,22 +21,28 @@ with checks as (
          (select count(*) from pg_class c join pg_namespace n on n.oid = c.relnamespace
           where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity) >= 11
 
-  -- 3. Policy counts match production (29 public + 3 storage)
+  -- 3. Policy counts match init.sql (27 public + 3 storage; the two permissive
+  --    legacy INSERT policies were removed in migration 0016)
   union all
-  select 'policies: 29 on public schema',
-         (select count(*) from pg_policies where schemaname = 'public') = 29
+  select 'policies: 27 on public schema',
+         (select count(*) from pg_policies where schemaname = 'public') = 27
+  union all
+  select 'policies: permissive legacy INSERT policies removed',
+         not exists (select 1 from pg_policies where schemaname = 'public'
+                     and policyname in ('Enable insert access for all users',
+                                        'Allow public inserts for applications'))
   union all
   select 'policies: 3 on storage.objects',
          (select count(*) from pg_policies where schemaname = 'storage' and tablename = 'objects') = 3
 
   -- 4. Functions
   union all
-  select 'functions: all 5 exist',
+  select 'functions: all 6 exist',
          (select count(*) from pg_proc p join pg_namespace n on n.oid = p.pronamespace
           where n.nspname = 'public'
             and p.proname in ('handle_new_user','sync_pet_status_on_app_update',
                               'protect_moderation_columns','set_application_status_changed_at',
-                              'archive_ended_message_threads')) = 5
+                              'archive_ended_message_threads','enforce_application_transition')) = 6
 
   -- 5. Triggers
   union all
@@ -53,6 +59,12 @@ with checks as (
   union all
   select 'trigger: pets_protect_moderation',
          exists (select 1 from pg_trigger where tgname = 'pets_protect_moderation' and not tgisinternal)
+  union all
+  select 'trigger: enforce_application_transition',
+         exists (select 1 from pg_trigger where tgname = 'enforce_application_transition' and not tgisinternal)
+  union all
+  select 'constraint: applications_status_check',
+         exists (select 1 from pg_constraint where conname = 'applications_status_check')
 
   -- 6. Indexes
   union all

@@ -62,10 +62,12 @@ error tracking. Everything runs on Supabase + the Next.js host.
 1. Open **SQL Editor** in the Supabase dashboard.
 2. Paste the entire contents of [`supabase/setup/init.sql`](../supabase/setup/init.sql)
    and run it. It is idempotent (safe to re-run) and creates:
-   - all 11 tables with constraints, defaults and indexes
-   - all 5 functions and 4 triggers — including `on_auth_user_created` on
-     `auth.users`, which **auto-creates a `profiles` row on every signup**
-   - all 32 RLS policies (29 public + 3 storage), reproduced faithfully from
+   - all 11 tables with constraints (including the `applications_status_check`
+     status enum), defaults and indexes
+   - all 6 functions and 5 triggers — including `on_auth_user_created` on
+     `auth.users`, which **auto-creates a `profiles` row on every signup**, and
+     `enforce_application_transition`, the application status state machine
+   - all 30 RLS policies (27 public + 3 storage), reproduced faithfully from
      production, with legacy duplicates marked in comments
    - both storage buckets and their policies
    - the 16-state `state_rollouts` seed data
@@ -73,16 +75,22 @@ error tracking. Everything runs on Supabase + the Next.js host.
 3. If the `create extension pg_cron` line fails with a permissions error,
    enable pg_cron under **Database → Extensions** first, then re-run the file.
 4. Run [`supabase/setup/verify.sql`](../supabase/setup/verify.sql) in the SQL
-   Editor. **Every row must show `ok = true`** (15 checks). A failing row names
+   Editor. **Every row must show `ok = true`** (18 checks). A failing row names
    the section of `init.sql` to re-run.
 
 > **Why not the migrations folder?** The base tables (`profiles`, `pets`,
 > `applications`), both storage buckets, the `handle_new_user` trigger and the
 > `sync_pet_status_on_app_update` trigger were created by hand in the dashboard
 > and never captured in `supabase/migrations/`. `init.sql` was generated from a
-> live introspection and is the only complete definition. Keep using
-> `supabase/migrations/` for *future incremental changes* on an existing
-> environment.
+> live introspection (and kept current with later migrations) and is the only
+> complete definition. Keep using `supabase/migrations/` for *future
+> incremental changes* on an existing environment.
+>
+> **Applying 0016 to an existing production project:** `init.sql` already
+> includes migration 0016 (the application status state machine and the removal
+> of the permissive INSERT policies). A project created before 0016 must run
+> [`supabase/migrations/0016_application_status_guard.sql`](../supabase/migrations/0016_application_status_guard.sql)
+> once in the SQL Editor to catch up.
 
 ---
 
@@ -186,13 +194,23 @@ Reference for future data migration; row counts from the live introspection.
 | Extensions | pgcrypto, uuid-ossp, pg_cron (+ Supabase defaults) |
 | Cron | `archive-ended-messages` — `17 3 * * *`, active |
 
+**Security model — application status (migration 0016):** the `applications`
+UPDATE flow is guarded by the `enforce_application_transition` BEFORE UPDATE
+trigger, not by RLS alone (RLS `WITH CHECK` cannot inspect the old row). The
+state machine: an applicant may only move their own application `pending →
+cancelled`; only the pet's rescuer may move it `pending → approved|rejected` or
+`approved → rejected|closed`; the service role bypasses the machine. This holds
+even against a direct database write, so a client cannot self-approve an
+application to steal a pet. The app's approve/decline/withdraw paths go through
+the `reviewApplication` / `withdrawApplication` server actions as a second layer.
+
 **Known drift & cleanup candidates** (reproduced as-is by `init.sql` for parity):
 
-- Legacy duplicate RLS policies on `pets`, `profiles` and `applications`.
-- Two **permissive legacy INSERT policies** — `pets` "Enable insert access for
-  all users" and `applications` "Allow public inserts for applications", both
-  `WITH CHECK (true)`. Because policies are OR-ed, these override the stricter
-  owner-scoped insert policies. Works, but worth tightening in a future pass.
+- Legacy duplicate RLS policies on `pets`, `profiles` and `applications` (e.g.
+  three equivalent public-read policies on `pets`). Harmless; tighten later.
+- The two permissive legacy INSERT policies (`pets` "Enable insert access for
+  all users", `applications` "Allow public inserts for applications") were
+  **removed in migration 0016** — `init.sql` no longer creates them.
 - `types/supabase.ts` is stale (contains only 3 of 11 tables). Regenerate with
   `npx supabase gen types typescript --project-id <ref> --schema public` when convenient.
 
@@ -236,10 +254,12 @@ To move *data* (not just schema) into the new environment:
 - **Moderation columns** (`pets.review_status`, `pets.is_featured`) can only be
   changed through service-role server actions — a DB trigger silently reverts
   changes from regular users.
-- **Application lifecycle**: approving an application auto-adopts the pet and
-  auto-rejects competing pending applications (DB trigger
-  `sync_pet_status_on_app_update`); messaging is blocked server-side once an
-  application is rejected/cancelled/closed.
+- **Application lifecycle**: status changes are gated by the
+  `enforce_application_transition` trigger (see the security model note in
+  section 9). Approving an application then auto-adopts the pet and auto-rejects
+  competing pending applications (DB trigger `sync_pet_status_on_app_update`);
+  messaging is blocked server-side once an application is
+  rejected/cancelled/closed.
 
 ---
 
