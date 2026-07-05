@@ -7,3 +7,6 @@ dist/
 *.pem
 .env*.local
 .env.local
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
