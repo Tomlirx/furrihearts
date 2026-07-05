@@ -13,13 +13,13 @@ with checks as (
           where n.nspname = 'public' and c.relkind = 'r'
             and c.relname in ('profiles','pets','applications','messages','messages_archive',
                               'saved_pets','rescuer_follows','reports','listing_boosts',
-                              'contact_messages','state_rollouts')) = 11 as ok
+                              'contact_messages','state_rollouts','rate_limits')) = 12 as ok
 
-  -- 2. RLS enabled on every table (messages_archive included)
+  -- 2. RLS enabled on every table (messages_archive + rate_limits included)
   union all
-  select 'rls: enabled on all 11 tables',
+  select 'rls: enabled on all 12 tables',
          (select count(*) from pg_class c join pg_namespace n on n.oid = c.relnamespace
-          where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity) >= 11
+          where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity) >= 12
 
   -- 3. Policy counts match init.sql (27 public + 3 storage; the two permissive
   --    legacy INSERT policies were removed in migration 0016)
@@ -37,12 +37,13 @@ with checks as (
 
   -- 4. Functions
   union all
-  select 'functions: all 6 exist',
+  select 'functions: all 7 exist',
          (select count(*) from pg_proc p join pg_namespace n on n.oid = p.pronamespace
           where n.nspname = 'public'
             and p.proname in ('handle_new_user','sync_pet_status_on_app_update',
                               'protect_moderation_columns','set_application_status_changed_at',
-                              'archive_ended_message_threads','enforce_application_transition')) = 6
+                              'archive_ended_message_threads','enforce_application_transition',
+                              'check_rate_limit')) = 7
 
   -- 5. Triggers
   union all
@@ -80,6 +81,14 @@ with checks as (
   union all
   select 'storage: boost-receipts bucket is PRIVATE',
          exists (select 1 from storage.buckets where id = 'boost-receipts' and not public)
+  union all
+  select 'storage: pet-photos has size + mime limits (0017)',
+         exists (select 1 from storage.buckets where id = 'pet-photos'
+                 and file_size_limit is not null and allowed_mime_types is not null)
+  union all
+  select 'storage: anonymous upload policy removed (0017)',
+         not exists (select 1 from pg_policies where schemaname = 'storage'
+                     and tablename = 'objects' and policyname = 'Public Upload Access')
 
   -- 8. Seed data
   union all

@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { countWords, MAX_MESSAGE_WORDS, TERMINAL_APPLICATION_STATUSES } from '@/lib/messages-data';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 const CONVERSATION_CLOSED_ERROR = 'This conversation is closed — the application is no longer active.';
 
@@ -56,6 +57,21 @@ export async function sendMessage(formData: FormData) {
   }
   if (countWords(content) > MAX_MESSAGE_WORDS) {
     return { error: `Messages are limited to ${MAX_MESSAGE_WORDS} words.` };
+  }
+
+  // Recipient must be a real user (guards against spamming forged ids).
+  const { data: recipient } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', recipientId)
+    .maybeSingle();
+  if (!recipient) {
+    return { error: 'Recipient not found.' };
+  }
+
+  // Rate limit: 20 messages / 5 minutes per sender.
+  if (!(await checkRateLimit(supabase, `msg:${user.id}`, 20, 300))) {
+    return { error: "You're sending messages too quickly. Please wait a moment and try again." };
   }
 
   if (await isMessagingBlocked(supabase, { applicationId, petId: petId || null, senderId: user.id, recipientId })) {

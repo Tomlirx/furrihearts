@@ -62,20 +62,22 @@ error tracking. Everything runs on Supabase + the Next.js host.
 1. Open **SQL Editor** in the Supabase dashboard.
 2. Paste the entire contents of [`supabase/setup/init.sql`](../supabase/setup/init.sql)
    and run it. It is idempotent (safe to re-run) and creates:
-   - all 11 tables with constraints (including the `applications_status_check`
+   - all 12 tables with constraints (including the `applications_status_check`
      status enum), defaults and indexes
-   - all 6 functions and 5 triggers — including `on_auth_user_created` on
-     `auth.users`, which **auto-creates a `profiles` row on every signup**, and
-     `enforce_application_transition`, the application status state machine
+   - all 7 functions and 5 triggers — including `on_auth_user_created` on
+     `auth.users`, which **auto-creates a `profiles` row on every signup**,
+     `enforce_application_transition` (application status state machine), and
+     `check_rate_limit` (message/contact-form throttling)
    - all 30 RLS policies (27 public + 3 storage), reproduced faithfully from
      production, with legacy duplicates marked in comments
-   - both storage buckets and their policies
+   - both storage buckets (with 5 MB size + image/pdf mime limits) and their
+     policies — pet-photos uploads require login (tightened in 0017)
    - the 16-state `state_rollouts` seed data
    - the nightly `archive-ended-messages` pg_cron job (03:17 UTC)
 3. If the `create extension pg_cron` line fails with a permissions error,
    enable pg_cron under **Database → Extensions** first, then re-run the file.
 4. Run [`supabase/setup/verify.sql`](../supabase/setup/verify.sql) in the SQL
-   Editor. **Every row must show `ok = true`** (18 checks). A failing row names
+   Editor. **Every row must show `ok = true`** (20 checks). A failing row names
    the section of `init.sql` to re-run.
 
 > **Why not the migrations folder?** The base tables (`profiles`, `pets`,
@@ -86,11 +88,14 @@ error tracking. Everything runs on Supabase + the Next.js host.
 > complete definition. Keep using `supabase/migrations/` for *future
 > incremental changes* on an existing environment.
 >
-> **Applying 0016 to an existing production project:** `init.sql` already
-> includes migration 0016 (the application status state machine and the removal
-> of the permissive INSERT policies). A project created before 0016 must run
-> [`supabase/migrations/0016_application_status_guard.sql`](../supabase/migrations/0016_application_status_guard.sql)
-> once in the SQL Editor to catch up.
+> **Catching up an existing production project:** `init.sql` already includes
+> migrations 0016 and 0017. A project created before them must run, once each in
+> the SQL Editor:
+> [`0016_application_status_guard.sql`](../supabase/migrations/0016_application_status_guard.sql)
+> (application status state machine, removal of the permissive INSERT policies)
+> and [`0017_p1_security_hardening.sql`](../supabase/migrations/0017_p1_security_hardening.sql)
+> (storage size/mime limits, authenticated-only pet-photos uploads, and the
+> rate-limit table + function).
 
 ---
 
@@ -251,6 +256,11 @@ To move *data* (not just schema) into the new environment:
 - **`supabase/maintenance/`**: one-off UAT scripts (orphan cleanup, test pet
   seeding/removal). Read each header before use; they reference specific test
   accounts and are not part of any installation.
+- **Rate limiting** (migration 0017): message sending (20 / 5 min per user) and
+  the contact form (5 / 10 min per IP) go through `check_rate_limit()`, backed
+  by the `rate_limits` table. It fails open — a limiter error never blocks a
+  legitimate user. Rows accumulate one per active key; prune occasionally with
+  `delete from rate_limits where window_start < now() - interval '1 day';`
 - **Moderation columns** (`pets.review_status`, `pets.is_featured`) can only be
   changed through service-role server actions — a DB trigger silently reverts
   changes from regular users.

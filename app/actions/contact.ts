@@ -1,6 +1,8 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function submitContactMessage(formData: FormData) {
   const name = formData.get('name') as string;
@@ -13,6 +15,13 @@ export async function submitContactMessage(formData: FormData) {
   }
 
   const supabase = await createClient();
+
+  // Rate limit anonymous submissions: 5 per 10 minutes per IP.
+  const ip = (await headers()).get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  if (!(await checkRateLimit(supabase, `contact:${ip}`, 5, 600))) {
+    return { error: "You've sent several messages recently. Please try again in a little while." };
+  }
+
   const { error } = await supabase.from('contact_messages').insert({ name, email, category, message });
 
   if (error) {

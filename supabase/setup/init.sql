@@ -199,6 +199,14 @@ create table if not exists public.messages_archive (
   archived_at timestamptz not null default now()
 );
 
+-- Fixed-window rate limit counters (migration 0017). Written only by the
+-- check_rate_limit() SECURITY DEFINER function below.
+create table if not exists public.rate_limits (
+  key text primary key,
+  window_start timestamptz not null default now(),
+  count integer not null default 0
+);
+
 -- ── Indexes (beyond primary keys) ───────────────────────────────────────────
 
 create index if not exists idx_applications_pet_created
@@ -322,6 +330,34 @@ $$;
 
 revoke execute on function public.archive_ended_message_threads(integer) from public, anon, authenticated;
 
+-- Fixed-window rate limiter (migration 0017). Returns true when ALLOWED.
+-- Callers pass a server-derived key (never raw user input).
+create or replace function public.check_rate_limit(p_key text, p_limit integer, p_window interval)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_count integer;
+  v_start timestamptz;
+begin
+  insert into public.rate_limits (key, window_start, count)
+    values (p_key, now(), 1)
+  on conflict (key) do update
+    set count = case when rate_limits.window_start < now() - p_window then 1
+                     else rate_limits.count + 1 end,
+        window_start = case when rate_limits.window_start < now() - p_window then now()
+                            else rate_limits.window_start end
+  returning count, window_start into v_count, v_start;
+
+  return v_count <= p_limit;
+end;
+$$;
+
+revoke all on function public.check_rate_limit(text, integer, interval) from public;
+grant execute on function public.check_rate_limit(text, integer, interval) to anon, authenticated;
+
 -- State machine for application status changes (added in 0016). RLS governs
 -- who can see/update a row; this governs which transitions each party may make,
 -- so a direct client/database write cannot self-approve or grief.
@@ -412,6 +448,7 @@ alter table public.listing_boosts enable row level security;
 alter table public.contact_messages enable row level security;
 alter table public.state_rollouts enable row level security;
 alter table public.messages_archive enable row level security; -- no policies: admin-only
+alter table public.rate_limits enable row level security; -- no policies: written only by check_rate_limit()
 
 -- profiles
 drop policy if exists "Profiles are publicly readable" on public.profiles;
@@ -508,19 +545,26 @@ create policy "Anyone can read state rollouts" on public.state_rollouts for sele
 -- create them in Dashboard → Storage (pet-photos = Public, boost-receipts =
 -- Private) and keep only the policies below.
 
-insert into storage.buckets (id, name, public)
-values ('pet-photos', 'pet-photos', true)
-on conflict (id) do nothing;
+-- Size/mime limits added in migration 0017.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('pet-photos', 'pet-photos', true, 5242880, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do update
+  set file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
 
-insert into storage.buckets (id, name, public)
-values ('boost-receipts', 'boost-receipts', false)
-on conflict (id) do nothing;
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('boost-receipts', 'boost-receipts', false, 5242880, array['image/jpeg', 'image/png', 'image/webp', 'application/pdf'])
+on conflict (id) do update
+  set file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
 
 drop policy if exists "Public Read Access" on storage.objects;
 create policy "Public Read Access" on storage.objects for select
   using (bucket_id = 'pet-photos'::text);
+-- pet-photos uploads require login (tightened from anonymous in 0017).
 drop policy if exists "Public Upload Access" on storage.objects;
-create policy "Public Upload Access" on storage.objects for insert
+drop policy if exists "Authenticated can upload pet photos" on storage.objects;
+create policy "Authenticated can upload pet photos" on storage.objects for insert to authenticated
   with check (bucket_id = 'pet-photos'::text);
 drop policy if exists "Authenticated users can upload boost receipts" on storage.objects;
 create policy "Authenticated users can upload boost receipts" on storage.objects for insert to authenticated
