@@ -20,6 +20,7 @@ export default function PetProfile() {
   const [loading, setLoading] = useState(true);
   const [userApplication, setUserApplication] = useState<any>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [isPrivileged, setIsPrivileged] = useState(false);
 
   useEffect(() => {
     async function fetchPetAndApp() {
@@ -29,7 +30,16 @@ export default function PetProfile() {
       if (localPet) setPet(localPet);
 
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) setCurrentUserId(user.id);
+      if (user) {
+        setCurrentUserId(user.id);
+        // Auditors/admins may open pending or hidden listings to review them.
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_auditor, is_admin')
+          .eq('id', user.id)
+          .single();
+        setIsPrivileged(Boolean(profile?.is_auditor || profile?.is_admin));
+      }
       const petData = await fetchPetById(supabase, id);
 
       if (petData) setPet(petData);
@@ -76,7 +86,8 @@ export default function PetProfile() {
     );
   }
   if (!pet) return <div style={{ padding: '60px', textAlign: 'center' }}>{t('notFound')}</div>;
-  if ((pet.is_hidden || (pet.review_status && pet.review_status !== 'approved')) && currentUserId !== pet.rescuer_id) {
+  const isNotPublic = pet.is_hidden || (pet.review_status && pet.review_status !== 'approved');
+  if (isNotPublic && currentUserId !== pet.rescuer_id && !isPrivileged) {
     return <div style={{ padding: '60px', textAlign: 'center' }}>{t('notAvailable')}</div>;
   }
 
@@ -89,6 +100,12 @@ export default function PetProfile() {
       <div className="top-bar">
         <Link href="/browse" className="back-link">{t('backToBrowse')}</Link>
       </div>
+
+      {isNotPublic && (
+        <div style={{ background: '#FEF3C7', border: '1px solid #F59E0B', color: '#92400E', borderRadius: '10px', padding: '10px 16px', fontSize: '13px', fontWeight: 600, margin: '0 0 16px' }}>
+          {t('reviewPreviewNotice')}
+        </div>
+      )}
 
       <div className="profile-layout">
         <div>

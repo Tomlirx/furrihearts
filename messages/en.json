@@ -178,7 +178,8 @@
         "No commitment",
         "Rescuer notified immediately"
       ]
-    }
+    },
+    "reviewPreviewNotice": "This listing isn't publicly visible yet — you're viewing it in preview mode."
   },
   "Apply": {
     "loading": "Loading...",
