@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
-import { closeApplication } from '@/app/actions/applications';
+import { closeApplication, reviewApplication } from '@/app/actions/applications';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
 import DashboardTabs from '@/components/DashboardTabs';
@@ -56,10 +56,17 @@ function ManageApplicationsContent() {
 
   const handleUpdateStatus = async (app: any, newStatus: 'approved' | 'rejected') => {
     setIsUpdating(true);
-    updateLocalApplicationStatus(app.id, newStatus);
-    setApps((prev) => prev.map((a) => (a.id === app.id ? { ...a, status: newStatus } : a)));
-    if (!supabase.__isMock) {
-      await supabase.from('applications').update({ status: newStatus }).eq('id', app.id);
+    if (supabase.__isMock) {
+      updateLocalApplicationStatus(app.id, newStatus);
+      setApps((prev) => prev.map((a) => (a.id === app.id ? { ...a, status: newStatus } : a)));
+    } else {
+      const result = await reviewApplication(app.id, newStatus);
+      if (result?.error) {
+        showToast(result.error, 'decline');
+        setIsUpdating(false);
+        return;
+      }
+      setApps((prev) => prev.map((a) => (a.id === app.id ? { ...a, status: newStatus } : a)));
     }
     showToast(newStatus === 'approved' ? 'Application approved' : 'Application declined', newStatus === 'approved' ? 'success' : 'decline');
     setSelectedApp(null);

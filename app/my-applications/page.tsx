@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyApplications } from '@/lib/profile-data';
+import { withdrawApplication } from '@/app/actions/applications';
 import { TERMINAL_APPLICATION_STATUSES } from '@/lib/messages-data';
 import MessageComposer from '@/components/MessageComposer';
 import ConfirmDialog from '@/components/ConfirmDialog';
@@ -47,10 +48,17 @@ export default function MyApplicationsPage() {
 
   const confirmWithdraw = async () => {
     if (!withdrawTarget) return;
-    const updated = updateLocalApplicationStatus(withdrawTarget.id, 'cancelled');
-    setApps((prev) => prev.map((a) => (a.id === withdrawTarget.id ? { ...a, status: 'cancelled' } : a)));
-    if (!supabase.__isMock) {
-      await supabase.from('applications').update({ status: 'cancelled' }).eq('id', withdrawTarget.id);
+    if (supabase.__isMock) {
+      updateLocalApplicationStatus(withdrawTarget.id, 'cancelled');
+      setApps((prev) => prev.map((a) => (a.id === withdrawTarget.id ? { ...a, status: 'cancelled' } : a)));
+    } else {
+      const result = await withdrawApplication(withdrawTarget.id);
+      if (result?.error) {
+        showToast(result.error, 'decline');
+        setWithdrawTarget(null);
+        return;
+      }
+      setApps((prev) => prev.map((a) => (a.id === withdrawTarget.id ? { ...a, status: 'cancelled' } : a)));
     }
     showToast('Application withdrawn', 'decline');
     setWithdrawTarget(null);

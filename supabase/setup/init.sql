@@ -25,7 +25,12 @@
 --      applications; cancelling makes the pet available again.
 --   4. Several legacy/duplicate RLS policies exist (marked LEGACY below).
 --      They are reproduced faithfully so the new environment behaves exactly
---      like production. Cleaning them up is a separate task.
+--      like production. The two permissive INSERT policies were removed in
+--      migration 0016 and are no longer created here.
+--   5. enforce_application_transition() + BEFORE UPDATE trigger (migration
+--      0016): a status state machine — applicants may only withdraw a pending
+--      application; only the pet's rescuer may approve/reject/close. Prevents
+--      applicants from self-approving via a direct write.
 -- ============================================================================
 
 -- ── Extensions ──────────────────────────────────────────────────────────────
@@ -111,7 +116,8 @@ create table if not exists public.applications (
   created_at timestamptz default timezone('utc'::text, now()),
   applicant_id uuid references public.profiles(id) on delete cascade,
   extra_answers jsonb default '{}'::jsonb,
-  status_changed_at timestamptz not null default now()
+  status_changed_at timestamptz not null default now(),
+  constraint applications_status_check check (status in ('pending', 'approved', 'rejected', 'cancelled', 'closed'))
 );
 
 create table if not exists public.messages (
@@ -316,6 +322,51 @@ $$;
 
 revoke execute on function public.archive_ended_message_threads(integer) from public, anon, authenticated;
 
+-- State machine for application status changes (added in 0016). RLS governs
+-- who can see/update a row; this governs which transitions each party may make,
+-- so a direct client/database write cannot self-approve or grief.
+create or replace function public.enforce_application_transition()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  is_applicant boolean;
+  is_rescuer boolean;
+begin
+  if auth.role() = 'service_role' then
+    return new;
+  end if;
+  if new.status is not distinct from old.status then
+    return new;
+  end if;
+
+  is_applicant := (auth.uid() = old.applicant_id);
+  is_rescuer := auth.uid() in (select rescuer_id from public.pets where pets.id = old.pet_id);
+
+  if is_applicant then
+    if old.status = 'pending' and new.status = 'cancelled' then
+      return new;
+    end if;
+    raise exception 'Applicants may only withdraw a pending application (attempted % -> %)', old.status, new.status
+      using errcode = 'check_violation';
+  end if;
+
+  if is_rescuer then
+    if (old.status = 'pending' and new.status in ('approved', 'rejected'))
+       or (old.status = 'approved' and new.status in ('rejected', 'closed')) then
+      return new;
+    end if;
+    raise exception 'Invalid status transition % -> % for this listing', old.status, new.status
+      using errcode = 'check_violation';
+  end if;
+
+  raise exception 'Not authorized to change this application''s status'
+    using errcode = 'insufficient_privilege';
+end;
+$$;
+
 -- ── Triggers ────────────────────────────────────────────────────────────────
 
 drop trigger if exists on_auth_user_created on auth.users;
@@ -329,6 +380,11 @@ create trigger on_application_status_change
   for each row
   when (old.status is distinct from new.status)
   execute function public.sync_pet_status_on_app_update();
+
+drop trigger if exists enforce_application_transition on public.applications;
+create trigger enforce_application_transition
+  before update on public.applications
+  for each row execute function public.enforce_application_transition();
 
 drop trigger if exists trg_applications_status_changed on public.applications;
 create trigger trg_applications_status_changed
@@ -380,8 +436,8 @@ drop policy if exists "Public can read pets" on public.pets;
 create policy "Public can read pets" on public.pets for select using (true); -- LEGACY duplicate
 drop policy if exists "Users can insert their own pets" on public.pets;
 create policy "Users can insert their own pets" on public.pets for insert with check (auth.uid() = rescuer_id);
+-- Removed in 0016: the permissive "Enable insert access for all users" (with check true).
 drop policy if exists "Enable insert access for all users" on public.pets;
-create policy "Enable insert access for all users" on public.pets for insert with check (true); -- LEGACY: permissive, dominates the stricter insert policy
 drop policy if exists "Owners can update their own pets" on public.pets;
 create policy "Owners can update their own pets" on public.pets for update using (auth.uid() = rescuer_id);
 
@@ -397,8 +453,8 @@ create policy "Applicants and rescuers can view applications" on public.applicat
 drop policy if exists "Applicants can create applications" on public.applications;
 create policy "Applicants can create applications" on public.applications for insert
   with check ((auth.uid() = applicant_id) and (not (auth.uid() in (select pets.rescuer_id from pets where pets.id = applications.pet_id))));
+-- Removed in 0016: the permissive "Allow public inserts for applications" (with check true).
 drop policy if exists "Allow public inserts for applications" on public.applications;
-create policy "Allow public inserts for applications" on public.applications for insert with check (true); -- LEGACY: permissive, dominates the stricter insert policy
 drop policy if exists "Applicants and rescuers can update applications" on public.applications;
 create policy "Applicants and rescuers can update applications" on public.applications for update
   using ((auth.uid() = applicant_id) or (auth.uid() in (select pets.rescuer_id from pets where pets.id = applications.pet_id)));
