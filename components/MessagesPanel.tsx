@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { getInbox, getSentMessages, getThread, groupThreads, markThreadRead, getLatestApplicationStatus, TERMINAL_APPLICATION_STATUSES } from '@/lib/messages-data';
 import MessageComposer from './MessageComposer';
@@ -9,15 +9,18 @@ import Pagination from './Pagination';
 
 const PAGE_SIZE = 20;
 
+const threadKey = (t: any) => `${t.otherId}|${t.petId ?? ''}`;
+
 export default function MessagesPanel({ currentUserId }: { currentUserId: string }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [threads, setThreads] = useState<any[]>([]);
   const [activeThread, setActiveThread] = useState<any>(null);
   const [threadMessages, setThreadMessages] = useState<any[]>([]);
   const [threadClosed, setThreadClosed] = useState(false);
   const [page, setPage] = useState(1);
-  const lastDeepLink = useRef<string | null>(null);
+  const openKeyRef = useRef<string | null>(null);
 
   const loadThreads = async () => {
     const [inbox, sent] = await Promise.all([
@@ -30,7 +33,8 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
 
   useEffect(() => { loadThreads(); }, [currentUserId]);
 
-  const openThread = async (thread: any) => {
+  const loadThreadData = async (thread: any) => {
+    openKeyRef.current = threadKey(thread);
     setActiveThread(thread);
     setThreadClosed(false);
     const [msgs, appStatus] = await Promise.all([
@@ -43,18 +47,31 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
     window.dispatchEvent(new Event('furrihearts:messages-read'));
   };
 
-  // Deep link from the navbar notification dropdown: /messages?with=<otherId>[&pet=<petId>].
-  // Each distinct link auto-opens its thread once, so "Back to Messages" isn't overridden.
+  // The URL is the source of truth for which thread is open, so clicking the
+  // Messages tab (→ /messages) or Back (→ /messages) reliably returns to the
+  // list, and notification deep links (/messages?with=&pet=) open the thread.
+  const openThread = (thread: any) => {
+    const params = new URLSearchParams({ with: thread.otherId });
+    if (thread.petId) params.set('pet', thread.petId);
+    router.replace(`/messages?${params.toString()}`, { scroll: false });
+  };
+  const closeThread = () => router.replace('/messages', { scroll: false });
+
   useEffect(() => {
     if (loading) return;
     const withId = searchParams.get('with');
-    if (!withId) return;
     const petId = searchParams.get('pet');
-    const signature = `${withId}|${petId ?? ''}`;
-    if (lastDeepLink.current === signature) return;
-    lastDeepLink.current = signature;
-    const match = threads.find(t => t.otherId === withId && (t.petId ?? '') === (petId ?? ''));
-    if (match) openThread(match);
+    if (!withId) {
+      openKeyRef.current = null;
+      setActiveThread(null);
+      setThreadMessages([]);
+      return;
+    }
+    const wantedKey = `${withId}|${petId ?? ''}`;
+    if (openKeyRef.current === wantedKey) return; // already open
+    const target = threads.find((t) => threadKey(t) === wantedKey);
+    if (target) loadThreadData(target);
+    else { openKeyRef.current = null; setActiveThread(null); }
   }, [loading, threads, searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) return <div className="loading-state">Loading messages...</div>;
@@ -67,7 +84,7 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
       <div className="section-card">
         <div className="section-card-header">
           <h3>{activeThread.otherName} · {activeThread.petName}</h3>
-          <button onClick={() => setActiveThread(null)} style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}>← Back to Messages</button>
+          <button onClick={closeThread} style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}>← Back to Messages</button>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
           {threadMessages.map((m) => (
@@ -95,7 +112,7 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
             petId={activeThread.petId}
             triggerLabel="Reply"
             triggerClassName="btn-message"
-            onSent={() => { openThread(activeThread); loadThreads(); }}
+            onSent={() => { loadThreadData(activeThread); loadThreads(); }}
           />
         )}
       </div>
