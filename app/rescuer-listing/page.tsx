@@ -97,6 +97,7 @@ export default function RescuerListingFlow() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [traitsWarning, setTraitsWarning] = useState(false);
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     getLaunchedStates(supabase).then(setLaunchedStates);
@@ -220,7 +221,6 @@ export default function RescuerListingFlow() {
       return;
     }
 
-    let primaryImageUrl = 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800';
     const allUploadedUrls: string[] = [];
 
     // 2. Upload Images to Storage (primary photo first, cropped version if adjusted)
@@ -233,9 +233,14 @@ export default function RescuerListingFlow() {
       if (url) allUploadedUrls.push(url);
     }
 
-    if (allUploadedUrls.length > 0) {
-      primaryImageUrl = allUploadedUrls[0];
+    // Never publish a real listing with a stock/placeholder photo — require at
+    // least one real upload to succeed.
+    if (allUploadedUrls.length === 0) {
+      setFormError('We could not upload your photos. Please check your connection and try again.');
+      setIsSubmitting(false);
+      return;
     }
+    const primaryImageUrl = allUploadedUrls[0];
 
     const finalBreed = breed === 'Other' ? customBreed : breed;
     
@@ -274,7 +279,7 @@ export default function RescuerListingFlow() {
       router.push(`/rescuer-listing/created?name=${encodeURIComponent(name || 'Your pet')}`);
     } else {
       console.error("Database Error:", error);
-      alert("Error publishing listing details.");
+      setFormError('Something went wrong while publishing. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -479,12 +484,16 @@ export default function RescuerListingFlow() {
               </div>
             </div>
 
+            {formError && (
+              <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginBottom: '12px' }}>{formError}</div>
+            )}
             <button
               onClick={() => {
-                if (!name.trim()) return alert("Please enter the pet's name.");
-                if (!gender) return alert("Please select a gender (Male or Female).");
+                if (!name.trim()) { setFormError("Please enter the pet's name."); return; }
+                if (!gender) { setFormError('Please select a gender (Male or Female).'); return; }
+                setFormError('');
                 setStep(4);
-              }} 
+              }}
               style={{ width: '100%', background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '12px', padding: '16px', fontSize: '16px', fontWeight: 700, cursor: 'pointer' }}
             >
               Generate My Listing →
@@ -524,6 +533,9 @@ export default function RescuerListingFlow() {
               </div>
             </div>
 
+            {formError && (
+              <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginBottom: '12px' }}>{formError}</div>
+            )}
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setStep(3)} style={{ flex: 1, background: '#fff', border: '1.5px solid var(--border)', borderRadius: '12px', padding: '16px', fontWeight: 600, cursor: 'pointer' }}>
                 Back to Edit

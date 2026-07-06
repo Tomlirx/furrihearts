@@ -6,6 +6,7 @@ import { reviewBoost, getBoostReceiptUrl } from '@/app/actions/admin';
 export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
   const [rows, setRows] = useState(boosts);
   const [loadingReceipt, setLoadingReceipt] = useState<string | null>(null);
+  const [error, setError] = useState('');
 
   const handleReview = async (boost: any, approve: boolean) => {
     setRows((prev) => prev.map((b) => (b.id === boost.id ? { ...b, status: approve ? 'approved' : 'rejected' } : b)));
@@ -13,11 +14,12 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
   };
 
   const handleViewReceipt = async (boostId: string) => {
+    setError('');
     setLoadingReceipt(boostId);
     const result = await getBoostReceiptUrl(boostId);
     setLoadingReceipt(null);
     if (result.error) {
-      alert(result.error);
+      setError(result.error);
       return;
     }
     window.open(result.url, '_blank', 'noopener,noreferrer');
@@ -28,6 +30,8 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
   }
 
   return (
+    <>
+    {error && <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '10px 14px', fontSize: '13px', marginBottom: '12px' }}>{error}</div>}
     <table className="admin-table">
       <thead>
         <tr><th>Pet</th><th>Tier</th><th>Days</th><th>Price</th><th>Receipt</th><th>Status</th><th></th></tr>
@@ -59,5 +63,6 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
         ))}
       </tbody>
     </table>
+    </>
   );
 }
