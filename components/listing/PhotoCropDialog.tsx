@@ -50,8 +50,8 @@ export default function PhotoCropDialog({
 
   return (
     <div className="modal-overlay" onClick={isApplying ? undefined : onCancel}>
-      <div className="modal-content crop-dialog" onClick={(e) => e.stopPropagation()}>
-        <h2 className="crop-dialog-title">Adjust photo</h2>
+      <div className="modal-content crop-dialog" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="crop-dialog-title">
+        <h2 className="crop-dialog-title" id="crop-dialog-title">Adjust photo</h2>
         <p className="crop-dialog-hint">Drag to reposition · pinch or scroll to zoom</p>
         <div className="crop-canvas-wrap">
           <Cropper

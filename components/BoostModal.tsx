@@ -91,9 +91,9 @@ export default function BoostModal({
 
       {open && (
         <div className="modal-overlay" onClick={close}>
-          <div className="modal-content" style={{ maxWidth: '460px' }} onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content" style={{ maxWidth: '460px' }} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="boost-modal-title">
             <div className="modal-header">
-              <h2>{step === 'success' ? 'Boost requested' : `Boost ${petName}`}</h2>
+              <h2 id="boost-modal-title">{step === 'success' ? 'Boost requested' : `Boost ${petName}`}</h2>
               <button className="btn-close" onClick={close} aria-label="Close">×</button>
             </div>
             <div className="modal-body">

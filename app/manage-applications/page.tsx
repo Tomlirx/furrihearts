@@ -163,9 +163,9 @@ function ManageApplicationsContent() {
 
       {selectedApp && (
         <div className="modal-overlay" onClick={() => setSelectedApp(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="manage-app-modal-title">
             <div className="modal-header">
-              <h2>Application for {selectedApp.pets?.name}</h2>
+              <h2 id="manage-app-modal-title">Application for {selectedApp.pets?.name}</h2>
               <button className="btn-close" onClick={() => setSelectedApp(null)} aria-label="Close">×</button>
             </div>
             <div className="modal-body">

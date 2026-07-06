@@ -23,9 +23,9 @@ export default function ConfirmDialog({
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal-content confirm-dialog" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content confirm-dialog" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
         <div className="confirm-dialog-icon">{icon}</div>
-        <h2 className="confirm-dialog-title">{title}</h2>
+        <h2 className="confirm-dialog-title" id="confirm-dialog-title">{title}</h2>
         {body && <p className="confirm-dialog-body">{body}</p>}
         <div className="confirm-dialog-actions">
           <button className="btn-view-full" onClick={onCancel}>{cancelLabel}</button>
