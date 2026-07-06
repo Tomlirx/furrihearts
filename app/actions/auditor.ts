@@ -32,7 +32,7 @@ export async function reviewListing(petId: string, decision: 'approved' | 'rejec
     const content = decision === 'approved'
       ? `Your listing for ${pet.name} was approved and is now live!`
       : `Your listing for ${pet.name} was not approved and won't be shown to adopters. You're welcome to create a new listing.`;
-    await auditor.from('messages').insert([{ sender_id: auditorUserId, recipient_id: pet.rescuer_id, pet_id: petId, content }]);
+    await auditor.from('messages').insert([{ sender_id: auditorUserId, recipient_id: pet.rescuer_id, pet_id: petId, content, is_system: true }]);
   }
 
   revalidatePublicPaths();

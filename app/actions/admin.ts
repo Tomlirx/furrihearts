@@ -100,7 +100,7 @@ export async function reviewBoost(boostId: string, petId: string, days: number, 
     const content = approve
       ? `Your boost request for ${pet.name} was approved — it'll be featured for ${days} days.`
       : `Your boost request for ${pet.name} was declined. Please contact us if you have questions about your payment.`;
-    await admin.from('messages').insert([{ sender_id: adminUserId, recipient_id: pet.rescuer_id, pet_id: petId, content }]);
+    await admin.from('messages').insert([{ sender_id: adminUserId, recipient_id: pet.rescuer_id, pet_id: petId, content, is_system: true }]);
   }
 
   revalidatePath('/admin/boosts');

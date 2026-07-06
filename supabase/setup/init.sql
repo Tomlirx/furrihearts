@@ -133,7 +133,8 @@ create table if not exists public.messages (
   application_id uuid references public.applications(id) on delete cascade,
   content text not null,
   created_at timestamptz default now(),
-  read_at timestamptz
+  read_at timestamptz,
+  is_system boolean not null default false -- one-way notices (0019); not repliable
 );
 
 create table if not exists public.saved_pets (

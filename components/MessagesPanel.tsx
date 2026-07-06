@@ -60,6 +60,9 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
   if (loading) return <div className="loading-state">Loading messages...</div>;
 
   if (activeThread) {
+    // One-way system notices (listing/boost decisions) — or a self-addressed
+    // notice when the reviewer is also the rescuer — are not repliable.
+    const isSystemThread = Boolean(activeThread.latest?.is_system) || activeThread.otherId === currentUserId;
     return (
       <div className="section-card">
         <div className="section-card-header">
@@ -78,7 +81,11 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
             </div>
           ))}
         </div>
-        {threadClosed ? (
+        {isSystemThread ? (
+          <div style={{ background: 'var(--cream)', border: '1px solid var(--border)', borderRadius: '10px', padding: '12px 16px', fontSize: '13px', color: 'var(--mid)' }}>
+            This is a system notification and can't be replied to.
+          </div>
+        ) : threadClosed ? (
           <div style={{ background: 'var(--cream)', border: '1px solid var(--border)', borderRadius: '10px', padding: '12px 16px', fontSize: '13px', color: 'var(--mid)' }}>
             This conversation is closed — the application is no longer active.
           </div>
