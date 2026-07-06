@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { createAdminClient } from '@/utils/supabase/admin';
 import { getUserDetail } from '@/lib/admin-data';
@@ -30,7 +31,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
         <h3 style={{ marginBottom: '12px' }}>Pets Listed ({pets.length})</h3>
         {pets.length === 0 ? <p style={{ color: 'var(--light)', fontSize: '13px' }}>No pets listed.</p> : pets.map((pet: any) => (
           <div className="listing-row" key={pet.id}>
-            <img src={pet.image_url} className="row-thumb" alt={pet.name} />
+            <Image src={pet.image_url} className="row-thumb" alt={pet.name} width={48} height={48} sizes="48px" />
             <div className="row-info"><h4>{pet.name}</h4><p>{pet.status} · {pet.location}</p></div>
             <Link href={`/pet/${pet.id}`} className="admin-btn">View</Link>
           </div>

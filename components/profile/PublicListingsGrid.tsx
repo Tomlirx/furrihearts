@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const BATCH_SIZE = 12;
 
@@ -14,7 +15,7 @@ export default function PublicListingsGrid({ pets }: { pets: any[] }) {
       <div className="public-listings-grid">
         {visiblePets.map((pet: any) => (
           <Link key={pet.id} href={`/pet/${pet.id}`} className="public-listing-card">
-            <img src={pet.image_url} alt={pet.name} loading="lazy" />
+            <Image src={pet.image_url} alt={pet.name} width={300} height={165} sizes="(max-width: 768px) 50vw, 240px" />
             <div className="public-listing-info">
               <h4>{pet.name} · {pet.gender}</h4>
               <p>{pet.age} · {pet.location}</p>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
 export function PetImageGallery({
@@ -22,7 +23,7 @@ export function PetImageGallery({
   return (
     <>
       <div className="main-img">
-        <img src={mainImage || fallbackImage} alt={petName} />
+        <Image src={mainImage || fallbackImage} alt={petName} width={800} height={600} priority sizes="(max-width: 900px) 100vw, 640px" />
         {isFeatured && <span className="featured-tag">{t('featured')}</span>}
 
         {photos.length > 1 && (
@@ -52,7 +53,7 @@ export function PetImageGallery({
         <div className="thumbnails">
           {photos.map((url, index) => (
             <div key={url + index} onClick={() => setMainImage(url)} className={`thumb ${mainImage === url ? 'active' : ''}`}>
-              <img src={url} alt={`${petName} photo ${index + 1}`} />
+              <Image src={url} alt={`${petName} photo ${index + 1}`} width={80} height={72} sizes="80px" />
             </div>
           ))}
         </div>

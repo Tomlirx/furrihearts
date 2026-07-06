@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Pet } from '@/lib/pet-service';
 import './PetCard.css';
 
@@ -23,7 +24,7 @@ export default function PetCard({
   return (
     <Link href={`/pet/${pet.id}`} className={`pet-card ${featured ? 'featured' : ''}`}>
       <div className="pet-img">
-        <img src={pet.image_url} alt={pet.name} loading="lazy" />
+        <Image src={pet.image_url} alt={pet.name} width={400} height={300} sizes="(max-width: 768px) 50vw, 320px" />
         {pet.status === 'adopted' ? (
           <span className="adopted-badge">{adoptedLabel}</span>
         ) : featured ? (

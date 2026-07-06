@@ -3,6 +3,7 @@ import '../dashboard/styles.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { getLocalListings } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications, getMyBoosts } from '@/lib/profile-data';
@@ -176,7 +177,7 @@ export default function AllListingsPage() {
               <div className="listing-card" key={pet.id} style={{ position: 'relative' }}>
                 <span className={`lc-status ${statusBadge.cls}`}>{statusBadge.label}</span>
                 <Link href={`/pet/${pet.id}`}>
-                  <img src={pet.image_url} alt={pet.name} />
+                  <Image src={pet.image_url} alt={pet.name} width={400} height={180} sizes="(max-width: 768px) 100vw, 360px" />
                 </Link>
                 <div className="listing-info">
                   <div className="listing-title-row">

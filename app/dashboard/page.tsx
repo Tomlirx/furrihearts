@@ -3,6 +3,7 @@ import './styles.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { getLocalApplications, getLocalListings } from '@/lib/local-store';
 import { localPets, isPetCurrentlyFeatured, type Pet } from '@/lib/pet-service';
@@ -128,7 +129,7 @@ export default function DashboardOverview() {
               const isPendingBoost = boostsByPet[pet.id]?.status === 'pending_verification';
               return (
                 <div className="listing-row" key={pet.id}>
-                  <img src={pet.image_url} className="row-thumb" alt={pet.name} />
+                  <Image src={pet.image_url} className="row-thumb" alt={pet.name} width={48} height={48} sizes="48px" />
                   <div className="row-info">
                     <h4>
                       {pet.name} · {pet.gender}

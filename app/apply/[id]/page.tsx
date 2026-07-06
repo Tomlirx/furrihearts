@@ -2,6 +2,7 @@
 
 import './styles.css';
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
@@ -187,7 +188,7 @@ export default function QuestionnairePage() {
               <p className="q-sub-big">{t('subtitle', { name: pet.name })}</p>
             </div>
             <div className="pet-thumb">
-              <img src={pet.image_url} alt={pet.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <Image src={pet.image_url} alt={pet.name} width={120} height={120} sizes="120px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
 
