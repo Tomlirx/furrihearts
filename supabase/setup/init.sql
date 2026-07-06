@@ -99,7 +99,12 @@ create table if not exists public.pets (
   is_heartworm_tested boolean default false,
   is_strictly_indoor boolean default false,
   constraint pets_status_check check (status = any (array['available'::text, 'adopted'::text, 'pending'::text])),
-  constraint pets_review_status_check check (review_status = any (array['pending'::text, 'approved'::text, 'rejected'::text]))
+  constraint pets_review_status_check check (review_status = any (array['pending'::text, 'approved'::text, 'rejected'::text])),
+  -- Defensive field bounds (migration 0018).
+  constraint pets_fee_check check (fee is null or (fee >= 0 and fee <= 1000000)),
+  constraint pets_name_length_check check (char_length(name) between 1 and 120),
+  constraint pets_description_length_check check (description is null or char_length(description) <= 4000),
+  constraint pets_breed_length_check check (char_length(breed) between 1 and 120)
 );
 
 create table if not exists public.applications (

@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
-import PhotoCropDialog from '@/components/listing/PhotoCropDialog';
+import dynamic from 'next/dynamic';
 import { displayUrl, MAX_PHOTOS, type ListingPhoto } from '@/lib/use-photo-manager';
 import type { CropParams } from '@/lib/image-crop';
+
+// react-easy-crop (~40KB) only loads when a rescuer actually opens the cropper.
+const PhotoCropDialog = dynamic(() => import('@/components/listing/PhotoCropDialog'), { ssr: false });
 
 export default function PhotoManager({
   photos,

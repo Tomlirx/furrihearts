@@ -18,7 +18,8 @@ export async function getInbox(supabase: any, userId: string) {
       .from('messages')
       .select('*, sender:sender_id (first_name, last_name), pets (id, name, image_url)')
       .eq('recipient_id', userId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(200);
     return error ? [] : (data || []);
   } catch {
     return [];
@@ -31,7 +32,8 @@ export async function getSentMessages(supabase: any, userId: string) {
       .from('messages')
       .select('*, recipient:recipient_id (first_name, last_name), pets (id, name, image_url)')
       .eq('sender_id', userId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(200);
     return error ? [] : (data || []);
   } catch {
     return [];
