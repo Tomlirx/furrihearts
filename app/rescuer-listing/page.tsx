@@ -76,7 +76,7 @@ export default function RescuerListingFlow() {
 
   // Step 2: Scanner Progress
   const [scanProgress, setScanProgress] = useState(0);
-  const [scanLabel, setScanLabel] = useState('Detecting animal type...');
+  const [scanLabel, setScanLabel] = useState('Getting your form ready...');
 
   // Step 3: Form Data
   const [petType, setPetType] = useState('cat');
@@ -115,10 +115,10 @@ export default function RescuerListingFlow() {
     if (photos.length === 0) return;
     setStep(2);
     const scanSteps = [
-      { label: 'Detecting animal type...', pct: 20 },
-      { label: 'Estimating age and size...', pct: 40 },
-      { label: 'Analysing coat colour...', pct: 60 },
-      { label: 'Reading photo details...', pct: 80 },
+      { label: 'Uploading your photos...', pct: 20 },
+      { label: 'Setting up the details form...', pct: 40 },
+      { label: 'Adding common defaults you can edit...', pct: 60 },
+      { label: 'Preparing your preview...', pct: 80 },
       { label: 'Almost done!', pct: 100 },
     ];
     let currentScan = 0;
@@ -326,8 +326,8 @@ export default function RescuerListingFlow() {
               <div className="photo-mock">🐱<div className="scan-line" style={{ top: `${scanProgress}%` }}></div></div>
               <div className="photo-mock">🐱<div className="scan-line" style={{ top: `${scanProgress}%` }}></div></div>
             </div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '8px' }}>Analysing your photos...</h1>
-            <p style={{ fontSize: '14px', color: 'var(--light)', marginBottom: '28px' }}>Our AI is looking at your photos</p>
+            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '8px' }}>Preparing your listing...</h1>
+            <p style={{ fontSize: '14px', color: 'var(--light)', marginBottom: '28px' }}>Setting up a head start you can edit</p>
             <div className="progress-wrap"><div className="progress-bar" style={{ width: `${scanProgress}%` }}></div></div>
             <div style={{ fontSize: '12px', color: 'var(--light)' }}>{scanLabel}</div>
           </div>
@@ -337,8 +337,8 @@ export default function RescuerListingFlow() {
         {step === 3 && (
           <div style={{ maxWidth: '700px', width: '100%' }}>
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '6px' }}>Review & add details</h1>
-            <p style={{ fontSize: '14px', color: 'var(--mid)', marginBottom: '28px', lineHeight: 1.6 }}>We've pre-filled what we could from your photos. Just check, tweak, and fill in anything we missed.</p>
-            <div className="ai-badge">✨ AI pre-filled from your photos</div>
+            <p style={{ fontSize: '14px', color: 'var(--mid)', marginBottom: '28px', lineHeight: 1.6 }}>We've filled in some common defaults to save you time. Please check every field, tweak what's off, and add anything we couldn't guess.</p>
+            <div className="ai-badge">✨ Smart pre-fill — please review</div>
 
             <div className="two-col">
               
@@ -356,7 +356,7 @@ export default function RescuerListingFlow() {
                   </div>
 
                   <div className="form-field">
-                    <div className="field-label">Breed <span className="ai-filled">AI</span></div>
+                    <div className="field-label">Breed <span className="ai-filled">Suggested</span></div>
                     <select className="form-select ai-value" value={breed} onChange={e => setBreed(e.target.value)}>
                       {(petType === 'cat' ? CAT_BREEDS : DOG_BREEDS).map(b => <option key={b} value={b}>{b}</option>)}
                     </select>
