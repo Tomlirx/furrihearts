@@ -6,7 +6,7 @@
 .hero { background: linear-gradient(135deg,#FDF5EF 0%,#FEF8F3 50%,#F5EDE6 100%); padding: 72px 40px 96px; border-bottom: none; }
 .hero-inner { max-width: 740px; margin: 0 auto; text-align: center; }
 .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--orange-pale); color: var(--orange); border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 700; margin-bottom: 14px; }
-.hero-heading { font-family: 'Fraunces', serif; font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 14px; }
+.hero-heading { font-family: var(--font-fraunces); font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 14px; }
 .hero-heading span { color: var(--orange); }
 .hero-sub { color: var(--mid); font-size: 16px; line-height: 1.7; margin-bottom: 24px; max-width: 540px; margin-left: auto; margin-right: auto; }
 .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; justify-content: center; }
@@ -31,7 +31,7 @@
 .featured-inner { max-width: 1200px; margin: 0 auto; }
 .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; }
 .section-tag { font-size: 11px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.section-title { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; }
+.section-title { font-family: var(--font-fraunces); font-size: 32px; font-weight: 700; }
 .section-title em { color: var(--orange); font-style: normal; }
 .view-all-link { color: var(--orange); font-size: 14px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px; }
 .pets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
@@ -52,7 +52,7 @@
 .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; margin-top: 48px; }
 .how-steps::before { content: ''; position: absolute; top: 32px; left: 12.5%; right: 12.5%; height: 2px; background: var(--border); }
 .how-step { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
-.how-step-num { width: 64px; height: 64px; border-radius: 50%; background: var(--orange); color: #fff; font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: var(--shadow-brand); }
+.how-step-num { width: 64px; height: 64px; border-radius: 50%; background: var(--orange); color: #fff; font-family: var(--font-fraunces); font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: var(--shadow-brand); }
 .how-step h3 { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
 .how-step p { font-size: 13px; color: var(--mid); line-height: 1.6; }
 

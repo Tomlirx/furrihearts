@@ -290,7 +290,7 @@ export default function RescuerListingFlow() {
         {/* ======================= STEP 1 ======================= */}
         {step === 1 && (
           <div style={{ width: '100%', maxWidth: '540px' }}>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '28px', fontWeight: 700, textAlign: 'center', marginBottom: '8px' }}>Upload your pet's photos 📸</h1>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: '28px', fontWeight: 700, textAlign: 'center', marginBottom: '8px' }}>Upload your pet's photos 📸</h1>
             <p style={{ textAlign: 'center', color: 'var(--mid)', marginBottom: '32px' }}>Start by uploading up to <strong>5 clear photos</strong>.<br/>We'll take care of the rest.</p>
             
             <input type="file" ref={fileInputRef} hidden accept="image/jpeg,image/png,image/webp" multiple onChange={handleFileChange} />
@@ -326,7 +326,7 @@ export default function RescuerListingFlow() {
               <div className="photo-mock">🐱<div className="scan-line" style={{ top: `${scanProgress}%` }}></div></div>
               <div className="photo-mock">🐱<div className="scan-line" style={{ top: `${scanProgress}%` }}></div></div>
             </div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '8px' }}>Preparing your listing...</h1>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: '26px', fontWeight: 700, marginBottom: '8px' }}>Preparing your listing...</h1>
             <p style={{ fontSize: '14px', color: 'var(--light)', marginBottom: '28px' }}>Setting up a head start you can edit</p>
             <div className="progress-wrap"><div className="progress-bar" style={{ width: `${scanProgress}%` }}></div></div>
             <div style={{ fontSize: '12px', color: 'var(--light)' }}>{scanLabel}</div>
@@ -336,7 +336,7 @@ export default function RescuerListingFlow() {
         {/* ======================= STEP 3: FORM ======================= */}
         {step === 3 && (
           <div style={{ maxWidth: '700px', width: '100%' }}>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '6px' }}>Review & add details</h1>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: '26px', fontWeight: 700, marginBottom: '6px' }}>Review & add details</h1>
             <p style={{ fontSize: '14px', color: 'var(--mid)', marginBottom: '28px', lineHeight: 1.6 }}>We've filled in some common defaults to save you time. Please check every field, tweak what's off, and add anything we couldn't guess.</p>
             <div className="ai-badge">✨ Smart pre-fill — please review</div>
 
@@ -504,7 +504,7 @@ export default function RescuerListingFlow() {
         {/* ======================= STEP 4: REVIEW ======================= */}
         {step === 4 && (
           <div style={{ maxWidth: '760px', width: '100%' }}>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '26px', fontWeight: 700, marginBottom: '24px' }}>Review & Publish 🎉</h1>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: '26px', fontWeight: 700, marginBottom: '24px' }}>Review & Publish 🎉</h1>
              
             <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid var(--border)', marginBottom: '24px', overflow: 'hidden' }}>
               {primaryPhoto && (

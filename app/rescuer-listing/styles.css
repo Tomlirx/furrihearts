@@ -27,7 +27,7 @@
 
 /* --- Crop dialog --- */
 .crop-dialog { max-width: 520px; padding: 24px; }
-.crop-dialog-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.crop-dialog-title { font-family: var(--font-fraunces); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
 .crop-dialog-hint { font-size: 13px; color: var(--mid); margin-bottom: 16px; }
 .crop-canvas-wrap { position: relative; height: 360px; border-radius: 12px; overflow: hidden; background: #111; }
 .crop-zoom-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-size: 13px; color: var(--mid); font-weight: 600; }

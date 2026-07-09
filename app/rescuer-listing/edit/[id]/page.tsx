@@ -190,7 +190,7 @@ export default function EditListingPage() {
             </div>
           )}
           <div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>Edit Listing</h1>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>Edit Listing</h1>
             <p style={{ fontSize: '13px', color: 'var(--mid)' }}>This listing is currently offline. Changes save immediately.</p>
           </div>
         </div>

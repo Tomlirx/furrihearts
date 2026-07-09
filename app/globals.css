@@ -2,12 +2,46 @@
    1. BASE & VARIABLES
 ========================================================================== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* --------------------------------------------------------------------------
+   DESIGN TOKENS — single source of truth. See /DESIGN.md.
+   Legacy aliases (--cream/--dark/--mid/--light/--green*) are kept pointing at
+   the new semantic tokens so existing rules keep working during the refresh.
+-------------------------------------------------------------------------- */
 :root {
+  /* Brand */
   --orange: #C8490A; --orange-light: #E05C1A; --orange-pale: #FDF0EA;
-  --cream: #FDFAF7; --dark: #1A1008; --mid: #5C4A3A; --light: #8A7A6A;
-  --border: #EDE4DA; --green: #2D7A3A; --green-pale: #EAF5EC;
+  --accent: var(--orange); --accent-hover: var(--orange-light); --accent-contrast: #fff;
+
+  /* Semantic status */
+  --success: #2D7A3A; --success-pale: #EAF5EC;
+  --danger: #DC2626;  --danger-pale: #FEE2E2;
+  --warning: #B45309; --warning-pale: #FEF3C7;
+  --info: #1A5FAD;    --info-pale: #E8F0FA;
+
+  /* Surfaces & text (flip in dark mode) */
+  --bg: #FDFAF7; --surface: #FFFFFF; --surface-2: #FBF7F2; --surface-3: #F5EEE6;
+  --text: #1A1008; --text-muted: #5C4A3A; --text-subtle: #8A7A6A;
+  --border: #EDE4DA; --border-strong: #E0D4C6;
+
+  /* Radius / spacing / shadow / motion */
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-pill: 999px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-7: 32px; --space-8: 40px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.10);
+  --shadow-lg: 0 16px 56px rgba(0,0,0,0.15);
+  --shadow-brand: 0 4px 16px rgba(200,73,10,0.12);
+  --ease: cubic-bezier(.4,0,.2,1); --dur-fast: .15s; --dur: .2s;
+
+  /* Fonts */
   --font-dm-sans: 'DM Sans', sans-serif;
   --font-fraunces: 'Fraunces', serif;
+
+  /* Legacy aliases → semantic tokens (keep old CSS working) */
+  --cream: var(--bg); --dark: var(--text); --mid: var(--text-muted); --light: var(--text-subtle);
+  --green: var(--success); --green-pale: var(--success-pale);
+  --blue: var(--info); --blue-pale: var(--info-pale);
 }
 body { font-family: var(--font-dm-sans); background: var(--cream); color: var(--dark); font-size: 15px; line-height: 1.5; }
 h1, h2, h3, .logo-text, .section-title { font-family: var(--font-fraunces); }
@@ -162,18 +196,8 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
 .mob-danger { display: block; text-align: center; color: #DC2626; font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px; cursor: pointer; background: transparent; border: none; width: 100%; }
 
 /* ==========================================================================
-   6. DESIGN SYSTEM TOKENS
+   6. DESIGN SYSTEM — shared component classes (tokens live at the top)
 ========================================================================== */
-:root {
-  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
-  --space-5: 20px; --space-6: 24px; --space-7: 32px; --space-8: 40px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.10);
-  --shadow-lg: 0 16px 56px rgba(0,0,0,0.15);
-  --shadow-brand: 0 4px 16px rgba(200,73,10,0.12);
-  --blue: #1A5FAD; --blue-pale: #E8F0FA;
-}
-
 .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
 .btn-md { padding: 12px 20px; font-size: 14px; border-radius: 10px; }
 .btn-lg { padding: 14px 28px; font-size: 15px; border-radius: 10px; }
