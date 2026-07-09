@@ -29,8 +29,8 @@ Status: **DONE** — commit `ff2598c`
       `rescuer-listing/page.tsx`, `rescuer-listing/edit/[id]/page.tsx`). Latent
       font-loading bug fixed.
 - [x] Author `DESIGN.md` (spec) + this roadmap.
-- [ ] Remove inert Tailwind (empty `tailwind.config.ts`, no directives). *Deleting the
-      empty config; leaving the unused `tailwindcss` dep for a later lockfile-only cleanup.*
+- [x] Remove inert Tailwind: deleted the empty `tailwind.config.ts`. *(Unused
+      `tailwindcss` dep left in package.json for a later lockfile-only cleanup.)*
 
 ## Phase 2 — Dark mode
 Status: **DONE (core)** — commit `9f301f6`; residual polish rolled into P3.
