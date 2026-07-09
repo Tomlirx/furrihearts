@@ -33,7 +33,7 @@ Status: **DONE** — commit `ff2598c`
       empty config; leaving the unused `tailwindcss` dep for a later lockfile-only cleanup.*
 
 ## Phase 2 — Dark mode
-Status: **DONE (core)** — commit `<fill>`; residual polish rolled into P3.
+Status: **DONE (core)** — commit `9f301f6`; residual polish rolled into P3.
 
 - [x] Tokenize surfaces: all 65 `background:#fff/#fafafa/white` across every CSS
       file → `var(--surface)` / `var(--surface-2)` (background-only; on-accent
