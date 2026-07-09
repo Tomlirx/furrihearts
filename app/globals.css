@@ -34,6 +34,9 @@
   --shadow-brand: 0 4px 16px rgba(200,73,10,0.12);
   --ease: cubic-bezier(.4,0,.2,1); --dur-fast: .15s; --dur: .2s;
 
+  /* Always-dark surface (footer, toast) — does NOT flip in dark mode */
+  --inverse: #1A1008;
+
   /* Fonts */
   --font-dm-sans: 'DM Sans', sans-serif;
   --font-fraunces: 'Fraunces', serif;
@@ -42,6 +45,34 @@
   --cream: var(--bg); --dark: var(--text); --mid: var(--text-muted); --light: var(--text-subtle);
   --green: var(--success); --green-pale: var(--success-pale);
   --blue: var(--info); --blue-pale: var(--info-pale);
+}
+
+/* --------------------------------------------------------------------------
+   DARK MODE. Only the semantic tokens flip; legacy aliases inherit via var().
+   Precedence: explicit [data-theme="light"] always wins (stays light) even if
+   the OS is dark; otherwise OS dark → dark; explicit [data-theme="dark"] → dark.
+-------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17110C; --surface: #211913; --surface-2: #2A2119; --surface-3: #332619;
+    --text: #F5EEE6; --text-muted: #C9BCAE; --text-subtle: #9A8B7C;
+    --border: #3A2E24; --border-strong: #4A3B2E;
+    --orange-pale: #3A241A;
+    --success-pale: #16281C; --danger-pale: #33191A; --warning-pale: #332711; --info-pale: #14263A;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow-md: 0 8px 24px rgba(0,0,0,.5);
+    --shadow-lg: 0 16px 56px rgba(0,0,0,.6); --shadow-brand: 0 4px 16px rgba(0,0,0,.5);
+    --inverse: #100B07;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17110C; --surface: #211913; --surface-2: #2A2119; --surface-3: #332619;
+  --text: #F5EEE6; --text-muted: #C9BCAE; --text-subtle: #9A8B7C;
+  --border: #3A2E24; --border-strong: #4A3B2E;
+  --orange-pale: #3A241A;
+  --success-pale: #16281C; --danger-pale: #33191A; --warning-pale: #332711; --info-pale: #14263A;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow-md: 0 8px 24px rgba(0,0,0,.5);
+  --shadow-lg: 0 16px 56px rgba(0,0,0,.6); --shadow-brand: 0 4px 16px rgba(0,0,0,.5);
+  --inverse: #100B07;
 }
 body { font-family: var(--font-dm-sans); background: var(--cream); color: var(--dark); font-size: 15px; line-height: 1.5; }
 h1, h2, h3, .logo-text, .section-title { font-family: var(--font-fraunces); }
@@ -52,7 +83,7 @@ h1, h2, h3, .logo-text, .section-title { font-family: var(--font-fraunces); }
 .top-ribbon { background: var(--orange); color: #fff; text-align: center; padding: 10px 20px; font-size: 13px; font-weight: 500; position: sticky; top: 0; z-index: 200; }
 .top-ribbon a { color: #fff; font-weight: 700; text-decoration: underline; }
 
-nav { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 40px; z-index: 100; padding: 0 40px; }
+nav { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 40px; z-index: 100; padding: 0 40px; }
 .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 32px; }
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .logo-icon { width: 36px; height: 36px; background: var(--orange-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -81,11 +112,13 @@ nav { background: #fff; border-bottom: 1px solid var(--border); position: sticky
 .lang-opt.active { background: var(--orange); color: #fff; }
 .lang-opt-text { font-size: 12px; font-weight: 700; padding: 6px 9px; }
 .mob-lang-switcher { margin-top: 16px; align-self: flex-start; }
+.theme-toggle { background: none; border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; cursor: pointer; font-size: 15px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease); }
+.theme-toggle:hover { border-color: var(--orange); background: var(--surface-2); }
 
 /* ==========================================================================
    3. FOOTER (Locked)
 ========================================================================== */
-footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 100%; box-sizing: border-box; }
+footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width: 100%; box-sizing: border-box; }
 .footer-inner { max-width: 1200px; margin: 0 auto; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 .footer-brand p { color: #A09080; font-size: 13px; margin-top: 10px; line-height: 1.6; }
@@ -155,7 +188,7 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
    5. HOMEPAGE SEARCH BAR (Restored from index.html)
 ========================================================================== */
 .search-wrap { padding: 0 40px; margin-top: -40px; position: relative; z-index: 10; }
-.search-section { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 20px; box-shadow: 0 16px 56px rgba(0,0,0,0.15); padding: 22px 28px; border: 1px solid var(--border); }
+.search-section { max-width: 860px; margin: 0 auto; background: var(--surface); border-radius: 20px; box-shadow: 0 16px 56px rgba(0,0,0,0.15); padding: 22px 28px; border: 1px solid var(--border); }
 
 /* The flex: 1 here makes the location dropdown fill the middle, pushing the button right */
 .search-field { flex: 1; padding: 0 16px; width: 100%; }
@@ -187,7 +220,7 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
 .mob-drawer { display: none; position: fixed; inset: 0; z-index: 1000; }
 .mob-drawer.open { display: block; }
 .mob-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
-.mob-panel { position: absolute; top: 0; right: 0; bottom: 0; width: 280px; background: #fff; padding: 20px; overflow-y: auto; box-shadow: -8px 0 32px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+.mob-panel { position: absolute; top: 0; right: 0; bottom: 0; width: 280px; background: var(--surface); padding: 20px; overflow-y: auto; box-shadow: -8px 0 32px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
 .mob-close { background: none; border: none; font-size: 24px; cursor: pointer; align-self: flex-end; margin-bottom: 16px; color: var(--mid); }
 .mob-link { display: block; text-decoration: none; color: var(--dark); font-size: 15px; font-weight: 500; padding: 14px 8px; border-bottom: 1px solid var(--border); }
 .mob-link:hover, .mob-link.active { color: var(--orange); font-weight: 700; }
@@ -211,27 +244,27 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
 
 /* Shared modal (canonical — MessageComposer.css and dashboard/styles.css defer to this) */
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
-.modal-content { background: #fff; width: 100%; max-width: 600px; max-height: 90vh; border-radius: 16px; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
-.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
+.modal-content { background: var(--surface); width: 100%; max-width: 600px; max-height: 90vh; border-radius: 16px; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--surface); z-index: 10; }
 .modal-header h2 { margin: 0; font-size: 20px; color: var(--dark); }
 .btn-close { background: none; border: none; font-size: 28px; color: var(--light); cursor: pointer; line-height: 1; }
 .btn-close:hover { color: var(--dark); }
 .modal-body { padding: 24px; }
-.modal-actions { padding: 20px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; background: #fafafa; }
+.modal-actions { padding: 20px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; background: var(--surface-2); }
 
 .section-header-center { text-align: center; }
 
 /* Shared empty-state pattern (used by components/EmptyState.tsx) */
 .btn-add-pet { background: var(--orange); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; transition: opacity 0.2s; border: none; cursor: pointer; font-family: inherit; font-size: 14px; }
 .btn-add-pet:hover { opacity: 0.9; }
-.empty-state { text-align: center; padding: 60px 20px; background: #fff; border: 1px dashed var(--border); border-radius: 16px; }
+.empty-state { text-align: center; padding: 60px 20px; background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; }
 .empty-icon { font-size: 40px; margin-bottom: 16px; }
 .empty-state h3 { margin: 0 0 8px 0; color: var(--dark); }
 .empty-state p { color: var(--mid); margin: 0; }
 
 /* Pagination (used by list views: applications, messages, listings) */
 .pagination { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px; }
-.pagination-btn { border: 1.5px solid var(--border); background: #fff; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--mid); cursor: pointer; font-family: inherit; }
+.pagination-btn { border: 1.5px solid var(--border); background: var(--surface); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--mid); cursor: pointer; font-family: inherit; }
 .pagination-btn:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); }
 .pagination-btn:disabled { opacity: .4; cursor: not-allowed; }
 .pagination-info { font-size: 13px; color: var(--light); font-weight: 600; }
@@ -240,7 +273,7 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
 .notif-wrap { position: relative; }
 .notif-btn { background: none; border: none; cursor: pointer; position: relative; padding: 6px; font-size: 20px; line-height: 1; }
 .notif-badge { position: absolute; top: 0; right: 0; background: #DC2626; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-.notif-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: #fff; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 500; }
+.notif-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 500; }
 .notif-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); }
 .notif-header-title { font-weight: 700; font-size: 14px; }
 .notif-mark-read { font-size: 12px; color: var(--orange); font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; }
@@ -270,7 +303,7 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
 .confirm-dialog-actions > * { flex: 1; }
 
 /* Shared marketing-page hero (about/care-packages/contact/legal) */
-.page-hero { background: linear-gradient(135deg, #FDF5EF, #FEF8F3); padding: var(--space-8) var(--space-4); text-align: center; border-bottom: 1px solid var(--border); }
+.page-hero { background: linear-gradient(135deg, var(--surface-2), var(--surface)); padding: var(--space-8) var(--space-4); text-align: center; border-bottom: 1px solid var(--border); }
 .page-hero-inner { max-width: 600px; margin: 0 auto; }
 .page-tag { font-size: 12px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-3); }
 
@@ -279,5 +312,5 @@ footer { background: var(--dark); color: #fff; padding: 48px 40px 24px; width: 1
 .btn-outline-cta { border: 1.5px solid var(--border); color: var(--dark); border-radius: 10px; padding: 13px 26px; font-weight: 600; text-decoration: none; font-size: 14px; }
 
 /* Shared white CTA-on-color button (about cta-section / rescuer-landing hero) */
-.btn-cta-white { background: #fff; color: var(--orange); border: none; border-radius: 10px; padding: 16px 32px; font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
+.btn-cta-white { background: var(--surface); color: var(--orange); border: none; border-radius: 10px; padding: 16px 32px; font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
 .btn-cta-white:hover { background: var(--cream); }

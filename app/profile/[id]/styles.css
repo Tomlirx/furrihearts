@@ -6,7 +6,7 @@
 .public-listing-info h4 { font-size: 13px; margin-bottom: 2px; }
 .public-listing-info p { font-size: 11px; color: var(--light); }
 .public-listing-fee { color: var(--orange) !important; font-weight: 700; }
-.btn-follow { background: #fff; border: 1.5px solid var(--orange); color: var(--orange); border-radius: 8px; padding: 9px 18px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-follow { background: var(--surface); border: 1.5px solid var(--orange); color: var(--orange); border-radius: 8px; padding: 9px 18px; font-size: 13px; font-weight: 700; cursor: pointer; }
 .btn-follow.following { background: var(--orange); color: #fff; }
 
 @media (max-width: 768px) {

@@ -33,17 +33,23 @@ Status: **DONE** — commit `ff2598c`
       empty config; leaving the unused `tailwindcss` dep for a later lockfile-only cleanup.*
 
 ## Phase 2 — Dark mode
-Status: **TODO**
+Status: **DONE (core)** — commit `<fill>`; residual polish rolled into P3.
 
-- [ ] Tokenize surfaces: `background:#fff`→`var(--surface)`, `#fafafa`→
-      `var(--surface-2)`, hardcoded text/border → semantic tokens. Start with
-      `app/globals.css` + `app/dashboard/styles.css` (shared by 6 routes), then
-      per-page CSS + `components/*.css`.
-- [ ] Add `:root[data-theme="dark"]` overrides + `@media (prefers-color-scheme: dark)`.
-- [ ] `components/ThemeProvider.tsx` (writes `data-theme` + localStorage,
-      defaults to system) + header day/night toggle next to `LanguageSwitcher`.
-- [ ] Pre-hydration inline theme script in `app/layout.tsx` (no flash).
-- [ ] Recheck footer (already dark) and contrast (WCAG AA) across surfaces.
+- [x] Tokenize surfaces: all 65 `background:#fff/#fafafa/white` across every CSS
+      file → `var(--surface)` / `var(--surface-2)` (background-only; on-accent
+      `color:#fff` kept). Footer + toast → new always-dark `--inverse` token.
+      Home + page hero gradients → surface tokens.
+- [x] `:root[data-theme="dark"]` overrides + `@media (prefers-color-scheme: dark)`
+      with correct precedence (explicit `light` wins; else OS; else explicit `dark`).
+- [x] `components/ThemeToggle.tsx` (localStorage + sets `data-theme`, defaults to
+      OS) placed in the navbar next to `LanguageSwitcher`.
+- [x] Pre-hydration inline theme script in `app/layout.tsx` (no flash).
+- [x] Footer/toast handled via `--inverse` (stay dark in both themes).
+- [ ] **Residual (P3):** hardcoded status *pales* not yet tokenized (e.g.
+      `.notif-icon.red #FEE2E2`, `.blue #EFF6FF`, dashboard status badges,
+      `#DC2626`/`#10B981` literals, the ~260 inline `style={{}}` colors). These
+      stay light-tinted in dark mode until swept to semantic tokens. Verify
+      WCAG AA once swept.
 
 ## Phase 3 — Component consolidation
 Status: **TODO**

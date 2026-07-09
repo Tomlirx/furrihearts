@@ -10,7 +10,7 @@
 
 /* LAYOUT */
 .guide-layout { display: grid; grid-template-columns: 220px 1fr; max-width: 1100px; margin: 0 auto; }
-.guide-sidebar { padding: 28px 20px; border-right: 1px solid var(--border); position: sticky; top: 64px; height: fit-content; background: #fff; }
+.guide-sidebar { padding: 28px 20px; border-right: 1px solid var(--border); position: sticky; top: 64px; height: fit-content; background: var(--surface); }
 .sidebar-link { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; font-size: 13px; color: var(--mid); text-decoration: none; margin-bottom: 2px; transition: all .2s; }
 .sidebar-link:hover { background: var(--cream); color: var(--dark); }
 .sidebar-link.active { background: var(--orange-pale); color: var(--orange); font-weight: 600; }
@@ -25,7 +25,7 @@
 
 /* CHECKLIST */
 .checklist { display: flex; flex-direction: column; gap: 10px; }
-.check-item { display: flex; align-items: flex-start; gap: 12px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all .2s; }
+.check-item { display: flex; align-items: flex-start; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all .2s; }
 .check-item:hover { border-color: var(--orange); }
 .check-item.checked { border-color: var(--green); background: var(--green-pale); }
 .check-box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; font-size: 11px; transition: all .2s; }
@@ -36,7 +36,7 @@
 
 /* PHASE CARDS */
 .phase-cards { display: flex; flex-direction: column; gap: 12px; }
-.phase-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: start; }
+.phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: start; }
 .phase-num { width: 44px; height: 44px; border-radius: 50%; background: var(--orange); color: #fff; font-family: var(--font-fraunces), serif; font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 .phase-card h4 { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
 .phase-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }
@@ -53,7 +53,7 @@
 
 /* TIPS GRID */
 .tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.tip-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 14px; }
+.tip-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 14px; }
 .tip-icon { font-size: 28px; flex-shrink: 0; }
 .tip-card h4 { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
 .tip-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }

@@ -5,13 +5,13 @@
 .admin-nav-link:hover { background: var(--cream); color: var(--dark); }
 .admin-content { padding: 28px 32px; }
 
-.admin-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.admin-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
 .admin-table th { text-align: left; font-size: 11px; text-transform: uppercase; color: var(--light); padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--cream); }
 .admin-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 .admin-table tr:last-child td { border-bottom: none; }
 .admin-search { border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 13px; width: 280px; margin-bottom: 16px; font-family: inherit; }
 .admin-select { border: 1.5px solid var(--border); border-radius: 6px; padding: 5px 8px; font-size: 12px; font-family: inherit; }
-.admin-btn { border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--mid); margin-right: 6px; }
+.admin-btn { border: 1px solid var(--border); background: var(--surface); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--mid); margin-right: 6px; }
 .admin-btn:hover { border-color: var(--orange); color: var(--orange); }
 .admin-btn.danger:hover { border-color: #DC2626; color: #DC2626; }
 .admin-btn.success { border-color: var(--green); color: var(--green); }

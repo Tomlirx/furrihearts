@@ -5,7 +5,7 @@
 
 .created-cta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: var(--space-8); }
 
-.whats-next { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: left; }
+.whats-next { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: left; }
 .whats-next h3 { margin-bottom: 16px; text-align: center; }
 .next-item { display: flex; gap: 14px; padding: 10px 0; }
 .next-item span { font-size: 22px; }

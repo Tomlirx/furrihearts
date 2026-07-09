@@ -5,7 +5,7 @@
 .trust-item { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--mid); font-weight: 600; }
 
 .packages-grid { max-width: 1000px; margin: 0 auto; padding: var(--space-2) var(--space-6) 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
-.package-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all .2s; }
+.package-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all .2s; }
 .package-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
 .package-img { height: 140px; background: var(--orange-pale); display: flex; align-items: center; justify-content: center; position: relative; }
 .package-emoji { font-size: 48px; }

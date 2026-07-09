@@ -4,13 +4,13 @@
 
 .contact-layout { max-width: 1000px; margin: 0 auto; padding: 48px var(--space-6); display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--space-7); }
 .contact-channels { display: flex; flex-direction: column; gap: 14px; }
-.channel-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px; text-decoration: none; color: var(--dark); transition: border-color .2s; }
+.channel-card { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; text-decoration: none; color: var(--dark); transition: border-color .2s; }
 .channel-card:hover { border-color: var(--orange); }
 .channel-icon { font-size: 22px; }
 .channel-card h4 { font-size: 14px; margin-bottom: 2px; }
 .channel-card p { font-size: 13px; color: var(--light); }
 
-.contact-form-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+.contact-form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
 .contact-form-card h2 { font-family: var(--font-fraunces), serif; font-size: 20px; }
 .contact-form .form-field { margin-bottom: 14px; }
 .contact-form .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--light); text-transform: uppercase; margin-bottom: 6px; }

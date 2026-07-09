@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase';
 import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/messages-data';
 import { signOutUser } from '@/app/actions/auth';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
   const t = useTranslations('Navbar');
@@ -126,6 +127,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
 
           <div className="nav-right">
             <LanguageSwitcher />
+            <ThemeToggle />
             <Link href="/rescuer-listing" className="btn-primary-nav">{t('listNow')}</Link>
 
             {user && (

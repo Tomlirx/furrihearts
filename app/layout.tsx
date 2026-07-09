@@ -38,6 +38,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale}>
       {/* Apply the font variables to the body */}
       <body className={`${dmSans.variable} ${fraunces.variable}`}>
+        {/* Set the saved theme before paint to avoid a light/dark flash.
+            No stored choice → CSS falls back to prefers-color-scheme. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,
+          }}
+        />
         <NextIntlClientProvider locale={locale} messages={chromeMessages}>
           <Navbar user={user} isAdmin={isAdmin} isAuditor={isAuditor} />
           <main>{children}</main>

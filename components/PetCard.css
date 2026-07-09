@@ -1,6 +1,6 @@
 /* Shared pet-card markup, used by Browse and the Homepage */
 
-.pet-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: all .2s; text-decoration: none; color: inherit; display: block; }
+.pet-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: all .2s; text-decoration: none; color: inherit; display: block; }
 .pet-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 .pet-card.featured { border: 2px solid #F5C9B0; box-shadow: var(--shadow-brand); }
 

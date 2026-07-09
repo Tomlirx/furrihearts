@@ -74,7 +74,7 @@
 }
 
 .application-card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
@@ -170,7 +170,7 @@
 }
 
 .listing-card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -248,7 +248,7 @@
 .welcome-bar p strong { color: var(--orange); }
 
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-.stat-tile { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; }
+.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; }
 .stat-tile::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .stat-tile.orange::before { background: var(--orange); }
 .stat-tile.green::before { background: var(--green); }
@@ -258,7 +258,7 @@
 .stat-tile-num { font-family: var(--font-fraunces), serif; font-size: 26px; font-weight: 700; }
 .stat-tile-label { font-size: 12px; color: var(--light); margin-top: 2px; }
 
-.section-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+.section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
 .section-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .section-card-header h3 { font-size: 16px; }
 .section-card-header a { font-size: 13px; color: var(--orange); font-weight: 600; text-decoration: none; }
@@ -272,7 +272,7 @@
 .row-info p { font-size: 12px; color: var(--light); }
 .row-count { font-weight: 700; color: var(--orange); font-size: 14px; text-align: center; flex-shrink: 0; }
 .row-actions { display: flex; gap: 8px; flex-shrink: 0; }
-.row-actions a, .row-actions button { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 6px; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--mid); }
+.row-actions a, .row-actions button { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 6px; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--mid); }
 .row-actions .primary { background: var(--orange); color: #fff; border: none; }
 .row-actions .success { background: var(--green); color: #fff; border: none; }
 
@@ -280,7 +280,7 @@
    FILTER TABS (my-applications, manage-applications, all-listings)
 ========================================= */
 .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; overflow-x: auto; }
-.filter-tab { background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--mid); white-space: nowrap; font-family: inherit; }
+.filter-tab { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--mid); white-space: nowrap; font-family: inherit; }
 .filter-tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
 
 .status-badge.cancelled, .status-badge.withdrawn { background: #F3F4F6; color: var(--light); }
@@ -288,7 +288,7 @@
 /* =========================================
    TOAST
 ========================================= */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 12px 22px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 2000; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--inverse); color: #fff; padding: 12px 22px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 2000; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
 .toast.success { background: var(--green); }
 .toast.decline { background: #DC2626; }
 
@@ -315,7 +315,7 @@
 .boost-status.rejected { background: #FEE2E2; color: #DC2626; }
 
 .tier-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.tier-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 10px; background: #fff; cursor: pointer; text-align: center; font-family: inherit; transition: all .2s; }
+.tier-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 10px; background: var(--surface); cursor: pointer; text-align: center; font-family: inherit; transition: all .2s; }
 .tier-card:hover { border-color: var(--orange); }
 .tier-card.selected { border-color: var(--orange); background: var(--orange-pale); }
 .tier-card-label { font-weight: 700; font-size: 14px; color: var(--dark); margin-bottom: 4px; }
@@ -369,7 +369,7 @@
 }
 
 .btn-reject {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid #DC2626;
   color: #DC2626;
   padding: 10px 20px;

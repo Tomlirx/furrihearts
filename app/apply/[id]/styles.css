@@ -19,7 +19,7 @@
 .q-opt-grid { display: grid; gap: 12px; margin-top: 12px; }
 .q-opt-4 { grid-template-columns: repeat(2, 1fr); }
 .q-opt-3 { grid-template-columns: repeat(3, 1fr); }
-.q-opt { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; background: #fff; cursor: pointer; text-align: left; font-size: 14px; color: var(--mid); transition: all .2s; }
+.q-opt { border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; background: var(--surface); cursor: pointer; text-align: left; font-size: 14px; color: var(--mid); transition: all .2s; }
 .q-opt:hover { border-color: var(--orange); }
 .q-opt.selected { background: var(--orange); color: #fff; border-color: var(--orange); font-weight: 600; }
 

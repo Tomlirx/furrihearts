@@ -1,4 +1,4 @@
-.btn-message { background: #fff; border: 1.5px solid var(--orange); color: var(--orange); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; font-family: inherit; }
+.btn-message { background: var(--surface); border: 1.5px solid var(--orange); color: var(--orange); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; font-family: inherit; }
 .btn-message:hover { background: var(--orange-pale); }
 
 /* .modal-overlay/.modal-content/.modal-header/.modal-body/.modal-actions are defined globally in globals.css */

@@ -16,7 +16,7 @@
 
 .values-section { background: var(--cream); padding: 56px var(--space-8); }
 .values-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
-.value-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 28px 22px; text-align: center; }
+.value-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 22px; text-align: center; }
 .value-icon { font-size: 30px; margin-bottom: 10px; }
 .value-card h3 { font-size: 16px; margin-bottom: 8px; }
 .value-card p { color: var(--light); font-size: 13px; line-height: 1.6; }

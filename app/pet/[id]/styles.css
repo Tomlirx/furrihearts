@@ -15,7 +15,7 @@
 .featured-tag { position: absolute; top: 12px; right: 12px; display: inline-block; width: max-content; background: var(--orange); color: #fff; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 700; letter-spacing: .2px; white-space: nowrap; line-height: 1.4; z-index: 10; }
 .img-counter { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); color: #fff; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 600; z-index: 10; }
 .img-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10; }
-.img-nav-btn:hover { background: #fff; }
+.img-nav-btn:hover { background: var(--surface); }
 
 /* Thumbnails */
 .thumbnails { display: flex; gap: 10px; margin-bottom: 24px; }
@@ -24,7 +24,7 @@
 .thumb.active { border-color: var(--orange); }
 
 /* Details Sections */
-.section-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
+.section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
 .section-card h2 { font-weight: 700; font-size: 18px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--orange); display: inline-block; font-family: var(--font-fraunces), serif; }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
@@ -46,7 +46,7 @@
 .adoption-info-row .info-value { font-weight: 600; color: var(--dark); }
 
 /* Sidebar Cards */
-.right-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+.right-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
 .right-card-heading { font-weight: 700; font-size: 16px; margin-bottom: 16px; }
 
 /* RescuerSidebar */
