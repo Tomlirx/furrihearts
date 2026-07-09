@@ -17,7 +17,7 @@ live after push (deploy-to-test). Ignore the duplicate copy under `.claude/workt
 ---
 
 ## Phase 1 — Token foundation (non-visual-breaking)
-Status: **DONE** — commit `<fill on commit>`
+Status: **DONE** — commit `ff2598c`
 
 - [x] Merge the two `:root` blocks in `app/globals.css` into one token source.
 - [x] Add semantic (`--success/-danger/-warning/-info` + pale), surface
@@ -76,4 +76,4 @@ Status: **TODO**
   we take principles only, never copy another brand's exact palette.
 
 ## Commit log
-- P1: _(record hash after commit)_
+- P1: `ff2598c` — tokens consolidated/expanded, font refs fixed, DESIGN docs added, dead Tailwind removed.
