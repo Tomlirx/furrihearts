@@ -16,7 +16,8 @@
     "unreadMessages": "{count} unread messages",
     "messagesHeader": "Messages",
     "markAllRead": "Mark all read",
-    "noNewMessages": "No new messages."
+    "noNewMessages": "No new messages.",
+    "game": "Paw Match"
   },
   "Footer": {
     "tagline": "Matching hearts. Creating forever homes.",
@@ -32,7 +33,8 @@
     "contactUs": "Contact Us",
     "privacyTerms": "Privacy & Terms",
     "copyright": "© 2026 FurriHearts. All rights reserved.",
-    "madeWith": "Made with ❤️ for animals in Malaysia"
+    "madeWith": "Made with ❤️ for animals in Malaysia",
+    "game": "Paw Match"
   },
   "Homepage": {
     "featuredTag": "Featured Pets",
@@ -606,5 +608,27 @@
         ]
       }
     ]
+  },
+  "Game": {
+    "tag": "Mini game",
+    "title": "Paw Match",
+    "subtitle": "Match 3 or more pet tiles before your moves run out. Sign in to save your best score and climb the leaderboard!",
+    "loading": "Setting up the board...",
+    "score": "Score",
+    "moves": "Moves",
+    "boardLabel": "Paw Match board",
+    "tileLabel": "Tile",
+    "reshuffling": "No moves left — reshuffling!",
+    "gameOver": "Game over!",
+    "saving": "Saving your score...",
+    "saved": "Score saved to the leaderboard.",
+    "newBest": "New personal best!",
+    "guestCta": "Sign up to save your score and join the leaderboard!",
+    "signUp": "Sign up free",
+    "playAgain": "Play again",
+    "howTo": "Tap a tile, then tap a neighbour to swap. Match 3+ to score — chains multiply your points.",
+    "leaderboard": "Leaderboard",
+    "leaderboardEmpty": "No scores yet — be the first!",
+    "you": "You"
   }
 }

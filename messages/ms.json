@@ -16,7 +16,8 @@
     "unreadMessages": "{count} mesej belum dibaca",
     "messagesHeader": "Mesej",
     "markAllRead": "Tandakan semua dibaca",
-    "noNewMessages": "Tiada mesej baharu."
+    "noNewMessages": "Tiada mesej baharu.",
+    "game": "Paw Match"
   },
   "Footer": {
     "tagline": "Menyatukan hati. Mencipta rumah selamanya.",
@@ -32,7 +33,8 @@
     "contactUs": "Hubungi Kami",
     "privacyTerms": "Privasi & Terma",
     "copyright": "© 2026 FurriHearts. Hak cipta terpelihara.",
-    "madeWith": "Dibuat dengan ❤️ untuk haiwan di Malaysia"
+    "madeWith": "Dibuat dengan ❤️ untuk haiwan di Malaysia",
+    "game": "Paw Match"
   },
   "Homepage": {
     "featuredTag": "Haiwan Pilihan",
@@ -606,5 +608,27 @@
         ]
       }
     ]
+  },
+  "Game": {
+    "tag": "Permainan mini",
+    "title": "Paw Match",
+    "subtitle": "Padankan 3 atau lebih jubin haiwan sebelum langkah habis. Log masuk untuk menyimpan skor terbaik anda dan naik carta!",
+    "loading": "Menyediakan papan...",
+    "score": "Skor",
+    "moves": "Langkah",
+    "boardLabel": "Papan Paw Match",
+    "tileLabel": "Jubin",
+    "reshuffling": "Tiada padanan — mengocok semula!",
+    "gameOver": "Permainan tamat!",
+    "saving": "Menyimpan skor anda...",
+    "saved": "Skor disimpan ke carta.",
+    "newBest": "Rekod peribadi baharu!",
+    "guestCta": "Daftar untuk menyimpan skor dan menyertai carta kedudukan!",
+    "signUp": "Daftar percuma",
+    "playAgain": "Main lagi",
+    "howTo": "Ketik satu jubin, kemudian ketik jiran untuk menukar. Padankan 3+ untuk mata — rantaian menggandakan mata anda.",
+    "leaderboard": "Carta Kedudukan",
+    "leaderboardEmpty": "Belum ada skor — jadilah yang pertama!",
+    "you": "Anda"
   }
 }

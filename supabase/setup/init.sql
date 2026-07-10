@@ -213,10 +213,22 @@ create table if not exists public.rate_limits (
   count integer not null default 0
 );
 
+-- Paw Match best scores (migration 0020) — one row per player. Public read
+-- (leaderboard); writes ONLY via the submitGameScore server action (service
+-- role), so no insert/update policies exist.
+create table if not exists public.game_scores (
+  user_id uuid primary key references public.profiles(id) on delete cascade,
+  best_score integer not null check (best_score >= 0 and best_score <= 50000),
+  games_played integer not null default 1 check (games_played >= 1),
+  updated_at timestamptz not null default now()
+);
+
 -- ── Indexes (beyond primary keys) ───────────────────────────────────────────
 
 create index if not exists idx_applications_pet_created
   on public.applications (pet_id, created_at desc);
+create index if not exists idx_game_scores_best
+  on public.game_scores (best_score desc);
 create index if not exists idx_messages_recipient_unread
   on public.messages (recipient_id) where read_at is null;
 create index if not exists idx_messages_recipient_created
@@ -455,6 +467,11 @@ alter table public.contact_messages enable row level security;
 alter table public.state_rollouts enable row level security;
 alter table public.messages_archive enable row level security; -- no policies: admin-only
 alter table public.rate_limits enable row level security; -- no policies: written only by check_rate_limit()
+alter table public.game_scores enable row level security;
+
+-- game_scores: public leaderboard; writes only via service role
+drop policy if exists "Leaderboard is publicly readable" on public.game_scores;
+create policy "Leaderboard is publicly readable" on public.game_scores for select using (true);
 
 -- profiles
 drop policy if exists "Profiles are publicly readable" on public.profiles;

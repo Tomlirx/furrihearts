@@ -62,14 +62,15 @@ error tracking. Everything runs on Supabase + the Next.js host.
 1. Open **SQL Editor** in the Supabase dashboard.
 2. Paste the entire contents of [`supabase/setup/init.sql`](../supabase/setup/init.sql)
    and run it. It is idempotent (safe to re-run) and creates:
-   - all 12 tables with constraints (including the `applications_status_check`
+   - all 13 tables with constraints (including the `applications_status_check`
      status enum), defaults and indexes
    - all 7 functions and 5 triggers — including `on_auth_user_created` on
      `auth.users`, which **auto-creates a `profiles` row on every signup**,
      `enforce_application_transition` (application status state machine), and
      `check_rate_limit` (message/contact-form throttling)
-   - all 30 RLS policies (27 public + 3 storage), reproduced faithfully from
-     production, with legacy duplicates marked in comments
+   - all 31 RLS policies (28 public + 3 storage), reproduced faithfully from
+     production, with legacy duplicates marked in comments; `game_scores` is
+     read-only via RLS (writes go through the service-role server action)
    - both storage buckets (with 5 MB size + image/pdf mime limits) and their
      policies — pet-photos uploads require login (tightened in 0017)
    - the 16-state `state_rollouts` seed data
@@ -89,13 +90,12 @@ error tracking. Everything runs on Supabase + the Next.js host.
 > incremental changes* on an existing environment.
 >
 > **Catching up an existing production project:** `init.sql` already includes
-> migrations 0016 and 0017. A project created before them must run, once each in
-> the SQL Editor:
-> [`0016_application_status_guard.sql`](../supabase/migrations/0016_application_status_guard.sql)
-> (application status state machine, removal of the permissive INSERT policies)
-> and [`0017_p1_security_hardening.sql`](../supabase/migrations/0017_p1_security_hardening.sql)
-> (storage size/mime limits, authenticated-only pet-photos uploads, and the
-> rate-limit table + function).
+> every migration through `0020`. A project created earlier must run each
+> missing file from `supabase/migrations/` once, in numeric order, in the SQL
+> Editor — 0016 (application status state machine + removal of permissive
+> INSERT policies), 0017 (storage limits + rate limiting), 0018 (pets field
+> constraints), 0019 (system-message flag), 0020 (Paw Match `game_scores`
+> leaderboard table).
 
 ---
 

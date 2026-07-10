@@ -16,7 +16,8 @@
     "unreadMessages": "{count} 条未读消息",
     "messagesHeader": "消息",
     "markAllRead": "全部标为已读",
-    "noNewMessages": "暂无新消息。"
+    "noNewMessages": "暂无新消息。",
+    "game": "爪爪消消乐"
   },
   "Footer": {
     "tagline": "连结爱心，缔造永远的家。",
@@ -32,7 +33,8 @@
     "contactUs": "联系我们",
     "privacyTerms": "隐私权与条款",
     "copyright": "© 2026 FurriHearts。保留所有权利。",
-    "madeWith": "用 ❤️ 为马来西亚的动物而做"
+    "madeWith": "用 ❤️ 为马来西亚的动物而做",
+    "game": "爪爪消消乐"
   },
   "Homepage": {
     "featuredTag": "精选宠物",
@@ -606,5 +608,27 @@
         ]
       }
     ]
+  },
+  "Game": {
+    "tag": "小游戏",
+    "title": "爪爪消消乐",
+    "subtitle": "在步数用完前消除 3 个或以上相同的宠物方块。登录即可保存最佳成绩、冲击排行榜!",
+    "loading": "正在准备棋盘...",
+    "score": "得分",
+    "moves": "步数",
+    "boardLabel": "爪爪消消乐棋盘",
+    "tileLabel": "方块",
+    "reshuffling": "没有可消除的组合——重新洗牌!",
+    "gameOver": "游戏结束!",
+    "saving": "正在保存成绩...",
+    "saved": "成绩已保存到排行榜。",
+    "newBest": "刷新个人最佳!",
+    "guestCta": "注册即可保存成绩、加入排行榜!",
+    "signUp": "免费注册",
+    "playAgain": "再来一局",
+    "howTo": "点击一个方块,再点击相邻方块交换位置。三连即可得分,连锁消除加倍计分。",
+    "leaderboard": "排行榜",
+    "leaderboardEmpty": "还没有成绩——来当第一名!",
+    "you": "你"
   }
 }

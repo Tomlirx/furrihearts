@@ -13,19 +13,19 @@ with checks as (
           where n.nspname = 'public' and c.relkind = 'r'
             and c.relname in ('profiles','pets','applications','messages','messages_archive',
                               'saved_pets','rescuer_follows','reports','listing_boosts',
-                              'contact_messages','state_rollouts','rate_limits')) = 12 as ok
+                              'contact_messages','state_rollouts','rate_limits','game_scores')) = 13 as ok
 
-  -- 2. RLS enabled on every table (messages_archive + rate_limits included)
+  -- 2. RLS enabled on every table (messages_archive + rate_limits + game_scores included)
   union all
-  select 'rls: enabled on all 12 tables',
+  select 'rls: enabled on all 13 tables',
          (select count(*) from pg_class c join pg_namespace n on n.oid = c.relnamespace
-          where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity) >= 12
+          where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity) >= 13
 
-  -- 3. Policy counts match init.sql (27 public + 3 storage; the two permissive
+  -- 3. Policy counts match init.sql (28 public + 3 storage; the two permissive
   --    legacy INSERT policies were removed in migration 0016)
   union all
-  select 'policies: 27 on public schema',
-         (select count(*) from pg_policies where schemaname = 'public') = 27
+  select 'policies: 28 on public schema',
+         (select count(*) from pg_policies where schemaname = 'public') = 28
   union all
   select 'policies: permissive legacy INSERT policies removed',
          not exists (select 1 from pg_policies where schemaname = 'public'

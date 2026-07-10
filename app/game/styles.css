@@ -1,0 +1,78 @@
+/* =========================================
+   PAW MATCH GAME (app/game/styles.css)
+========================================= */
+.game-page { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+.game-hero { text-align: center; margin-bottom: 24px; }
+.game-title { font-family: var(--font-fraunces); font-size: 34px; font-weight: 700; margin-bottom: 6px; }
+.game-sub { color: var(--mid); font-size: 15px; max-width: 520px; margin: 0 auto; }
+
+.game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+
+/* HUD */
+.game-hud { display: flex; gap: 12px; margin-bottom: 12px; }
+.game-stat { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 16px; display: flex; align-items: baseline; justify-content: space-between; }
+.game-stat-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--light); }
+.game-stat-value { font-family: var(--font-fraunces); font-size: 24px; font-weight: 700; color: var(--text); }
+.game-stat-value.low { color: var(--danger); }
+
+/* Board */
+.game-board-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 10px; box-shadow: var(--shadow-sm); }
+.game-board { position: relative; width: 100%; aspect-ratio: 1; }
+.game-loading { text-align: center; padding: 80px 0; color: var(--mid); }
+
+.game-tile { position: absolute; display: flex; align-items: center; justify-content: center; border: none; padding: 0; cursor: pointer; background: transparent; transition: top .22s var(--ease), left .22s var(--ease), transform .15s var(--ease), opacity .2s var(--ease); }
+.game-tile::before { content: ''; position: absolute; inset: 5%; border-radius: 18%; background: var(--game-tile-bg); border: 1px solid var(--border); transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.game-tile > svg { position: relative; z-index: 1; }
+.game-tile:hover::before { border-color: var(--accent-soft); }
+.game-tile.selected { transform: scale(1.08); z-index: 2; }
+.game-tile.selected::before { border: 2px solid var(--orange); box-shadow: var(--shadow-brand); }
+.game-tile.clearing { transform: scale(0.1); opacity: 0; }
+
+/* Per-type tile backgrounds (light + dark) */
+.game-tile.tile-t0 { --game-tile-bg: #FBE8D8; } .game-tile.tile-t1 { --game-tile-bg: #F1E4D4; }
+.game-tile.tile-t2 { --game-tile-bg: #DCEBF6; } .game-tile.tile-t3 { --game-tile-bg: #F6F1E7; }
+.game-tile.tile-t4 { --game-tile-bg: #FDE4D4; } .game-tile.tile-t5 { --game-tile-bg: #F9DFE4; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .game-tile.tile-t0 { --game-tile-bg: #3A2B1C; }
+  :root:not([data-theme="light"]) .game-tile.tile-t1 { --game-tile-bg: #33291D; }
+  :root:not([data-theme="light"]) .game-tile.tile-t2 { --game-tile-bg: #1E2E3C; }
+  :root:not([data-theme="light"]) .game-tile.tile-t3 { --game-tile-bg: #332F24; }
+  :root:not([data-theme="light"]) .game-tile.tile-t4 { --game-tile-bg: #3A2418; }
+  :root:not([data-theme="light"]) .game-tile.tile-t5 { --game-tile-bg: #38222A; }
+}
+:root[data-theme="dark"] .game-tile.tile-t0 { --game-tile-bg: #3A2B1C; }
+:root[data-theme="dark"] .game-tile.tile-t1 { --game-tile-bg: #33291D; }
+:root[data-theme="dark"] .game-tile.tile-t2 { --game-tile-bg: #1E2E3C; }
+:root[data-theme="dark"] .game-tile.tile-t3 { --game-tile-bg: #332F24; }
+:root[data-theme="dark"] .game-tile.tile-t4 { --game-tile-bg: #3A2418; }
+:root[data-theme="dark"] .game-tile.tile-t5 { --game-tile-bg: #38222A; }
+
+/* Overlays */
+.game-overlay-note { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--surface) 75%, transparent); border-radius: var(--radius-md); font-weight: 700; color: var(--accent-soft); z-index: 5; }
+.game-over { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(3px); border-radius: var(--radius-md); z-index: 6; text-align: center; padding: 20px; }
+.game-over h3 { font-family: var(--font-fraunces); font-size: 24px; }
+.game-over-score { font-family: var(--font-fraunces); font-size: 44px; font-weight: 700; color: var(--accent-soft); }
+.game-save-note { font-size: 13px; color: var(--mid); margin-bottom: 6px; }
+.game-again-btn { background: var(--orange); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background var(--dur) var(--ease); }
+.game-again-btn:hover { background: var(--orange-light); }
+.game-howto { margin-top: 12px; font-size: 13px; color: var(--light); text-align: center; }
+
+/* Leaderboard */
+.game-leaderboard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; }
+.game-lb-title { font-family: var(--font-fraunces); font-size: 18px; margin-bottom: 14px; }
+.game-lb-empty { font-size: 13px; color: var(--mid); }
+.game-lb-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.game-lb-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 13px; }
+.game-lb-row.you { background: var(--orange-pale); font-weight: 700; }
+.game-lb-rank { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-2); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--mid); flex-shrink: 0; }
+.game-lb-rank.r1 { background: #F5C518; color: #5C4400; }
+.game-lb-rank.r2 { background: #C9CDD3; color: #3C4148; }
+.game-lb-rank.r3 { background: #D9A05B; color: #4A2E0E; }
+.game-lb-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.game-lb-score { font-weight: 700; color: var(--accent-soft); }
+
+@media (max-width: 900px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .game-page { padding: 24px 16px 48px; }
+  .game-title { font-size: 28px; }
+}

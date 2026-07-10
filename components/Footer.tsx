@@ -19,6 +19,7 @@ export default async function Footer() {
             <a href="/browse">{t('adoptAPet')}</a>
             <a href="/guide">{t('adoptionGuide')}</a>
             <a href="/care-packages">{t('carePackages')}</a>
+            <a href="/game">{t('game')}</a>
           </div>
           <div className="footer-col">
             <h4>{t('forRescuers')}</h4>

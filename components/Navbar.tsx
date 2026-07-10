@@ -124,6 +124,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
             <Link href="/browse">{t('adoptAPet')}</Link>
             <Link href="/guide">{t('adoptionGuide')}</Link>
             <Link href="/rescuer-landing">{t('forRescuers')}</Link>
+            <Link href="/game">{t('game')}</Link>
           </div>
 
           <div className="nav-right">
@@ -252,6 +253,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
           <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptAPet')}</Link>
           <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptionGuide')}</Link>
           <Link href="/rescuer-landing" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('forRescuers')}</Link>
+          <Link href="/game" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('game')}</Link>
 
           <LanguageSwitcher className="lang-switcher mob-lang-switcher" />
 
