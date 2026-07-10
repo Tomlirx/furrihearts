@@ -96,7 +96,8 @@ error tracking. Everything runs on Supabase + the Next.js host.
 > INSERT policies), 0017 (storage limits + rate limiting), 0018 (pets field
 > constraints), 0019 (system-message flag), 0020 (Paw Match `game_scores`
 > leaderboard table), 0021 (per-player top-3 kept scores), 0022 (multi-game
-> support: Pet 2048 + composite (user_id, game) key).
+> support: Pet 2048 + composite (user_id, game) key), 0023 (Flappy Kitten
+> game id).
 
 ---
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import MatchThree from './MatchThree';
 import Game2048 from './Game2048';
+import FlappyKitten from './FlappyKitten';
 import { getLeaderboard, type GameId, type LeaderboardData } from '@/app/actions/game';
 
 export default function GameClient({
@@ -24,9 +25,9 @@ export default function GameClient({
 
   return (
     <div className="game-layout">
-      {game === 'paw-match'
-        ? <MatchThree isLoggedIn={isLoggedIn} onScoreSaved={refresh} />
-        : <Game2048 isLoggedIn={isLoggedIn} onScoreSaved={refresh} />}
+      {game === 'paw-match' && <MatchThree isLoggedIn={isLoggedIn} onScoreSaved={refresh} />}
+      {game === 'pet-2048' && <Game2048 isLoggedIn={isLoggedIn} onScoreSaved={refresh} />}
+      {game === 'flappy-kitten' && <FlappyKitten isLoggedIn={isLoggedIn} onScoreSaved={refresh} />}
 
       <aside className="game-leaderboard section-card">
         <h3 className="game-lb-title">{t('leaderboard')}</h3>

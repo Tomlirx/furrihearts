@@ -632,7 +632,8 @@
     "you": "Anda",
     "yourBest": "Skor terbaik anda",
     "tabPawMatch": "Paw Match",
-    "tab2048": "Pet 2048"
+    "tab2048": "Pet 2048",
+    "tabFlappy": "Flappy Kitten"
   },
   "Game2048": {
     "tag": "Permainan mini",
@@ -651,5 +652,21 @@
     "signUp": "Daftar percuma",
     "playAgain": "Main lagi",
     "howTo": "Guna kekunci anak panah atau leret untuk bergerak. Jubin sama bergabung — rancang awal, sudut ialah kawan anda!"
+  },
+  "GameFlappy": {
+    "tag": "Permainan mini",
+    "title": "Flappy Kitten",
+    "subtitle": "Satu ketikan, keseronokan tanpa henti — kepakkan anak kucing melepasi tiang. Sejauh mana anda boleh terbang? Log masuk untuk menyimpan skor terbaik.",
+    "score": "Skor",
+    "boardLabel": "Permainan Flappy Kitten",
+    "tapToStart": "Ketik atau tekan Space untuk mula",
+    "gameOver": "Permainan tamat!",
+    "saving": "Menyimpan skor anda...",
+    "saved": "Skor disimpan ke carta.",
+    "newBest": "Rekod peribadi baharu!",
+    "guestCta": "Daftar untuk menyimpan skor dan menyertai carta kedudukan!",
+    "signUp": "Daftar percuma",
+    "playAgain": "Main lagi",
+    "howTo": "Ketik, klik atau tekan Space untuk terbang. Lepasi celah antara tiang — setiap satu bernilai 1 mata."
   }
 }

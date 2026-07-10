@@ -224,7 +224,7 @@ create table if not exists public.game_scores (
   games_played integer not null default 1 check (games_played >= 1),
   updated_at timestamptz not null default now(),
   primary key (user_id, game),
-  constraint game_scores_game_check check (game in ('paw-match', 'pet-2048')),
+  constraint game_scores_game_check check (game in ('paw-match', 'pet-2048', 'flappy-kitten')),
   constraint game_scores_top_scores_max3 check (coalesce(array_length(top_scores, 1), 0) <= 3)
 );
 

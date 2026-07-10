@@ -632,7 +632,8 @@
     "you": "You",
     "yourBest": "Your best scores",
     "tabPawMatch": "Paw Match",
-    "tab2048": "Pet 2048"
+    "tab2048": "Pet 2048",
+    "tabFlappy": "Flappy Kitten"
   },
   "Game2048": {
     "tag": "Mini game",
@@ -651,5 +652,21 @@
     "signUp": "Sign up free",
     "playAgain": "Play again",
     "howTo": "Use arrow keys or swipe to slide. Equal tiles merge into a bigger pet — plan ahead, corners are your friend!"
+  },
+  "GameFlappy": {
+    "tag": "Mini game",
+    "title": "Flappy Kitten",
+    "subtitle": "One tap, endless fun — flap the kitten between the scratching posts. How far can you glide? Sign in to save your best run.",
+    "score": "Score",
+    "boardLabel": "Flappy Kitten game",
+    "tapToStart": "Tap or press Space to start",
+    "gameOver": "Game over!",
+    "saving": "Saving your score...",
+    "saved": "Score saved to the leaderboard.",
+    "newBest": "New personal best!",
+    "guestCta": "Sign up to save your score and join the leaderboard!",
+    "signUp": "Sign up free",
+    "playAgain": "Play again",
+    "howTo": "Tap, click or press Space to flap. Slip through the gaps between the scratching posts — each one you pass scores a point."
   }
 }
