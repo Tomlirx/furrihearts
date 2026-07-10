@@ -71,6 +71,9 @@
 .game-lb-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .game-lb-score { font-weight: 700; color: var(--accent-soft); }
 
+.game-your-best { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.game-lb-subtitle { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--light); margin-bottom: 8px; }
+
 @media (max-width: 900px) {
   .game-layout { grid-template-columns: 1fr; }
   .game-page { padding: 24px 16px 48px; }

@@ -629,6 +629,7 @@
     "howTo": "Tap a tile, then tap a neighbour to swap. Match 3+ to score — chains multiply your points.",
     "leaderboard": "Leaderboard",
     "leaderboardEmpty": "No scores yet — be the first!",
-    "you": "You"
+    "you": "You",
+    "yourBest": "Your best scores"
   }
 }

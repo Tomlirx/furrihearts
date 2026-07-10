@@ -9,6 +9,7 @@ import { checkRateLimit } from '@/lib/rate-limit';
 // trusted, so this plus the rate limit keeps the leaderboard sane.
 const MAX_SCORE = 50000;
 const MAX_MOVES = 30;
+const KEPT_SCORES = 3; // each player keeps only their 3 best results
 
 export async function submitGameScore(score: number, movesUsed: number) {
   const supabase = await createClient();
@@ -32,14 +33,20 @@ export async function submitGameScore(score: number, movesUsed: number) {
 
   const { data: existing } = await admin
     .from('game_scores')
-    .select('best_score, games_played')
+    .select('best_score, games_played, top_scores')
     .eq('user_id', user.id)
     .maybeSingle();
 
-  const best = Math.max(existing?.best_score ?? 0, score);
+  // Keep only the player's KEPT_SCORES best results, sorted descending.
+  const top = [...(existing?.top_scores ?? []), score]
+    .sort((a, b) => b - a)
+    .slice(0, KEPT_SCORES);
+  const best = top[0];
+
   const { error } = await admin.from('game_scores').upsert({
     user_id: user.id,
     best_score: best,
+    top_scores: top,
     games_played: (existing?.games_played ?? 0) + 1,
     updated_at: new Date().toISOString(),
   });
@@ -49,26 +56,38 @@ export async function submitGameScore(score: number, movesUsed: number) {
     return { error: 'Could not save your score. Please try again.' };
   }
 
-  return { success: true, best, isNewBest: !existing || score > existing.best_score };
+  return {
+    success: true,
+    best,
+    topScores: top,
+    isNewBest: !existing || score > existing.best_score,
+    madeTopScores: top.includes(score),
+  };
 }
 
 export type LeaderboardRow = {
   rank: number;
   name: string;
   best_score: number;
-  games_played: number;
   isYou: boolean;
 };
 
-export async function getLeaderboard(): Promise<{ rows: LeaderboardRow[]; you: LeaderboardRow | null }> {
+export type LeaderboardData = {
+  rows: LeaderboardRow[];
+  yourTopScores: number[]; // signed-in player's kept best results (may be empty)
+};
+
+// Lean by design: exactly 10 rows for the board, plus (when signed in) one
+// primary-key lookup for the player's own kept scores. No rank scans.
+export async function getLeaderboard(): Promise<LeaderboardData> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   const { data } = await supabase
     .from('game_scores')
-    .select('user_id, best_score, games_played, profiles:user_id (first_name, last_name)')
+    .select('user_id, best_score, profiles:user_id (first_name, last_name)')
     .order('best_score', { ascending: false })
-    .limit(100);
+    .limit(10);
 
   const rows: LeaderboardRow[] = (data || []).map((r: any, i: number) => {
     const first = r.profiles?.first_name || '';
@@ -77,10 +96,19 @@ export async function getLeaderboard(): Promise<{ rows: LeaderboardRow[]; you: L
       rank: i + 1,
       name: (first + lastInitial).trim() || 'Player',
       best_score: r.best_score,
-      games_played: r.games_played,
       isYou: !!user && r.user_id === user.id,
     };
   });
 
-  return { rows: rows.slice(0, 10), you: rows.find((r) => r.isYou) ?? null };
+  let yourTopScores: number[] = [];
+  if (user) {
+    const { data: mine } = await supabase
+      .from('game_scores')
+      .select('top_scores')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    yourTopScores = mine?.top_scores ?? [];
+  }
+
+  return { rows, yourTopScores };
 }

@@ -9,7 +9,7 @@ export default async function GamePage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const t = await getTranslations('Game');
-  const { rows, you } = await getLeaderboard();
+  const leaderboard = await getLeaderboard();
 
   return (
     <div className="game-page">
@@ -19,7 +19,7 @@ export default async function GamePage() {
         <p className="game-sub">{t('subtitle')}</p>
       </div>
       <IntlScope namespaces={['Game']}>
-        <GameClient isLoggedIn={!!user} initialRows={rows} initialYou={you} />
+        <GameClient isLoggedIn={!!user} initialData={leaderboard} />
       </IntlScope>
     </div>
   );

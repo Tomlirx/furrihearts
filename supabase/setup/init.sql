@@ -219,8 +219,10 @@ create table if not exists public.rate_limits (
 create table if not exists public.game_scores (
   user_id uuid primary key references public.profiles(id) on delete cascade,
   best_score integer not null check (best_score >= 0 and best_score <= 50000),
+  top_scores integer[] not null default '{}', -- player's 3 best results, desc (0021)
   games_played integer not null default 1 check (games_played >= 1),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint game_scores_top_scores_max3 check (coalesce(array_length(top_scores, 1), 0) <= 3)
 );
 
 -- ── Indexes (beyond primary keys) ───────────────────────────────────────────
