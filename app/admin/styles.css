@@ -12,7 +12,7 @@
 .admin-search { border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 13px; width: 280px; margin-bottom: 16px; font-family: inherit; }
 .admin-select { border: 1.5px solid var(--border); border-radius: 6px; padding: 5px 8px; font-size: 12px; font-family: inherit; }
 .admin-btn { border: 1px solid var(--border); background: var(--surface); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--mid); margin-right: 6px; }
-.admin-btn:hover { border-color: var(--orange); color: var(--orange); }
+.admin-btn:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
 .admin-btn.danger:hover { border-color: #DC2626; color: #DC2626; }
 .admin-btn.success { border-color: var(--green); color: var(--green); }
 

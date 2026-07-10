@@ -14,7 +14,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
 
   return (
     <div>
-      <Link href="/admin/users" style={{ color: 'var(--orange)', fontSize: '13px' }}>← All Users</Link>
+      <Link href="/admin/users" style={{ color: 'var(--accent-soft)', fontSize: '13px' }}>← All Users</Link>
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '24px', margin: '12px 0 20px' }}>{profile.first_name} {profile.last_name}</h1>
 
       <div className="section-card">

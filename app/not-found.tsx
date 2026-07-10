@@ -5,7 +5,7 @@ export default function NotFound() {
     <main style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '48px 24px' }}>
       <div style={{ fontSize: '80px', marginBottom: '16px' }}>🐾</div>
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 700, marginBottom: '8px' }}>
-        Page Not <span style={{ color: 'var(--orange)' }}>Found</span>
+        Page Not <span style={{ color: 'var(--accent-soft)' }}>Found</span>
       </h1>
       <p style={{ color: 'var(--mid)', marginBottom: '24px', maxWidth: '400px' }}>
         The page you're looking for doesn't exist or may have been moved.

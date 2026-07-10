@@ -1,7 +1,7 @@
 .thankyou-wrap { max-width: 640px; margin: 0 auto; padding: 56px 24px 80px; }
 .thankyou-hero { text-align: center; background: linear-gradient(135deg, #FDF5EF, #FEF8F3); border: 1px solid var(--border); border-radius: 20px; padding: 40px 24px; margin-bottom: 24px; }
 .thankyou-hero h1 { font-family: var(--font-fraunces), serif; font-size: 26px; margin: 12px 0; }
-.thankyou-hero h1 em { color: var(--orange); font-style: normal; }
+.thankyou-hero h1 em { color: var(--accent-soft); font-style: normal; }
 .thankyou-hero p { color: var(--mid); font-size: 14px; }
 
 .timeline-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 24px; }

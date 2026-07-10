@@ -1,11 +1,11 @@
 .page-title { font-size: 36px; font-weight: 700; margin-bottom: var(--space-3); font-family: var(--font-fraunces), serif; }
-.page-title em { color: var(--orange); font-style: normal; }
+.page-title em { color: var(--accent-soft); font-style: normal; }
 .page-sub { color: var(--mid); font-size: 15px; }
 
 .contact-layout { max-width: 1000px; margin: 0 auto; padding: 48px var(--space-6); display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--space-7); }
 .contact-channels { display: flex; flex-direction: column; gap: 14px; }
 .channel-card { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; text-decoration: none; color: var(--dark); transition: border-color .2s; }
-.channel-card:hover { border-color: var(--orange); }
+.channel-card:hover { border-color: var(--accent-soft); }
 .channel-icon { font-size: 22px; }
 .channel-card h4 { font-size: 14px; margin-bottom: 2px; }
 .channel-card p { font-size: 13px; color: var(--light); }
@@ -15,7 +15,7 @@
 .contact-form .form-field { margin-bottom: 14px; }
 .contact-form .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--light); text-transform: uppercase; margin-bottom: 6px; }
 .contact-form .form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: inherit; outline: none; }
-.contact-form .form-input:focus { border-color: var(--orange); }
+.contact-form .form-input:focus { border-color: var(--accent-soft); }
 .btn-contact-submit { width: 100%; background: var(--orange); color: #fff; border: none; border-radius: 10px; padding: 13px; font-weight: 700; cursor: pointer; font-size: 14px; }
 .contact-error { color: #DC2626; font-size: 13px; margin-bottom: 10px; }
 .contact-success { text-align: center; padding: 30px 0; }
@@ -25,7 +25,7 @@
 .faq-section h2 { font-family: var(--font-fraunces), serif; font-size: 22px; margin-bottom: var(--space-4); text-align: center; }
 .faq-item { border-bottom: 1px solid var(--border); }
 .faq-q { width: 100%; text-align: left; background: none; border: none; padding: 16px 0; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit; color: var(--dark); }
-.faq-arrow { transition: transform .2s; color: var(--orange); }
+.faq-arrow { transition: transform .2s; color: var(--accent-soft); }
 .faq-arrow.open { transform: rotate(180deg); }
 .faq-a { padding: 0 0 16px; color: var(--mid); font-size: 13px; line-height: 1.7; }
 

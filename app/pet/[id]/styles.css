@@ -21,7 +21,7 @@
 .thumbnails { display: flex; gap: 10px; margin-bottom: 24px; }
 .thumb { width: 80px; height: 72px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; overflow: hidden; transition: border-color 0.2s; }
 .thumb img { width: 100%; height: 100%; object-fit: cover; }
-.thumb.active { border-color: var(--orange); }
+.thumb.active { border-color: var(--accent-soft); }
 
 /* Details Sections */
 .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
@@ -38,7 +38,7 @@
 /* PetInfoCard */
 .pet-meta-line { font-size: 13px; color: var(--light); margin-bottom: 10px; text-transform: capitalize; }
 .trait-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.trait-pill { border: 1.5px solid var(--orange); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 500; color: var(--orange); background: var(--orange-pale); }
+.trait-pill { border: 1.5px solid var(--orange); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 500; color: var(--accent-soft); background: var(--orange-pale); }
 .pet-description { color: var(--mid); font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
 .about-heading { font-weight: 700; font-size: 15px; margin-bottom: 14px; }
 .adoption-info-row { display: flex; justify-content: space-between; }
@@ -54,7 +54,7 @@
 .rescuer-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#F0D5B8,#C9A88A); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
 .rescuer-name { font-weight: 700; font-size: 14px; }
 .rescuer-verified-badge { color: var(--green); font-size: 12px; font-weight: 600; }
-.rescuer-link { color: var(--orange); font-size: 12px; font-weight: 600; text-decoration: none; }
+.rescuer-link { color: var(--accent-soft); font-size: 12px; font-weight: 600; text-decoration: none; }
 .application-status-banner { padding: 14px; border-radius: 10px; text-align: center; font-weight: 600; border: 1px solid var(--border); }
 .application-status-banner.status-pending { background: var(--cream); color: var(--dark); }
 .application-status-banner.status-approved, .application-status-banner.status-rejected, .application-status-banner.status-cancelled { background: #f3f4f6; color: var(--mid); }

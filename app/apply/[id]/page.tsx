@@ -163,7 +163,7 @@ export default function QuestionnairePage() {
         <div style={{ maxWidth: '560px', margin: '0 auto', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--orange)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--orange)' }}>{t('step')}</div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--accent-soft)' }}>{t('step')}</div>
           </div>
           <div style={{ flex: 1, height: '2px', background: 'var(--border)', margin: '24px 16px 0' }}></div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>

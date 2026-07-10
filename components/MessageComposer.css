@@ -1,9 +1,9 @@
-.btn-message { background: var(--surface); border: 1.5px solid var(--orange); color: var(--orange); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; font-family: inherit; }
+.btn-message { background: var(--surface); border: 1.5px solid var(--orange); color: var(--accent-soft); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; font-family: inherit; }
 .btn-message:hover { background: var(--orange-pale); }
 
 /* .modal-overlay/.modal-content/.modal-header/.modal-body/.modal-actions are defined globally in globals.css */
 .modal-body .form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: inherit; outline: none; resize: vertical; }
-.modal-body .form-input:focus { border-color: var(--orange); }
+.modal-body .form-input:focus { border-color: var(--accent-soft); }
 .btn-approve { background: var(--orange); border: none; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; }
 .btn-approve:disabled { opacity: 0.5; cursor: not-allowed; }
 .contact-error { color: #DC2626; font-size: 13px; }

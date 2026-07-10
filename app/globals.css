@@ -12,6 +12,9 @@
   /* Brand */
   --orange: #C8490A; --orange-light: #E05C1A; --orange-pale: #FDF0EA;
   --accent: var(--orange); --accent-hover: var(--orange-light); --accent-contrast: #fff;
+  /* Orange as a foreground/text/icon color — brightens in dark mode so it stays
+     legible on dark and on --orange-pale tints. Solid fills keep --orange. */
+  --accent-soft: var(--orange);
 
   /* Semantic status */
   --success: #2D7A3A; --success-pale: #EAF5EC;
@@ -57,7 +60,7 @@
     --bg: #17110C; --surface: #211913; --surface-2: #2A2119; --surface-3: #332619;
     --text: #F5EEE6; --text-muted: #C9BCAE; --text-subtle: #9A8B7C;
     --border: #3A2E24; --border-strong: #4A3B2E;
-    --orange-pale: #3A241A;
+    --orange-pale: #3A241A; --accent-soft: #F0A472;
     --success-pale: #16281C; --danger-pale: #33191A; --warning-pale: #332711; --info-pale: #14263A;
     --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow-md: 0 8px 24px rgba(0,0,0,.5);
     --shadow-lg: 0 16px 56px rgba(0,0,0,.6); --shadow-brand: 0 4px 16px rgba(0,0,0,.5);
@@ -68,7 +71,7 @@
   --bg: #17110C; --surface: #211913; --surface-2: #2A2119; --surface-3: #332619;
   --text: #F5EEE6; --text-muted: #C9BCAE; --text-subtle: #9A8B7C;
   --border: #3A2E24; --border-strong: #4A3B2E;
-  --orange-pale: #3A241A;
+  --orange-pale: #3A241A; --accent-soft: #F0A472;
   --success-pale: #16281C; --danger-pale: #33191A; --warning-pale: #332711; --info-pale: #14263A;
   --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow-md: 0 8px 24px rgba(0,0,0,.5);
   --shadow-lg: 0 16px 56px rgba(0,0,0,.6); --shadow-brand: 0 4px 16px rgba(0,0,0,.5);
@@ -105,10 +108,10 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); positi
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .logo-icon { width: 36px; height: 36px; background: var(--orange-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 .logo-text { font-size: 20px; color: var(--dark); }
-.logo-text span { color: var(--orange); }
+.logo-text span { color: var(--accent-soft); }
 .nav-links { display: flex; align-items: center; gap: 24px; flex: 1; }
 .nav-links a { text-decoration: none; color: var(--mid); font-size: 14px; font-weight: 500; transition: color .2s; }
-.nav-links a:hover, .nav-links a.active { color: var(--orange); font-weight: 600; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent-soft); font-weight: 600; }
 .nav-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
 
 .btn-ghost { border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 20px; font-size: 14px; font-weight: 500; color: var(--dark); text-decoration: none; }
@@ -116,7 +119,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); positi
 
 /* Profile Chip Styles (Restored) */
 .profile-chip { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px 5px 5px; }
-.profile-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--orange-pale); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--orange); }
+.profile-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--orange-pale); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent-soft); }
 .profile-name { font-size: 13px; font-weight: 600; }
 .dd-badge { background: var(--orange); color: #fff; border-radius: 10px; padding: 2px 7px; font-size: 10px; font-weight: 700; }
 
@@ -129,8 +132,8 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); positi
 .lang-opt.active { background: var(--orange); color: #fff; }
 .lang-opt-text { font-size: 12px; font-weight: 700; padding: 6px 9px; }
 .mob-lang-switcher { margin-top: 16px; align-self: flex-start; }
-.theme-toggle { background: none; border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; cursor: pointer; font-size: 15px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease); }
-.theme-toggle:hover { border-color: var(--orange); background: var(--surface-2); }
+.theme-toggle { background: none; color: var(--text); border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; cursor: pointer; font-size: 15px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease); }
+.theme-toggle:hover { border-color: var(--accent-soft); background: var(--surface-2); }
 
 /* ==========================================================================
    3. FOOTER (Locked)
@@ -140,7 +143,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 .footer-brand p { color: #A09080; font-size: 13px; margin-top: 10px; line-height: 1.6; }
 .footer-logo-text { font-family: var(--font-fraunces), serif; font-size: 20px; color: #fff; }
-.footer-logo-text span { color: var(--orange); }
+.footer-logo-text span { color: var(--accent-soft); }
 .footer-col h4 { font-weight: 600; font-size: 14px; margin-bottom: 14px; color: #D0C0B0; }
 .footer-col a { display: block; color: #A09080; font-size: 13px; text-decoration: none; margin-bottom: 8px; transition: color .2s; }
 .footer-col a:hover { color: #fff; }
@@ -240,7 +243,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 .mob-panel { position: absolute; top: 0; right: 0; bottom: 0; width: 280px; background: var(--surface); padding: 20px; overflow-y: auto; box-shadow: -8px 0 32px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
 .mob-close { background: none; border: none; font-size: 24px; cursor: pointer; align-self: flex-end; margin-bottom: 16px; color: var(--mid); }
 .mob-link { display: block; text-decoration: none; color: var(--dark); font-size: 15px; font-weight: 500; padding: 14px 8px; border-bottom: 1px solid var(--border); }
-.mob-link:hover, .mob-link.active { color: var(--orange); font-weight: 700; }
+.mob-link:hover, .mob-link.active { color: var(--accent-soft); font-weight: 700; }
 .mob-cta { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
 .mob-primary { display: block; text-align: center; background: var(--orange); border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700; text-decoration: none; color: #fff; }
 .mob-danger { display: block; text-align: center; color: #DC2626; font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px; cursor: pointer; background: transparent; border: none; width: 100%; }
@@ -282,7 +285,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 /* Pagination (used by list views: applications, messages, listings) */
 .pagination { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px; }
 .pagination-btn { border: 1.5px solid var(--border); background: var(--surface); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--mid); cursor: pointer; font-family: inherit; }
-.pagination-btn:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); }
+.pagination-btn:hover:not(:disabled) { border-color: var(--accent-soft); color: var(--accent-soft); }
 .pagination-btn:disabled { opacity: .4; cursor: not-allowed; }
 .pagination-info { font-size: 13px; color: var(--light); font-weight: 600; }
 
@@ -293,7 +296,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 .notif-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 500; }
 .notif-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); }
 .notif-header-title { font-weight: 700; font-size: 14px; }
-.notif-mark-read { font-size: 12px; color: var(--orange); font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; }
+.notif-mark-read { font-size: 12px; color: var(--accent-soft); font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; }
 .notif-item { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); text-decoration: none; transition: background .2s; }
 .notif-item:last-child { border-bottom: none; }
 .notif-item:hover { background: var(--cream); }
@@ -322,12 +325,12 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 /* Shared marketing-page hero (about/care-packages/contact/legal) */
 .page-hero { background: linear-gradient(135deg, var(--surface-2), var(--surface)); padding: var(--space-8) var(--space-4); text-align: center; border-bottom: 1px solid var(--border); }
 .page-hero-inner { max-width: 600px; margin: 0 auto; }
-.page-tag { font-size: 12px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-3); }
+.page-tag { font-size: 12px; font-weight: 700; color: var(--accent-soft); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-3); }
 
 /* Shared flow-completion CTA buttons (apply thank-you / listing-created) */
 .btn-primary-cta { background: var(--orange); color: #fff; border-radius: 10px; padding: 13px 26px; font-weight: 700; text-decoration: none; font-size: 14px; }
 .btn-outline-cta { border: 1.5px solid var(--border); color: var(--dark); border-radius: 10px; padding: 13px 26px; font-weight: 600; text-decoration: none; font-size: 14px; }
 
 /* Shared white CTA-on-color button (about cta-section / rescuer-landing hero) */
-.btn-cta-white { background: var(--surface); color: var(--orange); border: none; border-radius: 10px; padding: 16px 32px; font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
+.btn-cta-white { background: var(--surface); color: var(--accent-soft); border: none; border-radius: 10px; padding: 16px 32px; font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
 .btn-cta-white:hover { background: var(--cream); }

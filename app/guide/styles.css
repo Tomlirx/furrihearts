@@ -3,9 +3,9 @@
 /* HERO */
 .guide-hero { background: linear-gradient(135deg, #FDF5EF, #FEF8F3); padding: 60px 40px; text-align: center; border-bottom: 1px solid var(--border); }
 .guide-hero-inner { max-width: 600px; margin: 0 auto; }
-.guide-tag { font-size: 12px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.guide-tag { font-size: 12px; font-weight: 700; color: var(--accent-soft); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
 .guide-title { font-size: 42px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-fraunces), serif; }
-.guide-title em { color: var(--orange); font-style: normal; }
+.guide-title em { color: var(--accent-soft); font-style: normal; }
 .guide-sub { color: var(--mid); font-size: 15px; line-height: 1.7; }
 
 /* LAYOUT */
@@ -13,20 +13,20 @@
 .guide-sidebar { padding: 28px 20px; border-right: 1px solid var(--border); position: sticky; top: 64px; height: fit-content; background: var(--surface); }
 .sidebar-link { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; font-size: 13px; color: var(--mid); text-decoration: none; margin-bottom: 2px; transition: all .2s; }
 .sidebar-link:hover { background: var(--cream); color: var(--dark); }
-.sidebar-link.active { background: var(--orange-pale); color: var(--orange); font-weight: 600; }
+.sidebar-link.active { background: var(--orange-pale); color: var(--accent-soft); font-weight: 600; }
 .sidebar-div { border-top: 1px solid var(--border); margin: 12px 0; }
 .guide-main { padding: 36px 48px 80px; }
 
 /* SECTIONS */
 .guide-section { margin-bottom: 52px; }
-.gs-tag { font-size: 11px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.gs-tag { font-size: 11px; font-weight: 700; color: var(--accent-soft); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
 .gs-title { font-size: 28px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-fraunces), serif; }
 .gs-intro { color: var(--mid); font-size: 15px; line-height: 1.7; margin-bottom: 24px; max-width: 560px; }
 
 /* CHECKLIST */
 .checklist { display: flex; flex-direction: column; gap: 10px; }
 .check-item { display: flex; align-items: flex-start; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all .2s; }
-.check-item:hover { border-color: var(--orange); }
+.check-item:hover { border-color: var(--accent-soft); }
 .check-item.checked { border-color: var(--green); background: var(--green-pale); }
 .check-box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; font-size: 11px; transition: all .2s; }
 .check-item.checked .check-box { background: var(--green); border-color: var(--green); color: #fff; }
@@ -42,14 +42,14 @@
 .phase-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }
 .phase-card ul { list-style: none; margin-top: 8px; }
 .phase-card ul li { font-size: 12px; color: var(--mid); padding: 3px 0; display: flex; align-items: center; gap: 6px; }
-.phase-card ul li::before { content: '·'; color: var(--orange); font-weight: 700; }
+.phase-card ul li::before { content: '·'; color: var(--accent-soft); font-weight: 700; }
 
 /* COST TABLE */
 .cost-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
 .cost-table th { text-align: left; padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--border); }
 .cost-table td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--border); }
 .cost-table tr:last-child td { border-bottom: none; font-weight: 700; }
-.cost-range { color: var(--orange); font-weight: 600; }
+.cost-range { color: var(--accent-soft); font-weight: 600; }
 
 /* TIPS GRID */
 .tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }

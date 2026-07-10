@@ -116,7 +116,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
       <nav>
         <div className="nav-inner">
           <Link href="/" className="logo">
-            <div className="logo-icon"><Paw size={20} style={{ color: 'var(--orange)' }} /></div>
+            <div className="logo-icon"><Paw size={20} style={{ color: 'var(--accent-soft)' }} /></div>
             <span className="logo-text">Furri<span>Hearts</span></span>
           </Link>
 
@@ -163,7 +163,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                           className="notif-item unread"
                           onClick={() => setIsNotifOpen(false)}
                         >
-                          <div className="notif-icon orange"><MessageSquare size={18} style={{ color: 'var(--orange)' }} /></div>
+                          <div className="notif-icon orange"><MessageSquare size={18} style={{ color: 'var(--accent-soft)' }} /></div>
                           <div>
                             <div className="notif-title">{thread.otherName} · {thread.petName}: {thread.latest.content.slice(0, 60)}{thread.latest.content.length > 60 ? '…' : ''}</div>
                             <div className="notif-time">{new Date(thread.latest.created_at).toLocaleString()}</div>
@@ -258,11 +258,11 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
           {/* Mobile account links */}
           {user && (
             <>
-              <Link href="/dashboard" className="mob-link" style={{ color: 'var(--orange)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href="/dashboard" className="mob-link" style={{ color: 'var(--accent-soft)', fontWeight: 700 }} onClick={() => setIsMobileMenuOpen(false)}>
                 {t('myDashboard')}
               </Link>
-              {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('adminPanel')}</Link>}
-              {isAuditor && <Link href="/auditor" className="mob-link" style={{ color: 'var(--orange)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('auditorPanel')}</Link>}
+              {isAdmin && <Link href="/admin" className="mob-link" style={{ color: 'var(--accent-soft)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('adminPanel')}</Link>}
+              {isAuditor && <Link href="/auditor" className="mob-link" style={{ color: 'var(--accent-soft)' }} onClick={() => setIsMobileMenuOpen(false)}>{t('auditorPanel')}</Link>}
             </>
           )}
 

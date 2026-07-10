@@ -120,7 +120,7 @@ function ManageApplicationsContent() {
       <div className="dashboard-header">
         <div>
           <h1>{petFilter ? `Applications for ${petName || 'this pet'}` : `Applications (${apps.length})`}</h1>
-          <p>{petFilter ? <a href="/manage-applications" style={{ color: 'var(--orange)' }}>← View all applications</a> : 'All applications across your listings.'}</p>
+          <p>{petFilter ? <a href="/manage-applications" style={{ color: 'var(--accent-soft)' }}>← View all applications</a> : 'All applications across your listings.'}</p>
         </div>
       </div>
 

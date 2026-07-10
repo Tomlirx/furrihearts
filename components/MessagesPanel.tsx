@@ -84,7 +84,7 @@ export default function MessagesPanel({ currentUserId }: { currentUserId: string
       <div className="section-card">
         <div className="section-card-header">
           <h3>{activeThread.otherName} · {activeThread.petName}</h3>
-          <button onClick={closeThread} style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}>← Back to Messages</button>
+          <button onClick={closeThread} style={{ background: 'none', border: 'none', color: 'var(--accent-soft)', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}>← Back to Messages</button>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
           {threadMessages.map((m) => (

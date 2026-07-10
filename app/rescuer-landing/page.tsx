@@ -107,7 +107,7 @@ export default function RescuerLanding() {
           {activeTab === 'rescuer' && (
             <div id="steps-rescuer">
               <h2 style={{ textAlign: 'center', fontFamily: 'var(--font-fraunces)', fontSize: '34px', fontWeight: 700, marginBottom: '40px' }}>
-                {t.rich('rescuerStepsTitle', { em: (chunks) => <em style={{ color: 'var(--orange)', fontStyle: 'normal' }}>{chunks}</em> })}
+                {t.rich('rescuerStepsTitle', { em: (chunks) => <em style={{ color: 'var(--accent-soft)', fontStyle: 'normal' }}>{chunks}</em> })}
               </h2>
               <div className="rl-how-steps">
                 <div className="rl-how-step"><div className="rl-how-step-num">1</div><h3>{t('rescuerStep1Title')}</h3><p>{t('rescuerStep1Desc')}</p></div>
@@ -123,7 +123,7 @@ export default function RescuerLanding() {
           {activeTab === 'adopter' && (
             <div id="steps-adopter">
               <h2 style={{ textAlign: 'center', fontFamily: 'var(--font-fraunces)', fontSize: '34px', fontWeight: 700, marginBottom: '40px' }}>
-                {t.rich('adopterStepsTitle', { em: (chunks) => <em style={{ color: 'var(--orange)', fontStyle: 'normal' }}>{chunks}</em> })}
+                {t.rich('adopterStepsTitle', { em: (chunks) => <em style={{ color: 'var(--accent-soft)', fontStyle: 'normal' }}>{chunks}</em> })}
               </h2>
               <div className="rl-how-steps">
                 <div className="rl-how-step"><div className="rl-how-step-num" style={{ background: 'var(--green)' }}>1</div><h3>{t('adopterStep1Title')}</h3><p>{t('adopterStep1Desc')}</p></div>
@@ -143,7 +143,7 @@ export default function RescuerLanding() {
         <div className="social-inner">
           <div className="section-tag">{t('storiesTag')}</div>
           <h2 className="section-title" style={{ fontFamily: 'var(--font-fraunces)', fontSize: '36px', fontWeight: 700, textAlign: 'center' }}>
-            {t.rich('storiesTitle', { em: (chunks) => <em style={{ color: 'var(--orange)', fontStyle: 'normal' }}>{chunks}</em> })}
+            {t.rich('storiesTitle', { em: (chunks) => <em style={{ color: 'var(--accent-soft)', fontStyle: 'normal' }}>{chunks}</em> })}
           </h2>
           <div className="proof-grid">
             <div className="proof-card">

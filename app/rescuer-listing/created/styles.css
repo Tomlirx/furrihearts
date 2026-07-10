@@ -1,6 +1,6 @@
 .created-wrap { max-width: 640px; margin: 0 auto; padding: 56px 24px 80px; text-align: center; position: relative; overflow: hidden; }
 .created-wrap h1 { font-family: var(--font-fraunces), serif; font-size: 28px; margin: 16px 0 12px; }
-.created-wrap h1 em { color: var(--orange); font-style: normal; }
+.created-wrap h1 em { color: var(--accent-soft); font-style: normal; }
 .created-wrap p { color: var(--mid); font-size: 14px; max-width: 460px; margin: 0 auto 28px; }
 
 .created-cta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: var(--space-8); }

@@ -1,6 +1,6 @@
 .page-hero-inner { max-width: 640px; margin: 0 auto; }
 .page-title { font-size: 38px; font-weight: 700; margin-bottom: var(--space-3); font-family: var(--font-fraunces), serif; }
-.page-title em { color: var(--orange); font-style: normal; }
+.page-title em { color: var(--accent-soft); font-style: normal; }
 .page-sub { color: var(--mid); font-size: 15px; line-height: 1.7; }
 
 .stats-band { background: var(--orange); color: #fff; }
@@ -12,7 +12,7 @@
 .mission-section { max-width: 640px; margin: 0 auto; padding: 64px var(--space-6); text-align: center; }
 .mission-section h2 { font-family: var(--font-fraunces), serif; font-size: 26px; margin-bottom: var(--space-4); }
 .mission-section p { color: var(--mid); font-size: 15px; line-height: 1.8; margin-bottom: 14px; }
-.mission-section .hl { color: var(--orange); font-weight: 700; }
+.mission-section .hl { color: var(--accent-soft); font-weight: 700; }
 
 .values-section { background: var(--cream); padding: 56px var(--space-8); }
 .values-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
