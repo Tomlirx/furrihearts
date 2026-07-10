@@ -74,6 +74,54 @@
 .game-your-best { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
 .game-lb-subtitle { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--light); margin-bottom: 8px; }
 
+/* Game switcher tabs */
+.game-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.game-tab { border: 1.5px solid var(--border); background: var(--surface); color: var(--mid); border-radius: var(--radius-pill); padding: 8px 18px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all var(--dur) var(--ease); }
+.game-tab:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
+.game-tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+/* ── Pet 2048 ── */
+.g2048-board { touch-action: none; } /* board handles swipes itself */
+.g2048-cell { position: absolute; }
+.g2048-cell::before { content: ''; position: absolute; inset: 5%; border-radius: 14%; background: var(--surface-2); border: 1px solid var(--border); }
+.g2048-tile { position: absolute; display: flex; align-items: center; justify-content: center; transition: top .13s var(--ease), left .13s var(--ease); z-index: 1; }
+.g2048-tile::before { content: ''; position: absolute; inset: 5%; border-radius: 14%; background: var(--g2048-bg, var(--surface-3)); border: 1px solid var(--border); }
+.g2048-pet { position: absolute; inset: 8%; opacity: .28; display: flex; align-items: center; justify-content: center; }
+.g2048-pet > svg { width: 100% !important; height: 100% !important; }
+.g2048-num { position: relative; z-index: 2; font-family: var(--font-fraunces); font-weight: 700; font-size: clamp(16px, 4.2vw, 30px); color: var(--text); text-shadow: 0 1px 0 color-mix(in srgb, var(--surface) 60%, transparent); }
+.g2048-tile.pop::before { animation: g2048-pop .18s var(--ease); }
+.g2048-tile.spawn::before, .g2048-tile.spawn .g2048-num { animation: g2048-spawn .16s var(--ease); }
+@keyframes g2048-pop { 0% { transform: scale(1); } 50% { transform: scale(1.14); } 100% { transform: scale(1); } }
+@keyframes g2048-spawn { 0% { transform: scale(0.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* Warm brand ramp per tier (light) — deeper = hotter */
+.g2048-tile.tier-1 { --g2048-bg: #FBF3E8; } .g2048-tile.tier-2 { --g2048-bg: #F9E9D2; }
+.g2048-tile.tier-3 { --g2048-bg: #F7DCB8; } .g2048-tile.tier-4 { --g2048-bg: #F5CD9B; }
+.g2048-tile.tier-5 { --g2048-bg: #F2BC7C; } .g2048-tile.tier-6 { --g2048-bg: #EFA55C; }
+.g2048-tile.tier-7 { --g2048-bg: #EB8C3F; } .g2048-tile.tier-8 { --g2048-bg: #E4732A; }
+.g2048-tile.tier-9 { --g2048-bg: #D95E1A; } .g2048-tile.tier-10 { --g2048-bg: #C8490A; }
+.g2048-tile.tier-11 { --g2048-bg: #A93C06; }
+.g2048-tile.tier-8 .g2048-num, .g2048-tile.tier-9 .g2048-num, .g2048-tile.tier-10 .g2048-num, .g2048-tile.tier-11 .g2048-num { color: #fff; text-shadow: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .g2048-tile.tier-1 { --g2048-bg: #2E2418; }
+  :root:not([data-theme="light"]) .g2048-tile.tier-2 { --g2048-bg: #3A2C1A; }
+  :root:not([data-theme="light"]) .g2048-tile.tier-3 { --g2048-bg: #4A351B; }
+  :root:not([data-theme="light"]) .g2048-tile.tier-4 { --g2048-bg: #5C3E1B; }
+  :root:not([data-theme="light"]) .g2048-tile.tier-5 { --g2048-bg: #70471A; }
+  :root:not([data-theme="light"]) .g2048-tile.tier-6 { --g2048-bg: #855018; }
+  :root:not([data-theme="light"]) .g2048-tile.tier-7 { --g2048-bg: #9C5314; }
+}
+:root[data-theme="dark"] .g2048-tile.tier-1 { --g2048-bg: #2E2418; }
+:root[data-theme="dark"] .g2048-tile.tier-2 { --g2048-bg: #3A2C1A; }
+:root[data-theme="dark"] .g2048-tile.tier-3 { --g2048-bg: #4A351B; }
+:root[data-theme="dark"] .g2048-tile.tier-4 { --g2048-bg: #5C3E1B; }
+:root[data-theme="dark"] .g2048-tile.tier-5 { --g2048-bg: #70471A; }
+:root[data-theme="dark"] .g2048-tile.tier-6 { --g2048-bg: #855018; }
+:root[data-theme="dark"] .g2048-tile.tier-7 { --g2048-bg: #9C5314; }
+
+.g2048-newgame { border: 1.5px solid var(--border); background: var(--surface); color: var(--mid); border-radius: var(--radius-md); padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all var(--dur) var(--ease); }
+.g2048-newgame:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
+
 @media (max-width: 900px) {
   .game-layout { grid-template-columns: 1fr; }
   .game-page { padding: 24px 16px 48px; }

@@ -4,27 +4,33 @@ import { createClient } from '@/utils/supabase/server';
 import { createAdminClient, isAdminConfigured } from '@/utils/supabase/admin';
 import { checkRateLimit } from '@/lib/rate-limit';
 
-// Theoretical ceiling well above any legitimate 30-move game (cascades
-// included); the DB CHECK mirrors it. Client-side games can't be fully
-// trusted, so this plus the rate limit keeps the leaderboard sane.
-const MAX_SCORE = 50000;
-const MAX_MOVES = 30;
-const KEPT_SCORES = 3; // each player keeps only their 3 best results
+// Per-game sanity bounds. Client-side games can't be fully trusted; these plus
+// the rate limit and the service-role-only write path keep leaderboards sane.
+const GAMES = {
+  'paw-match': { maxScore: 50_000, maxMoves: 30 },
+  'pet-2048': { maxScore: 250_000, maxMoves: 5_000 },
+} as const;
+export type GameId = keyof typeof GAMES;
 
-export async function submitGameScore(score: number, movesUsed: number) {
+const KEPT_SCORES = 3; // each player keeps only their 3 best results per game
+
+export async function submitGameScore(game: GameId, score: number, movesUsed: number) {
+  const cfg = GAMES[game];
+  if (!cfg) return { error: 'Unknown game.' };
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Sign in to save your score.' };
 
-  if (!Number.isInteger(score) || score < 0 || score > MAX_SCORE) {
+  if (!Number.isInteger(score) || score < 0 || score > cfg.maxScore) {
     return { error: 'Invalid score.' };
   }
-  if (!Number.isInteger(movesUsed) || movesUsed < 1 || movesUsed > MAX_MOVES) {
+  if (!Number.isInteger(movesUsed) || movesUsed < 1 || movesUsed > cfg.maxMoves) {
     return { error: 'Invalid game.' };
   }
 
-  // 10 submissions / 5 minutes per player.
-  if (!(await checkRateLimit(supabase, `game:${user.id}`, 10, 300))) {
+  // 10 submissions / 5 minutes per player per game.
+  if (!(await checkRateLimit(supabase, `game:${game}:${user.id}`, 10, 300))) {
     return { error: "You're submitting scores too quickly. Take a breather!" };
   }
 
@@ -35,6 +41,7 @@ export async function submitGameScore(score: number, movesUsed: number) {
     .from('game_scores')
     .select('best_score, games_played, top_scores')
     .eq('user_id', user.id)
+    .eq('game', game)
     .maybeSingle();
 
   // Keep only the player's KEPT_SCORES best results, sorted descending.
@@ -43,13 +50,17 @@ export async function submitGameScore(score: number, movesUsed: number) {
     .slice(0, KEPT_SCORES);
   const best = top[0];
 
-  const { error } = await admin.from('game_scores').upsert({
-    user_id: user.id,
-    best_score: best,
-    top_scores: top,
-    games_played: (existing?.games_played ?? 0) + 1,
-    updated_at: new Date().toISOString(),
-  });
+  const { error } = await admin.from('game_scores').upsert(
+    {
+      user_id: user.id,
+      game,
+      best_score: best,
+      top_scores: top,
+      games_played: (existing?.games_played ?? 0) + 1,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'user_id,game' },
+  );
 
   if (error) {
     console.error('Score submit error:', error.message);
@@ -61,7 +72,6 @@ export async function submitGameScore(score: number, movesUsed: number) {
     best,
     topScores: top,
     isNewBest: !existing || score > existing.best_score,
-    madeTopScores: top.includes(score),
   };
 }
 
@@ -79,13 +89,16 @@ export type LeaderboardData = {
 
 // Lean by design: exactly 10 rows for the board, plus (when signed in) one
 // primary-key lookup for the player's own kept scores. No rank scans.
-export async function getLeaderboard(): Promise<LeaderboardData> {
+export async function getLeaderboard(game: GameId): Promise<LeaderboardData> {
+  if (!GAMES[game]) return { rows: [], yourTopScores: [] };
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   const { data } = await supabase
     .from('game_scores')
     .select('user_id, best_score, profiles:user_id (first_name, last_name)')
+    .eq('game', game)
     .order('best_score', { ascending: false })
     .limit(10);
 
@@ -106,6 +119,7 @@ export async function getLeaderboard(): Promise<LeaderboardData> {
       .from('game_scores')
       .select('top_scores')
       .eq('user_id', user.id)
+      .eq('game', game)
       .maybeSingle();
     yourTopScores = mine?.top_scores ?? [];
   }

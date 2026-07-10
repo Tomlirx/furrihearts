@@ -182,7 +182,7 @@ export default function MatchThree({
   useEffect(() => {
     if (!gameOver || !isLoggedIn || saveState !== 'idle') return;
     setSaveState('saving');
-    submitGameScore(score, START_MOVES).then((res) => {
+    submitGameScore('paw-match', score, START_MOVES).then((res) => {
       if (res?.error) { setSaveState('error'); setSaveMessage(res.error); return; }
       setSaveState(res.isNewBest ? 'newBest' : 'saved');
       setSaveMessage('');

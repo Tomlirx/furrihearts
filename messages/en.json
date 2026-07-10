@@ -17,7 +17,7 @@
     "messagesHeader": "Messages",
     "markAllRead": "Mark all read",
     "noNewMessages": "No new messages.",
-    "game": "Paw Match"
+    "game": "Mini Games"
   },
   "Footer": {
     "tagline": "Matching hearts. Creating forever homes.",
@@ -34,7 +34,7 @@
     "privacyTerms": "Privacy & Terms",
     "copyright": "© 2026 FurriHearts. All rights reserved.",
     "madeWith": "Made with ❤️ for animals in Malaysia",
-    "game": "Paw Match"
+    "game": "Mini Games"
   },
   "Homepage": {
     "featuredTag": "Featured Pets",
@@ -630,6 +630,26 @@
     "leaderboard": "Leaderboard",
     "leaderboardEmpty": "No scores yet — be the first!",
     "you": "You",
-    "yourBest": "Your best scores"
+    "yourBest": "Your best scores",
+    "tabPawMatch": "Paw Match",
+    "tab2048": "Pet 2048"
+  },
+  "Game2048": {
+    "tag": "Mini game",
+    "title": "Pet 2048",
+    "subtitle": "Swipe to slide the tiles — matching pets merge and grow. Reach 2048 and beyond! Sign in to save your best score.",
+    "loading": "Setting up the board...",
+    "score": "Score",
+    "bestTile": "Best tile",
+    "newGame": "New game",
+    "boardLabel": "Pet 2048 board",
+    "gameOver": "Game over!",
+    "saving": "Saving your score...",
+    "saved": "Score saved to the leaderboard.",
+    "newBest": "New personal best!",
+    "guestCta": "Sign up to save your score and join the leaderboard!",
+    "signUp": "Sign up free",
+    "playAgain": "Play again",
+    "howTo": "Use arrow keys or swipe to slide. Equal tiles merge into a bigger pet — plan ahead, corners are your friend!"
   }
 }

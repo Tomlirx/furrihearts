@@ -213,15 +213,18 @@ create table if not exists public.rate_limits (
   count integer not null default 0
 );
 
--- Paw Match best scores (migration 0020) — one row per player. Public read
--- (leaderboard); writes ONLY via the submitGameScore server action (service
--- role), so no insert/update policies exist.
+-- Mini-game best scores (migrations 0020–0022) — one row per player PER GAME
+-- (Paw Match, Pet 2048). Public read (leaderboard); writes ONLY via the
+-- submitGameScore server action (service role), so no insert/update policies.
 create table if not exists public.game_scores (
-  user_id uuid primary key references public.profiles(id) on delete cascade,
-  best_score integer not null check (best_score >= 0 and best_score <= 50000),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  game text not null default 'paw-match',
+  best_score integer not null check (best_score >= 0 and best_score <= 1000000),
   top_scores integer[] not null default '{}', -- player's 3 best results, desc (0021)
   games_played integer not null default 1 check (games_played >= 1),
   updated_at timestamptz not null default now(),
+  primary key (user_id, game),
+  constraint game_scores_game_check check (game in ('paw-match', 'pet-2048')),
   constraint game_scores_top_scores_max3 check (coalesce(array_length(top_scores, 1), 0) <= 3)
 );
 
@@ -229,8 +232,8 @@ create table if not exists public.game_scores (
 
 create index if not exists idx_applications_pet_created
   on public.applications (pet_id, created_at desc);
-create index if not exists idx_game_scores_best
-  on public.game_scores (best_score desc);
+create index if not exists idx_game_scores_game_best
+  on public.game_scores (game, best_score desc);
 create index if not exists idx_messages_recipient_unread
   on public.messages (recipient_id) where read_at is null;
 create index if not exists idx_messages_recipient_created

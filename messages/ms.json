@@ -17,7 +17,7 @@
     "messagesHeader": "Mesej",
     "markAllRead": "Tandakan semua dibaca",
     "noNewMessages": "Tiada mesej baharu.",
-    "game": "Paw Match"
+    "game": "Permainan Mini"
   },
   "Footer": {
     "tagline": "Menyatukan hati. Mencipta rumah selamanya.",
@@ -34,7 +34,7 @@
     "privacyTerms": "Privasi & Terma",
     "copyright": "© 2026 FurriHearts. Hak cipta terpelihara.",
     "madeWith": "Dibuat dengan ❤️ untuk haiwan di Malaysia",
-    "game": "Paw Match"
+    "game": "Permainan Mini"
   },
   "Homepage": {
     "featuredTag": "Haiwan Pilihan",
@@ -630,6 +630,26 @@
     "leaderboard": "Carta Kedudukan",
     "leaderboardEmpty": "Belum ada skor — jadilah yang pertama!",
     "you": "Anda",
-    "yourBest": "Skor terbaik anda"
+    "yourBest": "Skor terbaik anda",
+    "tabPawMatch": "Paw Match",
+    "tab2048": "Pet 2048"
+  },
+  "Game2048": {
+    "tag": "Permainan mini",
+    "title": "Pet 2048",
+    "subtitle": "Leret untuk menggerakkan jubin — haiwan yang sama bergabung dan membesar. Capai 2048 dan lebih! Log masuk untuk menyimpan skor terbaik.",
+    "loading": "Menyediakan papan...",
+    "score": "Skor",
+    "bestTile": "Jubin terbaik",
+    "newGame": "Permainan baharu",
+    "boardLabel": "Papan Pet 2048",
+    "gameOver": "Permainan tamat!",
+    "saving": "Menyimpan skor anda...",
+    "saved": "Skor disimpan ke carta.",
+    "newBest": "Rekod peribadi baharu!",
+    "guestCta": "Daftar untuk menyimpan skor dan menyertai carta kedudukan!",
+    "signUp": "Daftar percuma",
+    "playAgain": "Main lagi",
+    "howTo": "Guna kekunci anak panah atau leret untuk bergerak. Jubin sama bergabung — rancang awal, sudut ialah kawan anda!"
   }
 }

@@ -17,7 +17,7 @@
     "messagesHeader": "消息",
     "markAllRead": "全部标为已读",
     "noNewMessages": "暂无新消息。",
-    "game": "爪爪消消乐"
+    "game": "小游戏"
   },
   "Footer": {
     "tagline": "连结爱心，缔造永远的家。",
@@ -34,7 +34,7 @@
     "privacyTerms": "隐私权与条款",
     "copyright": "© 2026 FurriHearts。保留所有权利。",
     "madeWith": "用 ❤️ 为马来西亚的动物而做",
-    "game": "爪爪消消乐"
+    "game": "小游戏"
   },
   "Homepage": {
     "featuredTag": "精选宠物",
@@ -630,6 +630,26 @@
     "leaderboard": "排行榜",
     "leaderboardEmpty": "还没有成绩——来当第一名!",
     "you": "你",
-    "yourBest": "你的最好成绩"
+    "yourBest": "你的最好成绩",
+    "tabPawMatch": "爪爪消消乐",
+    "tab2048": "宠物2048"
+  },
+  "Game2048": {
+    "tag": "小游戏",
+    "title": "宠物2048",
+    "subtitle": "滑动方块,相同的宠物会合并成长。冲击 2048 甚至更高!登录即可保存最佳成绩。",
+    "loading": "正在准备棋盘...",
+    "score": "得分",
+    "bestTile": "最大方块",
+    "newGame": "新游戏",
+    "boardLabel": "宠物2048棋盘",
+    "gameOver": "游戏结束!",
+    "saving": "正在保存成绩...",
+    "saved": "成绩已保存到排行榜。",
+    "newBest": "刷新个人最佳!",
+    "guestCta": "注册即可保存成绩、加入排行榜!",
+    "signUp": "免费注册",
+    "playAgain": "再来一局",
+    "howTo": "方向键或滑动屏幕移动方块,相同数字合并升级——提前规划,把大方块固定在角落!"
   }
 }

@@ -3,12 +3,15 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import MatchThree from './MatchThree';
-import { getLeaderboard, type LeaderboardData } from '@/app/actions/game';
+import Game2048 from './Game2048';
+import { getLeaderboard, type GameId, type LeaderboardData } from '@/app/actions/game';
 
 export default function GameClient({
+  game,
   isLoggedIn,
   initialData,
 }: {
+  game: GameId;
   isLoggedIn: boolean;
   initialData: LeaderboardData;
 }) {
@@ -16,12 +19,14 @@ export default function GameClient({
   const [data, setData] = useState(initialData);
 
   const refresh = async () => {
-    setData(await getLeaderboard());
+    setData(await getLeaderboard(game));
   };
 
   return (
     <div className="game-layout">
-      <MatchThree isLoggedIn={isLoggedIn} onScoreSaved={refresh} />
+      {game === 'paw-match'
+        ? <MatchThree isLoggedIn={isLoggedIn} onScoreSaved={refresh} />
+        : <Game2048 isLoggedIn={isLoggedIn} onScoreSaved={refresh} />}
 
       <aside className="game-leaderboard section-card">
         <h3 className="game-lb-title">{t('leaderboard')}</h3>
