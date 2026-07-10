@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { ChevronLeft, ChevronRight } from '@/components/icons';
 
 export function PetImageGallery({
   petName,
@@ -34,7 +35,7 @@ export function PetImageGallery({
               style={{ left: '12px' }}
               aria-label={t('previousPhoto')}
             >
-              ‹
+              <ChevronLeft size={20} />
             </button>
             <button
               onClick={() => setMainImage(photos[(currentIndex + 1) % photos.length])}
@@ -42,7 +43,7 @@ export function PetImageGallery({
               style={{ right: '12px' }}
               aria-label={t('nextPhoto')}
             >
-              ›
+              <ChevronRight size={20} />
             </button>
             <span className="img-counter">{currentIndex + 1} / {photos.length}</span>
           </>

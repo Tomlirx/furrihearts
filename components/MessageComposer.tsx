@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { X } from './icons';
 import { sendMessage } from '@/app/actions/messages';
 import { countWords, MAX_MESSAGE_WORDS } from '@/lib/messages-data';
 import './MessageComposer.css';
@@ -67,7 +68,7 @@ export default function MessageComposer({
           <div className="modal-content" style={{ maxWidth: '460px' }} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="msg-composer-title">
             <div className="modal-header">
               <h2 id="msg-composer-title">{sent ? 'Message Sent' : 'Send a Message'}</h2>
-              <button className="btn-close" onClick={close} aria-label="Close">×</button>
+              <button className="btn-close" onClick={close} aria-label="Close"><X size={20} /></button>
             </div>
             <div className="modal-body">
               {sent ? (

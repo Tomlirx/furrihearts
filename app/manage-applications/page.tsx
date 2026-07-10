@@ -1,5 +1,6 @@
 'use client';
 import '../dashboard/styles.css';
+import { X } from '@/components/icons';
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
@@ -166,7 +167,7 @@ function ManageApplicationsContent() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="manage-app-modal-title">
             <div className="modal-header">
               <h2 id="manage-app-modal-title">Application for {selectedApp.pets?.name}</h2>
-              <button className="btn-close" onClick={() => setSelectedApp(null)} aria-label="Close">×</button>
+              <button className="btn-close" onClick={() => setSelectedApp(null)} aria-label="Close"><X size={20} /></button>
             </div>
             <div className="modal-body">
               <div className="applicant-info"><strong>Applicant:</strong> {selectedApp.profiles?.first_name || 'Demo'} {selectedApp.profiles?.last_name || 'Adopter'}</div>

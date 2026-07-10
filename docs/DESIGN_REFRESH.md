@@ -51,12 +51,24 @@ Status: **DONE (core)** — commit `9f301f6`; residual polish rolled into P3.
       stay light-tinted in dark mode until swept to semantic tokens. Verify
       WCAG AA once swept.
 
-## Phase 3 — Component consolidation
-Status: **TODO**
+## Phase 3 — Component consolidation & professional polish
+Status: **IN PROGRESS**
 
+- [x] a11y baseline (`a261219`): global `:focus-visible` ring + input focus ring
+      (was `outline:none` with no replacement); honor `prefers-reduced-motion`.
+- [x] SVG icon system (`components/icons.tsx`, Lucide-derived, `currentColor`,
+      no dependency) replacing emoji-as-icons — the top "unprofessional" signal.
+      Migrated the persistent chrome + controls: navbar (paw logo, bell, notif,
+      mobile close), theme toggle (sun/moon), pagination + gallery chevrons,
+      photo manager (remove/star/crop), all modal close buttons, pet-info
+      health check/cross, upload camera, pet-card arrow.
+- [ ] **Remaining emoji (follow-up):** decorative empty-state illustrations
+      (🐾/🐱 via `EmptyState` icon prop), in-text flourish arrows (some `→`),
+      ✨ badges (`ai-badge`, rescuer-landing/created), browse empty-state 🔍,
+      guide ✂, contact 💬, celebratory 🎉. Lower risk; sweep when convenient.
 - [ ] One Button, Card, Field, Badge, Chip definition (kill `.form-input`×5,
       `.section-card`×2, the two conflicting `.btn-approve`, the duplicate search bar).
-- [ ] Unify `:focus-visible` ring, hover/active, radius via `--radius-*`.
+- [ ] Finish dark-mode color sweep (hardcoded status pales, inline-style colors).
 - [ ] Standardize breakpoints (768 primary, 480 secondary); retire one-off widths.
 
 ## Phase 4 — Key-page polish (photo-first, whitespace, hierarchy)

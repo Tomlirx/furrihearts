@@ -9,6 +9,7 @@ import { getUnreadMessages, groupThreads, markAllMessagesRead } from '@/lib/mess
 import { signOutUser } from '@/app/actions/auth';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
+import { Bell, MessageSquare, X, Paw } from './icons';
 
 export default function Navbar({ user, isAdmin = false, isAuditor = false }: { user: any; isAdmin?: boolean; isAuditor?: boolean }) {
   const t = useTranslations('Navbar');
@@ -115,7 +116,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
       <nav>
         <div className="nav-inner">
           <Link href="/" className="logo">
-            <div className="logo-icon">🐾</div>
+            <div className="logo-icon"><Paw size={20} style={{ color: 'var(--orange)' }} /></div>
             <span className="logo-text">Furri<span>Hearts</span></span>
           </Link>
 
@@ -140,7 +141,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                   aria-expanded={isNotifOpen}
                   aria-label={unreadCount > 0 ? t('unreadMessages', { count: unreadCount }) : t('notifications')}
                 >
-                  🔔
+                  <Bell size={20} />
                   {unreadCount > 0 && <span className="notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
                 </button>
 
@@ -162,7 +163,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                           className="notif-item unread"
                           onClick={() => setIsNotifOpen(false)}
                         >
-                          <div className="notif-icon orange">💬</div>
+                          <div className="notif-icon orange"><MessageSquare size={18} style={{ color: 'var(--orange)' }} /></div>
                           <div>
                             <div className="notif-title">{thread.otherName} · {thread.petName}: {thread.latest.content.slice(0, 60)}{thread.latest.content.length > 60 ? '…' : ''}</div>
                             <div className="notif-time">{new Date(thread.latest.created_at).toLocaleString()}</div>
@@ -246,7 +247,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
       <div className={`mob-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mob-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
         <div className="mob-panel">
-          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label={t('closeMenu')}>✕</button>
+          <button className="mob-close" onClick={() => setIsMobileMenuOpen(false)} aria-label={t('closeMenu')}><X size={22} /></button>
 
           <Link href="/browse" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptAPet')}</Link>
           <Link href="/guide" className="mob-link" onClick={() => setIsMobileMenuOpen(false)}>{t('adoptionGuide')}</Link>

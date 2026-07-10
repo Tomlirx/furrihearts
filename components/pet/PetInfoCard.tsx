@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import type { Pet } from '@/lib/pet-service';
+import { Check, X } from '@/components/icons';
 
 // pet/[id]/page.tsx is a Client Component (data fetched in a useEffect), so
 // every component it renders — this one included, despite having no 'use
@@ -55,7 +56,7 @@ export function PetInfoCard({ pet }: { pet: Pet }) {
           <ul className="health-list">
             {healthItems.map(([label, checked]) => (
               <li key={label}>
-                <div className={`check-icon ${!checked ? 'unchecked' : ''}`}>{checked ? '✓' : '✕'}</div>
+                <div className={`check-icon ${!checked ? 'unchecked' : ''}`} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{checked ? <Check size={13} /> : <X size={13} />}</div>
                 {label}
               </li>
             ))}

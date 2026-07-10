@@ -3,6 +3,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { displayUrl, MAX_PHOTOS, type ListingPhoto } from '@/lib/use-photo-manager';
 import type { CropParams } from '@/lib/image-crop';
+import { X, Star, Crop } from '@/components/icons';
 
 // react-easy-crop (~40KB) only loads when a rescuer actually opens the cropper.
 const PhotoCropDialog = dynamic(() => import('@/components/listing/PhotoCropDialog'), { ssr: false });
@@ -39,13 +40,13 @@ export default function PhotoManager({
                 className={`photo-thumb ${isPrimary ? 'is-primary' : ''}`}
                 alt="preview"
               />
-              <button className="photo-remove" onClick={() => onRemove(photo.id)} aria-label="Remove photo">✕</button>
+              <button className="photo-remove" onClick={() => onRemove(photo.id)} aria-label="Remove photo"><X size={12} /></button>
               {isPrimary ? (
-                <span className="photo-primary-badge">★ Main</span>
+                <span className="photo-primary-badge"><Star size={11} filled /> Main</span>
               ) : (
-                <button className="photo-star-btn" onClick={() => onSetPrimary(photo.id)} aria-label="Set as main photo">☆</button>
+                <button className="photo-star-btn" onClick={() => onSetPrimary(photo.id)} aria-label="Set as main photo"><Star size={14} /></button>
               )}
-              <button className="photo-crop-btn" onClick={() => setCroppingId(photo.id)} aria-label="Crop photo">✂</button>
+              <button className="photo-crop-btn" onClick={() => setCroppingId(photo.id)} aria-label="Crop photo"><Crop size={13} /></button>
               {photo.croppedBlob && <span className="photo-adjusted-dot" title="Adjusted" />}
             </div>
           );

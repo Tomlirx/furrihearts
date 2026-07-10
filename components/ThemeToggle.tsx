@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Sun, Moon } from './icons';
 
 // Light/dark toggle. The pre-hydration script in layout.tsx sets
 // document.documentElement[data-theme] from localStorage before paint (no
@@ -29,7 +30,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
       onClick={toggle}
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      {theme === 'dark' ? '☀️' : '🌙'}
+      {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
     </button>
   );
 }

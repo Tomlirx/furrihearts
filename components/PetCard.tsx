@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { ArrowRight } from '@/components/icons';
 import type { Pet } from '@/lib/pet-service';
 import './PetCard.css';
 
@@ -34,7 +35,7 @@ export default function PetCard({
       <div className="pet-info">
         <div className="pet-name-row">
           <span className="pet-name">{pet.name}</span>
-          <span className="pet-arrow">→</span>
+          <span className="pet-arrow" style={{ display: 'inline-flex' }}><ArrowRight size={16} /></span>
         </div>
         <div className="pet-meta">{pet.gender} · {pet.location}</div>
         <div className="pet-tags">

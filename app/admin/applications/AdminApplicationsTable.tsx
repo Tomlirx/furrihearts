@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { X } from '@/components/icons';
 import { updateApplicationStatus } from '@/app/actions/admin';
 
 export default function AdminApplicationsTable({ apps }: { apps: any[] }) {
@@ -43,7 +44,7 @@ export default function AdminApplicationsTable({ apps }: { apps: any[] }) {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Application for {selected.pets?.name}</h2>
-              <button className="btn-close" onClick={() => setSelected(null)}>×</button>
+              <button className="btn-close" onClick={() => setSelected(null)} aria-label="Close"><X size={20} /></button>
             </div>
             <div className="modal-body">
               <div className="qa-full"><span className="q-label">1. Why adopt?</span><p>{selected.q1?.join(', ') || 'N/A'}</p></div>

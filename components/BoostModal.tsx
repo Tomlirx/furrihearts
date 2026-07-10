@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { X } from './icons';
 import { supabase } from '@/lib/supabase';
 import { requestBoost } from '@/app/actions/boosts';
 
@@ -94,7 +95,7 @@ export default function BoostModal({
           <div className="modal-content" style={{ maxWidth: '460px' }} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="boost-modal-title">
             <div className="modal-header">
               <h2 id="boost-modal-title">{step === 'success' ? 'Boost requested' : `Boost ${petName}`}</h2>
-              <button className="btn-close" onClick={close} aria-label="Close">×</button>
+              <button className="btn-close" onClick={close} aria-label="Close"><X size={20} /></button>
             </div>
             <div className="modal-body">
               {step === 'tier' && (

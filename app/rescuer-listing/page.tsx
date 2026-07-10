@@ -9,6 +9,7 @@ import { getLaunchedStates } from '@/lib/locations';
 import { usePhotoManager, displayUrl } from '@/lib/use-photo-manager';
 import { uploadPhotoBlob } from '@/lib/image-crop';
 import PhotoManager from '@/components/listing/PhotoManager';
+import { Camera } from '@/components/icons';
 
 // Arrays for dynamic filtering
 const CAT_BREEDS = ['Domestic Shorthair', 'Domestic Longhair', 'Persian', 'Siamese', 'Maine Coon', 'Ragdoll', 'Scottish Fold', 'Bengal', 'British Shorthair', 'Other'];
@@ -296,7 +297,7 @@ export default function RescuerListingFlow() {
             <input type="file" ref={fileInputRef} hidden accept="image/jpeg,image/png,image/webp" multiple onChange={handleFileChange} />
             {photos.length === 0 && (
               <div className="upload-area" onClick={() => fileInputRef.current?.click()}>
-                <div className="upload-icon">📷</div>
+                <div className="upload-icon" style={{ color: 'var(--orange)' }}><Camera size={48} strokeWidth={1.5} /></div>
                 <div className="upload-label">Click to browse photos</div>
                 <div style={{ fontSize: '12px', color: 'var(--light)', marginTop: '12px' }}>JPG or PNG · Max 5 photos</div>
               </div>
