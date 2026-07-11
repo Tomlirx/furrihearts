@@ -15,8 +15,9 @@
 .game-stat-value { font-family: var(--font-fraunces); font-size: 24px; font-weight: 700; color: var(--text); }
 .game-stat-value.low { color: var(--danger); }
 
-/* Board */
-.game-board-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 10px; box-shadow: var(--shadow-sm); }
+/* Board — sized against the VIEWPORT HEIGHT so the whole playfield plus HUD
+   and controls always fit on screen (square boards: allowed height = width). */
+.game-board-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 10px; box-shadow: var(--shadow-sm); width: 100%; max-width: min(560px, calc(100vh - 330px)); max-width: min(560px, calc(100dvh - 330px)); margin-left: auto; margin-right: auto; }
 .game-board { position: relative; width: 100%; aspect-ratio: 1; }
 .game-loading { text-align: center; padding: 80px 0; color: var(--mid); }
 
@@ -123,8 +124,10 @@
 .g2048-newgame:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
 
 /* ── Pet Blocks (Tetris) ── */
-.tetris-wrap { position: relative; max-width: 340px; margin: 0 auto; }
-.tetris-canvas { display: block; border-radius: var(--radius-md); border: 1px solid var(--border); touch-action: none; user-select: none; -webkit-user-select: none; }
+/* 1:2 board: width derives from viewport height (reserve ~360px for chrome,
+   HUD and the control row) so the full stack is always visible. */
+.tetris-wrap { position: relative; width: fit-content; margin: 0 auto; }
+.tetris-canvas { display: block; border-radius: var(--radius-md); border: 1px solid var(--border); touch-action: none; user-select: none; -webkit-user-select: none; width: min(80vw, calc((100vh - 360px) * 0.5), 300px); width: min(80vw, calc((100dvh - 360px) * 0.5), 300px); height: auto; }
 .tetris-wrap .game-over { border-radius: var(--radius-md); }
 .tetris-start { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--orange); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px 32px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-md); transition: background var(--dur) var(--ease); }
 .tetris-start:hover { background: var(--orange-light); }
@@ -137,8 +140,9 @@
 .tetris-next canvas { flex-shrink: 0; }
 
 /* ── Flappy Kitten ── */
-.flappy-wrap { position: relative; max-width: 420px; margin: 0 auto; }
-.flappy-canvas { display: block; border-radius: var(--radius-md); cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+/* 3:4 board: width derives from viewport height so the scene fits on screen. */
+.flappy-wrap { position: relative; width: fit-content; margin: 0 auto; }
+.flappy-canvas { display: block; border-radius: var(--radius-md); cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; width: min(88vw, calc((100vh - 310px) * 0.75), 420px); width: min(88vw, calc((100dvh - 310px) * 0.75), 420px); height: auto; }
 .flappy-hint { position: absolute; left: 0; right: 0; top: 62%; text-align: center; font-weight: 700; color: var(--text-muted); pointer-events: none; animation: flappy-hint-pulse 1.4s ease-in-out infinite; }
 @keyframes flappy-hint-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
 .flappy-wrap .game-over { border-radius: var(--radius-md); }
@@ -147,4 +151,14 @@
   .game-layout { grid-template-columns: 1fr; }
   .game-page { padding: 24px 16px 48px; }
   .game-title { font-size: 28px; }
+}
+
+/* Short viewports: compact the hero so the playfield gets the height. */
+@media (max-height: 760px) {
+  .game-page { padding-top: 12px; }
+  .game-hero { margin-bottom: 10px; }
+  .game-sub { display: none; }
+  .game-title { font-size: 22px; margin-bottom: 2px; }
+  .game-tabs { margin-bottom: 12px; }
+  .game-hud { margin-bottom: 8px; }
 }

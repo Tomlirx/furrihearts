@@ -299,7 +299,7 @@ export default function PetTetris({ isLoggedIn, onScoreSaved }: { isLoggedIn: bo
 
       <div className="game-board-wrap">
         <div className="tetris-wrap">
-          <canvas ref={canvasRef} className="tetris-canvas" style={{ width: '100%', aspectRatio: `${W} / ${H}` }} aria-label={t('boardLabel')} />
+          <canvas ref={canvasRef} className="tetris-canvas" style={{ aspectRatio: `${W} / ${H}` }} aria-label={t('boardLabel')} />
           {phase === 'ready' && (
             <button className="tetris-start" onClick={start}>{t('start')}</button>
           )}

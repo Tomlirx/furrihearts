@@ -237,7 +237,7 @@ export default function FlappyKitten({ isLoggedIn, onScoreSaved }: { isLoggedIn:
           <canvas
             ref={canvasRef}
             className="flappy-canvas"
-            style={{ width: '100%', aspectRatio: `${W} / ${H}` }}
+            style={{ aspectRatio: `${W} / ${H}` }}
             onPointerDown={(e) => { e.preventDefault(); flap(); }}
             aria-label={t('boardLabel')}
           />
