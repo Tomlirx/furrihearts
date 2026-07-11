@@ -7,6 +7,8 @@ import { supabase } from '@/lib/supabase';
 import { getLocalApplications, updateLocalApplicationStatus } from '@/lib/local-store';
 import { getMyPets, getIncomingApplications } from '@/lib/profile-data';
 import { closeApplication, reviewApplication } from '@/app/actions/applications';
+import { TERMINAL_APPLICATION_STATUSES } from '@/lib/messages-data';
+import MessageComposer from '@/components/MessageComposer';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Pagination from '@/components/Pagination';
 import DashboardTabs from '@/components/DashboardTabs';
@@ -180,6 +182,17 @@ function ManageApplicationsContent() {
               <div className="qa-full"><span className="q-label">7. Anything else?</span><p>{selectedApp.q7 || 'N/A'}</p></div>
             </div>
             <div className="modal-actions">
+              {/* Rescuer can message the applicant while the application is live
+                  (ask questions before deciding, arrange the meet-up after). */}
+              {selectedApp.applicant_id && !TERMINAL_APPLICATION_STATUSES.includes(selectedApp.status) && (
+                <MessageComposer
+                  recipientId={selectedApp.applicant_id}
+                  petId={selectedApp.pet_id || selectedApp.pets?.id}
+                  applicationId={selectedApp.id}
+                  triggerLabel="Message Applicant"
+                  triggerClassName="btn-view-full"
+                />
+              )}
               {selectedApp.status === 'pending' ? (
                 <>
                   <button className="btn-reject" onClick={() => setDeclineTarget(selectedApp)} disabled={isUpdating}>Decline</button>

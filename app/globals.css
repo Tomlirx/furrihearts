@@ -293,7 +293,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 
 /* Notification bell (ported from the original static design, scoped to unread messages) */
 .notif-wrap { position: relative; }
-.notif-btn { background: none; border: none; cursor: pointer; position: relative; padding: 6px; font-size: 20px; line-height: 1; }
+.notif-btn { background: none; border: none; cursor: pointer; position: relative; padding: 6px; font-size: 20px; line-height: 1; color: var(--text); /* <button> doesn't inherit color — keeps the bell visible in dark mode */ }
 .notif-badge { position: absolute; top: 0; right: 0; background: #DC2626; /* pinned: white text needs a deep red in both themes */ color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 .notif-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 500; }
 .notif-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); }
