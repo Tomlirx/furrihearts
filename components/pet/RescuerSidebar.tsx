@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { Paw } from '@/components/icons';
 import type { Pet } from '@/lib/pet-service';
 
 export function RescuerSidebar({
@@ -26,7 +27,7 @@ export function RescuerSidebar({
       <h4 className="right-card-heading">{t('interestedIn', { name: pet.name })}</h4>
 
       <div className="rescuer-row">
-        <div className="rescuer-avatar">FH</div>
+        <div className="rescuer-avatar"><Paw size={30} style={{ color: 'var(--accent-soft)' }} /></div>
         <div>
           <div className="rescuer-name">{rescuerName}</div>
           <div className="rescuer-verified-badge">{t('verifiedRescuer')}</div>
