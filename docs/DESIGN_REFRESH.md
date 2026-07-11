@@ -68,7 +68,7 @@ Status: **IN PROGRESS**
       guide ✂, contact 💬, celebratory 🎉. Lower risk; sweep when convenient.
 - [ ] One Button, Card, Field, Badge, Chip definition (kill `.form-input`×5,
       `.section-card`×2, the two conflicting `.btn-approve`, the duplicate search bar).
-- [x] Finish dark-mode color sweep (commit `<fill>`): all hardcoded status
+- [x] Finish dark-mode color sweep (commit `cdc9b30`): all hardcoded status
       colors/pales/grays in CSS + inline styles → semantic tokens; status
       foregrounds (`--success/-danger/-warning/-info`) brighten in dark like
       `--accent-soft`; guide/thank-you/rescuer-landing hero gradients and the
