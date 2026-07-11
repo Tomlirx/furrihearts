@@ -633,7 +633,8 @@
     "yourBest": "Your best scores",
     "tabPawMatch": "Paw Match",
     "tab2048": "Pet 2048",
-    "tabFlappy": "Flappy Kitten"
+    "tabFlappy": "Flappy Kitten",
+    "tabTetris": "Pet Blocks"
   },
   "Game2048": {
     "tag": "Mini game",
@@ -668,5 +669,29 @@
     "signUp": "Sign up free",
     "playAgain": "Play again",
     "howTo": "Tap, click or press Space to flap. Slip through the gaps between the scratching posts — each one you pass scores a point."
+  },
+  "GameTetris": {
+    "tag": "Mini game",
+    "title": "Pet Blocks",
+    "subtitle": "The timeless falling-blocks classic, pet edition — stack the paw-print blocks, clear lines, and chase a high score. Sign in to save your best.",
+    "score": "Score",
+    "lines": "Lines",
+    "level": "Level",
+    "next": "Next",
+    "boardLabel": "Pet Blocks board",
+    "start": "Start game",
+    "gameOver": "Game over!",
+    "saving": "Saving your score...",
+    "saved": "Score saved to the leaderboard.",
+    "newBest": "New personal best!",
+    "guestCta": "Sign up to save your score and join the leaderboard!",
+    "signUp": "Sign up free",
+    "playAgain": "Play again",
+    "left": "Move left",
+    "right": "Move right",
+    "rotate": "Rotate",
+    "down": "Soft drop",
+    "drop": "Hard drop",
+    "howTo": "Arrow keys to move and rotate, Space to drop — or use the buttons below. Clear multiple lines at once for big points; speed rises every 10 lines."
   }
 }

@@ -146,6 +146,33 @@ export function Sparkles({ size, className, style, strokeWidth, ...rest }: IconP
   );
 }
 
+export function ChevronDown({ size, className, style, strokeWidth, ...rest }: IconProps) {
+  return (
+    <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+export function RotateCw({ size, className, style, strokeWidth, ...rest }: IconProps) {
+  return (
+    <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>
+      <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+    </svg>
+  );
+}
+
+export function ArrowDownToLine({ size, className, style, strokeWidth, ...rest }: IconProps) {
+  return (
+    <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>
+      <path d="M12 17V3" />
+      <path d="m6 11 6 6 6-6" />
+      <path d="M19 21H5" />
+    </svg>
+  );
+}
+
 export function Check({ size, className, style, strokeWidth, ...rest }: IconProps) {
   return (
     <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>

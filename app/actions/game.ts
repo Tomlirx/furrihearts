@@ -10,6 +10,7 @@ const GAMES = {
   'paw-match': { maxScore: 50_000, maxMoves: 30 },
   'pet-2048': { maxScore: 250_000, maxMoves: 5_000 },
   'flappy-kitten': { maxScore: 1_000, maxMoves: 10_000 }, // moves = flaps
+  'pet-tetris': { maxScore: 500_000, maxMoves: 10_000 }, // moves = pieces placed
 } as const;
 export type GameId = keyof typeof GAMES;
 

@@ -633,7 +633,8 @@
     "yourBest": "Skor terbaik anda",
     "tabPawMatch": "Paw Match",
     "tab2048": "Pet 2048",
-    "tabFlappy": "Flappy Kitten"
+    "tabFlappy": "Flappy Kitten",
+    "tabTetris": "Pet Blocks"
   },
   "Game2048": {
     "tag": "Permainan mini",
@@ -668,5 +669,29 @@
     "signUp": "Daftar percuma",
     "playAgain": "Main lagi",
     "howTo": "Ketik, klik atau tekan Space untuk terbang. Lepasi celah antara tiang — setiap satu bernilai 1 mata."
+  },
+  "GameTetris": {
+    "tag": "Permainan mini",
+    "title": "Pet Blocks",
+    "subtitle": "Klasik blok jatuh edisi haiwan — susun blok tapak kaki, kosongkan baris dan kejar skor tinggi. Log masuk untuk menyimpan skor terbaik.",
+    "score": "Skor",
+    "lines": "Baris",
+    "level": "Tahap",
+    "next": "Seterusnya",
+    "boardLabel": "Papan Pet Blocks",
+    "start": "Mula",
+    "gameOver": "Permainan tamat!",
+    "saving": "Menyimpan skor anda...",
+    "saved": "Skor disimpan ke carta.",
+    "newBest": "Rekod peribadi baharu!",
+    "guestCta": "Daftar untuk menyimpan skor dan menyertai carta kedudukan!",
+    "signUp": "Daftar percuma",
+    "playAgain": "Main lagi",
+    "left": "Gerak kiri",
+    "right": "Gerak kanan",
+    "rotate": "Putar",
+    "down": "Turun",
+    "drop": "Jatuh terus",
+    "howTo": "Kekunci anak panah untuk gerak dan putar, Space untuk jatuh — atau guna butang di bawah. Kosongkan banyak baris serentak untuk mata besar; kelajuan naik setiap 10 baris."
   }
 }

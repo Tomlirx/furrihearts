@@ -122,6 +122,20 @@
 .g2048-newgame { border: 1.5px solid var(--border); background: var(--surface); color: var(--mid); border-radius: var(--radius-md); padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all var(--dur) var(--ease); }
 .g2048-newgame:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
 
+/* ── Pet Blocks (Tetris) ── */
+.tetris-wrap { position: relative; max-width: 340px; margin: 0 auto; }
+.tetris-canvas { display: block; border-radius: var(--radius-md); border: 1px solid var(--border); touch-action: none; user-select: none; -webkit-user-select: none; }
+.tetris-wrap .game-over { border-radius: var(--radius-md); }
+.tetris-start { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--orange); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px 32px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-md); transition: background var(--dur) var(--ease); }
+.tetris-start:hover { background: var(--orange-light); }
+.tetris-controls { display: flex; justify-content: center; gap: 10px; margin-top: 14px; }
+.tetris-btn { width: 52px; height: 46px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-muted); border-radius: var(--radius-sm); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all var(--dur-fast) var(--ease); }
+.tetris-btn:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
+.tetris-btn:active { transform: scale(0.94); background: var(--orange-pale); }
+.tetris-btn.wide { width: 64px; }
+.tetris-next { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
+.tetris-next canvas { flex-shrink: 0; }
+
 /* ── Flappy Kitten ── */
 .flappy-wrap { position: relative; max-width: 420px; margin: 0 auto; }
 .flappy-canvas { display: block; border-radius: var(--radius-md); cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }

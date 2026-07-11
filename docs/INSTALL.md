@@ -97,7 +97,7 @@ error tracking. Everything runs on Supabase + the Next.js host.
 > constraints), 0019 (system-message flag), 0020 (Paw Match `game_scores`
 > leaderboard table), 0021 (per-player top-3 kept scores), 0022 (multi-game
 > support: Pet 2048 + composite (user_id, game) key), 0023 (Flappy Kitten
-> game id).
+> game id), 0024 (Pet Blocks / Tetris game id).
 
 ---
 
