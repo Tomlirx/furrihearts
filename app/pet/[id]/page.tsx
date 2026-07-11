@@ -102,7 +102,7 @@ export default function PetProfile() {
       </div>
 
       {isNotPublic && (
-        <div style={{ background: '#FEF3C7', border: '1px solid #F59E0B', color: '#92400E', borderRadius: '10px', padding: '10px 16px', fontSize: '13px', fontWeight: 600, margin: '0 0 16px' }}>
+        <div style={{ background: 'var(--warning-pale)', border: '1px solid var(--warning)', color: 'var(--warning)', borderRadius: '10px', padding: '10px 16px', fontSize: '13px', fontWeight: 600, margin: '0 0 16px' }}>
           {t('reviewPreviewNotice')}
         </div>
       )}

@@ -1,7 +1,7 @@
 /* app/guide/styles.css */
 
 /* HERO */
-.guide-hero { background: linear-gradient(135deg, #FDF5EF, #FEF8F3); padding: 60px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+.guide-hero { background: linear-gradient(135deg, var(--surface-2), var(--surface)); padding: 60px 40px; text-align: center; border-bottom: 1px solid var(--border); }
 .guide-hero-inner { max-width: 600px; margin: 0 auto; }
 .guide-tag { font-size: 12px; font-weight: 700; color: var(--accent-soft); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
 .guide-title { font-size: 42px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-fraunces), serif; }

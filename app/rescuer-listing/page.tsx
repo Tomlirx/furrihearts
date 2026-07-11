@@ -389,7 +389,7 @@ export default function RescuerListingFlow() {
                   <div className="form-field">
                     <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '6px' }}>
                       <div className="field-label" style={{ marginBottom: 0 }}>Personality & Traits</div>
-                      <div style={{ fontSize: '11px', color: traitsWarning ? '#DC2626' : 'var(--light)', transition: 'color 0.2s' }}>Max 3 · {traits.length} selected</div>
+                      <div style={{ fontSize: '11px', color: traitsWarning ? 'var(--danger)' : 'var(--light)', transition: 'color 0.2s' }}>Max 3 · {traits.length} selected</div>
                     </div>
                     <div className="health-options">
                       {['Playful', 'Gentle', 'Curious', 'People-Oriented', 'Shy', 'Independent', 'Pet Friendly'].map(t => (
@@ -486,7 +486,7 @@ export default function RescuerListingFlow() {
             </div>
 
             {formError && (
-              <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginBottom: '12px' }}>{formError}</div>
+              <div style={{ background: 'var(--danger-pale)', border: '1px solid var(--danger)', color: 'var(--danger)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginBottom: '12px' }}>{formError}</div>
             )}
             <button
               onClick={() => {
@@ -507,7 +507,7 @@ export default function RescuerListingFlow() {
           <div style={{ maxWidth: '760px', width: '100%' }}>
             <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: '26px', fontWeight: 700, marginBottom: '24px' }}>Review & Publish 🎉</h1>
              
-            <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid var(--border)', marginBottom: '24px', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--surface)', borderRadius: '16px', border: '1px solid var(--border)', marginBottom: '24px', overflow: 'hidden' }}>
               {primaryPhoto && (
                 <div style={{ width: '100%', height: '220px' }}>
                   <img src={displayUrl(primaryPhoto)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
@@ -518,9 +518,9 @@ export default function RescuerListingFlow() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
                   <span style={{ background: 'var(--orange-pale)', color: 'var(--accent-soft)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{breed === 'Other' ? customBreed : breed}</span>
                   <span style={{ background: 'var(--green-pale)', color: 'var(--green)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{location}</span>
-                  <span style={{ background: '#EFF6FF', color: '#1D4ED8', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{gender}</span>
+                  <span style={{ background: 'var(--info-pale)', color: 'var(--info)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>{gender}</span>
                   {traits.map(t => (
-                    <span key={t} style={{ background: '#F9FAFB', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', color: 'var(--mid)' }}>{t}</span>
+                    <span key={t} style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', color: 'var(--mid)' }}>{t}</span>
                   ))}
                 </div>
                 <p style={{ color: 'var(--mid)', lineHeight: 1.6, marginBottom: health.length > 0 ? '16px' : 0 }}>{description || "No description provided."}</p>
@@ -535,10 +535,10 @@ export default function RescuerListingFlow() {
             </div>
 
             {formError && (
-              <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginBottom: '12px' }}>{formError}</div>
+              <div style={{ background: 'var(--danger-pale)', border: '1px solid var(--danger)', color: 'var(--danger)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginBottom: '12px' }}>{formError}</div>
             )}
             <div style={{ display: 'flex', gap: '12px' }}>
-              <button onClick={() => setStep(3)} style={{ flex: 1, background: '#fff', border: '1.5px solid var(--border)', borderRadius: '12px', padding: '16px', fontWeight: 600, cursor: 'pointer' }}>
+              <button onClick={() => setStep(3)} style={{ flex: 1, background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: '12px', padding: '16px', fontWeight: 600, cursor: 'pointer' }}>
                 Back to Edit
               </button>
               <button onClick={handlePublish} disabled={isSubmitting} style={{ flex: 2, background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '12px', padding: '16px', fontWeight: 700, cursor: 'pointer' }}>

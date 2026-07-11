@@ -159,7 +159,7 @@ export default function QuestionnairePage() {
   return (
     <>
       {/* Progress Bar */}
-      <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '24px 40px' }}>
+      <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '24px 40px' }}>
         <div style={{ maxWidth: '560px', margin: '0 auto', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--orange)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
@@ -167,11 +167,11 @@ export default function QuestionnairePage() {
           </div>
           <div style={{ flex: 1, height: '2px', background: 'var(--border)', margin: '24px 16px 0' }}></div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fff', border: '2px solid var(--border)', color: 'var(--light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--surface)', border: '2px solid var(--border)', color: 'var(--light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
           </div>
           <div style={{ flex: 1, height: '2px', background: 'var(--border)', margin: '24px 16px 0' }}></div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fff', border: '2px solid var(--border)', color: 'var(--light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--surface)', border: '2px solid var(--border)', color: 'var(--light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
           </div>
         </div>
       </div>
@@ -265,7 +265,7 @@ export default function QuestionnairePage() {
         </main>
       </div>
 
-      <div style={{ padding: '32px 40px', textAlign: 'center', borderTop: '1px solid var(--border)', background: '#fff' }}>
+      <div style={{ padding: '32px 40px', textAlign: 'center', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
         {formError && <div className="form-error-banner" style={{ maxWidth: '460px', margin: '0 auto 20px' }}>{formError}</div>}
         <button onClick={handleSubmit} disabled={submitting} style={{ background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: '10px', padding: '16px 48px', fontSize: '16px', fontWeight: 700, cursor: submitting ? 'not-allowed' : 'pointer' }}>
           {submitting ? t('submitting') : t('submit')}

@@ -34,7 +34,7 @@
 .crop-zoom-row input[type="range"] { flex: 1; accent-color: var(--accent-soft); }
 .crop-reset-btn { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--mid); cursor: pointer; }
 .crop-reset-btn:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
-.crop-error { background: #FEE2E2; border: 1px solid #DC2626; color: #DC2626; border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-top: 12px; }
+.crop-error { background: var(--danger-pale); border: 1px solid var(--danger); color: var(--danger); border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-top: 12px; }
 .crop-dialog-actions { display: flex; gap: 12px; margin-top: 20px; }
 .crop-dialog-actions button { flex: 1; }
 @media(max-width: 560px) { .crop-canvas-wrap { height: 65vw; } }

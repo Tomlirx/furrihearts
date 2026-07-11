@@ -8,7 +8,7 @@
 .pet-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .featured-tag { position: absolute; top: 10px; left: 10px; display: inline-block; width: max-content; background: var(--orange); color: #fff; border-radius: 6px; padding: 3px 8px; font-size: 10px; font-weight: 700; letter-spacing: .2px; white-space: nowrap; line-height: 1.4; }
-.adopted-badge { position: absolute; top: 10px; left: 10px; background: #10B981; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: .3px; }
+.adopted-badge { position: absolute; top: 10px; left: 10px; background: #2D7A3A; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: .3px; }
 
 .pet-info { padding: 12px 14px 14px; }
 .pet-name-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
@@ -17,7 +17,7 @@
 .pet-meta { font-size: 12px; color: var(--light); margin-bottom: 9px; }
 .pet-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .pet-tag { background: var(--orange-pale); color: var(--accent-soft); border-radius: 12px; padding: 3px 9px; font-size: 11px; font-weight: 500; }
-.pet-tag.neutral { background: #F0EDEA; color: var(--mid); }
+.pet-tag.neutral { background: var(--surface-2); color: var(--mid); }
 
 @media(max-width: 768px) {
   .pet-img { height: 150px; }

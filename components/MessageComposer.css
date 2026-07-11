@@ -6,4 +6,4 @@
 .modal-body .form-input:focus { border-color: var(--accent-soft); }
 .btn-approve { background: var(--orange); border: none; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; }
 .btn-approve:disabled { opacity: 0.5; cursor: not-allowed; }
-.contact-error { color: #DC2626; font-size: 13px; }
+.contact-error { color: var(--danger); font-size: 13px; }

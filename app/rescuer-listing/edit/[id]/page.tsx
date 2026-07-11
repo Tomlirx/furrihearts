@@ -242,7 +242,7 @@ export default function EditListingPage() {
               <div className="form-field">
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '6px' }}>
                   <div className="field-label" style={{ marginBottom: 0 }}>Personality & Traits</div>
-                  <div style={{ fontSize: '11px', color: traitsWarning ? '#DC2626' : 'var(--light)', transition: 'color 0.2s' }}>Max 3 · {traits.length} selected</div>
+                  <div style={{ fontSize: '11px', color: traitsWarning ? 'var(--danger)' : 'var(--light)', transition: 'color 0.2s' }}>Max 3 · {traits.length} selected</div>
                 </div>
                 <div className="health-options">
                   {['Playful', 'Gentle', 'Curious', 'People-Oriented', 'Shy', 'Independent', 'Pet Friendly'].map(t => (
@@ -334,7 +334,7 @@ export default function EditListingPage() {
         </div>
 
         {saveError && (
-          <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginTop: '16px' }}>
+          <div style={{ background: 'var(--danger-pale)', border: '1px solid var(--danger)', color: 'var(--danger)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', marginTop: '16px' }}>
             {saveError}
           </div>
         )}

@@ -31,7 +31,7 @@ export default function AdminBoostsList({ boosts }: { boosts: any[] }) {
 
   return (
     <>
-    {error && <div style={{ background: '#FEE2E2', border: '1px solid #DC2626', color: '#DC2626', borderRadius: '10px', padding: '10px 14px', fontSize: '13px', marginBottom: '12px' }}>{error}</div>}
+    {error && <div style={{ background: 'var(--danger-pale)', border: '1px solid var(--danger)', color: 'var(--danger)', borderRadius: '10px', padding: '10px 14px', fontSize: '13px', marginBottom: '12px' }}>{error}</div>}
     <table className="admin-table">
       <thead>
         <tr><th>Pet</th><th>Tier</th><th>Days</th><th>Price</th><th>Receipt</th><th>Status</th><th></th></tr>

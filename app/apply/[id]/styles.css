@@ -12,9 +12,9 @@
 
 .question-block { margin-bottom: 40px; }
 .q-num { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--dark); }
-.question-block.invalid .q-num { color: #DC2626; }
-.field-error { font-size: 12px; color: #DC2626; margin-top: 8px; }
-.form-error-banner { background: #FEE2E2; border: 1px solid #DC2626; color: #DC2626; border-radius: 10px; padding: 14px 18px; font-size: 14px; margin: 0 0 20px; text-align: left; }
+.question-block.invalid .q-num { color: var(--danger); }
+.field-error { font-size: 12px; color: var(--danger); margin-top: 8px; }
+.form-error-banner { background: var(--danger-pale); border: 1px solid var(--danger); color: var(--danger); border-radius: 10px; padding: 14px 18px; font-size: 14px; margin: 0 0 20px; text-align: left; }
 
 .q-opt-grid { display: grid; gap: 12px; margin-top: 12px; }
 .q-opt-4 { grid-template-columns: repeat(2, 1fr); }

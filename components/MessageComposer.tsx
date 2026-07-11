@@ -83,7 +83,7 @@ export default function MessageComposer({
                     placeholder="Ask about availability, health history, meet-up arrangements..."
                   />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-                    <span style={{ fontSize: '12px', color: overLimit ? '#DC2626' : 'var(--light)' }}>
+                    <span style={{ fontSize: '12px', color: overLimit ? 'var(--danger)' : 'var(--light)' }}>
                       {wordCount} / {MAX_MESSAGE_WORDS} words
                     </span>
                   </div>

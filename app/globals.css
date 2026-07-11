@@ -61,6 +61,7 @@
     --text: #F5EEE6; --text-muted: #C9BCAE; --text-subtle: #9A8B7C;
     --border: #3A2E24; --border-strong: #4A3B2E;
     --orange-pale: #3A241A; --accent-soft: #F0A472;
+    --success: #6FBF7E; --danger: #F08A8A; --warning: #E3A64D; --info: #7FB0E3;
     --success-pale: #16281C; --danger-pale: #33191A; --warning-pale: #332711; --info-pale: #14263A;
     --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow-md: 0 8px 24px rgba(0,0,0,.5);
     --shadow-lg: 0 16px 56px rgba(0,0,0,.6); --shadow-brand: 0 4px 16px rgba(0,0,0,.5);
@@ -72,6 +73,7 @@
   --text: #F5EEE6; --text-muted: #C9BCAE; --text-subtle: #9A8B7C;
   --border: #3A2E24; --border-strong: #4A3B2E;
   --orange-pale: #3A241A; --accent-soft: #F0A472;
+    --success: #6FBF7E; --danger: #F08A8A; --warning: #E3A64D; --info: #7FB0E3;
   --success-pale: #16281C; --danger-pale: #33191A; --warning-pale: #332711; --info-pale: #14263A;
   --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow-md: 0 8px 24px rgba(0,0,0,.5);
   --shadow-lg: 0 16px 56px rgba(0,0,0,.6); --shadow-brand: 0 4px 16px rgba(0,0,0,.5);
@@ -246,7 +248,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 .mob-link:hover, .mob-link.active { color: var(--accent-soft); font-weight: 700; }
 .mob-cta { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
 .mob-primary { display: block; text-align: center; background: var(--orange); border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700; text-decoration: none; color: #fff; }
-.mob-danger { display: block; text-align: center; color: #DC2626; font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px; cursor: pointer; background: transparent; border: none; width: 100%; }
+.mob-danger { display: block; text-align: center; color: var(--danger); font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px; cursor: pointer; background: transparent; border: none; width: 100%; }
 
 /* ==========================================================================
    6. DESIGN SYSTEM — shared component classes (tokens live at the top)
@@ -292,7 +294,7 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 /* Notification bell (ported from the original static design, scoped to unread messages) */
 .notif-wrap { position: relative; }
 .notif-btn { background: none; border: none; cursor: pointer; position: relative; padding: 6px; font-size: 20px; line-height: 1; }
-.notif-badge { position: absolute; top: 0; right: 0; background: #DC2626; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.notif-badge { position: absolute; top: 0; right: 0; background: #DC2626; /* pinned: white text needs a deep red in both themes */ color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 .notif-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 500; }
 .notif-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); }
 .notif-header-title { font-weight: 700; font-size: 14px; }
@@ -304,15 +306,15 @@ footer { background: var(--inverse); color: #fff; padding: 48px 40px 24px; width
 .notif-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .notif-icon.orange { background: var(--orange-pale); }
 .notif-icon.green { background: var(--green-pale); }
-.notif-icon.red { background: #FEE2E2; }
-.notif-icon.blue { background: #EFF6FF; }
+.notif-icon.red { background: var(--danger-pale); }
+.notif-icon.blue { background: var(--info-pale); }
 .notif-title { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 2px; line-height: 1.4; }
 .notif-time { font-size: 11px; color: var(--light); }
 
 /* Navbar profile dropdown items */
 .dropdown-item { width: 100%; display: block; text-align: left; padding: 10px 16px; color: var(--dark); font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 8px; background: transparent; border: none; cursor: pointer; font-family: inherit; transition: background .2s; }
 .dropdown-item:hover, .dropdown-item:focus-visible { background: var(--cream); }
-.dropdown-item-danger { color: #DC2626; }
+.dropdown-item-danger { color: var(--danger); }
 
 /* Confirm dialog (layers on .modal-overlay/.modal-content) */
 .confirm-dialog { max-width: 380px; text-align: center; padding: 32px; }

@@ -1,7 +1,7 @@
 /* app/rescuer-landing/styles.css */
 
 /* Hero */
-.rl-hero { background: linear-gradient(135deg, #FDF5EF, #FEF8F3, #F5EDE6); padding: 80px 40px; text-align: center; }
+.rl-hero { background: linear-gradient(135deg, var(--surface-2), var(--surface), var(--surface-3)); padding: 80px 40px; text-align: center; }
 .rl-hero-inner { max-width: 700px; margin: 0 auto; }
 .hero-tag { font-size: 13px; font-weight: 700; color: var(--accent-soft); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
 .hero-title { font-family: var(--font-fraunces), serif; font-size: 52px; font-weight: 700; line-height: 1.1; margin-bottom: 20px; }

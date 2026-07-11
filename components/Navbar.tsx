@@ -198,7 +198,7 @@ export default function Navbar({ user, isAdmin = false, isAuditor = false }: { u
                     role="menu"
                     style={{
                       position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                      background: '#fff', border: '1px solid var(--border)',
+                      background: 'var(--surface)', border: '1px solid var(--border)',
                       borderRadius: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
                       zIndex: 500, padding: '8px', minWidth: '180px',
                       display: 'flex', flexDirection: 'column', gap: '4px'

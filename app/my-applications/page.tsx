@@ -112,14 +112,14 @@ export default function MyApplicationsPage() {
               <div className="app-details">
                 {app.status === 'pending' && <p style={{ fontSize: '13px', color: 'var(--mid)' }}>The rescuer is currently reviewing your application.</p>}
                 {app.status === 'approved' && (
-                  <p style={{ fontSize: '13px', color: '#10B981', fontWeight: 600 }}>
+                  <p style={{ fontSize: '13px', color: 'var(--success)', fontWeight: 600 }}>
                     🎉 Congratulations! Your application has been approved. Reach out to the rescuer to arrange a meet-up — see your
                     {' '}<Link href={`/profile/${app.pets?.rescuer_id}`}>rescuer's profile</Link> for contact details.
                   </p>
                 )}
-                {app.status === 'rejected' && <p style={{ fontSize: '13px', color: '#DC2626' }}>This application was declined. You can apply again if the pet is still available.</p>}
+                {app.status === 'rejected' && <p style={{ fontSize: '13px', color: 'var(--danger)' }}>This application was declined. You can apply again if the pet is still available.</p>}
                 {app.status === 'cancelled' && <p style={{ fontSize: '13px', color: 'var(--mid)' }}>This application was withdrawn. You can apply again any time.</p>}
-                {app.status === 'closed' && <p style={{ fontSize: '13px', color: '#10B981', fontWeight: 600 }}>🎉 This pet found its forever home with you!</p>}
+                {app.status === 'closed' && <p style={{ fontSize: '13px', color: 'var(--success)', fontWeight: 600 }}>🎉 This pet found its forever home with you!</p>}
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <Link href={`/pet/${app.pet_id || app.pets?.id}`} className="btn-view-full" style={{ flex: 'none', padding: '8px 16px' }}>View Pet</Link>
@@ -133,7 +133,7 @@ export default function MyApplicationsPage() {
                     />
                   )}
                   {app.status === 'pending' && (
-                    <button className="btn-view-full" style={{ flex: 'none', padding: '8px 16px', color: '#DC2626', borderColor: '#DC2626' }} onClick={() => setWithdrawTarget(app)}>
+                    <button className="btn-view-full" style={{ flex: 'none', padding: '8px 16px', color: 'var(--danger)', borderColor: 'var(--danger)' }} onClick={() => setWithdrawTarget(app)}>
                       Withdraw
                     </button>
                   )}
