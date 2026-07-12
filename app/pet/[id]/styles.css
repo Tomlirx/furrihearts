@@ -82,6 +82,7 @@
 .share-targets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
 .share-target { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none; font-size: 13px; font-weight: 600; min-height: 44px; transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
 .share-target span { color: var(--text); }
+.share-target-icon { display: inline-flex; }
 .share-target:hover { background: var(--surface-2); border-color: var(--border-strong); }
 .share-copy { width: 100%; display: inline-flex; align-items: center; gap: 8px; background: none; border: none; border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: inherit; min-height: 44px; transition: background var(--dur) var(--ease); }
 .share-copy:hover { background: var(--surface-2); color: var(--accent-soft); }

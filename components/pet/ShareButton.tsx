@@ -60,14 +60,14 @@ export function ShareButton({ pet }: { pet: Pet }) {
       <button
         type="button"
         className="share-trigger"
-        onClick={() => (canNativeShare ? nativeShare() : setOpen((o) => !o))}
-        aria-haspopup={!canNativeShare}
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="true"
         aria-expanded={open}
       >
         <Share2 size={18} /> {t('shareThis')}
       </button>
 
-      {open && !canNativeShare && (
+      {open && (
         <div className="share-panel" role="menu">
           <div className="share-targets">
             {targets.map(({ key, href, Icon, color }) => (
@@ -77,15 +77,19 @@ export function ShareButton({ pet }: { pet: Pet }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="share-target"
-                style={{ color }}
                 aria-label={t('shareOn', { platform: t(`platform.${key}`) })}
                 onClick={() => setOpen(false)}
               >
-                <Icon size={22} />
+                <span className="share-target-icon" style={{ color }}><Icon size={20} /></span>
                 <span>{t(`platform.${key}`)}</span>
               </a>
             ))}
           </div>
+          {canNativeShare && (
+            <button type="button" className="share-copy" onClick={() => { setOpen(false); nativeShare(); }}>
+              <Share2 size={16} /> {t('moreApps')}
+            </button>
+          )}
           <button type="button" className="share-copy" onClick={() => copy('link')}>
             {copied === 'link' ? <Check size={16} /> : <Link2 size={16} />}
             {copied === 'link' ? t('copied') : t('copyLink')}

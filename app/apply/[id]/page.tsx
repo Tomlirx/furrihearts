@@ -145,6 +145,20 @@ export default function QuestionnairePage() {
     }]);
 
     if (!error) {
+      // Notify the rescuer in their inbox so the navbar bell rings (an
+      // application row alone doesn't create a notification). Best-effort:
+      // a failed notice must not block the applicant's confirmation. The
+      // applicant is the sender, so it opens a repliable thread about this pet.
+      if (pet.rescuer_id && pet.rescuer_id !== 'demo-rescuer' && pet.rescuer_id !== user.id) {
+        try {
+          await supabase.from('messages').insert({
+            sender_id: user.id,
+            recipient_id: pet.rescuer_id,
+            pet_id: pet.id,
+            content: `Hi! I've just submitted an adoption application for ${pet.name} 🐾 I'd love to hear from you.`,
+          });
+        } catch { /* notification is best-effort */ }
+      }
       router.push(`/apply/${pet.id}/thank-you`);
     } else {
       console.error(error);
