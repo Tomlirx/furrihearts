@@ -27,14 +27,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const description = (pet.description?.trim()
       || `${pet.name} — ${bits}${pet.location ? ` in ${pet.location}` : ''} — is looking for a loving home.`).slice(0, 200);
     const url = `${SITE_URL}/pet/${id}`;
-    const images = pet.image_url ? [{ url: pet.image_url, alt: pet.name }] : undefined;
 
+    // og:image / twitter:image come from the co-located opengraph-image.tsx
+    // (a composited 1200x630 card with the pet photo) — do NOT set images here
+    // or it would override that correctly-sized card with the raw upload.
     return {
       title,
       description,
       alternates: { canonical: url },
-      openGraph: { type: 'article', title: `${title} · FurriHearts`, description, url, images },
-      twitter: { card: 'summary_large_image', title: `${title} · FurriHearts`, description, images: pet.image_url ? [pet.image_url] : undefined },
+      openGraph: { type: 'article', title: `${title} · FurriHearts`, description, url },
+      twitter: { card: 'summary_large_image', title: `${title} · FurriHearts`, description },
     };
   } catch {
     return {};

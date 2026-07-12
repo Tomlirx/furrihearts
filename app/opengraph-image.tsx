@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           Furri<span style={{ color: '#C8490A' }}>Hearts</span>
         </div>
         <div style={{ fontSize: 34, color: '#5C4A3A', marginTop: 14 }}>
-          Malaysia&apos;s Pet Adoption Platform 🐾
+          Malaysia&apos;s Pet Adoption Platform
         </div>
       </div>
     ),
