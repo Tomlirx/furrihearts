@@ -1,17 +1,38 @@
 // app/layout.tsx
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import "./globals.css";
 import { createClient } from '@/utils/supabase/server';
 import { pickMessages } from '@/lib/intl';
+import { SITE_URL } from '@/lib/site';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 // Define the fonts here so they are available globally
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-dm-sans" });
 const fraunces = Fraunces({ subsets: ["latin"], weight: ["400", "600", "700"], style: ["normal", "italic"], variable: "--font-fraunces" });
+
+const SITE_NAME = 'FurriHearts';
+const SITE_DESCRIPTION = "Malaysia's pet adoption platform — meet cats and dogs looking for a loving home, and connect with verified rescuers.";
+
+// Site-wide defaults. metadataBase makes relative OG image paths (and the
+// generated /opengraph-image) resolve to absolute URLs; per-page metadata
+// (e.g. app/pet/[id]/layout.tsx) overrides title/description/images.
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: { default: `${SITE_NAME} — Adopt a Pet in Malaysia`, template: `%s · ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — Adopt a Pet in Malaysia`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: { card: 'summary_large_image', title: `${SITE_NAME} — Adopt a Pet in Malaysia`, description: SITE_DESCRIPTION },
+};
 
 export const viewport: Viewport = {
   width: 'device-width',

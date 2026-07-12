@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Paw } from '@/components/icons';
+import { ShareButton } from '@/components/pet/ShareButton';
 import type { Pet } from '@/lib/pet-service';
 
 export function RescuerSidebar({
@@ -62,6 +63,8 @@ export function RescuerSidebar({
           </div>
         ))}
       </div>
+
+      <ShareButton pet={pet} />
     </div>
   );
 }

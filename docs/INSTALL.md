@@ -157,6 +157,7 @@ an insert as a fallback; it harmlessly no-ops on conflict.
    | `NEXT_PUBLIC_SUPABASE_URL` | public | Supabase project URL |
    | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public | Browser client key (RLS-restricted) |
    | `SUPABASE_SERVICE_ROLE_KEY` | **server-only secret** | Admin/auditor server actions, signed receipt URLs |
+   | `NEXT_PUBLIC_SITE_URL` | public | Canonical site URL for Open Graph tags + share links (e.g. `https://furrihearts.antsclass.com`). Falls back to the production domain if unset, but set it per environment so shared-link previews use the right host. |
 
 3. Deploy:
    - **Vercel**: import the repo; framework auto-detected; pushes to `main`

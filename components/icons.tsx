@@ -173,6 +173,24 @@ export function ArrowDownToLine({ size, className, style, strokeWidth, ...rest }
   );
 }
 
+export function Share2({ size, className, style, strokeWidth, ...rest }: IconProps) {
+  return (
+    <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>
+      <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+      <path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" />
+    </svg>
+  );
+}
+
+export function Link2({ size, className, style, strokeWidth, ...rest }: IconProps) {
+  return (
+    <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  );
+}
+
 export function Check({ size, className, style, strokeWidth, ...rest }: IconProps) {
   return (
     <svg {...base(size, strokeWidth)} className={className} style={style} aria-hidden {...rest}>

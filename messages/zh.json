@@ -181,7 +181,23 @@
         "救援人士将立即收到通知"
       ]
     },
-    "reviewPreviewNotice": "此刊登尚未公开展示——您正在以预览模式查看。"
+    "reviewPreviewNotice": "此刊登尚未公开展示——您正在以预览模式查看。",
+    "share": {
+      "shareThis": "分享",
+      "copyLink": "复制链接",
+      "copied": "链接已复制!",
+      "copyCaption": "复制文案 + 链接",
+      "captionCopied": "已复制!",
+      "shareOn": "分享到 {platform}",
+      "appHint": "分享到 Instagram、TikTok 或小红书:复制文案后在 App 里粘贴发布。",
+      "caption": "来看看 {name} 🐾 —— 它正在 FurriHearts 上寻找一个温暖的家。{detail}",
+      "platform": {
+        "facebook": "Facebook",
+        "x": "X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram"
+      }
+    }
   },
   "Apply": {
     "loading": "加载中……",

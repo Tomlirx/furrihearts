@@ -181,7 +181,23 @@
         "Penyelamat dimaklumkan serta-merta"
       ]
     },
-    "reviewPreviewNotice": "Senarai ini belum dipaparkan secara terbuka — anda sedang melihatnya dalam mod pratonton."
+    "reviewPreviewNotice": "Senarai ini belum dipaparkan secara terbuka — anda sedang melihatnya dalam mod pratonton.",
+    "share": {
+      "shareThis": "Kongsi",
+      "copyLink": "Salin pautan",
+      "copied": "Pautan disalin!",
+      "copyCaption": "Salin kapsyen + pautan",
+      "captionCopied": "Disalin!",
+      "shareOn": "Kongsi di {platform}",
+      "appHint": "Untuk Instagram, TikTok atau 小红书, salin kapsyen dan tampal dalam apl.",
+      "caption": "Kenali {name} 🐾 — sedang mencari rumah penyayang di FurriHearts. {detail}",
+      "platform": {
+        "facebook": "Facebook",
+        "x": "X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram"
+      }
+    }
   },
   "Apply": {
     "loading": "Memuatkan...",

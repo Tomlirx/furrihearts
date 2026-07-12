@@ -181,7 +181,23 @@
         "Rescuer notified immediately"
       ]
     },
-    "reviewPreviewNotice": "This listing isn't publicly visible yet — you're viewing it in preview mode."
+    "reviewPreviewNotice": "This listing isn't publicly visible yet — you're viewing it in preview mode.",
+    "share": {
+      "shareThis": "Share",
+      "copyLink": "Copy link",
+      "copied": "Link copied!",
+      "copyCaption": "Copy caption + link",
+      "captionCopied": "Copied!",
+      "shareOn": "Share on {platform}",
+      "appHint": "For Instagram, TikTok or 小红书, copy the caption and paste it in the app.",
+      "caption": "Meet {name} 🐾 — looking for a loving home on FurriHearts. {detail}",
+      "platform": {
+        "facebook": "Facebook",
+        "x": "X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram"
+      }
+    }
   },
   "Apply": {
     "loading": "Loading...",
