@@ -353,7 +353,8 @@
     "updatePassword": "更新密码",
     "invalidLinkTitle": "此链接无效或已过期",
     "invalidLinkSubtitle": "密码重置链接只能使用一次，且会在短时间内失效。",
-    "requestNewLink": "重新申请链接"
+    "requestNewLink": "重新申请链接",
+    "loginWithNewPassword": "密码已更新,请用新密码登录。"
   },
   "RescuerLanding": {
     "heroTag": "救援人士专区",

@@ -1,13 +1,23 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { supabase } from '@/lib/supabase';
+import { recoveryClient } from '@/lib/supabase-recovery';
 import '../signup/styles.css';
 
-export default function ResetPasswordPage() {
+// Read an error out of either the query string or the URL hash. Supabase's
+// verify endpoint reports failures (e.g. an expired/consumed link) via
+// error/error_code/error_description in one of those two places.
+function readUrlError(): string | null {
+  if (typeof window === 'undefined') return null;
+  const q = new URLSearchParams(window.location.search);
+  const h = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  return q.get('error_code') || q.get('error') || h.get('error_code') || h.get('error');
+}
+
+function ResetPasswordInner() {
   const t = useTranslations('ResetPassword');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -19,69 +29,51 @@ export default function ResetPasswordPage() {
   const resolved = useRef(false);
 
   useEffect(() => {
-    // The browser client (@supabase/ssr, PKCE flow) handles the ?code= in
-    // the URL entirely on its own as part of its construction-time
-    // _initialize() — it detects the code, exchanges it using the stored
-    // code_verifier, and fires a PASSWORD_RECOVERY event once done. Manually
-    // calling exchangeCodeForSession() ourselves here would race against
-    // that and fail (the verifier is single-use and already consumed by the
-    // SDK's own internal exchange by the time a second, redundant call
-    // runs) — so just listen for the event instead of re-doing the exchange.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, session: any) => {
-      if (event === 'PASSWORD_RECOVERY' && session) {
-        resolved.current = true;
-        setHasSession(true);
+    if (!recoveryClient) { setHasSession(false); return; }
+
+    // A verify failure (expired / already-used link) comes back as an error in
+    // the URL — surface it directly instead of waiting for a session.
+    if (readUrlError()) { resolved.current = true; setHasSession(false); return; }
+
+    const resolve = (ok: boolean) => { if (!resolved.current) { resolved.current = true; setHasSession(ok); } };
+
+    // The recovery client (implicit flow) parses the #access_token from the hash
+    // on init and fires PASSWORD_RECOVERY / SIGNED_IN — no code_verifier needed.
+    const { data: { subscription } } = recoveryClient.auth.onAuthStateChange((event, session) => {
+      if ((event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') && session) resolve(true);
+    });
+
+    // Fallback in case init resolved before the listener attached.
+    recoveryClient.auth.getSession().then(({ data }) => {
+      if (data?.session) resolve(true);
+      else {
+        // Give the in-URL hash a moment to be parsed, then decide. No token in
+        // the URL at all → invalid link.
+        setTimeout(() => {
+          if (resolved.current) return;
+          const hasToken = typeof window !== 'undefined' && window.location.hash.includes('access_token');
+          if (!hasToken) resolve(false);
+        }, 1500);
       }
     });
 
-    // If a session already exists by the time this mounts (the SDK's
-    // initializePromise may have resolved before this listener attached),
-    // onAuthStateChange won't fire again — check directly as a fallback.
-    supabase.auth.getSession().then(({ data }: any) => {
-      if (!resolved.current && data?.session) {
-        resolved.current = true;
-        setHasSession(true);
-      }
-    });
-
-    // No recovery session materialized within a reasonable window — either
-    // there was no code at all, or the link is genuinely invalid/expired.
-    const timeout = setTimeout(() => {
-      if (!resolved.current) {
-        resolved.current = true;
-        setHasSession(false);
-      }
-    }, 4000);
-
-    return () => {
-      subscription.unsubscribe();
-      clearTimeout(timeout);
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleSubmit = async () => {
-    if (password.length < 8) {
-      setError(t('passwordTooShort'));
-      return;
-    }
-    if (password !== confirm) {
-      setError(t('passwordsDontMatch'));
-      return;
-    }
+    if (password.length < 8) { setError(t('passwordTooShort')); return; }
+    if (password !== confirm) { setError(t('passwordsDontMatch')); return; }
+    if (!recoveryClient) { setError(t('invalidLinkSubtitle')); return; }
+
     setLoading(true);
-    const { error: updateError } = await supabase.auth.updateUser({ password });
+    const { error: updateError } = await recoveryClient.auth.updateUser({ password });
     setLoading(false);
-    if (updateError) {
-      setError(updateError.message);
-      return;
-    }
+    if (updateError) { setError(updateError.message); return; }
+
+    // Password changed. The recovery session is intentionally not persisted to
+    // the app's cookie session, so send the user to log in fresh.
     setDone(true);
-    // router.push alone is a soft client-side navigation — it won't re-run
-    // the root layout's server-side user check, so the Navbar would keep
-    // showing the stale "logged out" state captured before this session
-    // existed. router.refresh() forces that to re-fetch with the new cookie.
-    router.refresh();
-    setTimeout(() => router.push('/dashboard'), 1500);
+    setTimeout(() => router.push('/login'), 1600);
   };
 
   return (
@@ -96,7 +88,7 @@ export default function ResetPasswordPage() {
           {done ? (
             <>
               <h2 className="right-title">{t('passwordUpdated')}</h2>
-              <p className="right-sub">{t('redirecting')}</p>
+              <p className="right-sub">{t('loginWithNewPassword')}</p>
             </>
           ) : hasSession === false ? (
             <>
@@ -143,5 +135,13 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResetPasswordInner />
+    </Suspense>
   );
 }

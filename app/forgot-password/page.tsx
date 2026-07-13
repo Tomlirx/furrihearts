@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { recoveryClient } from '@/lib/supabase-recovery';
+import { SITE_URL } from '@/lib/site';
 import '../signup/styles.css';
 
 export default function ForgotPasswordPage() {
@@ -19,13 +20,16 @@ export default function ForgotPasswordPage() {
       return;
     }
     setLoading(true);
-    // Called from the browser client (not a server action) so the PKCE
-    // code_verifier gets stored in this browser's localStorage — the same
-    // browser that will later complete exchangeCodeForSession on the reset link.
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    if (resetError) console.error('Password reset error:', resetError);
+    // Sent via the implicit-flow recovery client (not the app's PKCE client) so
+    // the reset link uses hash tokens and needs no code_verifier — the link
+    // then works even when opened on a different device/browser. redirectTo is
+    // the canonical site URL so the link host is correct regardless of origin.
+    if (recoveryClient) {
+      const { error: resetError } = await recoveryClient.auth.resetPasswordForEmail(email, {
+        redirectTo: `${SITE_URL}/reset-password`,
+      });
+      if (resetError) console.error('Password reset error:', resetError);
+    }
     setLoading(false);
     setSent(true);
   };

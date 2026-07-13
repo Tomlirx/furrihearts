@@ -127,6 +127,15 @@ These settings live only in the Supabase dashboard — no code or SQL captures t
      - plus `http://localhost:3000/...` equivalents for local development
 2. **Authentication → Email Templates**: the defaults work. The app relies on
    the *Reset Password* and *Confirm signup* templates.
+   - **Password reset flow**: the reset pages use a dedicated implicit-flow
+     Supabase client (`lib/supabase-recovery.ts`), so the reset link works
+     cross-device (no PKCE code_verifier needed) with the **default** email
+     template. For the *complete* hardening — also immune to corporate email
+     link-scanners that pre-consume the one-time link — set up **custom SMTP**
+     (the built-in email is rate-limited and not for production anyway), then
+     change the Reset Password template link to
+     `{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery`
+     and switch the reset page to `verifyOtp`-on-submit. (Not done yet — needs SMTP.)
 3. **Authentication → Providers → Google** *(optional — skip to disable Google sign-in)*
    - In Google Cloud Console → APIs & Services → Credentials, create an
      **OAuth client ID** (Web application). Authorized redirect URI:

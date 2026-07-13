@@ -353,7 +353,8 @@
     "updatePassword": "Kemas kini kata laluan",
     "invalidLinkTitle": "Pautan ini tidak sah atau telah luput",
     "invalidLinkSubtitle": "Pautan tetapan semula kata laluan hanya boleh digunakan sekali dan luput selepas tempoh masa yang singkat.",
-    "requestNewLink": "Minta pautan baharu"
+    "requestNewLink": "Minta pautan baharu",
+    "loginWithNewPassword": "Kata laluan anda telah dikemas kini. Sila log masuk dengan kata laluan baharu."
   },
   "RescuerLanding": {
     "heroTag": "Untuk Penyelamat",

@@ -353,7 +353,8 @@
     "updatePassword": "Update password",
     "invalidLinkTitle": "This link is invalid or has expired",
     "invalidLinkSubtitle": "Password reset links can only be used once and expire after a short time.",
-    "requestNewLink": "Request a new link"
+    "requestNewLink": "Request a new link",
+    "loginWithNewPassword": "Your password has been updated. Please log in with your new password."
   },
   "RescuerLanding": {
     "heroTag": "For Rescuers",
